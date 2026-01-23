@@ -279,10 +279,16 @@ If YES (genuine carve-out opportunity), extract:
     "division": "Division or unit being carved out",
     "signal_type": "Strategic Review" | "Exploring Sale" | "Adviser Appointed" | "PE Interest Reported" | "Spin-off Announced" | "Divestiture" | "PE Circling" | "PE In Talks" | "PE Bid Submitted",
     "pe_buyer": "Name of PE firm involved (if any, otherwise null)",
-    "size_estimate": "Revenue or deal value if mentioned",
+    "likely_buyers": "Comma-separated list of PE firms likely to be interested based on their sector focus and deal size (e.g. 'KPS Capital, Platinum Equity, One Rock'). Use your knowledge of PE firm strategies. Null if unknown.",
+    "size_estimate": "Revenue or deal value if mentioned (e.g. '$500M revenue' or '$1.2B EV')",
+    "ev_low": "Low end of estimated enterprise value in millions as integer (e.g. 500 for $500M). Null if cannot estimate.",
+    "ev_high": "High end of estimated enterprise value in millions as integer (e.g. 800 for $800M). Null if cannot estimate.",
     "sector": "TMT" | "Financial Services" | "Healthcare" | "Consumer" | "Industrials" | "Retail" | "Technology" | "Other",
     "geography": "US" | "UK" | "Europe" (primary geography of the TARGET ASSET, not the parent),
+    "complexity": "Low" | "Medium" | "High" | "Very High" (based on: cross-border operations, IT/ERP entanglement, manufacturing footprint, TSA likely duration),
     "key_quote": "Most important sentence signaling the deal",
+    "buyer_intelligence": "Brief note on why this might interest PE buyers and what the value creation angle could be",
+    "notes": "Any other relevant context from the article",
     "confidence": "high" | "medium" | "low"
 }}
 
@@ -504,6 +510,42 @@ def create_notion_entry(database_id: str, article: dict, analysis: dict):
     
     # Add Date Spotted
     properties["Date Spotted"] = {"date": {"start": datetime.now().strftime("%Y-%m-%d")}}
+    
+    # Add Research Status - always Raw for new entries
+    properties["Research Status"] = {"select": {"name": "Raw"}}
+    
+    # Add Source from RSS feed
+    source_name = safe_str(article.get("source"), "")[:100]
+    if source_name:
+        properties["Source"] = {"rich_text": [{"text": {"content": source_name}}]}
+    
+    # Add Likely Buyers if present
+    likely_buyers = safe_str(analysis.get("likely_buyers"), "")[:500]
+    if likely_buyers:
+        properties["Likely Buyers"] = {"rich_text": [{"text": {"content": likely_buyers}}]}
+    
+    # Add EV estimates if present
+    ev_low = analysis.get("ev_low")
+    ev_high = analysis.get("ev_high")
+    if ev_low and isinstance(ev_low, (int, float)):
+        properties["Est EV Low"] = {"number": ev_low}
+    if ev_high and isinstance(ev_high, (int, float)):
+        properties["Est EV High"] = {"number": ev_high}
+    
+    # Add Complexity if present
+    complexity = safe_str(analysis.get("complexity"), "")[:100]
+    if complexity:
+        properties["Complexity"] = {"rich_text": [{"text": {"content": complexity}}]}
+    
+    # Add Buyer Intelligence if present
+    buyer_intel = safe_str(analysis.get("buyer_intelligence"), "")[:2000]
+    if buyer_intel:
+        properties["Buyer Intelligence"] = {"rich_text": [{"text": {"content": buyer_intel}}]}
+    
+    # Add Notes if present
+    notes = safe_str(analysis.get("notes"), "")[:2000]
+    if notes:
+        properties["Notes"] = {"rich_text": [{"text": {"content": notes}}]}
     
     try:
         response = requests.post(

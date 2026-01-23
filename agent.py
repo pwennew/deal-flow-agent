@@ -74,28 +74,28 @@ SIGNAL_KEYWORDS = [
 PE_FIRM_PATTERNS = [firm.lower() for firm in PE_FIRMS]
 
 # News sources to monitor
-# NOTE: when:7d added for one-time backfill - REVERT after manual run
+# NOTE: when:14d added for 2-week backfill to test dedup - REVERT to 24h after validation
 RSS_FEEDS = [
     # Google News searches for key terms - Sell-side signals
-    "https://news.google.com/rss/search?q=corporate+spin-off+OR+divestiture+OR+%22strategic+review%22+when:7d&hl=en-US&gl=US&ceid=US:en",
-    "https://news.google.com/rss/search?q=company+%22exploring+sale%22+OR+%22weighing+sale%22+when:7d&hl=en-US&gl=US&ceid=US:en",
-    "https://news.google.com/rss/search?q=%22carve-out%22+private+equity+when:7d&hl=en-US&gl=US&ceid=US:en",
-    "https://news.google.com/rss/search?q=%22strategic+alternatives%22+division+OR+unit+when:7d&hl=en-US&gl=US&ceid=US:en",
+    "https://news.google.com/rss/search?q=corporate+spin-off+OR+divestiture+OR+%22strategic+review%22+when:14d&hl=en-US&gl=US&ceid=US:en",
+    "https://news.google.com/rss/search?q=company+%22exploring+sale%22+OR+%22weighing+sale%22+when:14d&hl=en-US&gl=US&ceid=US:en",
+    "https://news.google.com/rss/search?q=%22carve-out%22+private+equity+when:14d&hl=en-US&gl=US&ceid=US:en",
+    "https://news.google.com/rss/search?q=%22strategic+alternatives%22+division+OR+unit+when:14d&hl=en-US&gl=US&ceid=US:en",
     # UK/Europe focused
-    "https://news.google.com/rss/search?q=divestiture+OR+spin-off+UK+OR+Europe+when:7d&hl=en-GB&gl=GB&ceid=GB:en",
+    "https://news.google.com/rss/search?q=divestiture+OR+spin-off+UK+OR+Europe+when:14d&hl=en-GB&gl=GB&ceid=GB:en",
     # PR Newswire M&A
     "https://www.prnewswire.com/rss/financial-services-latest-news/mergers-and-acquisitions-list.rss",
     # Business Wire
     "https://feed.businesswire.com/rss/home/?rss=G1QFDERJXkJeEFpRWw==",
     # PE buyer activity - major firms
-    "https://news.google.com/rss/search?q=%22private+equity%22+%22in+talks%22+OR+%22circling%22+OR+%22bidding%22+when:7d&hl=en-US&gl=US&ceid=US:en",
-    "https://news.google.com/rss/search?q=KKR+OR+Blackstone+OR+Carlyle+OR+Apollo+%22acquisition%22+OR+%22buy%22+when:7d&hl=en-US&gl=US&ceid=US:en",
-    "https://news.google.com/rss/search?q=EQT+OR+CVC+OR+TPG+OR+%22Bain+Capital%22+%22acquisition%22+when:7d&hl=en-US&gl=US&ceid=US:en",
-    "https://news.google.com/rss/search?q=%22H.I.G.%22+OR+%22HIG+Capital%22+OR+%22KPS+Capital%22+OR+Aurelius+acquisition+when:7d&hl=en-US&gl=US&ceid=US:en",
-    "https://news.google.com/rss/search?q=%22Thoma+Bravo%22+OR+%22Vista+Equity%22+OR+%22Silver+Lake%22+acquisition+when:7d&hl=en-US&gl=US&ceid=US:en",
+    "https://news.google.com/rss/search?q=%22private+equity%22+%22in+talks%22+OR+%22circling%22+OR+%22bidding%22+when:14d&hl=en-US&gl=US&ceid=US:en",
+    "https://news.google.com/rss/search?q=KKR+OR+Blackstone+OR+Carlyle+OR+Apollo+%22acquisition%22+OR+%22buy%22+when:14d&hl=en-US&gl=US&ceid=US:en",
+    "https://news.google.com/rss/search?q=EQT+OR+CVC+OR+TPG+OR+%22Bain+Capital%22+%22acquisition%22+when:14d&hl=en-US&gl=US&ceid=US:en",
+    "https://news.google.com/rss/search?q=%22H.I.G.%22+OR+%22HIG+Capital%22+OR+%22KPS+Capital%22+OR+Aurelius+acquisition+when:14d&hl=en-US&gl=US&ceid=US:en",
+    "https://news.google.com/rss/search?q=%22Thoma+Bravo%22+OR+%22Vista+Equity%22+OR+%22Silver+Lake%22+acquisition+when:14d&hl=en-US&gl=US&ceid=US:en",
     # European PE activity
-    "https://news.google.com/rss/search?q=%22private+equity%22+acquisition+UK+OR+Europe+when:7d&hl=en-GB&gl=GB&ceid=GB:en",
-    "https://news.google.com/rss/search?q=Cinven+OR+Permira+OR+%22BC+Partners%22+OR+%22PAI+Partners%22+acquisition+when:7d&hl=en-GB&gl=GB&ceid=GB:en",
+    "https://news.google.com/rss/search?q=%22private+equity%22+acquisition+UK+OR+Europe+when:14d&hl=en-GB&gl=GB&ceid=GB:en",
+    "https://news.google.com/rss/search?q=Cinven+OR+Permira+OR+%22BC+Partners%22+OR+%22PAI+Partners%22+acquisition+when:14d&hl=en-GB&gl=GB&ceid=GB:en",
     # Top industrial carve-out specialists (Tier 1 targets)
     "https://news.google.com/rss/search?q=%22KPS+Capital%22+OR+%22One+Rock%22+OR+%22American+Industrial+Partners%22+OR+%22Atlas+Holdings%22+acquisition+OR+carve-out&hl=en-US&gl=US&ceid=US:en",
 ]

@@ -205,7 +205,7 @@ def extract_company_key(title: str) -> str:
 
 
 def is_duplicate(new_title: str, existing_titles: set) -> bool:
-    """Check if title is a duplicate using normalized comparison"""
+    """Check if title is a duplicate using normalized comparison with word-level division matching"""
     normalized_new = normalize_title(new_title)
     company_key = extract_company_key(new_title)
     
@@ -215,9 +215,21 @@ def is_duplicate(new_title: str, existing_titles: set) -> bool:
             return True
         # Company + division match (handles "LKQ" vs "LKQ Corporation")
         if extract_company_key(existing) == company_key:
-            # Check if divisions also match
+            # Extract divisions and check for word overlap
             new_div = new_title.split(' - ')[-1].lower() if ' - ' in new_title else ''
             existing_div = existing.split(' - ')[-1].lower() if ' - ' in existing else ''
+            
+            # Get significant words (>3 chars, excluding company name)
+            company_words = set(company_key.lower().split())
+            new_words = set(w for w in re.sub(r'[^a-z0-9 ]', '', new_div).split() if len(w) > 3 and w not in company_words)
+            existing_words = set(w for w in re.sub(r'[^a-z0-9 ]', '', existing_div).split() if len(w) > 3 and w not in company_words)
+            
+            # If any significant word overlaps, it's a duplicate
+            # e.g., "Freight Unit" and "FedEx Freight" both have "freight"
+            if new_words and existing_words and new_words & existing_words:
+                return True
+            
+            # Also check substring match for backwards compatibility
             if new_div and existing_div and (new_div in existing_div or existing_div in new_div):
                 return True
     return False

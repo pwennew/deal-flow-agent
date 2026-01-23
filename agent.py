@@ -206,16 +206,23 @@ def init_notion_database(notion: Client, database_id: str):
 
 
 def fetch_rss_articles() -> list:
-    """Fetch articles from all RSS feeds"""
+    """Fetch articles from all RSS feeds with URL deduplication"""
     articles = []
+    seen_urls = set()
     
     for feed_url in RSS_FEEDS:
         try:
             feed = feedparser.parse(feed_url)
             for entry in feed.entries[:20]:  # Limit per feed
+                link = entry.get("link", "")
+                # Skip if we've already seen this URL
+                if link in seen_urls:
+                    continue
+                seen_urls.add(link)
+                
                 article = {
                     "title": entry.get("title", ""),
-                    "link": entry.get("link", ""),
+                    "link": link,
                     "summary": entry.get("summary", entry.get("description", "")),
                     "published": entry.get("published", ""),
                     "source": feed.feed.get("title", feed_url),
@@ -224,6 +231,7 @@ def fetch_rss_articles() -> list:
         except Exception as e:
             print(f"Warning: Failed to fetch {feed_url}: {e}")
     
+    print(f"Fetched {len(articles)} unique articles from {len(RSS_FEEDS)} feeds")
     return articles
 
 
@@ -485,6 +493,17 @@ def create_notion_entry(database_id: str, article: dict, analysis: dict):
     # Add Link if URL is valid
     if source_url.startswith("http"):
         properties["Link"] = {"url": source_url}
+    
+    # Add Size Estimate if present and not default
+    if size_estimate and size_estimate != "Not disclosed":
+        properties["Size Estimate"] = {"rich_text": [{"text": {"content": size_estimate}}]}
+    
+    # Add Key Quote if present
+    if key_quote:
+        properties["Key Quote"] = {"rich_text": [{"text": {"content": key_quote}}]}
+    
+    # Add Date Spotted
+    properties["Date Spotted"] = {"date": {"start": datetime.now().strftime("%Y-%m-%d")}}
     
     try:
         response = requests.post(

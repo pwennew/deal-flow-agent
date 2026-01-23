@@ -158,9 +158,42 @@ def normalize_title(title: str) -> str:
     t = title.lower()
     # Remove PE firm names in parentheses at end
     t = re.sub(r'\s*\([^)]*\)\s*$', '', t)
-    # Normalize whitespace
+    # Remove corporate suffixes
+    t = re.sub(r'\b(corporation|corp|inc|incorporated|ltd|limited|plc|llc|llp|co|company|group|holdings)\b\.?', '', t)
+    # Remove "the " at start
+    t = re.sub(r'^the\s+', '', t)
+    # Normalize whitespace and punctuation
+    t = re.sub(r'[^\w\s]', ' ', t)
     t = re.sub(r'\s+', ' ', t).strip()
     return t
+
+
+def extract_company_key(title: str) -> str:
+    """Extract just the company name for fuzzy matching"""
+    # Split on " - " to get company part
+    parts = title.split(' - ')
+    if parts:
+        return normalize_title(parts[0])
+    return normalize_title(title)
+
+
+def is_duplicate(new_title: str, existing_titles: set) -> bool:
+    """Check if title is a duplicate using normalized comparison"""
+    normalized_new = normalize_title(new_title)
+    company_key = extract_company_key(new_title)
+    
+    for existing in existing_titles:
+        # Exact normalized match
+        if normalize_title(existing) == normalized_new:
+            return True
+        # Company + division match (handles "LKQ" vs "LKQ Corporation")
+        if extract_company_key(existing) == company_key:
+            # Check if divisions also match
+            new_div = new_title.split(' - ')[-1].lower() if ' - ' in new_title else ''
+            existing_div = existing.split(' - ')[-1].lower() if ' - ' in existing else ''
+            if new_div and existing_div and (new_div in existing_div or existing_div in new_div):
+                return True
+    return False
 
 
 def init_notion_database(notion: Client, database_id: str):
@@ -213,7 +246,7 @@ def filter_relevant_articles(articles: list) -> list:
 def analyze_article_with_claude(client: Anthropic, article: dict) -> Optional[dict]:
     """Use Claude to extract structured deal information from article"""
     
-    prompt = f"""Analyze this news article for potential M&A opportunities relevant to a carve-out/integration consultant.
+    prompt = f"""Analyze this news article for potential M&A opportunities relevant to a carve-out/integration consultant targeting PE buyers in the US, UK and Europe.
 
 ARTICLE:
 Title: {article['title']}
@@ -221,54 +254,67 @@ Summary: {article['summary']}
 Source: {article['source']}
 
 TASK:
-Determine if this article describes EITHER:
-A) A corporate divestiture, spin-off, carve-out, or strategic review (SELL-SIDE)
-B) A private equity firm circling, bidding on, or acquiring a target (BUY-SIDE)
+Determine if this article describes a GENUINE CARVE-OUT OPPORTUNITY:
+A) A corporate division, business unit, or subsidiary being sold or spun off (SELL-SIDE)
+B) A private equity firm circling, bidding on, or acquiring a specific division/business (BUY-SIDE)
 
-If YES, extract the following information in JSON format:
+CRITICAL: A carve-out is the separation of a DIVISION or UNIT from a larger company. It is NOT:
+- A whole company being sold (unless PE is acquiring to then carve out parts)
+- An IPO or public offering
+- A minority stake sale
+- A merger of equals
+
+If YES (genuine carve-out opportunity), extract:
 {{
     "is_relevant": true,
-    "company": "Target company or parent company name",
-    "division": "Division or unit being sold/spun off (if specified, otherwise 'Whole Company')",
+    "company": "Parent company name",
+    "division": "Division or unit being carved out",
     "signal_type": "Strategic Review" | "Exploring Sale" | "Adviser Appointed" | "PE Interest Reported" | "Spin-off Announced" | "Divestiture" | "PE Circling" | "PE In Talks" | "PE Bid Submitted",
     "pe_buyer": "Name of PE firm involved (if any, otherwise null)",
-    "size_estimate": "Revenue or deal value if mentioned (e.g., '$500M revenue', '$1.2B EV')",
+    "size_estimate": "Revenue or deal value if mentioned",
     "sector": "TMT" | "Financial Services" | "Healthcare" | "Consumer" | "Industrials" | "Retail" | "Technology" | "Other",
-    "geography": ["US", "UK", "Europe"] (list all that apply),
-    "key_quote": "The most important sentence from the article that signals the deal",
+    "geography": "US" | "UK" | "Europe" (primary geography of the TARGET ASSET, not the parent),
+    "key_quote": "Most important sentence signaling the deal",
     "confidence": "high" | "medium" | "low"
 }}
 
-If NO (article is not relevant), return:
+If NO, return:
 {{
     "is_relevant": false,
-    "reason": "Brief reason why not relevant"
+    "reason": "Brief reason"
 }}
 
 SIGNAL TYPE GUIDANCE:
-- "Strategic Review" = Company evaluating options, no specific buyer
+- "Strategic Review" = Company evaluating options
 - "Exploring Sale" = Company actively seeking buyers
-- "Adviser Appointed" = Investment bank hired to run process
-- "PE Interest Reported" = PE firms reported as interested (general)
-- "Spin-off Announced" = Company announced spin-off
+- "Adviser Appointed" = Investment bank hired
+- "PE Interest Reported" = PE firms reported as interested
+- "Spin-off Announced" = Formal spin-off announcement
 - "Divestiture" = Sale process underway
-- "PE Circling" = Specific PE firm(s) reported as circling target
-- "PE In Talks" = PE firm in active discussions with target
-- "PE Bid Submitted" = PE firm has made formal offer
+- "PE Circling" = Specific PE firm(s) circling
+- "PE In Talks" = Active discussions
+- "PE Bid Submitted" = Formal offer made
 
 INCLUDE:
 - Corporate divisions being sold or spun off
-- Companies hiring advisers to explore strategic options
-- PE firms circling, bidding on, or acquiring businesses
-- Strategic reviews that may lead to divestitures
-- Rumored PE interest with named firms
+- Business units being divested
+- PE firms acquiring divisions from corporates
+- Strategic reviews of specific business units
 
-EXCLUDE:
+EXCLUDE (return is_relevant: false):
+- Whole company sales without PE involvement
 - Completed deals (already closed)
 - Venture capital / growth equity investments
-- Public company M&A without PE involvement
-- Opinion pieces without news
+- Public M&A without PE involvement
+- Academic/university spin-offs
+- Government/public sector divestitures
+- Geographies outside US/UK/Europe (China, LatAm, Middle East, Asia, Africa, Australia)
+- Real estate transactions
 - Very early speculation without substance
+- IPOs or public offerings
+- Minority stake sales
+
+GEOGRAPHY RULE: Only include if the TARGET ASSET (the thing being sold) is primarily in US, UK or Europe. Reject China, LatAm, APAC, Middle East, Africa.
 
 Return ONLY valid JSON, no other text."""
 
@@ -297,6 +343,68 @@ Return ONLY valid JSON, no other text."""
         return None
 
 
+def passes_post_filters(analysis: dict) -> tuple[bool, str]:
+    """Apply post-extraction filters to reject low-quality entries"""
+    
+    # Geography filter - must be US, UK or Europe
+    geo = analysis.get("geography", "")
+    if isinstance(geo, list):
+        geo = geo[0] if geo else ""
+    geo_lower = geo.lower()
+    
+    invalid_geos = ["china", "asia", "apac", "latam", "latin america", "middle east", 
+                    "africa", "australia", "india", "japan", "korea", "brazil", 
+                    "mexico", "central america", "south america"]
+    for invalid in invalid_geos:
+        if invalid in geo_lower:
+            return False, f"Geography filter: {geo}"
+    
+    # Only allow US, UK, Europe, Global
+    if geo and geo not in ["US", "UK", "Europe", "Global", "US, UK", "UK, US", "Europe, UK", "UK, Europe"]:
+        # Check for comma-separated valid geos
+        geo_parts = [g.strip() for g in geo.split(',')]
+        valid_geos = {"US", "UK", "Europe", "Global"}
+        if not all(g in valid_geos for g in geo_parts):
+            return False, f"Geography filter: {geo}"
+    
+    # Division filter - reject "Whole Company" without PE buyer
+    division = analysis.get("division", "").lower()
+    pe_buyer = analysis.get("pe_buyer")
+    
+    whole_company_indicators = ["whole company", "entire company", "full company", 
+                                "not specified", "company-wide", "whole business"]
+    is_whole_company = any(ind in division for ind in whole_company_indicators)
+    
+    if is_whole_company and not pe_buyer:
+        return False, "Whole company sale without PE buyer"
+    
+    # Sector filter - reject irrelevant sectors
+    sector = analysis.get("sector", "")
+    company = analysis.get("company", "").lower()
+    
+    # Academic/university spin-offs
+    academic_indicators = ["university", "college", "institute", "research center", 
+                          "academic", "professor", "laboratory"]
+    if any(ind in company for ind in academic_indicators):
+        return False, "Academic/university spin-off"
+    
+    # Government/public sector
+    govt_indicators = ["government", "ministry", "department of", "federal", 
+                       "state of", "county", "municipal", "public sector"]
+    if any(ind in company for ind in govt_indicators):
+        return False, "Government/public sector"
+    
+    # Signal type filter - reject weak signals
+    signal = analysis.get("signal_type", "")
+    if signal == "Strategic Review" and not pe_buyer:
+        # Strategic review without PE interest is too early
+        confidence = analysis.get("confidence", "")
+        if confidence != "high":
+            return False, "Strategic review without PE interest (low confidence)"
+    
+    return True, ""
+
+
 def safe_str(value, default=""):
     """Safely convert value to string, handling None"""
     if value is None:
@@ -315,8 +423,10 @@ def create_notion_entry(database_id: str, article: dict, analysis: dict):
     # Build geography multi-select
     geography = analysis.get("geography", [])
     if isinstance(geography, str):
-        geography = [geography]
-    geo_options = [{"name": g} for g in geography if g in ["US", "UK", "Europe", "Global"]]
+        # Handle comma-separated like "US, UK"
+        geography = [g.strip() for g in geography.split(',')]
+    valid_geos = {"US", "UK", "Europe", "Global"}
+    geo_options = [{"name": g} for g in geography if g in valid_geos]
     if not geo_options:
         geo_options = [{"name": "US"}]  # Default
     
@@ -436,6 +546,7 @@ def run_agent():
     # Analyze each relevant article with Claude
     new_entries = 0
     skipped_duplicates = 0
+    skipped_filtered = 0
     
     for article in relevant_articles:
         print(f"Analyzing: {article['title'][:70]}...")
@@ -452,24 +563,29 @@ def run_agent():
             else:
                 full_title = f"{company} - {division}"
             
-            # Normalize for comparison (strip PE buyer suffix)
-            normalized = normalize_title(full_title)
-            
-            # Skip if we've already got this one
-            if normalized in existing_titles:
+            # Deduplication check using improved function
+            if is_duplicate(full_title, existing_titles):
                 skipped_duplicates += 1
-                print(f"  Skipped (duplicate): {company}")
+                print(f"  ⊘ Skipped (duplicate): {company} - {division}")
+                continue
+            
+            # Post-extraction filter check
+            passes, reason = passes_post_filters(analysis)
+            if not passes:
+                skipped_filtered += 1
+                print(f"  ⊘ Filtered: {company} - {division} ({reason})")
                 continue
             
             success = create_notion_entry(NOTION_DATABASE_ID, article, analysis)
             if success:
                 new_entries += 1
-                existing_titles.add(normalized)
+                existing_titles.add(full_title)
     
     print(f"\n{'='*60}")
     print(f"Summary:")
     print(f"  New entries added: {new_entries}")
     print(f"  Duplicates skipped: {skipped_duplicates}")
+    print(f"  Filtered out: {skipped_filtered}")
     print(f"{'='*60}\n")
 
 

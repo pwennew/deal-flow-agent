@@ -76,28 +76,55 @@ PE_FIRM_PATTERNS = [firm.lower() for firm in PE_FIRMS]
 # News sources to monitor
 # NOTE: when:14d added for 2-week backfill to test dedup - REVERT to 24h after validation
 RSS_FEEDS = [
-    # Google News searches for key terms - Sell-side signals
-    "https://news.google.com/rss/search?q=corporate+spin-off+OR+divestiture+OR+%22strategic+review%22+when:14d&hl=en-US&gl=US&ceid=US:en",
-    "https://news.google.com/rss/search?q=company+%22exploring+sale%22+OR+%22weighing+sale%22+when:14d&hl=en-US&gl=US&ceid=US:en",
-    "https://news.google.com/rss/search?q=%22carve-out%22+private+equity+when:14d&hl=en-US&gl=US&ceid=US:en",
-    "https://news.google.com/rss/search?q=%22strategic+alternatives%22+division+OR+unit+when:14d&hl=en-US&gl=US&ceid=US:en",
-    # UK/Europe focused
-    "https://news.google.com/rss/search?q=divestiture+OR+spin-off+UK+OR+Europe+when:14d&hl=en-GB&gl=GB&ceid=GB:en",
+    # ========== DIRECT PE/M&A NEWS SOURCES ==========
+    # PE Hub - Direct PE deal announcements (highest signal quality)
+    "https://www.pehub.com/feed/",
     # PR Newswire M&A
     "https://www.prnewswire.com/rss/financial-services-latest-news/mergers-and-acquisitions-list.rss",
     # Business Wire
     "https://feed.businesswire.com/rss/home/?rss=G1QFDERJXkJeEFpRWw==",
-    # PE buyer activity - major firms
+    
+    # ========== PREMIUM JOURNALISM (via Google News) ==========
+    # FT - Strong on UK/Europe deals, often breaks PE news first
+    "https://news.google.com/rss/search?q=site:ft.com+%22private+equity%22+acquisition+OR+divestiture+OR+spin-off+when:14d&hl=en-US&gl=US&ceid=US:en",
+    # WSJ - Strong on US deals
+    "https://news.google.com/rss/search?q=site:wsj.com+spin-off+OR+divestiture+OR+carve-out+when:14d&hl=en-US&gl=US&ceid=US:en",
+    # Bloomberg - Often first to report deal rumors
+    "https://news.google.com/rss/search?q=site:bloomberg.com+carve-out+OR+divestiture+OR+spin-off+%22private+equity%22+when:14d&hl=en-US&gl=US&ceid=US:en",
+    # Reuters - Global deal coverage
+    "https://news.google.com/rss/search?q=site:reuters.com+divestiture+OR+spin-off+%22private+equity%22+when:14d&hl=en-US&gl=US&ceid=US:en",
+    
+    # ========== SELL-SIDE SIGNALS ==========
+    # Strategic review / exploring options
+    "https://news.google.com/rss/search?q=corporate+spin-off+OR+divestiture+OR+%22strategic+review%22+when:14d&hl=en-US&gl=US&ceid=US:en",
+    "https://news.google.com/rss/search?q=company+%22exploring+sale%22+OR+%22weighing+sale%22+when:14d&hl=en-US&gl=US&ceid=US:en",
+    "https://news.google.com/rss/search?q=%22strategic+alternatives%22+division+OR+unit+when:14d&hl=en-US&gl=US&ceid=US:en",
+    # Adviser appointments (strong signal - sale process starting)
+    "https://news.google.com/rss/search?q=%22hired+Goldman%22+OR+%22hired+Morgan+Stanley%22+OR+%22hired+JPMorgan%22+sale+OR+divestiture+when:14d&hl=en-US&gl=US&ceid=US:en",
+    "https://news.google.com/rss/search?q=%22hiring+advisers%22+OR+%22appointed+advisers%22+sale+OR+strategic+when:14d&hl=en-US&gl=US&ceid=US:en",
+    # Non-core asset sales
+    "https://news.google.com/rss/search?q=%22non-core%22+sale+OR+divestiture+OR+%22portfolio+review%22+when:14d&hl=en-US&gl=US&ceid=US:en",
+    # Activist pressure (often triggers spin-offs)
+    "https://news.google.com/rss/search?q=%22activist+investor%22+spin-off+OR+divestiture+OR+%22break+up%22+when:14d&hl=en-US&gl=US&ceid=US:en",
+    
+    # ========== PE BUYER ACTIVITY ==========
+    # General PE activity
     "https://news.google.com/rss/search?q=%22private+equity%22+%22in+talks%22+OR+%22circling%22+OR+%22bidding%22+when:14d&hl=en-US&gl=US&ceid=US:en",
+    "https://news.google.com/rss/search?q=%22carve-out%22+private+equity+when:14d&hl=en-US&gl=US&ceid=US:en",
+    # Major PE firms - US
     "https://news.google.com/rss/search?q=KKR+OR+Blackstone+OR+Carlyle+OR+Apollo+%22acquisition%22+OR+%22buy%22+when:14d&hl=en-US&gl=US&ceid=US:en",
     "https://news.google.com/rss/search?q=EQT+OR+CVC+OR+TPG+OR+%22Bain+Capital%22+%22acquisition%22+when:14d&hl=en-US&gl=US&ceid=US:en",
-    "https://news.google.com/rss/search?q=%22H.I.G.%22+OR+%22HIG+Capital%22+OR+%22KPS+Capital%22+OR+Aurelius+acquisition+when:14d&hl=en-US&gl=US&ceid=US:en",
     "https://news.google.com/rss/search?q=%22Thoma+Bravo%22+OR+%22Vista+Equity%22+OR+%22Silver+Lake%22+acquisition+when:14d&hl=en-US&gl=US&ceid=US:en",
-    # European PE activity
+    # Tier 1 industrial carve-out specialists
+    "https://news.google.com/rss/search?q=%22H.I.G.%22+OR+%22HIG+Capital%22+OR+%22KPS+Capital%22+OR+Aurelius+acquisition+when:14d&hl=en-US&gl=US&ceid=US:en",
+    "https://news.google.com/rss/search?q=%22KPS+Capital%22+OR+%22One+Rock%22+OR+%22American+Industrial+Partners%22+OR+%22Atlas+Holdings%22+acquisition+OR+carve-out+when:14d&hl=en-US&gl=US&ceid=US:en",
+    "https://news.google.com/rss/search?q=%22Platinum+Equity%22+OR+%22OpenGate+Capital%22+OR+%22Sterling+Group%22+acquisition+OR+carve-out+when:14d&hl=en-US&gl=US&ceid=US:en",
+    
+    # ========== UK/EUROPE ==========
+    "https://news.google.com/rss/search?q=divestiture+OR+spin-off+UK+OR+Europe+when:14d&hl=en-GB&gl=GB&ceid=GB:en",
     "https://news.google.com/rss/search?q=%22private+equity%22+acquisition+UK+OR+Europe+when:14d&hl=en-GB&gl=GB&ceid=GB:en",
     "https://news.google.com/rss/search?q=Cinven+OR+Permira+OR+%22BC+Partners%22+OR+%22PAI+Partners%22+acquisition+when:14d&hl=en-GB&gl=GB&ceid=GB:en",
-    # Top industrial carve-out specialists (Tier 1 targets)
-    "https://news.google.com/rss/search?q=%22KPS+Capital%22+OR+%22One+Rock%22+OR+%22American+Industrial+Partners%22+OR+%22Atlas+Holdings%22+acquisition+OR+carve-out&hl=en-US&gl=US&ceid=US:en",
+    "https://news.google.com/rss/search?q=Inflexion+OR+%22Triton+Partners%22+OR+%22Nordic+Capital%22+acquisition+when:14d&hl=en-GB&gl=GB&ceid=GB:en",
 ]
 
 

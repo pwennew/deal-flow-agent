@@ -25,17 +25,21 @@ ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY")
 
 # Signal keywords that indicate potential carve-outs/spin-offs
 SIGNAL_KEYWORDS = [
+    # Sell-side signals
     "strategic review",
     "strategic alternatives",
     "exploring options",
     "evaluating alternatives",
     "spin-off",
     "spinoff",
+    "spin off",  # Critical: two words, no hyphen
     "carve-out",
     "carve out",
     "divestiture",
     "divest",
+    "divesting",
     "non-core assets",
+    "non-core business",
     "portfolio optimization",
     "separation",
     "standalone basis",
@@ -49,6 +53,15 @@ SIGNAL_KEYWORDS = [
     "gauging interest",
     "potential suitors",
     "private equity interest",
+    "sells division",
+    "sells unit",
+    "sells business",
+    "selling its",
+    "to sell its",
+    "offload",
+    "offloading",
+    "shed",
+    "shedding",
     # UK-specific terminology
     "disposal",
     "hive off",
@@ -68,6 +81,23 @@ SIGNAL_KEYWORDS = [
     "submits bid",
     "enters race",
     "joins bidding",
+    "acquires division",
+    "acquires unit",
+    "acquires business",
+    "acquiring",
+    "to acquire",
+    "snaps up",
+    "scoops up",
+    "take private",
+    "going private",
+    "buys division",
+    "buys unit",
+    "buys business",
+    # Business unit indicators (combined with other signals)
+    "business unit",
+    "division sale",
+    "unit sale",
+    "segment sale",
 ]
 
 # Build PE firm name patterns for matching

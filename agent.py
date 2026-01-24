@@ -98,6 +98,47 @@ SIGNAL_KEYWORDS = [
     "division sale",
     "unit sale",
     "segment sale",
+    # Gemini research: Pre-deal rumor language (Tier 1)
+    "potential suitors",
+    "drum up interest",
+    "preliminary talks",
+    "gauge buyer interest",
+    "gauge potential buyer interest",
+    "early stages",
+    "financial sponsor interest",
+    "exploring its options",
+    "potential buyers",
+    "deliberations remain",
+    "suitors circling",
+    "auction block",
+    "bidding process",
+    "non-binding offer",
+    "competing to acquire",
+    "final bidders",
+    "teaser letters",
+    "received a buyout offer",
+    "buyout offer",
+    "open to selling",
+    "takeover speculation",
+    "buyer interest",
+    "indication of interest",
+    "exclusive talks",
+    "advanced negotiations",
+    "preferred bidder",
+    "leading the race",
+    "late-stage talks",
+    "lead suitor",
+    # Gemini research: Completed deal language (Tier 4)
+    "completes sale",
+    "completes acquisition",
+    "completes divestiture",
+    "definitive agreement",
+    "signs definitive agreement",
+    "transfer of shares",
+    "transfer of subsidiary",
+    "ownership position",
+    "agreement to divest",
+    "completes carve-out",
 ]
 
 # Build PE firm name patterns for matching
@@ -386,7 +427,6 @@ INCLUDE:
 
 EXCLUDE (return is_relevant: false):
 - Whole company sales without PE involvement
-- Completed deals (already closed)
 - Venture capital / growth equity investments
 - Public M&A without PE involvement
 - Academic/university spin-offs

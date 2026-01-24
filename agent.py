@@ -16,8 +16,7 @@ import feedparser
 import requests
 from notion_client import Client
 from anthropic import Anthropic
-from pe_firms import PE_FIRMS
-from target_accounts import passes_tier2_filter, FILTERED_SIGNAL_TYPES
+from target_accounts import TARGET_PE_FIRMS, passes_tier2_filter, FILTERED_SIGNAL_TYPES
 
 # Configuration
 NOTION_API_KEY = os.environ.get("NOTION_API_KEY")
@@ -143,7 +142,8 @@ SIGNAL_KEYWORDS = [
 ]
 
 # Build PE firm name patterns for matching
-PE_FIRM_PATTERNS = [firm.lower() for firm in PE_FIRMS]
+# PE firm patterns built from target accounts
+PE_FIRM_PATTERNS = [firm.lower() for firm in TARGET_PE_FIRMS]
 
 # News sources to monitor
 # NOTE: when:14d added for 2-week backfill to test dedup - REVERT to 24h after validation
@@ -785,3 +785,4 @@ def run_agent():
 
 if __name__ == "__main__":
     run_agent()
+

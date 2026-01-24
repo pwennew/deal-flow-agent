@@ -702,7 +702,19 @@ def run_agent():
     # CRITICAL: Fetch existing entries from database FIRST
     print("Fetching existing entries from Notion...")
     existing_titles = get_existing_entries_from_db()
-    print(f"Found {len(existing_titles)} existing entries\n")
+    print(f"Found {len(existing_titles)} existing entries")
+    
+    # Safety check: if we get 0 entries, verify this is expected
+    if len(existing_titles) == 0:
+        print("WARNING: No existing entries found. This could mean:")
+        print("  - Database is genuinely empty (first run)")
+        print("  - Database fetch failed silently")
+        print("  - API rate limit or network issue")
+        user_input = input("Continue anyway? [y/N]: ").strip().lower()
+        if user_input != 'y':
+            print("Aborting to prevent duplicate creation.")
+            return
+    print()
     
     # Fetch articles from RSS feeds
     print("Fetching articles from RSS feeds...")
@@ -749,7 +761,8 @@ def run_agent():
             success = create_notion_entry(NOTION_DATABASE_ID, article, analysis)
             if success:
                 new_entries += 1
-                existing_titles.add(full_title)
+                # Add NORMALIZED title to maintain consistency with DB fetch
+                existing_titles.add(normalize_title(full_title))
     
     print(f"\n{'='*60}")
     print(f"Summary:")

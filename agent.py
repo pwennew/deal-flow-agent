@@ -1,5 +1,5 @@
 """
-Deal Flow Agent v3.10 - Daily Carve-Out/Spin-Off Intelligence
+Deal Flow Agent v3.11 - Daily Carve-Out/Spin-Off Intelligence
 Scans public sources for:
 1. Divestiture signals (companies selling divisions)
 2. PE buyer activity (firms circling targets)
@@ -17,6 +17,7 @@ import requests
 from notion_client import Client
 from anthropic import Anthropic
 from pe_firms import PE_FIRMS
+from target_accounts import passes_tier2_filter, FILTERED_SIGNAL_TYPES
 
 # Configuration
 NOTION_API_KEY = os.environ.get("NOTION_API_KEY")
@@ -465,14 +466,32 @@ Return ONLY valid JSON, no other text."""
 
 
 def passes_post_filters(analysis: dict) -> tuple[bool, str]:
-    """Apply post-extraction filters to reject low-quality entries"""
+    """Apply post-extraction filters to reject low-quality entries.
     
-    # Geography filter - must be US, UK or Europe
+    For Tier 2-4 signals (Definitive Agreement, Deal Completed):
+        - ONLY filter on target PE firm + valid geography
+        - No PE buyer (strategic buyer) = filter out
+    
+    For Tier 1 signals (pre-deal):
+        - Apply full filter set (geography, sector, division, etc.)
+    """
+    signal = analysis.get("signal_type", "")
+    pe_buyer = analysis.get("pe_buyer", "")
     geo = analysis.get("geography", "")
+    
+    # Handle list geography
     if isinstance(geo, list):
         geo = geo[0] if geo else ""
-    geo_lower = geo.lower()
     
+    # Tier 2-4: Only target PE + geography filter
+    if signal in FILTERED_SIGNAL_TYPES:
+        passes, reason = passes_tier2_filter(signal, pe_buyer, geo)
+        return passes, reason
+    
+    # Tier 1: Full filter set
+    geo_lower = geo.lower() if geo else ""
+    
+    # Geography filter - must be US, UK or Europe
     invalid_geos = ["china", "asia", "apac", "latam", "latin america", "middle east", 
                     "africa", "australia", "india", "japan", "korea", "brazil", 
                     "mexico", "central america", "south america"]
@@ -482,7 +501,6 @@ def passes_post_filters(analysis: dict) -> tuple[bool, str]:
     
     # Only allow US, UK, Europe, Global
     if geo and geo not in ["US", "UK", "Europe", "Global", "US, UK", "UK, US", "Europe, UK", "UK, Europe"]:
-        # Check for comma-separated valid geos
         geo_parts = [g.strip() for g in geo.split(',')]
         valid_geos = {"US", "UK", "Europe", "Global"}
         if not all(g in valid_geos for g in geo_parts):
@@ -490,7 +508,6 @@ def passes_post_filters(analysis: dict) -> tuple[bool, str]:
     
     # Division filter - reject "Whole Company" without PE buyer
     division = analysis.get("division", "").lower()
-    pe_buyer = analysis.get("pe_buyer")
     
     whole_company_indicators = ["whole company", "entire company", "full company", 
                                 "not specified", "company-wide", "whole business"]
@@ -500,7 +517,6 @@ def passes_post_filters(analysis: dict) -> tuple[bool, str]:
         return False, "Whole company sale without PE buyer"
     
     # Sector filter - reject irrelevant sectors
-    sector = analysis.get("sector", "")
     company = analysis.get("company", "").lower()
     
     # Academic/university spin-offs
@@ -516,15 +532,12 @@ def passes_post_filters(analysis: dict) -> tuple[bool, str]:
         return False, "Government/public sector"
     
     # Signal type filter - reject weak signals
-    signal = analysis.get("signal_type", "")
     if signal == "Strategic Review" and not pe_buyer:
-        # Strategic review without PE interest is too early
         confidence = analysis.get("confidence", "")
         if confidence != "high":
             return False, "Strategic review without PE interest (low confidence)"
     
     return True, ""
-
 
 def safe_str(value, default=""):
     """Safely convert value to string, handling None"""
@@ -683,7 +696,7 @@ def create_notion_entry(database_id: str, article: dict, analysis: dict):
 def run_agent():
     """Main agent execution"""
     print(f"\n{'='*60}")
-    print(f"Deal Flow Agent v3.10 - {datetime.now().strftime('%Y-%m-%d %H:%M')}")
+    print(f"Deal Flow Agent v3.11 - {datetime.now().strftime('%Y-%m-%d %H:%M')}")
     print(f"{'='*60}\n")
     
     # Validate configuration

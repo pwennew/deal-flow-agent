@@ -1,5 +1,5 @@
 """
-Deal Flow Agent v3 - Daily Carve-Out/Spin-Off Intelligence
+Deal Flow Agent v3.10 - Daily Carve-Out/Spin-Off Intelligence
 Scans public sources for:
 1. Divestiture signals (companies selling divisions)
 2. PE buyer activity (firms circling targets)
@@ -387,7 +387,7 @@ If YES (genuine carve-out opportunity), extract:
     "is_relevant": true,
     "company": "Parent company name",
     "division": "Division or unit being carved out",
-    "signal_type": "Strategic Review" | "Exploring Sale" | "Adviser Appointed" | "PE Interest Reported" | "Spin-off Announced" | "Divestiture" | "PE Circling" | "PE In Talks" | "PE Bid Submitted",
+    "signal_type": "Strategic Review" | "Adviser Appointed" | "PE Interest" | "PE In Talks" | "PE Bid Submitted" | "Definitive Agreement" | "Deal Completed",
     "pe_buyer": "Name of PE firm involved (if any, otherwise null)",
     "likely_buyers": "Comma-separated list of PE firms likely to be interested based on their sector focus and deal size (e.g. 'KPS Capital, Platinum Equity, One Rock'). Use your knowledge of PE firm strategies. Null if unknown.",
     "size_estimate": "Revenue or deal value if mentioned (e.g. '$500M revenue' or '$1.2B EV')",
@@ -409,15 +409,13 @@ If NO, return:
 }}
 
 SIGNAL TYPE GUIDANCE:
-- "Strategic Review" = Company evaluating options
-- "Exploring Sale" = Company actively seeking buyers
-- "Adviser Appointed" = Investment bank hired
-- "PE Interest Reported" = PE firms reported as interested
-- "Spin-off Announced" = Formal spin-off announcement
-- "Divestiture" = Sale process underway
-- "PE Circling" = Specific PE firm(s) circling
-- "PE In Talks" = Active discussions
+- "Strategic Review" = Company evaluating options or actively exploring sale
+- "Adviser Appointed" = Investment bank hired to run process
+- "PE Interest" = PE firms reported as interested or circling the asset
+- "PE In Talks" = Active negotiations between parties
 - "PE Bid Submitted" = Formal offer made
+- "Definitive Agreement" = Deal signed, awaiting regulatory approval or close
+- "Deal Completed" = Transaction has closed
 
 INCLUDE:
 - Corporate divisions being sold or spun off
@@ -564,7 +562,7 @@ def create_notion_entry(database_id: str, article: dict, analysis: dict):
     source_url = safe_str(article.get("link"), "")
     
     # Validate signal type against allowed values
-    valid_signal_types = ["Strategic Review", "Exploring Sale", "Adviser Appointed", "PE Interest Reported", "Spin-off Announced", "Divestiture", "PE Circling", "PE In Talks", "PE Bid Submitted"]
+    valid_signal_types = ["Strategic Review", "Adviser Appointed", "PE Interest", "PE In Talks", "PE Bid Submitted", "Definitive Agreement", "Deal Completed"]
     if signal_type not in valid_signal_types:
         signal_type = "Strategic Review"
     
@@ -685,7 +683,7 @@ def create_notion_entry(database_id: str, article: dict, analysis: dict):
 def run_agent():
     """Main agent execution"""
     print(f"\n{'='*60}")
-    print(f"Deal Flow Agent v3 - {datetime.now().strftime('%Y-%m-%d %H:%M')}")
+    print(f"Deal Flow Agent v3.10 - {datetime.now().strftime('%Y-%m-%d %H:%M')}")
     print(f"{'='*60}\n")
     
     # Validate configuration

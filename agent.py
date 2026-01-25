@@ -468,30 +468,44 @@ Return ONLY valid JSON, no other text."""
 def passes_post_filters(analysis: dict) -> tuple[bool, str]:
     """Apply post-extraction filters to reject low-quality entries.
     
-    For Tier 2-4 signals (Definitive Agreement, Deal Completed):
-        - ONLY filter on target PE firm + valid geography
-        - No PE buyer (strategic buyer) = filter out
+    SIGNAL TYPE LOGIC:
     
-    For Tier 1 signals (pre-deal):
-        - Apply full filter set (geography, sector, division, etc.)
+    Late-stage (Definitive Agreement, Deal Completed):
+        - MUST have named PE buyer on target list
+        - MUST have valid geography
+        - No PE buyer = strategic buyer = filter out
+    
+    Early-stage (Strategic Review, Adviser Appointed, PE Interest, PE Bid Submitted, PE In Talks):
+        - PE buyer NOT required (process may be pre-buyer selection)
+        - For PE Interest/PE Bid Submitted: must have likely_buyers OR pe_buyer
+        - Geography filter still applies
+        - Sector/academic/govt filters still apply
     """
     signal = analysis.get("signal_type", "")
     pe_buyer = analysis.get("pe_buyer", "")
+    likely_buyers = analysis.get("likely_buyers", "")
     geo = analysis.get("geography", "")
     
     # Handle list geography
     if isinstance(geo, list):
         geo = geo[0] if geo else ""
     
-    # Tier 2-4: Only target PE + geography filter
-    if signal in FILTERED_SIGNAL_TYPES:
+    # ==========================================================
+    # LATE-STAGE SIGNALS: Must have target PE buyer
+    # ==========================================================
+    if signal in FILTERED_SIGNAL_TYPES:  # Definitive Agreement, Deal Completed
         passes, reason = passes_tier2_filter(signal, pe_buyer, geo)
         return passes, reason
     
-    # Tier 1: Full filter set
+    # ==========================================================
+    # EARLY-STAGE SIGNALS: More permissive filtering
+    # ==========================================================
+    early_stage_signals = {"Strategic Review", "Adviser Appointed", "PE Interest", 
+                          "PE Bid Submitted", "PE In Talks"}
+    
     geo_lower = geo.lower() if geo else ""
     
-    # Geography filter - must be US, UK or Europe
+    # Geography filter - must be US, UK or Europe (applies to all signals)
     invalid_geos = ["china", "asia", "apac", "latam", "latin america", "middle east", 
                     "africa", "australia", "india", "japan", "korea", "brazil", 
                     "mexico", "central america", "south america"]
@@ -506,17 +520,7 @@ def passes_post_filters(analysis: dict) -> tuple[bool, str]:
         if not all(g in valid_geos for g in geo_parts):
             return False, f"Geography filter: {geo}"
     
-    # Division filter - reject "Whole Company" without PE buyer
-    division = analysis.get("division", "").lower()
-    
-    whole_company_indicators = ["whole company", "entire company", "full company", 
-                                "not specified", "company-wide", "whole business"]
-    is_whole_company = any(ind in division for ind in whole_company_indicators)
-    
-    if is_whole_company and not pe_buyer:
-        return False, "Whole company sale without PE buyer"
-    
-    # Sector filter - reject irrelevant sectors
+    # Sector filter - reject irrelevant sectors (applies to all signals)
     company = analysis.get("company", "").lower()
     
     # Academic/university spin-offs
@@ -531,11 +535,35 @@ def passes_post_filters(analysis: dict) -> tuple[bool, str]:
     if any(ind in company for ind in govt_indicators):
         return False, "Government/public sector"
     
-    # Signal type filter - reject weak signals
-    if signal == "Strategic Review" and not pe_buyer:
-        confidence = analysis.get("confidence", "")
-        if confidence != "high":
-            return False, "Strategic review without PE interest (low confidence)"
+    # ==========================================================
+    # EARLY-STAGE SPECIFIC LOGIC
+    # ==========================================================
+    if signal in early_stage_signals:
+        # PE Interest and PE Bid Submitted: must have EITHER pe_buyer OR likely_buyers
+        # (bidders are often disclosed in likely_buyers field before winner selected)
+        if signal in {"PE Interest", "PE Bid Submitted"}:
+            if not pe_buyer and not likely_buyers:
+                return False, f"{signal} without any PE firms identified"
+        
+        # Strategic Review and Adviser Appointed: allow without PE buyer
+        # These signals occur BEFORE buyers are involved
+        # No additional filter - geography and sector already checked
+        
+        # PE In Talks: allow - negotiations underway, buyer may or may not be named
+        
+        return True, f"Early-stage signal: {signal}"
+    
+    # ==========================================================
+    # FALLBACK: Unknown signal types get standard filtering
+    # ==========================================================
+    division = analysis.get("division", "").lower()
+    
+    whole_company_indicators = ["whole company", "entire company", "full company", 
+                                "not specified", "company-wide", "whole business"]
+    is_whole_company = any(ind in division for ind in whole_company_indicators)
+    
+    if is_whole_company and not pe_buyer:
+        return False, "Whole company sale without PE buyer"
     
     return True, ""
 
@@ -693,10 +721,18 @@ def create_notion_entry(database_id: str, article: dict, analysis: dict):
         return False
 
 
-def run_agent():
-    """Main agent execution"""
+def run_agent(include_pe_firms: bool = True, include_sec: bool = True, include_bank_mandates: bool = True):
+    """Main agent execution
+    
+    Args:
+        include_pe_firms: Scrape PE firm press releases (P2.1)
+        include_sec: Monitor SEC filings (P2.2)
+        include_bank_mandates: Monitor bank mandate announcements (P3)
+    """
     print(f"\n{'='*60}")
-    print(f"Deal Flow Agent v3.11 - {datetime.now().strftime('%Y-%m-%d %H:%M')}")
+    print(f"Deal Flow Agent v4.0 - {datetime.now().strftime('%Y-%m-%d %H:%M')}")
+    print(f"{'='*60}")
+    print(f"Sources: RSS{'+ PE Firms' if include_pe_firms else ''}{'+ SEC' if include_sec else ''}{'+ Bank Mandates' if include_bank_mandates else ''}")
     print(f"{'='*60}\n")
     
     # Validate configuration
@@ -727,8 +763,12 @@ def run_agent():
             return
     print()
     
-    # Fetch articles from RSS feeds
-    print("Fetching articles from RSS feeds...")
+    # ==========================================================
+    # SOURCE 1: RSS Feeds (existing)
+    # ==========================================================
+    print("=" * 40)
+    print("SOURCE 1: RSS Feeds")
+    print("=" * 40)
     articles = fetch_rss_articles()
     print(f"  Found {len(articles)} total articles")
     
@@ -736,12 +776,79 @@ def run_agent():
     relevant_articles = filter_relevant_articles(articles)
     print(f"  {len(relevant_articles)} articles contain signal keywords\n")
     
-    # Analyze each relevant article with Claude
+    # ==========================================================
+    # SOURCE 2: PE Firm Press Releases (P2.1)
+    # ==========================================================
+    pe_firm_articles = []
+    if include_pe_firms:
+        print("=" * 40)
+        print("SOURCE 2: PE Firm Press Releases")
+        print("=" * 40)
+        try:
+            from pe_firm_monitor import fetch_pe_firm_signals, format_for_claude_analysis as format_pe
+            pe_signals = fetch_pe_firm_signals()
+            pe_firm_articles = format_pe(pe_signals)
+            print(f"  {len(pe_firm_articles)} PE firm articles to analyze\n")
+        except ImportError as e:
+            print(f"  Warning: PE firm monitor not available: {e}\n")
+        except Exception as e:
+            print(f"  Warning: PE firm monitor error: {e}\n")
+    
+    # ==========================================================
+    # SOURCE 3: SEC Filings (P2.2)
+    # ==========================================================
+    sec_articles = []
+    if include_sec:
+        print("=" * 40)
+        print("SOURCE 3: SEC Filings")
+        print("=" * 40)
+        try:
+            from sec_monitor import fetch_all_sec_signals, format_for_claude_analysis as format_sec
+            sec_signals = fetch_all_sec_signals(days_back=14)
+            sec_articles = format_sec(sec_signals)
+            print(f"  {len(sec_articles)} SEC filings to analyze\n")
+        except ImportError as e:
+            print(f"  Warning: SEC monitor not available: {e}\n")
+        except Exception as e:
+            print(f"  Warning: SEC monitor error: {e}\n")
+    
+    # ==========================================================
+    # SOURCE 4: Bank Mandate Announcements (P3)
+    # ==========================================================
+    bank_articles = []
+    if include_bank_mandates:
+        print("=" * 40)
+        print("SOURCE 4: Bank Mandate Announcements")
+        print("=" * 40)
+        try:
+            from bank_mandate_monitor import fetch_bank_mandate_signals, format_for_claude_analysis as format_bank
+            bank_signals = fetch_bank_mandate_signals()
+            bank_articles = format_bank(bank_signals)
+            print(f"  {len(bank_articles)} bank mandate articles to analyze\n")
+        except ImportError as e:
+            print(f"  Warning: Bank mandate monitor not available: {e}\n")
+        except Exception as e:
+            print(f"  Warning: Bank mandate monitor error: {e}\n")
+    
+    # ==========================================================
+    # COMBINE ALL SOURCES
+    # ==========================================================
+    all_articles = relevant_articles + pe_firm_articles + sec_articles + bank_articles
+    
+    print("=" * 40)
+    print(f"TOTAL: {len(all_articles)} articles to analyze")
+    print(f"  - RSS: {len(relevant_articles)}")
+    print(f"  - PE Firms: {len(pe_firm_articles)}")
+    print(f"  - SEC: {len(sec_articles)}")
+    print(f"  - Bank Mandates: {len(bank_articles)}")
+    print("=" * 40 + "\n")
+    
+    # Analyze each article with Claude
     new_entries = 0
     skipped_duplicates = 0
     skipped_filtered = 0
     
-    for article in relevant_articles:
+    for article in all_articles:
         print(f"Analyzing: {article['title'][:70]}...")
         analysis = analyze_article_with_claude(anthropic, article)
         
@@ -784,5 +891,23 @@ def run_agent():
 
 
 if __name__ == "__main__":
-    run_agent()
+    import argparse
+    
+    parser = argparse.ArgumentParser(description="Deal Flow Agent v4.0")
+    parser.add_argument("--no-pe-firms", action="store_true", help="Skip PE firm press releases")
+    parser.add_argument("--no-sec", action="store_true", help="Skip SEC filings")
+    parser.add_argument("--no-bank-mandates", action="store_true", help="Skip bank mandate announcements")
+    parser.add_argument("--rss-only", action="store_true", help="Only use RSS feeds (original behavior)")
+    
+    args = parser.parse_args()
+    
+    if args.rss_only:
+        run_agent(include_pe_firms=False, include_sec=False, include_bank_mandates=False)
+    else:
+        run_agent(
+            include_pe_firms=not args.no_pe_firms,
+            include_sec=not args.no_sec,
+            include_bank_mandates=not args.no_bank_mandates
+        )
+
 

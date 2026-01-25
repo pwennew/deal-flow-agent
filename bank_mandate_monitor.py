@@ -15,12 +15,29 @@ import requests
 from datetime import datetime, timedelta
 from typing import Optional
 from bs4 import BeautifulSoup
+import random
+import time
 
-# User agent for requests
-HEADERS = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-}
+# User agent rotation to avoid bot detection
+USER_AGENTS = [
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0",
+]
+
+def get_headers():
+    """Get randomized headers to avoid bot detection"""
+    return {
+        "User-Agent": random.choice(USER_AGENTS),
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Connection": "keep-alive",
+        "Upgrade-Insecure-Requests": "1",
+        "Cache-Control": "max-age=0",
+    }
+
+HEADERS = get_headers()  # For backward compatibility
 
 # ==========================================================
 # INVESTMENT BANK PRESS RELEASE PAGES
@@ -169,29 +186,26 @@ CARVEOUT_INDICATORS = [
     "subsidiary",
 ]
 
-# Google News RSS for bank mandate announcements (backup source)
+# Google News RSS for bank mandate announcements (primary source - more reliable than bank websites)
 BANK_NEWS_RSS = [
-    # Goldman Sachs mandates
-    'https://news.google.com/rss/search?q="Goldman+Sachs"+("appointed+as"+"financial+adviser"+OR+"retained+as"+OR+"acting+as"+adviser)+sale+OR+divestiture+when:14d&hl=en-US&gl=US&ceid=US:en',
-    # Morgan Stanley mandates
-    'https://news.google.com/rss/search?q="Morgan+Stanley"+("appointed+as"+"financial+adviser"+OR+"retained+as"+adviser)+sale+OR+divestiture+when:14d&hl=en-US&gl=US&ceid=US:en',
-    # Lazard mandates
-    'https://news.google.com/rss/search?q="Lazard"+("appointed+as"+"financial+adviser"+OR+"retained+as"+adviser)+sale+OR+divestiture+when:14d&hl=en-US&gl=US&ceid=US:en',
-    # Evercore mandates
-    'https://news.google.com/rss/search?q="Evercore"+("appointed+as"+"financial+adviser"+OR+"retained+as"+adviser)+sale+OR+divestiture+when:14d&hl=en-US&gl=US&ceid=US:en',
-    # Centerview mandates
-    'https://news.google.com/rss/search?q="Centerview"+("appointed+as"+"financial+adviser"+OR+"retained+as"+adviser)+sale+OR+divestiture+when:14d&hl=en-US&gl=US&ceid=US:en',
-    # Moelis mandates
-    'https://news.google.com/rss/search?q="Moelis"+("appointed+as"+"financial+adviser"+OR+"retained+as"+adviser)+sale+OR+divestiture+when:14d&hl=en-US&gl=US&ceid=US:en',
-    # PJT Partners mandates
-    'https://news.google.com/rss/search?q="PJT+Partners"+("appointed+as"+"financial+adviser"+OR+"retained+as"+adviser)+sale+OR+divestiture+when:14d&hl=en-US&gl=US&ceid=US:en',
-    # Qatalyst mandates
-    'https://news.google.com/rss/search?q="Qatalyst"+("appointed+as"+"financial+adviser"+OR+"retained+as"+adviser)+sale+when:14d&hl=en-US&gl=US&ceid=US:en',
-    # Rothschild mandates
-    'https://news.google.com/rss/search?q="Rothschild"+("appointed+as"+"financial+adviser"+OR+"retained+as"+adviser)+sale+OR+divestiture+when:14d&hl=en-US&gl=US&ceid=US:en',
-    # Generic adviser appointments
-    'https://news.google.com/rss/search?q="appointed+as+financial+adviser"+divestiture+OR+spin-off+OR+"strategic+review"+when:14d&hl=en-US&gl=US&ceid=US:en',
-    'https://news.google.com/rss/search?q="retained"+investment+bank+sale+process+OR+divestiture+when:14d&hl=en-US&gl=US&ceid=US:en',
+    # Wire service searches (most reliable for mandate announcements)
+    'https://news.google.com/rss/search?q=("appointed"+OR+"retained"+OR+"engaged")+"financial+adviser"+(divestiture+OR+"strategic+review"+OR+sale+OR+"spin-off")&hl=en-US&gl=US&ceid=US:en',
+    'https://news.google.com/rss/search?q="financial+advisor"+appointed+(divestiture+OR+carve-out+OR+"strategic+alternatives")&hl=en-US&gl=US&ceid=US:en',
+    
+    # Bank-specific searches
+    'https://news.google.com/rss/search?q="Goldman+Sachs"+adviser+appointed+(sale+OR+divestiture)&hl=en-US&gl=US&ceid=US:en',
+    'https://news.google.com/rss/search?q="Morgan+Stanley"+adviser+appointed+(sale+OR+divestiture)&hl=en-US&gl=US&ceid=US:en',
+    'https://news.google.com/rss/search?q="Lazard"+adviser+appointed+(sale+OR+divestiture)&hl=en-US&gl=US&ceid=US:en',
+    'https://news.google.com/rss/search?q="Evercore"+adviser+appointed+(sale+OR+divestiture)&hl=en-US&gl=US&ceid=US:en',
+    'https://news.google.com/rss/search?q="Centerview"+adviser+appointed+sale&hl=en-US&gl=US&ceid=US:en',
+    'https://news.google.com/rss/search?q="Moelis"+adviser+appointed+(sale+OR+divestiture)&hl=en-US&gl=US&ceid=US:en',
+    'https://news.google.com/rss/search?q="PJT+Partners"+adviser+appointed+sale&hl=en-US&gl=US&ceid=US:en',
+    'https://news.google.com/rss/search?q="Rothschild"+adviser+appointed+(sale+OR+divestiture)&hl=en-US&gl=US&ceid=US:en',
+    'https://news.google.com/rss/search?q="JPMorgan"+adviser+appointed+(sale+OR+divestiture)&hl=en-US&gl=US&ceid=US:en',
+    
+    # PR Newswire / Business Wire direct searches
+    'https://news.google.com/rss/search?q=site:prnewswire.com+"financial+adviser"+appointed&hl=en-US&gl=US&ceid=US:en',
+    'https://news.google.com/rss/search?q=site:businesswire.com+"financial+adviser"+appointed&hl=en-US&gl=US&ceid=US:en',
 ]
 
 
@@ -329,6 +343,49 @@ def fetch_rss_mandates() -> list:
     """Fetch mandate signals from Google News RSS feeds"""
     import feedparser
     
+    # Extended bank name patterns
+    bank_patterns = {
+        "goldman sachs": "Goldman Sachs",
+        "goldman": "Goldman Sachs",
+        "morgan stanley": "Morgan Stanley",
+        "jpmorgan": "JPMorgan",
+        "jp morgan": "JPMorgan",
+        "lazard": "Lazard",
+        "evercore": "Evercore",
+        "centerview": "Centerview Partners",
+        "moelis": "Moelis & Company",
+        "pjt partners": "PJT Partners",
+        "pjt": "PJT Partners",
+        "qatalyst": "Qatalyst Partners",
+        "rothschild": "Rothschild & Co",
+        "barclays": "Barclays",
+        "citi": "Citi",
+        "citigroup": "Citi",
+        "bofa": "Bank of America",
+        "bank of america": "Bank of America",
+        "ubs": "UBS",
+        "credit suisse": "Credit Suisse",
+        "deutsche bank": "Deutsche Bank",
+        "hsbc": "HSBC",
+        "nomura": "Nomura",
+        "jefferies": "Jefferies",
+        "guggenheim": "Guggenheim",
+        "perella weinberg": "Perella Weinberg",
+        "houlihan lokey": "Houlihan Lokey",
+        "william blair": "William Blair",
+        "raymond james": "Raymond James",
+        "piper sandler": "Piper Sandler",
+        "dc advisory": "DC Advisory",
+        "lincoln international": "Lincoln International",
+        "baird": "Baird",
+        "stifel": "Stifel",
+        "ernst & young": "EY",
+        "ey ": "EY",  # space to avoid matching "they"
+        "deloitte": "Deloitte",
+        "kpmg": "KPMG",
+        "pwc": "PwC",
+    }
+    
     signals = []
     seen_urls = set()
     
@@ -350,11 +407,12 @@ def fetch_rss_mandates() -> list:
                 if not is_mandate_announcement(title):
                     continue
                 
-                # Extract bank name from title
-                bank_name = "Unknown Bank"
-                for bank in BANK_PRESS_PAGES.keys():
-                    if bank.lower().split()[0] in title.lower():
-                        bank_name = bank
+                # Extract bank name from title using extended patterns
+                title_lower = title.lower()
+                bank_name = "Unknown Adviser"
+                for pattern, name in bank_patterns.items():
+                    if pattern in title_lower:
+                        bank_name = name
                         break
                 
                 signal = {
@@ -378,7 +436,9 @@ def fetch_rss_mandates() -> list:
 
 def fetch_bank_mandate_signals(banks: dict = None) -> list:
     """
-    Fetch adviser appointment signals from bank press releases.
+    Fetch adviser appointment signals from multiple sources.
+    Primary: RSS feeds (wire services, news)
+    Secondary: Bank press release pages (often blocked)
     
     Args:
         banks: Dict of banks to scrape (defaults to BANK_PRESS_PAGES)
@@ -391,10 +451,19 @@ def fetch_bank_mandate_signals(banks: dict = None) -> list:
     
     all_signals = []
     
+    # PRIMARY SOURCE: RSS feeds (more reliable than bank websites)
+    rss_signals = fetch_rss_mandates()
+    all_signals.extend(rss_signals)
+    
+    # SECONDARY SOURCE: Bank press release pages (often blocked but worth trying)
     print(f"\nScraping {len(banks)} investment bank press release pages...")
     
-    for bank_name, config in banks.items():
+    for i, (bank_name, config) in enumerate(banks.items()):
         print(f"  Checking {bank_name}...")
+        
+        # Add delay between requests
+        if i > 0:
+            time.sleep(1.5)
         
         try:
             signals = scrape_bank(bank_name, config)
@@ -405,10 +474,6 @@ def fetch_bank_mandate_signals(banks: dict = None) -> list:
             
         except Exception as e:
             print(f"    Error scraping {bank_name}: {e}")
-    
-    # Also fetch from RSS feeds (backup/additional source)
-    rss_signals = fetch_rss_mandates()
-    all_signals.extend(rss_signals)
     
     print(f"\nTotal bank mandate signals: {len(all_signals)}")
     

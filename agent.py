@@ -721,13 +721,14 @@ def create_notion_entry(database_id: str, article: dict, analysis: dict):
         return False
 
 
-def run_agent(include_pe_firms: bool = True, include_sec: bool = True, include_bank_mandates: bool = True):
+def run_agent(include_pe_firms: bool = True, include_sec: bool = True, include_bank_mandates: bool = True, auto_confirm: bool = False):
     """Main agent execution
     
     Args:
         include_pe_firms: Scrape PE firm press releases (P2.1)
         include_sec: Monitor SEC filings (P2.2)
         include_bank_mandates: Monitor bank mandate announcements (P3)
+        auto_confirm: Skip confirmation prompts (for automated runs)
     """
     print(f"\n{'='*60}")
     print(f"Deal Flow Agent v4.0 - {datetime.now().strftime('%Y-%m-%d %H:%M')}")
@@ -757,10 +758,13 @@ def run_agent(include_pe_firms: bool = True, include_sec: bool = True, include_b
         print("  - Database is genuinely empty (first run)")
         print("  - Database fetch failed silently")
         print("  - API rate limit or network issue")
-        user_input = input("Continue anyway? [y/N]: ").strip().lower()
-        if user_input != 'y':
-            print("Aborting to prevent duplicate creation.")
-            return
+        if auto_confirm:
+            print("Auto-confirm enabled, continuing...")
+        else:
+            user_input = input("Continue anyway? [y/N]: ").strip().lower()
+            if user_input != 'y':
+                print("Aborting to prevent duplicate creation.")
+                return
     print()
     
     # ==========================================================
@@ -898,16 +902,17 @@ if __name__ == "__main__":
     parser.add_argument("--no-sec", action="store_true", help="Skip SEC filings")
     parser.add_argument("--no-bank-mandates", action="store_true", help="Skip bank mandate announcements")
     parser.add_argument("--rss-only", action="store_true", help="Only use RSS feeds (original behavior)")
+    parser.add_argument("--auto-confirm", "-y", action="store_true", help="Skip confirmation prompts (for CI/CD)")
     
     args = parser.parse_args()
     
     if args.rss_only:
-        run_agent(include_pe_firms=False, include_sec=False, include_bank_mandates=False)
+        run_agent(include_pe_firms=False, include_sec=False, include_bank_mandates=False, auto_confirm=args.auto_confirm)
     else:
         run_agent(
             include_pe_firms=not args.no_pe_firms,
             include_sec=not args.no_sec,
-            include_bank_mandates=not args.no_bank_mandates
+            include_bank_mandates=not args.no_bank_mandates,
+            auto_confirm=args.auto_confirm
         )
-
 

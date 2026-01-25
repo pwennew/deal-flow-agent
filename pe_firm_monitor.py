@@ -220,6 +220,85 @@ PE_FIRM_PRESS_PAGES = {
     },
 }
 
+# ==========================================================
+# ALL TARGET PE FIRMS (135 total)
+# ==========================================================
+ALL_TARGET_PE_FIRMS = [
+    "ABRY Partners", "ACON Investments", "Actis", "Advent International",
+    "Affinity Equity Partners", "Altaris Capital Partners", "American Industrial Partners",
+    "American Securities", "Antin Infrastructure Partners", "Apax Partners",
+    "Apollo Global Management", "Aquiline Capital Partners", "Arcline Investment Management",
+    "Arcmont Asset Management", "Ardian", "Arsenal Capital Partners", "Astorg",
+    "AURELIUS Group", "Bain Capital", "BC Partners", "Berkshire Partners", "BGH Capital",
+    "Blackstone", "Blue Wolf Capital Partners", "Bridgepoint", "Bruckmann Rosser Sherrill",
+    "Carlyle Group", "Charterhouse Capital Partners", "Cinven", "Clayton Dubilier & Rice",
+    "Clearlake Capital Group", "Court Square", "CVC Capital Partners", "EagleTree Capital",
+    "EQT", "Eurazeo", "Flexpoint Ford", "Forbion", "Francisco Partners", "FSN Capital",
+    "General Atlantic", "Genstar Capital", "GI Partners", "Golden Gate Capital",
+    "Great Hill Partners", "Gryphon Investors", "GTCR", "H.I.G. Capital", "Harvest Partners",
+    "HayFin Capital Management", "Hellman & Friedman", "HGGC", "Housatonic Partners", "Hg",
+    "ICG", "IK Partners", "Incline Equity Partners", "Inflexion", "Insight Partners",
+    "Intermediate Capital Group", "JMI Equity", "K1 Investment Management", "Kelso & Company",
+    "Kohlberg & Company", "KKR", "KPS Capital Partners", "L Catterton", "Lee Equity Partners",
+    "Leonard Green & Partners", "Levine Leichtman Capital Partners", "Livingbridge",
+    "LLR Partners", "Madison Dearborn Partners", "Main Post Partners", "MBK Partners",
+    "Montagu Private Equity", "New Mountain Capital", "NewQuest Capital Partners",
+    "Nordic Capital", "Norvestor", "Oak Hill Capital Partners", "Odyssey Investment Partners",
+    "One Rock Capital Partners", "Onex", "Owl Rock Capital", "PAI Partners",
+    "Pamplona Capital Management", "Parthenon Capital", "Peak Rock Capital", "Permira Advisers",
+    "Platinum Equity", "Providence Equity Partners", "Quadrant Private Equity",
+    "RBC Capital Partners", "Resurgens Technology Partners", "Reverence Capital Partners",
+    "Rhône Group", "Ridgemont Equity Partners", "Rivean Capital", "Riverside Company",
+    "Roark Capital Group", "SDC Capital Partners", "Silver Lake", "SK Capital Partners",
+    "Snow Phipps Group", "Sole Source Capital", "Solis Capital Partners", "Spectrum Equity",
+    "Stone Point Capital", "Summit Partners", "Sun Capital Partners", "Sycamore Partners",
+    "TA Associates", "TCV", "TDR Capital", "TH Lee", "The Carlyle Group",
+    "The Riverside Company", "The Sterling Group", "Thoma Bravo", "Thomas H. Lee Partners",
+    "TPG", "Trilantic Capital Partners", "Triton Partners", "Ufenau Capital Partners",
+    "Veritas Capital", "Victory Park Capital", "Vista Equity Partners", "Vitruvian Partners",
+    "Warburg Pincus", "Water Street Healthcare Partners", "Webster Equity Partners",
+    "Welsh Carson Anderson & Stowe", "WindRose Health Investors", "Wynnchurch Capital",
+    # Additional carve-out specialists not in main list
+    "Atlas Holdings", "OpenGate Capital", "Sterling Group", "Stellex Capital",
+    "American Securities", "Olympus Partners",
+]
+
+def build_pe_firm_rss_url(firm_name: str) -> str:
+    """Build Google News RSS URL for a PE firm's deal announcements"""
+    # URL encode the firm name
+    import urllib.parse
+    firm_encoded = urllib.parse.quote(f'"{firm_name}"')
+    
+    # Search for acquisitions, completions, closings
+    return f'https://news.google.com/rss/search?q={firm_encoded}+(acquires+OR+completes+OR+closes+OR+acquisition+OR+"has+acquired"+OR+"announces+acquisition")&hl=en-US&gl=US&ceid=US:en'
+
+
+def build_pe_firm_rss_urls_batch(firms: list, batch_size: int = 5) -> list:
+    """
+    Build RSS URLs that search for multiple firms at once.
+    More efficient than individual firm searches.
+    """
+    import urllib.parse
+    
+    urls = []
+    
+    # Batch firms together (Google allows OR queries)
+    for i in range(0, len(firms), batch_size):
+        batch = firms[i:i + batch_size]
+        
+        # Build OR query for firm names
+        firm_queries = [f'"{firm}"' for firm in batch]
+        firms_part = "+OR+".join(urllib.parse.quote(f) for f in firm_queries)
+        
+        # Deal keywords
+        deal_keywords = "(acquires+OR+completes+OR+closes+OR+acquisition+OR+acquired)"
+        
+        url = f'https://news.google.com/rss/search?q=({firms_part})+{deal_keywords}&hl=en-US&gl=US&ceid=US:en'
+        urls.append(url)
+    
+    return urls
+
+
 # Keywords indicating deal announcements (vs general news)
 DEAL_KEYWORDS = [
     "acquires", "acquisition", "acquired",
@@ -441,13 +520,101 @@ def scrape_pe_firm(firm_name: str, config: dict) -> list:
     return signals
 
 
-def fetch_pe_firm_signals(firms: dict = None, days_back: int = 30) -> list:
+def fetch_pe_rss_signals(firms: list = None) -> list:
     """
-    Fetch deal signals from PE firm press release pages.
+    Fetch deal signals from Google News RSS for all target PE firms.
+    Primary source - more reliable than scraping PE firm websites.
+    
+    Args:
+        firms: List of PE firm names (defaults to ALL_TARGET_PE_FIRMS)
+    
+    Returns:
+        List of deal signal dicts
+    """
+    import feedparser
+    
+    if firms is None:
+        firms = ALL_TARGET_PE_FIRMS
+    
+    all_signals = []
+    seen_urls = set()
+    
+    # Build firm name lookup for extraction
+    firm_lookup = {}
+    for firm in firms:
+        # Create variations for matching
+        firm_lower = firm.lower()
+        firm_lookup[firm_lower] = firm
+        # Also add first word for partial matches
+        first_word = firm_lower.split()[0]
+        if first_word not in firm_lookup:
+            firm_lookup[first_word] = firm
+    
+    print(f"\nFetching RSS signals for {len(firms)} PE firms...")
+    
+    # Build batch RSS URLs (5 firms per URL for efficiency)
+    rss_urls = build_pe_firm_rss_urls_batch(firms, batch_size=5)
+    print(f"  Querying {len(rss_urls)} RSS feeds...")
+    
+    for i, feed_url in enumerate(rss_urls):
+        try:
+            feed = feedparser.parse(feed_url)
+            
+            for entry in feed.entries[:20]:  # Limit per feed
+                link = entry.get("link", "")
+                if link in seen_urls:
+                    continue
+                seen_urls.add(link)
+                
+                title = entry.get("title", "")
+                if not title:
+                    continue
+                
+                # Check if it's a deal announcement
+                if not is_deal_announcement(title):
+                    continue
+                
+                # Extract PE firm name from title
+                title_lower = title.lower()
+                pe_firm = None
+                for pattern, firm_name in firm_lookup.items():
+                    if pattern in title_lower:
+                        pe_firm = firm_name
+                        break
+                
+                if not pe_firm:
+                    continue  # Skip if we can't identify the PE firm
+                
+                # Extract deal info
+                signal = extract_deal_info(title, pe_firm)
+                signal['link'] = link
+                signal['date'] = entry.get("published", "")
+                signal['source'] = "Google News"
+                
+                all_signals.append(signal)
+                
+        except Exception as e:
+            print(f"    Warning: RSS feed error: {e}")
+        
+        # Small delay between feeds
+        if i > 0 and i % 10 == 0:
+            time.sleep(0.5)
+    
+    print(f"  Found {len(all_signals)} signals from RSS")
+    
+    return all_signals
+
+
+def fetch_pe_firm_signals(firms: dict = None, days_back: int = 30, include_rss: bool = True) -> list:
+    """
+    Fetch deal signals from PE firms.
+    Primary: Google News RSS for all 135 target firms
+    Secondary: Direct website scraping (for sites that allow it)
     
     Args:
         firms: Dict of PE firms to scrape (defaults to PE_FIRM_PRESS_PAGES)
         days_back: Only include signals from last N days (if date parseable)
+        include_rss: Whether to include RSS signals (default True)
     
     Returns:
         List of deal signal dicts
@@ -457,6 +624,16 @@ def fetch_pe_firm_signals(firms: dict = None, days_back: int = 30) -> list:
     
     all_signals = []
     
+    # ==========================================================
+    # PRIMARY: RSS feeds for all 135 target PE firms
+    # ==========================================================
+    if include_rss:
+        rss_signals = fetch_pe_rss_signals()
+        all_signals.extend(rss_signals)
+    
+    # ==========================================================
+    # SECONDARY: Direct website scraping (for accessible sites)
+    # ==========================================================
     print(f"\nScraping {len(firms)} PE firm press release pages...")
     
     for i, (firm_name, config) in enumerate(firms.items()):

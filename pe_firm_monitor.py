@@ -249,25 +249,62 @@ CARVEOUT_INDICATORS = [
     "from", "sells", "sold by",
 ]
 
-# User agent for requests
-HEADERS = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-    "Accept-Language": "en-US,en;q=0.5",
-}
+# User agent rotation to avoid bot detection
+USER_AGENTS = [
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0",
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Safari/605.1.15",
+]
+
+import random
+import time
+
+def get_headers():
+    """Get randomized headers to avoid bot detection"""
+    return {
+        "User-Agent": random.choice(USER_AGENTS),
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Connection": "keep-alive",
+        "Upgrade-Insecure-Requests": "1",
+        "Sec-Fetch-Dest": "document",
+        "Sec-Fetch-Mode": "navigate",
+        "Sec-Fetch-Site": "none",
+        "Sec-Fetch-User": "?1",
+        "Cache-Control": "max-age=0",
+    }
 
 
-def fetch_page(url: str, timeout: int = 15) -> Optional[str]:
-    """Fetch HTML content from URL"""
-    try:
-        response = requests.get(url, headers=HEADERS, timeout=timeout)
-        if response.status_code == 200:
-            return response.text
-        print(f"  Warning: {url} returned {response.status_code}")
-        return None
-    except Exception as e:
-        print(f"  Warning: Failed to fetch {url}: {e}")
-        return None
+def fetch_page(url: str, timeout: int = 20, retries: int = 2) -> Optional[str]:
+    """Fetch HTML content from URL with retry logic"""
+    for attempt in range(retries + 1):
+        try:
+            # Add delay between requests to avoid rate limiting
+            if attempt > 0:
+                time.sleep(2 * attempt)
+            
+            response = requests.get(url, headers=get_headers(), timeout=timeout, allow_redirects=True)
+            
+            if response.status_code == 200:
+                return response.text
+            elif response.status_code in [429, 503] and attempt < retries:
+                print(f"    Rate limited, retrying in {2 * (attempt + 1)}s...")
+                continue
+            else:
+                print(f"  Warning: {url} returned {response.status_code}")
+                return None
+        except requests.exceptions.Timeout:
+            if attempt < retries:
+                print(f"    Timeout, retrying...")
+                continue
+            print(f"  Warning: Timeout fetching {url}")
+            return None
+        except Exception as e:
+            print(f"  Warning: Failed to fetch {url}: {e}")
+            return None
+    return None
 
 
 def extract_articles_generic(html: str, config: dict) -> list:
@@ -422,8 +459,12 @@ def fetch_pe_firm_signals(firms: dict = None, days_back: int = 30) -> list:
     
     print(f"\nScraping {len(firms)} PE firm press release pages...")
     
-    for firm_name, config in firms.items():
+    for i, (firm_name, config) in enumerate(firms.items()):
         print(f"  Checking {firm_name}...")
+        
+        # Add delay between requests (except first)
+        if i > 0:
+            time.sleep(1.5)
         
         try:
             signals = scrape_pe_firm(firm_name, config)

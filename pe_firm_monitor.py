@@ -264,18 +264,18 @@ ALL_TARGET_PE_FIRMS = [
 ]
 
 def build_pe_firm_rss_url(firm_name: str) -> str:
-    """Build Google News RSS URL for a PE firm's deal announcements"""
+    """Build Google News RSS URL for a PE firm's deal announcements (24h lookback)"""
     # URL encode the firm name
     import urllib.parse
     firm_encoded = urllib.parse.quote(f'"{firm_name}"')
     
-    # Search for acquisitions, completions, closings
-    return f'https://news.google.com/rss/search?q={firm_encoded}+(acquires+OR+completes+OR+closes+OR+acquisition+OR+"has+acquired"+OR+"announces+acquisition")&hl=en-US&gl=US&ceid=US:en'
+    # Search for acquisitions, completions, closings - 1d lookback
+    return f'https://news.google.com/rss/search?q={firm_encoded}+(acquires+OR+completes+OR+closes+OR+acquisition+OR+"has+acquired"+OR+"announces+acquisition")+when:1d&hl=en-US&gl=US&ceid=US:en'
 
 
 def build_pe_firm_rss_urls_batch(firms: list, batch_size: int = 5) -> list:
     """
-    Build RSS URLs that search for multiple firms at once.
+    Build RSS URLs that search for multiple firms at once (24h lookback).
     More efficient than individual firm searches.
     """
     import urllib.parse
@@ -290,8 +290,8 @@ def build_pe_firm_rss_urls_batch(firms: list, batch_size: int = 5) -> list:
         firm_queries = [f'"{firm}"' for firm in batch]
         firms_part = "+OR+".join(urllib.parse.quote(f) for f in firm_queries)
         
-        # Deal keywords
-        deal_keywords = "(acquires+OR+completes+OR+closes+OR+acquisition+OR+acquired)"
+        # Deal keywords + 1d lookback
+        deal_keywords = "(acquires+OR+completes+OR+closes+OR+acquisition+OR+acquired)+when:1d"
         
         url = f'https://news.google.com/rss/search?q=({firms_part})+{deal_keywords}&hl=en-US&gl=US&ceid=US:en'
         urls.append(url)

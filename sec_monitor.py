@@ -29,6 +29,150 @@ SEC_HEADERS = {
 # Minimum market cap filter (in millions)
 MIN_MARKET_CAP_M = 400
 
+# Cache for market cap lookups (avoid repeated API calls)
+_market_cap_cache = {}
+
+
+def get_market_cap(ticker: str) -> Optional[float]:
+    """
+    Get market cap for a ticker.
+    Uses yfinance library if available, otherwise returns None.
+    Returns market cap in millions, or None if not found.
+    """
+    if not ticker:
+        return None
+    
+    # Clean ticker
+    ticker = ticker.strip().upper()
+    
+    # Check cache
+    if ticker in _market_cap_cache:
+        return _market_cap_cache[ticker]
+    
+    try:
+        # Try using yfinance if available
+        import yfinance as yf
+        stock = yf.Ticker(ticker)
+        info = stock.info
+        market_cap = info.get('marketCap')
+        
+        if market_cap:
+            market_cap_m = market_cap / 1_000_000
+            _market_cap_cache[ticker] = market_cap_m
+            return market_cap_m
+            
+    except ImportError:
+        # yfinance not installed - skip market cap filtering
+        pass
+    except Exception as e:
+        pass
+    
+    _market_cap_cache[ticker] = None
+    return None
+
+
+def get_market_cap_batch(tickers: list) -> dict:
+    """
+    Get market caps for multiple tickers in batch.
+    More efficient than individual lookups.
+    Returns dict of ticker -> market_cap_m
+    """
+    results = {}
+    
+    # Check cache first
+    uncached = []
+    for ticker in tickers:
+        ticker = ticker.strip().upper() if ticker else None
+        if not ticker:
+            continue
+        if ticker in _market_cap_cache:
+            results[ticker] = _market_cap_cache[ticker]
+        else:
+            uncached.append(ticker)
+    
+    if not uncached:
+        return results
+    
+    try:
+        import yfinance as yf
+        
+        # Batch download
+        tickers_str = " ".join(uncached)
+        data = yf.download(tickers_str, period="1d", progress=False, show_errors=False)
+        
+        for ticker in uncached:
+            try:
+                stock = yf.Ticker(ticker)
+                info = stock.fast_info
+                market_cap = getattr(info, 'market_cap', None)
+                
+                if market_cap:
+                    market_cap_m = market_cap / 1_000_000
+                    _market_cap_cache[ticker] = market_cap_m
+                    results[ticker] = market_cap_m
+                else:
+                    _market_cap_cache[ticker] = None
+                    results[ticker] = None
+            except:
+                _market_cap_cache[ticker] = None
+                results[ticker] = None
+                
+    except ImportError:
+        # yfinance not installed
+        for ticker in uncached:
+            _market_cap_cache[ticker] = None
+            results[ticker] = None
+    except Exception as e:
+        for ticker in uncached:
+            _market_cap_cache[ticker] = None
+            results[ticker] = None
+    
+    return results
+
+
+def extract_ticker_from_company(company_name: str) -> Optional[str]:
+    """
+    Extract ticker symbol from SEC company name.
+    SEC format often includes ticker in parentheses: "Company Name (TICK)"
+    """
+    if not company_name:
+        return None
+    
+    # Look for ticker in parentheses
+    import re
+    match = re.search(r'\(([A-Z]{1,5})\)', company_name)
+    if match:
+        return match.group(1)
+    
+    # Look for ticker pattern at end: "Company Name  (TICK, TICKW)"
+    match = re.search(r'\(([A-Z]{1,5})(?:,|\))', company_name)
+    if match:
+        return match.group(1)
+    
+    return None
+
+
+def passes_market_cap_filter(company_name: str, min_cap_m: float = MIN_MARKET_CAP_M) -> tuple[bool, Optional[float]]:
+    """
+    Check if company passes market cap filter.
+    
+    Returns:
+        (passes: bool, market_cap_m: Optional[float])
+    """
+    ticker = extract_ticker_from_company(company_name)
+    
+    if not ticker:
+        # Can't determine market cap without ticker - allow through with warning
+        return True, None
+    
+    market_cap_m = get_market_cap(ticker)
+    
+    if market_cap_m is None:
+        # Can't get market cap - allow through with warning
+        return True, None
+    
+    return market_cap_m >= min_cap_m, market_cap_m
+
 # ==========================================================
 # 8-K FILING KEYWORDS (Strategic Review / Divestiture)
 # ==========================================================
@@ -194,6 +338,7 @@ def search_edgar_filings(
 def fetch_8k_signals(days_back: int = 14) -> list:
     """
     Fetch 8-K filings indicating strategic review or divestiture.
+    Filters to companies with market cap >= $400M.
     
     Returns list of signal dicts.
     """
@@ -211,17 +356,31 @@ def fetch_8k_signals(days_back: int = 14) -> list:
     
     print(f"  Found {len(filings)} potentially relevant 8-K filings")
     
+    filtered_count = 0
     for filing in filings:
+        company = filing.get("company", "Unknown")
+        
+        # Apply market cap filter
+        passes, market_cap_m = passes_market_cap_filter(company, MIN_MARKET_CAP_M)
+        
+        if not passes:
+            filtered_count += 1
+            continue
+        
         signal = {
-            "company": filing.get("company", "Unknown"),
+            "company": company,
             "signal_type": determine_8k_signal_type(filing),
             "source": f"SEC 8-K ({filing.get('filed_date', 'Unknown date')})",
             "link": filing.get("html_url", ""),
             "filing_date": filing.get("filed_date"),
             "form_type": filing.get("form_type"),
             "description": filing.get("description", ""),
+            "market_cap_m": market_cap_m,
         }
         signals.append(signal)
+    
+    if filtered_count > 0:
+        print(f"  Filtered {filtered_count} companies below ${MIN_MARKET_CAP_M}M market cap")
     
     return signals
 
@@ -286,6 +445,7 @@ def fetch_13d_signals(days_back: int = 30) -> list:
 def fetch_s4_signals(days_back: int = 30) -> list:
     """
     Fetch S-4 filings indicating spin-offs.
+    Filters to companies with market cap >= $400M.
     
     Returns list of signal dicts.
     """
@@ -303,17 +463,31 @@ def fetch_s4_signals(days_back: int = 30) -> list:
     
     print(f"  Found {len(filings)} potentially relevant S-4 filings")
     
+    filtered_count = 0
     for filing in filings:
+        company = filing.get("company", "Unknown")
+        
+        # Apply market cap filter
+        passes, market_cap_m = passes_market_cap_filter(company, MIN_MARKET_CAP_M)
+        
+        if not passes:
+            filtered_count += 1
+            continue
+        
         signal = {
-            "company": filing.get("company", "Unknown"),
+            "company": company,
             "signal_type": "Strategic Review",  # S-4 indicates spin-off in progress
             "source": f"SEC S-4 ({filing.get('filed_date', 'Unknown')})",
             "link": filing.get("html_url", ""),
             "filing_date": filing.get("filed_date"),
             "form_type": filing.get("form_type"),
             "notes": "Spin-off registration statement filed",
+            "market_cap_m": market_cap_m,
         }
         signals.append(signal)
+    
+    if filtered_count > 0:
+        print(f"  Filtered {filtered_count} companies below ${MIN_MARKET_CAP_M}M market cap")
     
     return signals
 

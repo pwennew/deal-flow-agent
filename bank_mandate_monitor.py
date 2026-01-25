@@ -187,25 +187,26 @@ CARVEOUT_INDICATORS = [
 ]
 
 # Google News RSS for bank mandate announcements (primary source - more reliable than bank websites)
+# Using when:1d for 24-hour lookback (aligned to daily scan cycle)
 BANK_NEWS_RSS = [
     # Wire service searches (most reliable for mandate announcements)
-    'https://news.google.com/rss/search?q=("appointed"+OR+"retained"+OR+"engaged")+"financial+adviser"+(divestiture+OR+"strategic+review"+OR+sale+OR+"spin-off")&hl=en-US&gl=US&ceid=US:en',
-    'https://news.google.com/rss/search?q="financial+advisor"+appointed+(divestiture+OR+carve-out+OR+"strategic+alternatives")&hl=en-US&gl=US&ceid=US:en',
+    'https://news.google.com/rss/search?q=("appointed"+OR+"retained"+OR+"engaged")+"financial+adviser"+(divestiture+OR+"strategic+review"+OR+sale+OR+"spin-off")+when:1d&hl=en-US&gl=US&ceid=US:en',
+    'https://news.google.com/rss/search?q="financial+advisor"+appointed+(divestiture+OR+carve-out+OR+"strategic+alternatives")+when:1d&hl=en-US&gl=US&ceid=US:en',
     
     # Bank-specific searches
-    'https://news.google.com/rss/search?q="Goldman+Sachs"+adviser+appointed+(sale+OR+divestiture)&hl=en-US&gl=US&ceid=US:en',
-    'https://news.google.com/rss/search?q="Morgan+Stanley"+adviser+appointed+(sale+OR+divestiture)&hl=en-US&gl=US&ceid=US:en',
-    'https://news.google.com/rss/search?q="Lazard"+adviser+appointed+(sale+OR+divestiture)&hl=en-US&gl=US&ceid=US:en',
-    'https://news.google.com/rss/search?q="Evercore"+adviser+appointed+(sale+OR+divestiture)&hl=en-US&gl=US&ceid=US:en',
-    'https://news.google.com/rss/search?q="Centerview"+adviser+appointed+sale&hl=en-US&gl=US&ceid=US:en',
-    'https://news.google.com/rss/search?q="Moelis"+adviser+appointed+(sale+OR+divestiture)&hl=en-US&gl=US&ceid=US:en',
-    'https://news.google.com/rss/search?q="PJT+Partners"+adviser+appointed+sale&hl=en-US&gl=US&ceid=US:en',
-    'https://news.google.com/rss/search?q="Rothschild"+adviser+appointed+(sale+OR+divestiture)&hl=en-US&gl=US&ceid=US:en',
-    'https://news.google.com/rss/search?q="JPMorgan"+adviser+appointed+(sale+OR+divestiture)&hl=en-US&gl=US&ceid=US:en',
+    'https://news.google.com/rss/search?q="Goldman+Sachs"+adviser+appointed+(sale+OR+divestiture)+when:1d&hl=en-US&gl=US&ceid=US:en',
+    'https://news.google.com/rss/search?q="Morgan+Stanley"+adviser+appointed+(sale+OR+divestiture)+when:1d&hl=en-US&gl=US&ceid=US:en',
+    'https://news.google.com/rss/search?q="Lazard"+adviser+appointed+(sale+OR+divestiture)+when:1d&hl=en-US&gl=US&ceid=US:en',
+    'https://news.google.com/rss/search?q="Evercore"+adviser+appointed+(sale+OR+divestiture)+when:1d&hl=en-US&gl=US&ceid=US:en',
+    'https://news.google.com/rss/search?q="Centerview"+adviser+appointed+sale+when:1d&hl=en-US&gl=US&ceid=US:en',
+    'https://news.google.com/rss/search?q="Moelis"+adviser+appointed+(sale+OR+divestiture)+when:1d&hl=en-US&gl=US&ceid=US:en',
+    'https://news.google.com/rss/search?q="PJT+Partners"+adviser+appointed+sale+when:1d&hl=en-US&gl=US&ceid=US:en',
+    'https://news.google.com/rss/search?q="Rothschild"+adviser+appointed+(sale+OR+divestiture)+when:1d&hl=en-US&gl=US&ceid=US:en',
+    'https://news.google.com/rss/search?q="JPMorgan"+adviser+appointed+(sale+OR+divestiture)+when:1d&hl=en-US&gl=US&ceid=US:en',
     
     # PR Newswire / Business Wire direct searches
-    'https://news.google.com/rss/search?q=site:prnewswire.com+"financial+adviser"+appointed&hl=en-US&gl=US&ceid=US:en',
-    'https://news.google.com/rss/search?q=site:businesswire.com+"financial+adviser"+appointed&hl=en-US&gl=US&ceid=US:en',
+    'https://news.google.com/rss/search?q=site:prnewswire.com+"financial+adviser"+appointed+when:1d&hl=en-US&gl=US&ceid=US:en',
+    'https://news.google.com/rss/search?q=site:businesswire.com+"financial+adviser"+appointed+when:1d&hl=en-US&gl=US&ceid=US:en',
 ]
 
 

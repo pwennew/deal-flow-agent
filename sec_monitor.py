@@ -21,10 +21,16 @@ EDGAR_FILINGS = "https://www.sec.gov/cgi-bin/browse-edgar"
 EDGAR_FULL_TEXT = "https://efts.sec.gov/LATEST/search-index"
 
 # User agent required by SEC (they block generic requests)
+# Email moved to environment variable for security
+SEC_EMAIL = os.environ.get("SEC_CONTACT_EMAIL", "contact@example.com")
 SEC_HEADERS = {
-    "User-Agent": "Larkhill & Company paul.ennew@larkhill.co",
+    "User-Agent": f"Deal Flow Agent {SEC_EMAIL}",
     "Accept": "application/json",
 }
+
+# Rate limiter for SEC API (10 requests per second limit)
+import os
+SEC_REQUEST_DELAY = 0.12  # ~8 req/sec to stay under limit
 
 # Minimum market cap filter (in millions)
 MIN_MARKET_CAP_M = 400
@@ -294,15 +300,39 @@ def search_edgar_filings(
     }
     
     try:
+        # Rate limiting for SEC API
+        time.sleep(SEC_REQUEST_DELAY)
+
         # SEC requires specific endpoint for full-text search
         api_url = f"https://efts.sec.gov/LATEST/search-index?q={keyword_query}&dateRange=custom&startdt={start_date.strftime('%Y-%m-%d')}&enddt={end_date.strftime('%Y-%m-%d')}&forms={','.join(form_types)}"
-        
-        response = requests.get(
-            api_url,
-            headers=SEC_HEADERS,
-            timeout=30
-        )
-        
+
+        # Retry logic for SEC requests
+        max_retries = 3
+        response = None
+        for attempt in range(max_retries):
+            try:
+                response = requests.get(
+                    api_url,
+                    headers=SEC_HEADERS,
+                    timeout=30
+                )
+                if response.status_code == 200:
+                    break
+                elif response.status_code == 429:  # Rate limited
+                    wait_time = 2 ** attempt
+                    print(f"  SEC rate limited, waiting {wait_time}s...")
+                    time.sleep(wait_time)
+                else:
+                    break
+            except requests.exceptions.RequestException as e:
+                if attempt < max_retries - 1:
+                    time.sleep(2 ** attempt)
+                else:
+                    raise
+
+        if not response:
+            return filings
+
         if response.status_code == 200:
             data = response.json()
             hits = data.get("hits", {}).get("hits", [])

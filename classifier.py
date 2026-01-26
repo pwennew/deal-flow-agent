@@ -61,20 +61,21 @@ def classify_article(title: str, summary: str = "", source: str = "") -> Classif
     - Premium source bonus: +2
     - Negative keywords: -2 each (floor at 0)
     
-    Thresholds:
+    Thresholds (IMPROVED in v6.0):
     - Hard reject keyword found: SKIP (always)
-    - Score >= 3: ANALYZE (send to Claude)
-    - Score 1-2: SKIP (not enough signal)
+    - Score >= 4: ANALYZE (raised from 3 to reduce false positives)
+    - Score >= 3 with primary match: ANALYZE (ensures quality)
+    - Score 1-3 without primary: SKIP (not enough signal)
     - Score 0: SKIP
-    
+
     Returns ClassificationResult with score and analysis decision.
     """
     text = f"{title} {summary}".lower()
     source_lower = source.lower()
-    
+
     # Check hard rejects first (automatic skip)
     hard_reject_matches = [kw for kw in HARD_REJECT_KEYWORDS if kw in text]
-    
+
     if hard_reject_matches:
         return ClassificationResult(
             score=0,
@@ -88,33 +89,53 @@ def classify_article(title: str, summary: str = "", source: str = "") -> Classif
             hard_reject_matches=hard_reject_matches,
             is_premium_source=False,
         )
-    
+
     # Find matches
     primary_matches = [kw for kw in PRIMARY_KEYWORDS if kw in text]
     secondary_matches = [kw for kw in SECONDARY_KEYWORDS if kw in text]
     tertiary_matches = [kw for kw in TERTIARY_KEYWORDS if kw in text]
     pe_matches = [kw for kw in PE_INDICATORS if kw in text]
     negative_matches = [kw for kw in NEGATIVE_KEYWORDS if kw in text]
-    
+
     # Check premium source
     is_premium = any(src in source_lower or src in text for src in PREMIUM_SOURCES)
-    
+
+    # Context validation: check for conflicting keywords near PE terms
+    # If "real estate" appears within 50 chars of "private equity", penalize more
+    has_context_conflict = False
+    conflict_terms = ["real estate", "reit", "property fund", "infrastructure fund"]
+    for term in conflict_terms:
+        if term in text:
+            # Check if PE term is nearby (conflicting context)
+            pe_pos = text.find("private equity")
+            term_pos = text.find(term)
+            if pe_pos >= 0 and term_pos >= 0 and abs(pe_pos - term_pos) < 50:
+                has_context_conflict = True
+                break
+
     # Calculate score
     score = 0
     score += len(primary_matches) * 3
     score += len(secondary_matches) * 2
     score += len(tertiary_matches) * 1
     score += min(len(pe_matches), 3) * 1  # Cap PE bonus at 3
-    
+
     if is_premium:
         score += 2
-    
+
     # Apply negative penalties
     score -= len(negative_matches) * 2
+
+    # Additional penalty for context conflicts
+    if has_context_conflict:
+        score -= 3
+
     score = max(score, 0)  # Floor at 0
-    
-    # Determine if should analyze
-    should_analyze = score >= 3
+
+    # Determine if should analyze (IMPROVED threshold logic)
+    # Require either score >= 4, OR score >= 3 with at least one primary match
+    has_primary = len(primary_matches) > 0
+    should_analyze = score >= 4 or (score >= 3 and has_primary)
     
     # Build reason
     if should_analyze:

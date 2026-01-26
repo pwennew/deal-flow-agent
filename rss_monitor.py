@@ -9,11 +9,16 @@ Fetches carve-out/divestiture news from RSS feeds:
 - UK/Europe coverage
 
 Provides deduplication via DedupManager integration.
+
+v6.0 improvements:
+- Parallel feed fetching with ThreadPoolExecutor
+- Better error handling per feed
 """
 
 import feedparser
 from datetime import datetime
 from typing import Optional
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from dedup import DedupManager
 
 
@@ -119,64 +124,108 @@ def is_within_48h(date_str: str) -> bool:
 # MAIN FETCH FUNCTION
 # ==========================================================================
 
-def fetch_rss_articles(dedup: DedupManager) -> list:
+def _fetch_single_feed(feed_url: str) -> tuple[list, int, int, int]:
     """
-    Fetch articles from all RSS feeds with deduplication.
-    
-    Args:
-        dedup: DedupManager instance for URL/content deduplication
-        
+    Fetch articles from a single RSS feed.
+
     Returns:
-        List of article dicts with keys: title, link, summary, published, source
+        (articles, skipped_old, skipped_dedup, error_count)
     """
     articles = []
     skipped_old = 0
     skipped_dedup = 0
-    
-    for feed_url in RSS_FEEDS:
-        try:
-            feed = feedparser.parse(feed_url)
-            for entry in feed.entries[:20]:
-                link = entry.get("link", "")
-                
-                # Check URL dedup first (fast)
-                if dedup.is_url_duplicate(link):
-                    skipped_dedup += 1
-                    continue
-                
-                published = entry.get("published", "")
-                
-                # HARD FILTER: Skip articles older than 48h
-                if not is_within_48h(published):
-                    skipped_old += 1
-                    continue
-                
-                title = entry.get("title", "")
-                summary = entry.get("summary", entry.get("description", ""))
-                
-                # Content dedup (catches syndicated articles)
-                if dedup.is_content_duplicate(title, summary):
-                    skipped_dedup += 1
-                    continue
-                
-                article = {
-                    "title": title,
-                    "link": link,
-                    "summary": summary,
-                    "published": published,
-                    "source": feed.feed.get("title", feed_url),
-                }
-                
-                # Mark as seen
-                dedup.mark_processed(article)
-                articles.append(article)
-                
-        except Exception as e:
-            print(f"Warning: Failed to fetch {feed_url}: {e}")
-    
-    print(f"Fetched {len(articles)} articles from {len(RSS_FEEDS)} feeds")
-    print(f"  Skipped: {skipped_old} old, {skipped_dedup} duplicates")
-    return articles
+    error_count = 0
+
+    try:
+        feed = feedparser.parse(feed_url)
+        feed_title = feed.feed.get("title", feed_url)
+
+        for entry in feed.entries[:20]:
+            link = entry.get("link", "")
+            published = entry.get("published", "")
+
+            # HARD FILTER: Skip articles older than 48h
+            if not is_within_48h(published):
+                skipped_old += 1
+                continue
+
+            title = entry.get("title", "")
+            summary = entry.get("summary", entry.get("description", ""))
+
+            article = {
+                "title": title,
+                "link": link,
+                "summary": summary,
+                "published": published,
+                "source": feed_title,
+            }
+            articles.append(article)
+
+    except Exception as e:
+        error_count = 1
+
+    return articles, skipped_old, skipped_dedup, error_count
+
+
+def fetch_rss_articles(dedup: DedupManager, max_workers: int = 10) -> list:
+    """
+    Fetch articles from all RSS feeds with deduplication.
+    Uses parallel fetching for performance (v6.0 improvement).
+
+    Args:
+        dedup: DedupManager instance for URL/content deduplication
+        max_workers: Maximum parallel feed fetches (default 10)
+
+    Returns:
+        List of article dicts with keys: title, link, summary, published, source
+    """
+    all_articles = []
+    total_skipped_old = 0
+    total_errors = 0
+
+    # Parallel fetch all feeds
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        future_to_url = {
+            executor.submit(_fetch_single_feed, url): url
+            for url in RSS_FEEDS
+        }
+
+        for future in as_completed(future_to_url):
+            url = future_to_url[future]
+            try:
+                articles, skipped_old, _, errors = future.result()
+                all_articles.extend(articles)
+                total_skipped_old += skipped_old
+                total_errors += errors
+            except Exception as e:
+                total_errors += 1
+
+    # Apply deduplication (must be done serially to maintain consistency)
+    unique_articles = []
+    skipped_dedup = 0
+
+    for article in all_articles:
+        link = article.get("link", "")
+        title = article.get("title", "")
+        summary = article.get("summary", "")
+
+        # Check URL dedup first (fast)
+        if dedup.is_url_duplicate(link):
+            skipped_dedup += 1
+            continue
+
+        # Content dedup (catches syndicated articles)
+        if dedup.is_content_duplicate(title, summary):
+            skipped_dedup += 1
+            continue
+
+        # Mark as seen
+        dedup.mark_processed(article)
+        unique_articles.append(article)
+
+    print(f"Fetched {len(unique_articles)} articles from {len(RSS_FEEDS)} feeds (parallel)")
+    print(f"  Skipped: {total_skipped_old} old, {skipped_dedup} duplicates, {total_errors} errors")
+    return unique_articles
 
 
 def format_for_claude_analysis(articles: list) -> list:

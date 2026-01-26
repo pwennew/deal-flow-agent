@@ -1,7 +1,14 @@
 """
 Target PE Accounts for Deal Flow Agent filtering
 Filters Tier 2-4 deals to target PE firms only (no strategic buyers)
+
+Uses fuzzy matching (rapidfuzz) for typo tolerance and name variations.
 """
+
+from rapidfuzz import fuzz, process
+
+# Fuzzy matching threshold (0-100). 85+ = high confidence match
+FUZZY_MATCH_THRESHOLD = 85
 
 TARGET_PE_FIRMS = {
     "ABRY Partners",
@@ -141,7 +148,7 @@ TARGET_PE_FIRMS = {
     "Wynnchurch Capital",
 }
 
-# Common variations for matching
+# Common variations for matching (checked before fuzzy)
 FIRM_ALIASES = {
     "blackstone group": "Blackstone",
     "the blackstone group": "Blackstone",
@@ -246,12 +253,29 @@ FILTERED_SIGNAL_TYPES = {"Definitive Agreement", "Deal Completed"}
 # Valid geographies
 VALID_GEOGRAPHIES = {"US", "UK", "Europe", "Global"}
 
+# Pre-build normalized lookup for fuzzy matching
+_NORMALIZED_TARGETS = None
+
+
+def _get_normalized_targets() -> dict[str, str]:
+    """Build normalized name -> canonical name mapping (cached)"""
+    global _NORMALIZED_TARGETS
+    if _NORMALIZED_TARGETS is None:
+        _NORMALIZED_TARGETS = {}
+        for firm in TARGET_PE_FIRMS:
+            normalized = normalize_firm_name(firm)
+            _NORMALIZED_TARGETS[normalized] = firm
+    return _NORMALIZED_TARGETS
+
 
 def normalize_firm_name(name: str) -> str:
     """Normalize firm name for comparison"""
     if not name:
         return ""
     n = name.lower().strip()
+    # Remove punctuation that causes matching issues
+    n = n.replace(".", "").replace("&", "and").replace("-", " ")
+    # Strip common suffixes
     for suffix in [" llc", " lp", " ltd", " inc", " partners", " capital", " group", 
                    " management", " advisers", " advisors", " private equity", " equity"]:
         if n.endswith(suffix):
@@ -259,28 +283,117 @@ def normalize_firm_name(name: str) -> str:
     return n
 
 
-def is_target_pe_firm(pe_buyer: str) -> bool:
-    """Check if PE buyer is in target accounts list"""
+def is_target_pe_firm(pe_buyer: str, threshold: int = FUZZY_MATCH_THRESHOLD) -> bool:
+    """
+    Check if PE buyer is in target accounts list using fuzzy matching.
+    
+    Matching hierarchy:
+    1. Exact alias match (fastest)
+    2. Exact normalized match
+    3. Fuzzy match against all targets (handles typos)
+    
+    Args:
+        pe_buyer: Name of PE firm to check
+        threshold: Minimum fuzzy match score (0-100). Default 85.
+    
+    Returns:
+        True if match found, False otherwise
+    """
     if not pe_buyer:
         return False
     
     pe_lower = pe_buyer.lower().strip()
     
-    # Check aliases
+    # 1. Check aliases first (exact match on known variations)
     if pe_lower in FIRM_ALIASES:
         return True
     
+    # 2. Check exact normalized match
     pe_normalized = normalize_firm_name(pe_buyer)
+    normalized_targets = _get_normalized_targets()
     
-    for target in TARGET_PE_FIRMS:
-        target_normalized = normalize_firm_name(target)
-        if pe_normalized == target_normalized:
-            return True
-        if len(pe_normalized) > 3 and len(target_normalized) > 3:
-            if pe_normalized in target_normalized or target_normalized in pe_normalized:
-                return True
+    if pe_normalized in normalized_targets:
+        return True
     
-    return False
+    # 3. Fuzzy match against normalized targets
+    # Use token_set_ratio: handles word reordering and partial matches
+    # e.g. "KPS Capital Partners" matches "Partners Capital KPS"
+    match = process.extractOne(
+        pe_normalized,
+        normalized_targets.keys(),
+        scorer=fuzz.token_set_ratio,
+        score_cutoff=threshold
+    )
+    
+    if match:
+        return True
+    
+    # 4. Also try WRatio (weighted ratio) for cases where token_set fails
+    # Handles substring scenarios better
+    match = process.extractOne(
+        pe_normalized,
+        normalized_targets.keys(),
+        scorer=fuzz.WRatio,
+        score_cutoff=threshold
+    )
+    
+    return match is not None
+
+
+def match_pe_firm(pe_buyer: str, threshold: int = FUZZY_MATCH_THRESHOLD) -> tuple[bool, str | None, int]:
+    """
+    Match PE buyer to target list and return match details.
+    
+    Args:
+        pe_buyer: Name of PE firm to check
+        threshold: Minimum fuzzy match score (0-100)
+    
+    Returns:
+        Tuple of (is_match, matched_firm_name, confidence_score)
+        If no match: (False, None, 0)
+    """
+    if not pe_buyer:
+        return False, None, 0
+    
+    pe_lower = pe_buyer.lower().strip()
+    
+    # 1. Check aliases
+    if pe_lower in FIRM_ALIASES:
+        canonical = FIRM_ALIASES[pe_lower]
+        return True, canonical, 100
+    
+    # 2. Exact normalized match
+    pe_normalized = normalize_firm_name(pe_buyer)
+    normalized_targets = _get_normalized_targets()
+    
+    if pe_normalized in normalized_targets:
+        return True, normalized_targets[pe_normalized], 100
+    
+    # 3. Fuzzy match - try token_set_ratio first
+    match = process.extractOne(
+        pe_normalized,
+        normalized_targets.keys(),
+        scorer=fuzz.token_set_ratio,
+        score_cutoff=threshold
+    )
+    
+    if match:
+        matched_normalized, score, _ = match
+        return True, normalized_targets[matched_normalized], int(score)
+    
+    # 4. Try WRatio as fallback
+    match = process.extractOne(
+        pe_normalized,
+        normalized_targets.keys(),
+        scorer=fuzz.WRatio,
+        score_cutoff=threshold
+    )
+    
+    if match:
+        matched_normalized, score, _ = match
+        return True, normalized_targets[matched_normalized], int(score)
+    
+    return False, None, 0
 
 
 def is_valid_geography(geography: str) -> bool:
@@ -310,12 +423,16 @@ def passes_tier2_filter(signal_type: str, pe_buyer: str, geography: str) -> tupl
     if not pe_buyer or pe_buyer.lower() in ["unknown", "undisclosed", "n/a", "none", "tbd", ""]:
         return False, "No PE buyer (strategic buyer)"
     
-    # Must be target PE firm
-    if not is_target_pe_firm(pe_buyer):
+    # Must be target PE firm (now with fuzzy matching)
+    is_match, matched_firm, confidence = match_pe_firm(pe_buyer)
+    if not is_match:
         return False, f"Non-target PE: {pe_buyer}"
     
     # Must be valid geography
     if not is_valid_geography(geography):
         return False, f"Invalid geography: {geography}"
     
-    return True, f"Target PE + valid geo: {pe_buyer}"
+    # Include confidence in success message for debugging
+    if confidence < 100:
+        return True, f"Target PE (fuzzy {confidence}%): {pe_buyer} -> {matched_firm}"
+    return True, f"Target PE + valid geo: {matched_firm}"

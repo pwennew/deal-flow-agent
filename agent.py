@@ -534,7 +534,7 @@ def create_notion_entry(
         "Signal Type": {"select": {"name": signal_type}},
         "Sector": {"select": {"name": sector}},
         "Geography": {"multi_select": geo_options},
-        "Status": {"select": {"name": "New"}},
+        "Status": {"select": {"name": "Lead"}},
         "Date Spotted": {"date": {"start": datetime.now().strftime("%Y-%m-%d")}},
         "Research Status": {"select": {"name": "Raw"}},
     }

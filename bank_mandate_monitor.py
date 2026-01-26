@@ -3,11 +3,7 @@ Investment Bank Mandate Monitor
 Monitors press releases from top M&A advisers for "appointed as financial adviser" announcements.
 Captures Adviser Appointed signals - earliest reliable public signal.
 
-Target banks:
-- Bulge bracket: Goldman Sachs, Morgan Stanley, JPMorgan
-- Elite boutiques: Lazard, Evercore, Centerview, Moelis, PJT Partners
-- Tech specialists: Qatalyst Partners
-- European: Rothschild
+Uses investment_banks.py as single source of truth for bank reference list.
 """
 
 import re
@@ -17,6 +13,16 @@ from typing import Optional
 from bs4 import BeautifulSoup
 import random
 import time
+
+# Import from investment_banks.py - single source of truth
+from investment_banks import (
+    INVESTMENT_BANKS,
+    BANK_ALIASES,
+    BANK_NEWS_RSS,
+    match_bank,
+    extract_bank_from_text,
+    get_bank_tier,
+)
 
 # User agent rotation to avoid bot detection
 USER_AGENTS = [
@@ -37,7 +43,7 @@ def get_headers():
         "Cache-Control": "max-age=0",
     }
 
-HEADERS = get_headers()  # For backward compatibility
+HEADERS = get_headers()
 
 # ==========================================================
 # INVESTMENT BANK PRESS RELEASE PAGES
@@ -93,7 +99,6 @@ BANK_PRESS_PAGES = {
         "title_selector": "h2, h3",
         "date_selector": ".date, time",
         "link_selector": "a",
-        "notes": "Centerview rarely posts press releases - may need alternative source",
     },
     "Moelis & Company": {
         "url": "https://www.moelis.com/about/news",
@@ -111,16 +116,13 @@ BANK_PRESS_PAGES = {
         "date_selector": ".date, time",
         "link_selector": "a",
     },
-    
-    # Tech specialists
-    "Qatalyst Partners": {
-        "url": "https://www.qatalyst.com/",
+    "Perella Weinberg Partners": {
+        "url": "https://www.pwpartners.com/news",
         "type": "html",
         "article_selector": ".news-item, article",
-        "title_selector": "h2, h3",
+        "title_selector": "h2, h3, .title",
         "date_selector": ".date, time",
         "link_selector": "a",
-        "notes": "Qatalyst rarely posts press releases - may need alternative source",
     },
     
     # European
@@ -128,6 +130,24 @@ BANK_PRESS_PAGES = {
         "url": "https://www.rothschildandco.com/en/newsroom/press-releases/",
         "type": "html",
         "article_selector": ".news-item, article, .press-release",
+        "title_selector": "h2, h3, .title",
+        "date_selector": ".date, time",
+        "link_selector": "a",
+    },
+    
+    # Upper middle market
+    "Jefferies": {
+        "url": "https://www.jefferies.com/news",
+        "type": "html",
+        "article_selector": ".news-item, article",
+        "title_selector": "h2, h3, .title",
+        "date_selector": ".date, time",
+        "link_selector": "a",
+    },
+    "Houlihan Lokey": {
+        "url": "https://www.hl.com/news",
+        "type": "html",
+        "article_selector": ".news-item, article",
         "title_selector": "h2, h3, .title",
         "date_selector": ".date, time",
         "link_selector": "a",
@@ -184,29 +204,6 @@ CARVEOUT_INDICATORS = [
     "segment",
     "business unit",
     "subsidiary",
-]
-
-# Google News RSS for bank mandate announcements (primary source - more reliable than bank websites)
-# Using when:1d for 24-hour lookback (aligned to daily scan cycle)
-BANK_NEWS_RSS = [
-    # Wire service searches (most reliable for mandate announcements)
-    'https://news.google.com/rss/search?q=("appointed"+OR+"retained"+OR+"engaged")+"financial+adviser"+(divestiture+OR+"strategic+review"+OR+sale+OR+"spin-off")+when:1d&hl=en-US&gl=US&ceid=US:en',
-    'https://news.google.com/rss/search?q="financial+advisor"+appointed+(divestiture+OR+carve-out+OR+"strategic+alternatives")+when:1d&hl=en-US&gl=US&ceid=US:en',
-    
-    # Bank-specific searches
-    'https://news.google.com/rss/search?q="Goldman+Sachs"+adviser+appointed+(sale+OR+divestiture)+when:1d&hl=en-US&gl=US&ceid=US:en',
-    'https://news.google.com/rss/search?q="Morgan+Stanley"+adviser+appointed+(sale+OR+divestiture)+when:1d&hl=en-US&gl=US&ceid=US:en',
-    'https://news.google.com/rss/search?q="Lazard"+adviser+appointed+(sale+OR+divestiture)+when:1d&hl=en-US&gl=US&ceid=US:en',
-    'https://news.google.com/rss/search?q="Evercore"+adviser+appointed+(sale+OR+divestiture)+when:1d&hl=en-US&gl=US&ceid=US:en',
-    'https://news.google.com/rss/search?q="Centerview"+adviser+appointed+sale+when:1d&hl=en-US&gl=US&ceid=US:en',
-    'https://news.google.com/rss/search?q="Moelis"+adviser+appointed+(sale+OR+divestiture)+when:1d&hl=en-US&gl=US&ceid=US:en',
-    'https://news.google.com/rss/search?q="PJT+Partners"+adviser+appointed+sale+when:1d&hl=en-US&gl=US&ceid=US:en',
-    'https://news.google.com/rss/search?q="Rothschild"+adviser+appointed+(sale+OR+divestiture)+when:1d&hl=en-US&gl=US&ceid=US:en',
-    'https://news.google.com/rss/search?q="JPMorgan"+adviser+appointed+(sale+OR+divestiture)+when:1d&hl=en-US&gl=US&ceid=US:en',
-    
-    # PR Newswire / Business Wire direct searches
-    'https://news.google.com/rss/search?q=site:prnewswire.com+"financial+adviser"+appointed+when:1d&hl=en-US&gl=US&ceid=US:en',
-    'https://news.google.com/rss/search?q=site:businesswire.com+"financial+adviser"+appointed+when:1d&hl=en-US&gl=US&ceid=US:en',
 ]
 
 
@@ -296,8 +293,13 @@ def is_carveout_related(title: str) -> bool:
 
 def extract_mandate_info(title: str, bank_name: str) -> dict:
     """Extract basic mandate information from title"""
+    
+    # Get bank tier from investment_banks.py
+    tier = get_bank_tier(bank_name)
+    
     info = {
         "adviser": bank_name,
+        "adviser_tier": tier,
         "raw_title": title,
         "signal_type": "Adviser Appointed",
         "source": f"{bank_name} Press Release",
@@ -344,49 +346,6 @@ def fetch_rss_mandates() -> list:
     """Fetch mandate signals from Google News RSS feeds"""
     import feedparser
     
-    # Extended bank name patterns
-    bank_patterns = {
-        "goldman sachs": "Goldman Sachs",
-        "goldman": "Goldman Sachs",
-        "morgan stanley": "Morgan Stanley",
-        "jpmorgan": "JPMorgan",
-        "jp morgan": "JPMorgan",
-        "lazard": "Lazard",
-        "evercore": "Evercore",
-        "centerview": "Centerview Partners",
-        "moelis": "Moelis & Company",
-        "pjt partners": "PJT Partners",
-        "pjt": "PJT Partners",
-        "qatalyst": "Qatalyst Partners",
-        "rothschild": "Rothschild & Co",
-        "barclays": "Barclays",
-        "citi": "Citi",
-        "citigroup": "Citi",
-        "bofa": "Bank of America",
-        "bank of america": "Bank of America",
-        "ubs": "UBS",
-        "credit suisse": "Credit Suisse",
-        "deutsche bank": "Deutsche Bank",
-        "hsbc": "HSBC",
-        "nomura": "Nomura",
-        "jefferies": "Jefferies",
-        "guggenheim": "Guggenheim",
-        "perella weinberg": "Perella Weinberg",
-        "houlihan lokey": "Houlihan Lokey",
-        "william blair": "William Blair",
-        "raymond james": "Raymond James",
-        "piper sandler": "Piper Sandler",
-        "dc advisory": "DC Advisory",
-        "lincoln international": "Lincoln International",
-        "baird": "Baird",
-        "stifel": "Stifel",
-        "ernst & young": "EY",
-        "ey ": "EY",  # space to avoid matching "they"
-        "deloitte": "Deloitte",
-        "kpmg": "KPMG",
-        "pwc": "PwC",
-    }
-    
     # Date parsing helper
     def parse_date(date_str):
         if not date_str:
@@ -414,14 +373,15 @@ def fetch_rss_mandates() -> list:
             pass
         return None
     
-    def is_within_24h(date_str):
+    def is_within_48h(date_str):
+        """Extended to 48h for better coverage"""
         if not date_str:
             return True
         pub_date = parse_date(date_str)
         if not pub_date:
             return True
         age = datetime.now() - pub_date
-        return age.total_seconds() < 36 * 3600
+        return age.total_seconds() < 48 * 3600
     
     signals = []
     seen_urls = set()
@@ -441,134 +401,161 @@ def fetch_rss_mandates() -> list:
                 
                 published = entry.get("published", "")
                 
-                # HARD FILTER: Skip articles older than 24h
-                if not is_within_24h(published):
+                # Skip articles older than 48h
+                if not is_within_48h(published):
                     skipped_old += 1
                     continue
                 
                 title = entry.get("title", "")
+                summary = entry.get("summary", entry.get("description", ""))
                 
                 # Check if it's a mandate announcement
                 if not is_mandate_announcement(title):
                     continue
                 
-                # Extract bank name from title using extended patterns
-                title_lower = title.lower()
-                bank_name = "Unknown Adviser"
-                for pattern, name in bank_patterns.items():
-                    if pattern in title_lower:
-                        bank_name = name
-                        break
+                # Extract bank names from title using investment_banks.py
+                bank_matches = extract_bank_from_text(f"{title} {summary}")
                 
-                signal = {
-                    "adviser": bank_name,
-                    "raw_title": title,
-                    "signal_type": "Adviser Appointed",
-                    "source": "News (Bank Mandate)",
-                    "link": link,
-                    "date": published,
-                    "is_carveout": is_carveout_related(title),
-                }
-                signals.append(signal)
-                
+                if bank_matches:
+                    # Use first (highest confidence) match
+                    bank_name = bank_matches[0]
+                    tier = get_bank_tier(bank_name)
+                    
+                    signal = {
+                        "adviser": bank_name,
+                        "adviser_tier": tier,
+                        "raw_title": title,
+                        "signal_type": "Adviser Appointed",
+                        "source": feed.feed.get("title", "Google News"),
+                        "link": link,
+                        "date": published,
+                        "summary": summary,
+                        "is_carveout": is_carveout_related(title),
+                    }
+                    signals.append(signal)
+                    
         except Exception as e:
             print(f"  Warning: Failed to fetch RSS feed: {e}")
+            continue
     
-    print(f"  Found {len(signals)} mandate signals from RSS (skipped {skipped_old} older than 24h)")
-    
+    print(f"  Found {len(signals)} mandate signals (skipped {skipped_old} older than 48h)")
     return signals
 
 
-def fetch_bank_mandate_signals(banks: dict = None) -> list:
+def fetch_bank_mandate_signals() -> list:
     """
-    Fetch adviser appointment signals from multiple sources.
-    Primary: RSS feeds (wire services, news)
-    Secondary: Bank press release pages (often blocked)
+    Main function: Fetch all bank mandate signals.
     
-    Args:
-        banks: Dict of banks to scrape (defaults to BANK_PRESS_PAGES)
+    Combines:
+    1. Direct press release scraping from bank websites
+    2. Google News RSS feeds for "financial adviser" announcements
     
-    Returns:
-        List of mandate signal dicts
+    Returns list of mandate signal dicts.
     """
-    if banks is None:
-        banks = BANK_PRESS_PAGES
-    
     all_signals = []
+    seen_titles = set()
     
-    # PRIMARY SOURCE: RSS feeds (more reliable than bank websites)
-    rss_signals = fetch_rss_mandates()
-    all_signals.extend(rss_signals)
-    
-    # SECONDARY SOURCE: Bank press release pages (often blocked but worth trying)
-    print(f"\nScraping {len(banks)} investment bank press release pages...")
-    
-    for i, (bank_name, config) in enumerate(banks.items()):
+    # ==================================================
+    # SOURCE 1: Direct bank press release pages
+    # ==================================================
+    print("\nScraping bank press release pages...")
+    for bank_name, config in BANK_PRESS_PAGES.items():
         print(f"  Checking {bank_name}...")
         
-        # Add delay between requests
-        if i > 0:
-            time.sleep(1.5)
+        # Rate limiting
+        time.sleep(random.uniform(0.5, 1.5))
         
         try:
             signals = scrape_bank(bank_name, config)
-            
-            if signals:
-                print(f"    Found {len(signals)} mandate announcements")
-                all_signals.extend(signals)
-            
+            for signal in signals:
+                title_key = signal.get('raw_title', '').lower()[:50]
+                if title_key not in seen_titles:
+                    seen_titles.add(title_key)
+                    all_signals.append(signal)
+                    print(f"    ✓ Found: {signal['raw_title'][:60]}...")
         except Exception as e:
-            print(f"    Error scraping {bank_name}: {e}")
+            print(f"    Warning: Error scraping {bank_name}: {e}")
     
-    print(f"\nTotal bank mandate signals: {len(all_signals)}")
-    
-    # Deduplicate by title similarity
-    seen_titles = set()
-    unique_signals = []
-    for sig in all_signals:
-        title_key = sig.get('raw_title', '').lower()[:50]
+    # ==================================================
+    # SOURCE 2: Google News RSS feeds
+    # ==================================================
+    rss_signals = fetch_rss_mandates()
+    for signal in rss_signals:
+        title_key = signal.get('raw_title', '').lower()[:50]
         if title_key not in seen_titles:
             seen_titles.add(title_key)
-            unique_signals.append(sig)
+            all_signals.append(signal)
     
-    print(f"After dedup: {len(unique_signals)} unique signals")
-    
-    return unique_signals
+    print(f"\nTotal bank mandate signals: {len(all_signals)}")
+    return all_signals
 
 
 def format_for_claude_analysis(signals: list) -> list:
     """
-    Format bank mandate signals for Claude analysis.
-    Returns list of article-like dicts compatible with agent.py
+    Format mandate signals as articles for Claude analysis.
+    
+    Converts mandate signal format to article format expected by agent.py.
     """
     articles = []
     
-    for sig in signals:
+    for signal in signals:
         article = {
-            "title": sig.get("raw_title", ""),
-            "link": sig.get("link", ""),
-            "summary": f"Investment bank mandate: {sig.get('adviser', 'Unknown')} appointed. {sig.get('raw_title', '')}",
-            "published": sig.get("date", ""),
-            "source": sig.get("source", "Bank Press Release"),
-            # Pre-populated hints for Claude
-            "_signal_type_hint": "Adviser Appointed",
-            "_adviser_hint": sig.get("adviser"),
-            "_is_carveout_hint": sig.get("is_carveout", False),
+            "title": signal.get("raw_title", ""),
+            "summary": signal.get("summary", f"Investment bank {signal.get('adviser', 'Unknown')} has been appointed as financial adviser."),
+            "link": signal.get("link", ""),
+            "published": signal.get("date", ""),
+            "source": f"Bank Mandate: {signal.get('adviser', 'Unknown')}",
+            
+            # Metadata for filtering/enrichment
+            "_source_type": "bank_mandate",
+            "_adviser": signal.get("adviser"),
+            "_adviser_tier": signal.get("adviser_tier"),
+            "_is_carveout": signal.get("is_carveout", False),
         }
         articles.append(article)
     
     return articles
 
 
+# ==========================================================
+# TESTS
+# ==========================================================
+
 if __name__ == "__main__":
-    # Test run
-    print("Investment Bank Mandate Monitor - Test Run")
+    print("Bank Mandate Monitor - Test Run")
     print("=" * 50)
     
-    signals = fetch_bank_mandate_signals()
+    # Test bank matching using investment_banks.py
+    print("\n1. Testing bank extraction from text:")
+    test_texts = [
+        "Goldman Sachs appointed as financial adviser for Siemens divestiture",
+        "Company hires Lazard and Evercore for strategic review",
+        "JP Morgan to advise on sale of industrial division",
+        "Rothschild acting as sole financial adviser",
+    ]
+    
+    for text in test_texts:
+        banks = extract_bank_from_text(text)
+        print(f"  '{text[:50]}...'")
+        print(f"    -> Banks found: {banks}")
+    
+    # Test RSS feeds
+    print("\n2. Testing RSS mandate fetching:")
+    print("  (This makes live API calls)")
+    
+    try:
+        import feedparser
+        
+        # Test just first 3 RSS feeds
+        test_feeds = BANK_NEWS_RSS[:3]
+        for feed_url in test_feeds:
+            print(f"\n  Testing: {feed_url[:60]}...")
+            feed = feedparser.parse(feed_url)
+            print(f"    Entries found: {len(feed.entries)}")
+            if feed.entries:
+                print(f"    First entry: {feed.entries[0].get('title', 'No title')[:60]}...")
+    except ImportError:
+        print("  feedparser not installed, skipping RSS test")
     
     print("\n" + "=" * 50)
-    print("Sample signals:")
-    for sig in signals[:5]:
-        print(f"\n{sig.get('adviser')}: {sig.get('raw_title', '')[:80]}")
-        print(f"  Carve-out related: {sig.get('is_carveout')}")
+    print("Test complete.")

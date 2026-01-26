@@ -252,6 +252,32 @@ NEGATIVE_KEYWORDS = [
     "middle east",
     "africa",
     "australia",
+    
+    # Minority/financial transactions (not operational carve-outs)
+    "minority stake",
+    "minority shareholding",
+    "minority interest",
+    "stake sale",
+    "sells stake",
+    "sold stake",
+    "selling stake",
+    "exits stake",
+    "exiting stake",
+    
+    # Standalone/non-integrated (no separation work)
+    "standalone fintech",
+    "standalone platform",
+    "operated independently",
+    "operates independently",
+    "remained independent",
+    "remains independent",
+    
+    # Bolt-on/tuck-in (clean acquisitions, no TSA)
+    "bolt-on",
+    "bolt on",
+    "tuck-in",
+    "tuck in",
+    "add-on acquisition",
 ]
 
 # Premium sources get a bonus (more likely to be relevant even with lower scores)

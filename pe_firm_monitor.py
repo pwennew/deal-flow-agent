@@ -532,12 +532,51 @@ def fetch_pe_rss_signals(firms: list = None) -> list:
         List of deal signal dicts
     """
     import feedparser
+    from datetime import datetime
+    
+    def parse_date(date_str):
+        """Parse RSS date string"""
+        if not date_str:
+            return None
+        formats = [
+            "%a, %d %b %Y %H:%M:%S %z",
+            "%a, %d %b %Y %H:%M:%S %Z",
+            "%Y-%m-%dT%H:%M:%S%z",
+            "%Y-%m-%dT%H:%M:%SZ",
+            "%Y-%m-%d",
+        ]
+        for fmt in formats:
+            try:
+                dt = datetime.strptime(date_str.strip(), fmt)
+                if dt.tzinfo:
+                    dt = dt.replace(tzinfo=None)
+                return dt
+            except ValueError:
+                continue
+        try:
+            from email.utils import parsedate_to_datetime
+            dt = parsedate_to_datetime(date_str)
+            return dt.replace(tzinfo=None)
+        except:
+            pass
+        return None
+    
+    def is_within_24h(date_str):
+        """Check if date is within last 36 hours (allowing for timezone drift)"""
+        if not date_str:
+            return True
+        pub_date = parse_date(date_str)
+        if not pub_date:
+            return True
+        age = datetime.now() - pub_date
+        return age.total_seconds() < 36 * 3600
     
     if firms is None:
         firms = ALL_TARGET_PE_FIRMS
     
     all_signals = []
     seen_urls = set()
+    skipped_old = 0
     
     # Build firm name lookup for extraction
     firm_lookup = {}
@@ -566,6 +605,13 @@ def fetch_pe_rss_signals(firms: list = None) -> list:
                     continue
                 seen_urls.add(link)
                 
+                published = entry.get("published", "")
+                
+                # HARD FILTER: Skip articles older than 24h
+                if not is_within_24h(published):
+                    skipped_old += 1
+                    continue
+                
                 title = entry.get("title", "")
                 if not title:
                     continue
@@ -588,7 +634,7 @@ def fetch_pe_rss_signals(firms: list = None) -> list:
                 # Extract deal info
                 signal = extract_deal_info(title, pe_firm)
                 signal['link'] = link
-                signal['date'] = entry.get("published", "")
+                signal['date'] = published
                 signal['source'] = "Google News"
                 
                 all_signals.append(signal)
@@ -600,7 +646,7 @@ def fetch_pe_rss_signals(firms: list = None) -> list:
         if i > 0 and i % 10 == 0:
             time.sleep(0.5)
     
-    print(f"  Found {len(all_signals)} signals from RSS")
+    print(f"  Found {len(all_signals)} signals from RSS (skipped {skipped_old} older than 24h)")
     
     return all_signals
 

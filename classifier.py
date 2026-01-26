@@ -26,6 +26,7 @@ from keywords import (
     TERTIARY_KEYWORDS,
     PE_INDICATORS,
     NEGATIVE_KEYWORDS,
+    HARD_REJECT_KEYWORDS,
     PREMIUM_SOURCES,
 )
 
@@ -41,12 +42,16 @@ class ClassificationResult:
     tertiary_matches: list[str]
     pe_matches: list[str]
     negative_matches: list[str]
+    hard_reject_matches: list[str]
     is_premium_source: bool
 
 
 def classify_article(title: str, summary: str = "", source: str = "") -> ClassificationResult:
     """
     Stage 1 classification using keyword scoring.
+    
+    Hard Reject:
+    - If any HARD_REJECT_KEYWORDS found, skip regardless of score
     
     Scoring:
     - Primary keywords: 3 points each
@@ -57,6 +62,7 @@ def classify_article(title: str, summary: str = "", source: str = "") -> Classif
     - Negative keywords: -2 each (floor at 0)
     
     Thresholds:
+    - Hard reject keyword found: SKIP (always)
     - Score >= 3: ANALYZE (send to Claude)
     - Score 1-2: SKIP (not enough signal)
     - Score 0: SKIP
@@ -65,6 +71,23 @@ def classify_article(title: str, summary: str = "", source: str = "") -> Classif
     """
     text = f"{title} {summary}".lower()
     source_lower = source.lower()
+    
+    # Check hard rejects first (automatic skip)
+    hard_reject_matches = [kw for kw in HARD_REJECT_KEYWORDS if kw in text]
+    
+    if hard_reject_matches:
+        return ClassificationResult(
+            score=0,
+            should_analyze=False,
+            reason=f"HARD REJECT: {', '.join(hard_reject_matches[:3])}",
+            primary_matches=[],
+            secondary_matches=[],
+            tertiary_matches=[],
+            pe_matches=[],
+            negative_matches=[],
+            hard_reject_matches=hard_reject_matches,
+            is_premium_source=False,
+        )
     
     # Find matches
     primary_matches = [kw for kw in PRIMARY_KEYWORDS if kw in text]
@@ -114,6 +137,7 @@ def classify_article(title: str, summary: str = "", source: str = "") -> Classif
         tertiary_matches=tertiary_matches,
         pe_matches=pe_matches,
         negative_matches=negative_matches,
+        hard_reject_matches=[],
         is_premium_source=is_premium,
     )
 

@@ -200,7 +200,7 @@ def get_existing_entries_from_db(metrics: RunMetrics) -> tuple[set, list]:
                     if normalized:
                         existing_titles.add(normalized)
 
-                # Extract hash fields
+                # Extract hash fields and company/division for fuzzy dedup
                 entry_data = {}
                 deal_hash_prop = props.get("Deal Hash", {})
                 if deal_hash_prop.get("rich_text"):
@@ -209,6 +209,19 @@ def get_existing_entries_from_db(metrics: RunMetrics) -> tuple[set, list]:
                 url_hash_prop = props.get("Source URL Hash", {})
                 if url_hash_prop.get("rich_text"):
                     entry_data['url_hash'] = url_hash_prop["rich_text"][0].get("plain_text", "")
+
+                # Extract company and division for fuzzy matching
+                division_prop = props.get("Division", {})
+                if division_prop.get("rich_text"):
+                    entry_data['division'] = division_prop["rich_text"][0].get("plain_text", "")
+                
+                # Company is in title format "Company - Division", extract just company
+                if title_list:
+                    full_title = title_list[0].get("plain_text", "")
+                    if " - " in full_title:
+                        entry_data['company'] = full_title.split(" - ")[0].strip()
+                    else:
+                        entry_data['company'] = full_title
 
                 if entry_data:
                     existing_entries.append(entry_data)
@@ -792,11 +805,18 @@ def run_agent(
         division = safe_str(analysis.get("division"), "Division")
         ev_low = analysis.get("ev_low")
 
-        # Deal-level dedup
+        # Deal-level dedup (exact hash match)
         if dedup.is_deal_duplicate(company, division, ev_low):
             skipped_deal_dupe += 1
             metrics.increment('entries_duplicate')
             logger.info(f"Deal duplicate: {company} - {division}")
+            continue
+
+        # Fuzzy dedup (catches "North American" vs "North America" etc)
+        if dedup.is_fuzzy_duplicate(company, division):
+            skipped_deal_dupe += 1
+            metrics.increment('entries_duplicate')
+            logger.info(f"Fuzzy duplicate: {company} - {division}")
             continue
 
         # Post-extraction filter
@@ -810,6 +830,8 @@ def run_agent(
         # Write to Notion
         success = create_notion_entry(NOTION_DATABASE_ID, article, analysis, metrics)
         if success:
+            # Track for fuzzy dedup within this run
+            dedup.add_company_division(company, division)
             new_entries += 1
             metrics.increment('entries_written')
             dedup.mark_processed(article, analysis)

@@ -277,31 +277,47 @@ PE_INDICATORS = PE_GENERIC_TERMS + _load_pe_firms()
 
 
 # ==========================================================================
-# NEGATIVE KEYWORDS (-2 points each)
-# Indicators this is NOT a relevant carve-out opportunity
+# HARD REJECT KEYWORDS (automatic skip, no scoring)
+# If any of these appear, article is rejected regardless of positive signals
 # ==========================================================================
 
-NEGATIVE_KEYWORDS = [
-    # ----- IPO / Public offerings -----
-    "ipo",
-    "initial public offering",
-    "public offering",
-    "goes public",
-    "going public",
-    "stock offering",
-    "secondary offering",
-    
-    # ----- VC / Growth funding -----
-    "venture capital",
+HARD_REJECT_KEYWORDS = [
+    # ----- VC / Growth funding (never carve-outs) -----
+    "growth equity",
+    "growth funding",
+    "growth investment",
     "series a",
     "series b",
     "series c",
     "seed round",
-    "growth equity",
-    "growth funding",
-    "growth investment",
-    "fundraising",
+    "venture capital",
     "funding round",
+    
+    # ----- Bolt-on / Tuck-in (clean acquisitions, no separation) -----
+    "bolt-on",
+    "bolt on",
+    "tuck-in",
+    "tuck in",
+    "add-on acquisition",
+    
+    # ----- IPO / Public offerings -----
+    "ipo",
+    "initial public offering",
+    "goes public",
+    "going public",
+]
+
+
+# ==========================================================================
+# NEGATIVE KEYWORDS (-2 points each)
+# Indicators this is probably NOT a relevant carve-out opportunity
+# ==========================================================================
+
+NEGATIVE_KEYWORDS = [
+    # ----- IPO / Public offerings (not hard reject) -----
+    "public offering",
+    "stock offering",
+    "secondary offering",
     
     # ----- Real estate -----
     "real estate",
@@ -350,13 +366,6 @@ NEGATIVE_KEYWORDS = [
     "operates independently",
     "remained independent",
     "remains independent",
-    
-    # ----- Bolt-on / Tuck-in (clean acquisitions, no TSA) -----
-    "bolt-on",
-    "bolt on",
-    "tuck-in",
-    "tuck in",
-    "add-on acquisition",
 ]
 
 

@@ -2,298 +2,32 @@
 Two-Stage Classifier for Deal Flow Agent
 
 Stage 1: Regex/keyword scoring (free, fast)
-  - High score (>=5): Send to Claude for full analysis
-  - Medium score (2-4): Send to Claude for full analysis
-  - Low score (0-1): Skip (probably not relevant)
+  - High score (>=6): Send to Claude for full analysis
+  - Medium score (3-5): Send to Claude for full analysis  
+  - Low score (0-2): Skip (probably not relevant)
 
 Stage 2: Claude analysis (expensive, accurate)
   - Full extraction of deal details
   - Only called for articles that pass Stage 1
 
 This reduces Claude API costs by 60-70% while maintaining coverage.
+
+Keywords are defined in keywords.py for easy maintenance.
 """
 
 import re
 from typing import Optional
 from dataclasses import dataclass
 
-
-# ==========================================================================
-# SCORING KEYWORDS
-# ==========================================================================
-
-# Primary signals (3 points each) - strong indicators of carve-out activity
-PRIMARY_KEYWORDS = [
-    # Carve-out specific
-    "carve-out",
-    "carve out",
-    "carveout",
-    "spin-off",
-    "spin off",
-    "spinoff",
-    "divestiture",
-    "divesting",
-    "divest",
-    "demerger",
-    "hive off",
-    "hive-off",
-    
-    # Sale process signals
-    "strategic review",
-    "strategic alternatives",
-    "exploring sale",
-    "explore sale",
-    "weighing sale",
-    "weighing a sale",
-    "considering sale",
-    "considering a sale",
-    "evaluating sale",
-    "evaluating a sale",
-    "formal sale process",
-    "sale process",
-    "exploring options",
-    "evaluating options",
-    "exploring a sale",
-    "mulling sale",
-    "mulling a sale",
-    "planning to sell",
-    "plans to sell",
-    "looking to sell",
-    "seeks to sell",
-    "seeking to sell",
-    
-    # Adviser appointments (strong signal)
-    "hired advisers",
-    "hired adviser",
-    "hired advisor",
-    "hired advisors",
-    "appointed advisers",
-    "appointed adviser",
-    "appointed advisor",
-    "appointed advisors",
-    "working with advisers",
-    "working with adviser",
-    "working with advisor",
-    "working with advisors",
-    "engaged advisers",
-    "engaged adviser",
-    "engaged advisor",
-    "tapped advisers",
-    "tapped adviser",
-    "retained advisers",
-    "retained adviser",
-    "financial adviser",
-    "financial advisor",
-    "engaged goldman",
-    "engaged morgan stanley",
-    "engaged jpmorgan",
-    "engaged lazard",
-    "engaged evercore",
-    "hired goldman",
-    "hired morgan stanley",
-    "hired jpmorgan",
-    "hired lazard",
-    "hired evercore",
-    
-    # PE buyer signals
-    "private equity interest",
-    "pe interest",
-    "private equity circling",
-    "pe firms circling",
-    "bidding war",
-    "auction process",
-    "definitive agreement",
-    "draw interest from private equity",
-    "attract interest from private equity",
-    "attracting interest from private equity",
-]
-
-# Secondary signals (2 points each) - moderate indicators
-SECONDARY_KEYWORDS = [
-    # Division/unit language
-    "business unit",
-    "division sale",
-    "unit sale",
-    "sells division",
-    "sells unit",
-    "sells business",
-    "selling its",
-    "to sell its",
-    
-    # Non-core
-    "non-core",
-    "non core",
-    "noncore",
-    "portfolio review",
-    "portfolio rationalization",
-    
-    # PE activity
-    "in talks to acquire",
-    "in talks to buy",
-    "circling",
-    "among bidders",
-    "weighing bid",
-    "considering bid",
-    "submits bid",
-    "submitted bid",
-    "makes offer",
-    "made offer",
-    
-    # Deal progression
-    "preliminary talks",
-    "advanced talks",
-    "exclusive talks",
-    "exclusive negotiations",
-    "preferred bidder",
-    "leading bidder",
-]
-
-# Tertiary signals (1 point each) - weak indicators, need combination
-TERTIARY_KEYWORDS = [
-    # Generic M&A
-    "acquisition",
-    "acquires",
-    "acquire",
-    "buys",
-    "buying",
-    "purchase",
-    "purchasing",
-    "takeover",
-    "take over",
-    
-    # Asset language
-    "asset sale",
-    "asset disposal",
-    "disposal",
-    
-    # Interest signals
-    "interest in",
-    "eyeing",
-    "approached",
-    "approaches",
-    
-    # Separation
-    "separation",
-    "standalone",
-    "stand-alone",
-    "independent",
-]
-
-# PE firm mentions (1 point each, capped at 3)
-# Just check for "private equity" or common firm names
-PE_INDICATORS = [
-    "private equity",
-    "pe firm",
-    "pe firms",
-    "buyout",
-    "buyout firm",
-    "sponsor",
-    "financial sponsor",
-    # Top PE firms
-    "blackstone",
-    "kkr",
-    "carlyle",
-    "apollo",
-    "tpg",
-    "bain capital",
-    "advent",
-    "cvc",
-    "eqt",
-    "permira",
-    "cinven",
-    "h.i.g.",
-    "hig capital",
-    "kps capital",
-    "platinum equity",
-    "aurelius",
-    "thoma bravo",
-    "vista equity",
-    "silver lake",
-]
-
-# Negative signals (reduce score) - things that look like deals but aren't
-NEGATIVE_KEYWORDS = [
-    # IPO/public offerings
-    "ipo",
-    "initial public offering",
-    "public offering",
-    "goes public",
-    "going public",
-    
-    # VC/growth
-    "venture capital",
-    "series a",
-    "series b",
-    "series c",
-    "seed round",
-    "growth equity",
-    "growth funding",
-    
-    # Real estate
-    "real estate",
-    "property sale",
-    "office building",
-    "warehouse",
-    
-    # Academic/Government
-    "university",
-    "college",
-    "government",
-    "federal",
-    "ministry",
-    
-    # Wrong geography
-    "china",
-    "chinese",
-    "india",
-    "indian",
-    "brazil",
-    "latin america",
-    "middle east",
-    "africa",
-    "australia",
-    
-    # Minority/financial transactions (not operational carve-outs)
-    "minority stake",
-    "minority shareholding",
-    "minority interest",
-    "stake sale",
-    "sells stake",
-    "sold stake",
-    "selling stake",
-    "exits stake",
-    "exiting stake",
-    
-    # Standalone/non-integrated (no separation work)
-    "standalone fintech",
-    "standalone platform",
-    "operated independently",
-    "operates independently",
-    "remained independent",
-    "remains independent",
-    
-    # Bolt-on/tuck-in (clean acquisitions, no TSA)
-    "bolt-on",
-    "bolt on",
-    "tuck-in",
-    "tuck in",
-    "add-on acquisition",
-]
-
-# Premium sources get a bonus (more likely to be relevant even with lower scores)
-PREMIUM_SOURCES = [
-    "ft.com",
-    "financial times",
-    "wsj.com",
-    "wall street journal",
-    "bloomberg",
-    "reuters",
-    "pehub",
-    "pe hub",
-    "mergermarket",
-    "dealreporter",
-    "pitchbook",
-]
+# Import keywords from single source of truth
+from keywords import (
+    PRIMARY_KEYWORDS,
+    SECONDARY_KEYWORDS,
+    TERTIARY_KEYWORDS,
+    PE_INDICATORS,
+    NEGATIVE_KEYWORDS,
+    PREMIUM_SOURCES,
+)
 
 
 @dataclass
@@ -476,7 +210,7 @@ def quick_relevance_score(text: str) -> int:
     
     # Must-have indicators (without these, skip entirely)
     must_haves = [
-        "divestiture", "spin-off", "spinoff", "carve-out", "carveout",
+        "divestiture", "divestment", "spin-off", "spinoff", "carve-out", "carveout",
         "strategic review", "sale of", "sells", "selling",
         "division", "unit", "business", "segment",
         "private equity", "pe firm", "buyout",
@@ -506,6 +240,18 @@ if __name__ == "__main__":
     print("Two-Stage Classifier - Test Run")
     print("=" * 50)
     
+    # Import keyword stats
+    from keywords import (
+        PRIMARY_KEYWORDS as PK,
+        SECONDARY_KEYWORDS as SK,
+        TERTIARY_KEYWORDS as TK,
+        PE_INDICATORS as PE,
+        NEGATIVE_KEYWORDS as NK,
+    )
+    print(f"\nKeywords loaded from keywords.py:")
+    print(f"  Primary: {len(PK)}, Secondary: {len(SK)}, Tertiary: {len(TK)}")
+    print(f"  PE indicators: {len(PE)}, Negative: {len(NK)}")
+    
     test_articles = [
         {
             "title": "Siemens exploring strategic alternatives for industrial motors division",
@@ -533,14 +279,14 @@ if __name__ == "__main__":
             "source": "PE Hub",
         },
         {
-            "title": "Company considering sale of Asia Pacific operations",
-            "summary": "Firm weighing options for China and India businesses",
-            "source": "Bloomberg",
+            "title": "NatWest sells stake in fintech Cushon to WTW",
+            "summary": "Bank selling its minority stake in standalone fintech that operated independently",
+            "source": "Reuters",
         },
         {
-            "title": "Boeing in talks to sell defense unit",
-            "summary": "Aerospace giant exploring disposal of non-core segment to private equity buyers",
-            "source": "Wall Street Journal",
+            "title": "Nokia weighing a sale of managed services business",
+            "summary": "Finnish company working with advisers to gauge interest from private equity firms",
+            "source": "Bloomberg",
         },
     ]
     
@@ -550,7 +296,7 @@ if __name__ == "__main__":
     to_analyze, to_skip = classify_batch(test_articles)
     
     for article in test_articles:
-        title = article['title'][:50]
+        title = article['title'][:55]
         cls = article.get('_classification', {})
         score = cls.get('score', 0)
         reason = cls.get('reason', '')
@@ -574,7 +320,6 @@ if __name__ == "__main__":
     print(f"  Medium signal (3-5): {stats['medium_signal']}")
     print(f"  Low signal (1-2): {stats['low_signal']}")
     print(f"  No signal (0): {stats['no_signal']}")
-    print(f"  Premium sources: {stats['premium_sources']}")
     
     print("\n" + "=" * 50)
     print("Test complete.")

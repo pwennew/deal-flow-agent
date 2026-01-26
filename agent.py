@@ -7,6 +7,8 @@ Improvements over v4.0:
 - Parallel Claude API calls (5x speedup)
 - Extended lookback (48h with overlap detection)
 - Company grouping to reduce duplicate analysis
+- Response caching to avoid re-analysis on restart
+- Run state persistence for resume capability
 
 Scans public sources for:
 1. Divestiture signals (companies selling divisions)
@@ -35,11 +37,18 @@ from dedup import (
     compute_deal_hash,
     compute_url_hash,
     extract_company_from_title,
+    get_content_signature,
+    content_similarity,
 )
 from classifier import (
     classify_article,
     classify_batch,
     get_classification_stats,
+)
+from cache import (
+    CacheManager,
+    get_cache_key,
+    get_cache_paths,
 )
 
 # Configuration
@@ -881,19 +890,69 @@ def run_agent(include_pe_firms: bool = True, include_sec: bool = True,
     print(f"  → Estimated API savings: ${api_savings:.2f}")
     
     # ==================================================
+    # STAGE 1.5: COMPANY GROUPING (reduce duplicate analysis)
+    # ==================================================
+    print(f"\n{'='*40}")
+    print("STAGE 1.5: Company Grouping")
+    print("=" * 40)
+    
+    # Group articles by extracted company name
+    company_groups: dict[str, list] = {}
+    ungrouped = []
+    
+    for article in to_analyze:
+        title = article.get('title', '')
+        company = extract_company_from_title(title)
+        
+        if company and company.lower() not in ['unknown', 'none', '']:
+            # Normalize for grouping
+            company_key = company.lower().strip()
+            if company_key not in company_groups:
+                company_groups[company_key] = []
+            company_groups[company_key].append(article)
+        else:
+            ungrouped.append(article)
+    
+    # Select best article per company (longest summary = most info)
+    representative_articles = []
+    articles_grouped = 0
+    
+    for company_key, articles in company_groups.items():
+        if len(articles) > 1:
+            # Pick the one with longest summary (most info for Claude)
+            best = max(articles, key=lambda a: len(a.get('summary', '')))
+            best['_company_group'] = company_key
+            best['_group_size'] = len(articles)
+            best['_related_urls'] = [a.get('link', '') for a in articles if a != best]
+            representative_articles.append(best)
+            articles_grouped += len(articles) - 1
+        else:
+            representative_articles.append(articles[0])
+    
+    # Add ungrouped articles
+    representative_articles.extend(ungrouped)
+    
+    print(f"  Companies detected: {len(company_groups)}")
+    print(f"  Articles grouped (skipped): {articles_grouped}")
+    print(f"  → Analyzing: {len(representative_articles)} (was {len(to_analyze)})")
+    
+    grouping_savings = articles_grouped * 0.015
+    print(f"  → Additional API savings: ${grouping_savings:.2f}")
+    
+    # ==================================================
     # STAGE 2: CLAUDE ANALYSIS (parallel)
     # ==================================================
     print(f"\n{'='*40}")
-    print(f"STAGE 2: Claude Analysis ({len(to_analyze)} articles)")
+    print(f"STAGE 2: Claude Analysis ({len(representative_articles)} articles)")
     print(f"{'='*40}")
     
-    if not to_analyze:
+    if not representative_articles:
         print("  No articles to analyze")
         return
     
     print(f"  Analyzing with {MAX_CONCURRENT_CLAUDE_CALLS} parallel workers...")
     
-    results = analyze_articles_parallel(anthropic, to_analyze, dedup, run_state)
+    results = analyze_articles_parallel(anthropic, representative_articles, dedup, run_state)
     print(f"  Relevant results: {len(results)}")
     
     # ==================================================

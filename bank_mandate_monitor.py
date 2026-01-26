@@ -387,8 +387,45 @@ def fetch_rss_mandates() -> list:
         "pwc": "PwC",
     }
     
+    # Date parsing helper
+    def parse_date(date_str):
+        if not date_str:
+            return None
+        formats = [
+            "%a, %d %b %Y %H:%M:%S %z",
+            "%a, %d %b %Y %H:%M:%S %Z",
+            "%Y-%m-%dT%H:%M:%S%z",
+            "%Y-%m-%dT%H:%M:%SZ",
+            "%Y-%m-%d",
+        ]
+        for fmt in formats:
+            try:
+                dt = datetime.strptime(date_str.strip(), fmt)
+                if dt.tzinfo:
+                    dt = dt.replace(tzinfo=None)
+                return dt
+            except ValueError:
+                continue
+        try:
+            from email.utils import parsedate_to_datetime
+            dt = parsedate_to_datetime(date_str)
+            return dt.replace(tzinfo=None)
+        except:
+            pass
+        return None
+    
+    def is_within_24h(date_str):
+        if not date_str:
+            return True
+        pub_date = parse_date(date_str)
+        if not pub_date:
+            return True
+        age = datetime.now() - pub_date
+        return age.total_seconds() < 36 * 3600
+    
     signals = []
     seen_urls = set()
+    skipped_old = 0
     
     print(f"\nFetching mandate signals from {len(BANK_NEWS_RSS)} RSS feeds...")
     
@@ -401,6 +438,13 @@ def fetch_rss_mandates() -> list:
                 if link in seen_urls:
                     continue
                 seen_urls.add(link)
+                
+                published = entry.get("published", "")
+                
+                # HARD FILTER: Skip articles older than 24h
+                if not is_within_24h(published):
+                    skipped_old += 1
+                    continue
                 
                 title = entry.get("title", "")
                 
@@ -422,7 +466,7 @@ def fetch_rss_mandates() -> list:
                     "signal_type": "Adviser Appointed",
                     "source": "News (Bank Mandate)",
                     "link": link,
-                    "date": entry.get("published", ""),
+                    "date": published,
                     "is_carveout": is_carveout_related(title),
                 }
                 signals.append(signal)
@@ -430,7 +474,7 @@ def fetch_rss_mandates() -> list:
         except Exception as e:
             print(f"  Warning: Failed to fetch RSS feed: {e}")
     
-    print(f"  Found {len(signals)} mandate signals from RSS")
+    print(f"  Found {len(signals)} mandate signals from RSS (skipped {skipped_old} older than 24h)")
     
     return signals
 

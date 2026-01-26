@@ -251,8 +251,8 @@ TERTIARY_KEYWORDS = [
 # Presence of PE firms suggests relevant deal activity
 # ==========================================================================
 
-PE_INDICATORS = [
-    # Generic
+# Generic PE terms (always included)
+PE_GENERIC_TERMS = [
     "private equity",
     "pe firm",
     "pe fund",
@@ -261,63 +261,19 @@ PE_INDICATORS = [
     "lbo",
     "sponsor",
     "financial sponsor",
-    
-    # Major PE firms (presence indicates relevant deal)
-    "kkr",
-    "blackstone",
-    "carlyle",
-    "apollo",
-    "tpg",
-    "warburg pincus",
-    "advent international",
-    "bain capital",
-    "thoma bravo",
-    "vista equity",
-    "silver lake",
-    "hellman & friedman",
-    "leonard green",
-    "platinum equity",
-    "cerberus",
-    "clayton dubilier",
-    "cd&r",
-    "permira",
-    "cinven",
-    "eqt",
-    "cvc capital",
-    "bc partners",
-    "apax",
-    "pai partners",
-    "bridgepoint",
-    "montagu",
-    "hig capital",
-    "h.i.g.",
-    "triton",
-    "ardian",
-    "general atlantic",
-    "insight partners",
-    "francisco partners",
-    "american securities",
-    "genstar",
-    "gtcr",
-    "madison dearborn",
-    "welsh carson",
-    "providence equity",
-    "veritas capital",
-    "stone point",
-    "clearlake",
-    "roark capital",
-    "golden gate",
-    "american industrial partners",
-    "one rock",
-    "kps capital",
-    "atlas holdings",
-    "sk capital",
-    "sterling group",
-    "stellex",
-    "opengate",
-    "aurelius",
-    "inflexion",
 ]
+
+# PE firm names imported from target_accounts.py (single source of truth)
+def _load_pe_firms():
+    """Load PE firm names from target_accounts.py and convert to lowercase for matching"""
+    try:
+        from target_accounts import TARGET_PE_FIRMS
+        return [firm.lower() for firm in TARGET_PE_FIRMS]
+    except ImportError:
+        # Fallback if target_accounts.py not available
+        return []
+
+PE_INDICATORS = PE_GENERIC_TERMS + _load_pe_firms()
 
 
 # ==========================================================================

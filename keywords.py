@@ -299,6 +299,7 @@ NEGATIVE_KEYWORDS = [
     "seed round",
     "growth equity",
     "growth funding",
+    "growth investment",
     "fundraising",
     "funding round",
     

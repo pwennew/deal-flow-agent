@@ -51,6 +51,101 @@ ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY")
 MAX_CONCURRENT_CLAUDE_CALLS = 5
 CLAUDE_MODEL = "claude-sonnet-4-20250514"
 
+# State file for caching and persistence
+STATE_FILE = os.environ.get("STATE_FILE", "/tmp/deal_flow_state.json")
+CACHE_TTL_HOURS = 48  # How long to cache Claude responses
+
+
+class RunState:
+    """
+    Manages run state for caching and crash recovery.
+    
+    Stores:
+    - Processed URL hashes (cross-run dedup)
+    - Claude response cache (avoid re-analysis)
+    - Run metadata (for debugging)
+    """
+    
+    def __init__(self, state_file: str = STATE_FILE):
+        self.state_file = state_file
+        self.state = {
+            "processed_urls": {},  # url_hash -> timestamp
+            "claude_cache": {},    # url_hash -> {response, timestamp}
+            "last_run": None,
+            "runs_count": 0,
+        }
+        self.load()
+    
+    def load(self):
+        """Load state from file if exists"""
+        try:
+            if os.path.exists(self.state_file):
+                with open(self.state_file, 'r') as f:
+                    loaded = json.load(f)
+                    self.state.update(loaded)
+                    self._cleanup_old_entries()
+        except Exception as e:
+            print(f"Warning: Could not load state file: {e}")
+    
+    def save(self):
+        """Save state to file"""
+        try:
+            self.state["last_run"] = datetime.now().isoformat()
+            self.state["runs_count"] = self.state.get("runs_count", 0) + 1
+            
+            with open(self.state_file, 'w') as f:
+                json.dump(self.state, f, indent=2)
+        except Exception as e:
+            print(f"Warning: Could not save state file: {e}")
+    
+    def _cleanup_old_entries(self):
+        """Remove entries older than CACHE_TTL_HOURS"""
+        cutoff = datetime.now() - timedelta(hours=CACHE_TTL_HOURS)
+        cutoff_str = cutoff.isoformat()
+        
+        # Clean processed URLs
+        self.state["processed_urls"] = {
+            k: v for k, v in self.state.get("processed_urls", {}).items()
+            if v > cutoff_str
+        }
+        
+        # Clean Claude cache
+        self.state["claude_cache"] = {
+            k: v for k, v in self.state.get("claude_cache", {}).items()
+            if v.get("timestamp", "") > cutoff_str
+        }
+    
+    def is_url_processed(self, url_hash: str) -> bool:
+        """Check if URL was processed in recent runs"""
+        return url_hash in self.state.get("processed_urls", {})
+    
+    def mark_url_processed(self, url_hash: str):
+        """Mark URL as processed"""
+        self.state.setdefault("processed_urls", {})[url_hash] = datetime.now().isoformat()
+    
+    def get_cached_response(self, url_hash: str) -> Optional[dict]:
+        """Get cached Claude response if exists and not expired"""
+        cache = self.state.get("claude_cache", {}).get(url_hash)
+        if cache:
+            return cache.get("response")
+        return None
+    
+    def cache_response(self, url_hash: str, response: dict):
+        """Cache Claude response"""
+        self.state.setdefault("claude_cache", {})[url_hash] = {
+            "response": response,
+            "timestamp": datetime.now().isoformat(),
+        }
+    
+    def get_stats(self) -> dict:
+        """Get state statistics"""
+        return {
+            "processed_urls": len(self.state.get("processed_urls", {})),
+            "cached_responses": len(self.state.get("claude_cache", {})),
+            "runs_count": self.state.get("runs_count", 0),
+            "last_run": self.state.get("last_run"),
+        }
+
 # Build PE firm name patterns for matching
 PE_FIRM_PATTERNS = [firm.lower() for firm in TARGET_PE_FIRMS]
 
@@ -289,8 +384,15 @@ def fetch_rss_articles(dedup: DedupManager) -> list:
     return articles
 
 
-def analyze_article_with_claude(client: Anthropic, article: dict) -> Optional[dict]:
+def analyze_article_with_claude(client: Anthropic, article: dict, run_state: Optional['RunState'] = None) -> Optional[dict]:
     """Use Claude to extract structured deal information from article"""
+    
+    # Check cache first
+    url_hash = compute_url_hash(article.get('link', ''))
+    if run_state:
+        cached = run_state.get_cached_response(url_hash)
+        if cached:
+            return cached if cached.get("is_relevant") else None
     
     prompt = f"""Analyze this news article for potential M&A opportunities relevant to a carve-out/integration consultant targeting PE buyers in the US, UK and Europe.
 
@@ -381,6 +483,10 @@ Return ONLY valid JSON, no other text."""
         
         result = json.loads(response_text)
         
+        # Cache the result
+        if run_state:
+            run_state.cache_response(url_hash, result)
+        
         if result.get("is_relevant") and result.get("confidence") in ["high", "medium"]:
             return result
         return None
@@ -390,28 +496,56 @@ Return ONLY valid JSON, no other text."""
         return None
 
 
-def analyze_articles_parallel(client: Anthropic, articles: list) -> list:
+def analyze_articles_parallel(client: Anthropic, articles: list, dedup: DedupManager, run_state: Optional['RunState'] = None) -> list:
     """
     Analyze multiple articles in parallel using ThreadPoolExecutor.
     
+    First groups articles by company to reduce duplicate analysis.
+    Uses cache to avoid re-analyzing previously seen articles.
     Returns list of (article, analysis) tuples for relevant articles.
     """
-    results = []
+    # Group by company first to reduce duplicates
+    print(f"  Grouping {len(articles)} articles by company...")
+    representatives = dedup.get_representative_articles(articles)
+    grouped_count = len(articles) - len(representatives)
+    if grouped_count > 0:
+        print(f"  → Reduced to {len(representatives)} representatives ({grouped_count} grouped)")
     
-    with ThreadPoolExecutor(max_workers=MAX_CONCURRENT_CLAUDE_CALLS) as executor:
-        future_to_article = {
-            executor.submit(analyze_article_with_claude, client, article): article
-            for article in articles
-        }
+    # Check cache for already-analyzed articles
+    to_analyze = []
+    cached_results = []
+    
+    if run_state:
+        for article in representatives:
+            url_hash = compute_url_hash(article.get('link', ''))
+            cached = run_state.get_cached_response(url_hash)
+            if cached and cached.get("is_relevant"):
+                cached_results.append((article, cached))
+            else:
+                to_analyze.append(article)
         
-        for future in as_completed(future_to_article):
-            article = future_to_article[future]
-            try:
-                analysis = future.result()
-                if analysis:
-                    results.append((article, analysis))
-            except Exception as e:
-                print(f"Warning: Analysis failed for {article.get('title', '')[:50]}: {e}")
+        if cached_results:
+            print(f"  → {len(cached_results)} from cache, {len(to_analyze)} need analysis")
+    else:
+        to_analyze = representatives
+    
+    results = cached_results.copy()
+    
+    if to_analyze:
+        with ThreadPoolExecutor(max_workers=MAX_CONCURRENT_CLAUDE_CALLS) as executor:
+            future_to_article = {
+                executor.submit(analyze_article_with_claude, client, article, run_state): article
+                for article in to_analyze
+            }
+            
+            for future in as_completed(future_to_article):
+                article = future_to_article[future]
+                try:
+                    analysis = future.result()
+                    if analysis:
+                        results.append((article, analysis))
+                except Exception as e:
+                    print(f"Warning: Analysis failed for {article.get('title', '')[:50]}: {e}")
     
     return results
 
@@ -624,7 +758,7 @@ def run_agent(include_pe_firms: bool = True, include_sec: bool = True,
     print(f"Deal Flow Agent v5.0 - {datetime.now().strftime('%Y-%m-%d %H:%M')}")
     print(f"{'='*60}")
     print(f"Sources: RSS{'+ PE Firms' if include_pe_firms else ''}{'+ SEC' if include_sec else ''}{'+ Bank Mandates' if include_bank_mandates else ''}")
-    print(f"Improvements: Two-stage classifier, Content dedup, Parallel analysis")
+    print(f"Improvements: Two-stage classifier, Content dedup, Parallel analysis, Caching")
     print(f"{'='*60}\n")
     
     # Validate configuration
@@ -635,6 +769,14 @@ def run_agent(include_pe_firms: bool = True, include_sec: bool = True,
     # Initialize
     anthropic = Anthropic(api_key=ANTHROPIC_API_KEY)
     dedup = DedupManager()
+    run_state = RunState()
+    
+    # Show state info
+    state_stats = run_state.get_stats()
+    if state_stats["runs_count"] > 0:
+        print(f"State loaded: {state_stats['cached_responses']} cached responses, {state_stats['processed_urls']} processed URLs")
+        print(f"Last run: {state_stats['last_run']}")
+        print()
     
     # Fetch existing entries
     print("Fetching existing entries from Notion...")
@@ -751,7 +893,7 @@ def run_agent(include_pe_firms: bool = True, include_sec: bool = True,
     
     print(f"  Analyzing with {MAX_CONCURRENT_CLAUDE_CALLS} parallel workers...")
     
-    results = analyze_articles_parallel(anthropic, to_analyze)
+    results = analyze_articles_parallel(anthropic, to_analyze, dedup, run_state)
     print(f"  Relevant results: {len(results)}")
     
     # ==================================================
@@ -792,6 +934,10 @@ def run_agent(include_pe_firms: bool = True, include_sec: bool = True,
     # ==================================================
     # SUMMARY
     # ==================================================
+    
+    # Save state for next run
+    run_state.save()
+    
     print(f"\n{'='*60}")
     print("SUMMARY")
     print(f"{'='*60}")
@@ -808,6 +954,12 @@ def run_agent(include_pe_firms: bool = True, include_sec: bool = True,
     print(f"  URL duplicates: {dedup_stats['url_dupes']}")
     print(f"  Content duplicates: {dedup_stats['content_dupes']}")
     print(f"  Deal duplicates: {dedup_stats['deal_dupes']}")
+    
+    state_stats = run_state.get_stats()
+    print(f"\nCache stats:")
+    print(f"  Cached responses: {state_stats['cached_responses']}")
+    print(f"  Processed URLs: {state_stats['processed_urls']}")
+    print(f"  Total runs: {state_stats['runs_count']}")
     print(f"{'='*60}\n")
 
 

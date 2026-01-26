@@ -25,13 +25,12 @@ import asyncio
 from datetime import datetime, timedelta
 from typing import Optional
 from concurrent.futures import ThreadPoolExecutor, as_completed
-import feedparser
 import requests
 from notion_client import Client
 from anthropic import Anthropic
 from target_accounts import TARGET_PE_FIRMS, passes_tier2_filter, FILTERED_SIGNAL_TYPES
 
-# Import new modules
+# Import modular components
 from dedup import (
     DedupManager,
     compute_deal_hash,
@@ -49,6 +48,10 @@ from cache import (
     CacheManager,
     get_cache_key,
     get_cache_paths,
+)
+from rss_monitor import (
+    fetch_rss_articles,
+    get_feed_count,
 )
 
 # Configuration
@@ -158,45 +161,6 @@ class RunState:
 # Build PE firm name patterns for matching
 PE_FIRM_PATTERNS = [firm.lower() for firm in TARGET_PE_FIRMS]
 
-# News sources to monitor
-# Extended to when:2d for 48-hour lookback with overlap detection
-RSS_FEEDS = [
-    # ========== DIRECT PE/M&A NEWS SOURCES ==========
-    "https://www.pehub.com/feed/",
-    "https://www.prnewswire.com/rss/financial-services-latest-news/mergers-and-acquisitions-list.rss",
-    "https://feed.businesswire.com/rss/home/?rss=G1QFDERJXkJeEFpRWw==",
-    
-    # ========== PREMIUM JOURNALISM (via Google News) ==========
-    "https://news.google.com/rss/search?q=site:ft.com+%22private+equity%22+acquisition+OR+divestiture+OR+spin-off+when:2d&hl=en-US&gl=US&ceid=US:en",
-    "https://news.google.com/rss/search?q=site:wsj.com+spin-off+OR+divestiture+OR+carve-out+when:2d&hl=en-US&gl=US&ceid=US:en",
-    "https://news.google.com/rss/search?q=site:bloomberg.com+carve-out+OR+divestiture+OR+spin-off+%22private+equity%22+when:2d&hl=en-US&gl=US&ceid=US:en",
-    "https://news.google.com/rss/search?q=site:reuters.com+divestiture+OR+spin-off+%22private+equity%22+when:2d&hl=en-US&gl=US&ceid=US:en",
-    
-    # ========== SELL-SIDE SIGNALS ==========
-    "https://news.google.com/rss/search?q=corporate+spin-off+OR+divestiture+OR+%22strategic+review%22+when:2d&hl=en-US&gl=US&ceid=US:en",
-    "https://news.google.com/rss/search?q=company+%22exploring+sale%22+OR+%22weighing+sale%22+when:2d&hl=en-US&gl=US&ceid=US:en",
-    "https://news.google.com/rss/search?q=%22strategic+alternatives%22+division+OR+unit+when:2d&hl=en-US&gl=US&ceid=US:en",
-    "https://news.google.com/rss/search?q=%22hired+Goldman%22+OR+%22hired+Morgan+Stanley%22+OR+%22hired+JPMorgan%22+sale+OR+divestiture+when:2d&hl=en-US&gl=US&ceid=US:en",
-    "https://news.google.com/rss/search?q=%22hiring+advisers%22+OR+%22appointed+advisers%22+sale+OR+strategic+when:2d&hl=en-US&gl=US&ceid=US:en",
-    "https://news.google.com/rss/search?q=%22non-core%22+sale+OR+divestiture+OR+%22portfolio+review%22+when:2d&hl=en-US&gl=US&ceid=US:en",
-    "https://news.google.com/rss/search?q=%22activist+investor%22+spin-off+OR+divestiture+OR+%22break+up%22+when:2d&hl=en-US&gl=US&ceid=US:en",
-    
-    # ========== PE BUYER ACTIVITY ==========
-    "https://news.google.com/rss/search?q=%22private+equity%22+%22in+talks%22+OR+%22circling%22+OR+%22bidding%22+when:2d&hl=en-US&gl=US&ceid=US:en",
-    "https://news.google.com/rss/search?q=%22carve-out%22+private+equity+when:2d&hl=en-US&gl=US&ceid=US:en",
-    "https://news.google.com/rss/search?q=KKR+OR+Blackstone+OR+Carlyle+OR+Apollo+%22acquisition%22+OR+%22buy%22+when:2d&hl=en-US&gl=US&ceid=US:en",
-    "https://news.google.com/rss/search?q=EQT+OR+CVC+OR+TPG+OR+%22Bain+Capital%22+%22acquisition%22+when:2d&hl=en-US&gl=US&ceid=US:en",
-    "https://news.google.com/rss/search?q=%22Thoma+Bravo%22+OR+%22Vista+Equity%22+OR+%22Silver+Lake%22+acquisition+when:2d&hl=en-US&gl=US&ceid=US:en",
-    "https://news.google.com/rss/search?q=%22H.I.G.%22+OR+%22HIG+Capital%22+OR+%22KPS+Capital%22+OR+Aurelius+acquisition+when:2d&hl=en-US&gl=US&ceid=US:en",
-    "https://news.google.com/rss/search?q=%22KPS+Capital%22+OR+%22One+Rock%22+OR+%22American+Industrial+Partners%22+OR+%22Atlas+Holdings%22+acquisition+OR+carve-out+when:2d&hl=en-US&gl=US&ceid=US:en",
-    "https://news.google.com/rss/search?q=%22Platinum+Equity%22+OR+%22OpenGate+Capital%22+OR+%22Sterling+Group%22+acquisition+OR+carve-out+when:2d&hl=en-US&gl=US&ceid=US:en",
-    
-    # ========== UK/EUROPE ==========
-    "https://news.google.com/rss/search?q=divestiture+OR+spin-off+UK+OR+Europe+when:2d&hl=en-GB&gl=GB&ceid=GB:en",
-    "https://news.google.com/rss/search?q=%22private+equity%22+acquisition+UK+OR+Europe+when:2d&hl=en-GB&gl=GB&ceid=GB:en",
-    "https://news.google.com/rss/search?q=Cinven+OR+Permira+OR+%22BC+Partners%22+OR+%22PAI+Partners%22+acquisition+when:2d&hl=en-GB&gl=GB&ceid=GB:en",
-    "https://news.google.com/rss/search?q=Inflexion+OR+%22Triton+Partners%22+OR+%22Nordic+Capital%22+acquisition+when:2d&hl=en-GB&gl=GB&ceid=GB:en",
-]
 
 
 def get_existing_entries_from_db() -> tuple[set, list]:
@@ -289,108 +253,6 @@ def extract_company_key(title: str) -> str:
     if parts:
         return normalize_title(parts[0])
     return normalize_title(title)
-
-
-def parse_published_date(date_str: str) -> Optional[datetime]:
-    """Parse various date formats from RSS feeds"""
-    if not date_str:
-        return None
-    
-    formats = [
-        "%a, %d %b %Y %H:%M:%S %z",
-        "%a, %d %b %Y %H:%M:%S %Z",
-        "%Y-%m-%dT%H:%M:%S%z",
-        "%Y-%m-%dT%H:%M:%SZ",
-        "%Y-%m-%d %H:%M:%S",
-        "%Y-%m-%d",
-        "%d %b %Y",
-        "%B %d, %Y",
-    ]
-    
-    for fmt in formats:
-        try:
-            dt = datetime.strptime(date_str.strip(), fmt)
-            if dt.tzinfo:
-                dt = dt.replace(tzinfo=None)
-            return dt
-        except ValueError:
-            continue
-    
-    try:
-        from email.utils import parsedate_to_datetime
-        dt = parsedate_to_datetime(date_str)
-        return dt.replace(tzinfo=None)
-    except:
-        pass
-    
-    return None
-
-
-def is_within_48h(date_str: str) -> bool:
-    """Check if published date is within last 48 hours (extended from 24h)"""
-    if not date_str:
-        return True
-    
-    pub_date = parse_published_date(date_str)
-    if not pub_date:
-        return True
-    
-    now = datetime.now()
-    age = now - pub_date
-    
-    return age.total_seconds() < 48 * 3600
-
-
-def fetch_rss_articles(dedup: DedupManager) -> list:
-    """Fetch articles from all RSS feeds with deduplication"""
-    articles = []
-    skipped_old = 0
-    skipped_dedup = 0
-    
-    for feed_url in RSS_FEEDS:
-        try:
-            feed = feedparser.parse(feed_url)
-            for entry in feed.entries[:20]:
-                link = entry.get("link", "")
-                
-                # Check URL dedup first (fast)
-                if dedup.is_url_duplicate(link):
-                    skipped_dedup += 1
-                    continue
-                
-                published = entry.get("published", "")
-                
-                # HARD FILTER: Skip articles older than 48h
-                if not is_within_48h(published):
-                    skipped_old += 1
-                    continue
-                
-                title = entry.get("title", "")
-                summary = entry.get("summary", entry.get("description", ""))
-                
-                # Content dedup (catches syndicated articles)
-                if dedup.is_content_duplicate(title, summary):
-                    skipped_dedup += 1
-                    continue
-                
-                article = {
-                    "title": title,
-                    "link": link,
-                    "summary": summary,
-                    "published": published,
-                    "source": feed.feed.get("title", feed_url),
-                }
-                
-                # Mark as seen
-                dedup.mark_processed(article)
-                articles.append(article)
-                
-        except Exception as e:
-            print(f"Warning: Failed to fetch {feed_url}: {e}")
-    
-    print(f"Fetched {len(articles)} articles from {len(RSS_FEEDS)} feeds")
-    print(f"  Skipped: {skipped_old} old, {skipped_dedup} duplicates")
-    return articles
 
 
 def analyze_article_with_claude(client: Anthropic, article: dict, run_state: Optional['RunState'] = None) -> Optional[dict]:

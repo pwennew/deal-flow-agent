@@ -162,7 +162,7 @@ def normalize_company_name(name: str) -> str:
     suffixes = [
         ' plc', ' ltd', ' limited', ' inc', ' incorporated', ' corp', ' corporation',
         ' co', ' company', ' group', ' holdings', ' ag', ' sa', ' nv', ' se',
-        ' llc', ' llp', ' lp',
+        ' llc', ' llp', ' lp', ' international', ' intl',
     ]
     for suffix in suffixes:
         if n.endswith(suffix):
@@ -171,6 +171,11 @@ def normalize_company_name(name: str) -> str:
     # Remove leading "the"
     if n.startswith('the '):
         n = n[4:]
+    
+    # Standardize common variations
+    n = n.replace(' north american ', ' north america ')
+    n = n.replace(' north american', ' north america')
+    n = n.replace('north american ', 'north america ')
     
     # Check aliases again after normalization
     if n in COMPANY_ALIASES:
@@ -420,6 +425,9 @@ class DedupManager:
         # URL hashes from Notion (cross-run dedup)
         self.existing_url_hashes: set[str] = set()
         
+        # Company+division pairs from Notion (fuzzy match dedup)
+        self.existing_company_divisions: list[tuple[str, str]] = []
+        
         # Company groups for batching
         self.company_groups: dict[str, ArticleGroup] = {}
         
@@ -428,6 +436,7 @@ class DedupManager:
             'url_dupes': 0,
             'content_dupes': 0,
             'deal_dupes': 0,
+            'fuzzy_dupes': 0,
             'total_processed': 0,
         }
     
@@ -438,12 +447,80 @@ class DedupManager:
         Expects entries with:
         - 'deal_hash': str (Deal Hash column)
         - 'url_hash': str (Source URL Hash column)
+        - 'company': str (Company name, optional)
+        - 'division': str (Division name, optional)
         """
         for entry in entries:
             if deal_hash := entry.get('deal_hash'):
                 self.existing_deal_hashes.add(deal_hash)
             if url_hash := entry.get('url_hash'):
                 self.existing_url_hashes.add(url_hash)
+            # Load company+division for fuzzy matching
+            company = entry.get('company', '')
+            division = entry.get('division', '')
+            if company or division:
+                self.existing_company_divisions.append((
+                    normalize_company_name(company),
+                    normalize_company_name(division)
+                ))
+    
+    def is_fuzzy_duplicate(self, company: str, division: str) -> bool:
+        """
+        Check if company+division fuzzy-matches an existing entry.
+        Catches cases where Claude returns slightly different names.
+        """
+        if not company and not division:
+            return False
+        
+        company_norm = normalize_company_name(company)
+        division_norm = normalize_company_name(division)
+        
+        for existing_company, existing_division in self.existing_company_divisions:
+            # Check if company names are similar
+            company_match = (
+                company_norm == existing_company or
+                company_norm in existing_company or
+                existing_company in company_norm or
+                self._fuzzy_match(company_norm, existing_company)
+            )
+            
+            # Check if division names are similar
+            division_match = (
+                division_norm == existing_division or
+                division_norm in existing_division or
+                existing_division in division_norm or
+                self._fuzzy_match(division_norm, existing_division)
+            )
+            
+            if company_match and division_match:
+                self.stats['fuzzy_dupes'] += 1
+                return True
+        
+        return False
+    
+    def _fuzzy_match(self, s1: str, s2: str, threshold: float = 0.85) -> bool:
+        """Simple fuzzy match using character-level Jaccard similarity"""
+        if not s1 or not s2:
+            return False
+        
+        # Use word-level comparison
+        words1 = set(s1.lower().split())
+        words2 = set(s2.lower().split())
+        
+        if not words1 or not words2:
+            return False
+        
+        intersection = len(words1 & words2)
+        union = len(words1 | words2)
+        
+        return (intersection / union) >= threshold if union > 0 else False
+    
+    def add_company_division(self, company: str, division: str):
+        """Add a company+division pair to the tracking list (after successful write)"""
+        self.existing_company_divisions.append((
+            normalize_company_name(company),
+            normalize_company_name(division)
+        ))
     
     def is_url_duplicate(self, url: str) -> bool:
         """Check if URL has been seen (this run or in Notion)"""

@@ -316,10 +316,65 @@ def init_notion_database(notion: Client, database_id: str):
         print(f"Warning: Could not connect to database: {e}")
 
 
+def parse_published_date(date_str: str) -> Optional[datetime]:
+    """Parse various date formats from RSS feeds"""
+    if not date_str:
+        return None
+    
+    # Common RSS date formats
+    formats = [
+        "%a, %d %b %Y %H:%M:%S %z",      # RFC 822: "Sun, 26 Jan 2025 10:30:00 +0000"
+        "%a, %d %b %Y %H:%M:%S %Z",      # With timezone name
+        "%Y-%m-%dT%H:%M:%S%z",           # ISO 8601
+        "%Y-%m-%dT%H:%M:%SZ",            # ISO 8601 UTC
+        "%Y-%m-%d %H:%M:%S",             # Simple datetime
+        "%Y-%m-%d",                       # Date only
+        "%d %b %Y",                       # "26 Jan 2025"
+        "%B %d, %Y",                      # "January 26, 2025"
+    ]
+    
+    for fmt in formats:
+        try:
+            dt = datetime.strptime(date_str.strip(), fmt)
+            # Make timezone-naive for comparison
+            if dt.tzinfo:
+                dt = dt.replace(tzinfo=None)
+            return dt
+        except ValueError:
+            continue
+    
+    # Try dateutil as fallback
+    try:
+        from email.utils import parsedate_to_datetime
+        dt = parsedate_to_datetime(date_str)
+        return dt.replace(tzinfo=None)
+    except:
+        pass
+    
+    return None
+
+
+def is_within_24h(date_str: str) -> bool:
+    """Check if published date is within last 24 hours"""
+    if not date_str:
+        return True  # If no date, include it (let other filters handle)
+    
+    pub_date = parse_published_date(date_str)
+    if not pub_date:
+        return True  # If can't parse, include it
+    
+    now = datetime.now()
+    age = now - pub_date
+    
+    # Allow up to 36 hours to account for timezone differences and processing delays
+    return age.total_seconds() < 36 * 3600
+
+
 def fetch_rss_articles() -> list:
-    """Fetch articles from all RSS feeds with URL deduplication"""
+    """Fetch articles from all RSS feeds with URL deduplication and 24h filter"""
     articles = []
     seen_urls = set()
+    skipped_old = 0
     
     for feed_url in RSS_FEEDS:
         try:
@@ -331,18 +386,25 @@ def fetch_rss_articles() -> list:
                     continue
                 seen_urls.add(link)
                 
+                published = entry.get("published", "")
+                
+                # HARD FILTER: Skip articles older than 24h
+                if not is_within_24h(published):
+                    skipped_old += 1
+                    continue
+                
                 article = {
                     "title": entry.get("title", ""),
                     "link": link,
                     "summary": entry.get("summary", entry.get("description", "")),
-                    "published": entry.get("published", ""),
+                    "published": published,
                     "source": feed.feed.get("title", feed_url),
                 }
                 articles.append(article)
         except Exception as e:
             print(f"Warning: Failed to fetch {feed_url}: {e}")
     
-    print(f"Fetched {len(articles)} unique articles from {len(RSS_FEEDS)} feeds")
+    print(f"Fetched {len(articles)} articles from {len(RSS_FEEDS)} feeds (skipped {skipped_old} older than 24h)")
     return articles
 
 

@@ -265,78 +265,71 @@ def analyze_article_with_claude(client: Anthropic, article: dict, run_state: Opt
         if cached:
             return cached if cached.get("is_relevant") else None
     
-    prompt = f"""Analyze this news article for potential M&A opportunities relevant to a carve-out/integration consultant targeting PE buyers in the US, UK and Europe.
+    prompt = f"""Analyze this news article for carve-out opportunities relevant to a separation consultant.
 
 ARTICLE:
 Title: {article['title']}
 Summary: {article['summary']}
 Source: {article['source']}
 
-TASK:
-Determine if this article describes a GENUINE CARVE-OUT OPPORTUNITY:
-A) A corporate division, business unit, or subsidiary being sold or spun off (SELL-SIDE)
-B) A private equity firm circling, bidding on, or acquiring a specific division/business (BUY-SIDE)
+WHAT IS A CARVE-OUT?
+A carve-out is when a DIVISION, UNIT or SEGMENT is separated from its PARENT COMPANY. The key test:
+- Does the asset share IT systems, back-office, manufacturing, or operations with the parent?
+- Will there be a Transition Services Agreement (TSA) needed post-sale?
+- Is there operational "entanglement" that needs to be unwound?
 
-CRITICAL: A carve-out is the separation of a DIVISION or UNIT from a larger company. It is NOT:
-- A whole company being sold (unless PE is acquiring to then carve out parts)
-- An IPO or public offering
-- A minority stake sale
-- A merger of equals
+If YES to any of these → it's a carve-out (RELEVANT)
+If NO to all → it's just an asset sale (NOT RELEVANT)
 
-If YES (genuine carve-out opportunity), extract:
+EXPLICITLY EXCLUDE (return is_relevant: false):
+1. SECONDARY BUYOUTS: PE firm selling portfolio company to another PE firm. These are clean transfers - the company already operates independently.
+   Example: "Blackstone acquires X from Morgan Stanley Capital Partners" → NOT a carve-out
+   
+2. STANDALONE BUSINESS SALES: A company selling an independent subsidiary/business that already operates on its own systems.
+   Example: "NatWest sells fintech Cushon" → If Cushon runs independently, NOT a carve-out
+   
+3. WHOLE COMPANY ACQUISITIONS: PE buying an entire independent company (not a division of something larger).
+   Example: "KKR acquires ABC Corp" → NOT a carve-out unless ABC is being carved from a parent
+
+4. IPOs, minority stakes, venture capital, growth equity
+
+5. Geographies outside US/UK/Europe
+
+EXPLICITLY INCLUDE (return is_relevant: true):
+1. Corporate parent selling/spinning off a DIVISION that shares infrastructure
+   Example: "Siemens carving out industrial motors division" → RELEVANT
+   
+2. Conglomerate divesting a business unit that uses shared services
+   Example: "3M separating healthcare business" → RELEVANT
+   
+3. Strategic review of a division within a larger corporate
+   Example: "Honeywell exploring sale of aerospace segment" → RELEVANT
+
+If RELEVANT, extract:
 {{
     "is_relevant": true,
-    "company": "Parent company name",
+    "company": "Parent company name (the seller)",
     "division": "Division or unit being carved out",
     "signal_type": "Strategic Review" | "Adviser Appointed" | "PE Interest" | "PE In Talks" | "PE Bid Submitted" | "Definitive Agreement" | "Deal Completed",
     "pe_buyer": "Name of PE firm involved (if any, otherwise null)",
-    "likely_buyers": "Comma-separated list of PE firms likely to be interested based on their sector focus and deal size (e.g. 'KPS Capital, Platinum Equity, One Rock'). Use your knowledge of PE firm strategies. Null if unknown.",
-    "size_estimate": "Revenue or deal value if mentioned (e.g. '$500M revenue' or '$1.2B EV')",
-    "ev_low": "Low end of estimated enterprise value in millions as integer (e.g. 500 for $500M). Null if cannot estimate.",
-    "ev_high": "High end of estimated enterprise value in millions as integer (e.g. 800 for $800M). Null if cannot estimate.",
+    "likely_buyers": "PE firms likely interested based on sector focus (e.g. 'KPS Capital, Platinum Equity'). Null if unknown.",
+    "size_estimate": "Revenue or deal value if mentioned",
+    "ev_low": "Low EV estimate in millions as integer. Null if unknown.",
+    "ev_high": "High EV estimate in millions as integer. Null if unknown.",
     "sector": "TMT" | "Financial Services" | "Healthcare" | "Consumer" | "Industrials" | "Retail" | "Technology" | "Other",
-    "geography": "US" | "UK" | "Europe" (primary geography of the TARGET ASSET, not the parent),
-    "complexity": "Low" | "Medium" | "High" | "Very High" (based on: cross-border operations, IT/ERP entanglement, manufacturing footprint, TSA likely duration),
-    "key_quote": "Most important sentence signaling the deal",
-    "buyer_intelligence": "Brief note on why this might interest PE buyers and what the value creation angle could be",
-    "notes": "Any other relevant context from the article",
+    "geography": "US" | "UK" | "Europe",
+    "complexity": "Low" | "Medium" | "High" | "Very High",
+    "key_quote": "Key sentence from article",
+    "buyer_intelligence": "Why this interests PE buyers",
+    "notes": "Other context",
     "confidence": "high" | "medium" | "low"
 }}
 
-If NO, return:
+If NOT RELEVANT, return:
 {{
     "is_relevant": false,
-    "reason": "Brief reason"
+    "reason": "Brief reason (e.g. 'Secondary buyout - PE to PE sale' or 'Standalone business, no separation needed')"
 }}
-
-SIGNAL TYPE GUIDANCE:
-- "Strategic Review" = Company evaluating options or actively exploring sale
-- "Adviser Appointed" = Investment bank hired to run process
-- "PE Interest" = PE firms reported as interested or circling the asset
-- "PE In Talks" = Active negotiations between parties
-- "PE Bid Submitted" = Formal offer made
-- "Definitive Agreement" = Deal signed, awaiting regulatory approval or close
-- "Deal Completed" = Transaction has closed
-
-INCLUDE:
-- Corporate divisions being sold or spun off
-- Business units being divested
-- PE firms acquiring divisions from corporates
-- Strategic reviews of specific business units
-
-EXCLUDE (return is_relevant: false):
-- Whole company sales without PE involvement
-- Venture capital / growth equity investments
-- Public M&A without PE involvement
-- Academic/university spin-offs
-- Government/public sector divestitures
-- Geographies outside US/UK/Europe (China, LatAm, Middle East, Asia, Africa, Australia)
-- Real estate transactions
-- Very early speculation without substance
-- IPOs or public offerings
-- Minority stake sales
-
-GEOGRAPHY RULE: Only include if the TARGET ASSET (the thing being sold) is primarily in US, UK or Europe. Reject China, LatAm, APAC, Middle East, Africa.
 
 Return ONLY valid JSON, no other text."""
 

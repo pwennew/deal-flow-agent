@@ -50,6 +50,7 @@ RSS_FEEDS = [
     
     # ========== PE BUYER ACTIVITY ==========
     "https://news.google.com/rss/search?q=%22private+equity%22+%22in+talks%22+OR+%22circling%22+OR+%22bidding%22+when:2d&hl=en-US&gl=US&ceid=US:en",
+    "https://news.google.com/rss/search?q=%22private+equity%22+eyeing+OR+%22buyout+firms%22+eyeing+when:2d&hl=en-US&gl=US&ceid=US:en",
     "https://news.google.com/rss/search?q=%22carve-out%22+private+equity+when:2d&hl=en-US&gl=US&ceid=US:en",
     "https://news.google.com/rss/search?q=KKR+OR+Blackstone+OR+Carlyle+OR+Apollo+%22acquisition%22+OR+%22buy%22+when:2d&hl=en-US&gl=US&ceid=US:en",
     "https://news.google.com/rss/search?q=EQT+OR+CVC+OR+TPG+OR+%22Bain+Capital%22+%22acquisition%22+when:2d&hl=en-US&gl=US&ceid=US:en",

@@ -646,6 +646,23 @@ def run_agent(
     dedup = DedupManager()
     cache = CacheManager()
 
+    # Check for incomplete run to resume
+    if cache.has_incomplete_run():
+        run_state = cache.get_run_state()
+        logger.info(
+            "Found incomplete run to resume",
+            phase=run_state.phase,
+            articles_collected=run_state.articles_collected,
+            pending=len(run_state.pending_articles)
+        )
+        if not auto_confirm:
+            user_input = input("Resume previous run? [Y/n]: ").strip().lower()
+            if user_input == 'n':
+                cache.start_run()
+                logger.info("Starting fresh run")
+    else:
+        cache.start_run()
+
     # Show cache stats
     cache_stats = cache.get_stats()
     if cache_stats['response_cache']['size'] > 0:
@@ -743,6 +760,7 @@ def run_agent(
             logger.error("Bank mandate monitor error", exc=e)
 
     metrics.increment('articles_collected', len(all_articles))
+    cache.update_run("collecting", articles_collected=len(all_articles))
     print(f"\n{'='*40}")
     print(f"TOTAL COLLECTED: {len(all_articles)} articles")
     print(f"{'='*40}\n")
@@ -770,6 +788,13 @@ def run_agent(
     api_savings = len(to_skip) * 0.015
     print(f"  -> Estimated API savings: ${api_savings:.2f}")
 
+    # Update run state with pending articles for resume capability
+    cache.update_run(
+        "classifying",
+        articles_skipped=len(to_skip),
+        pending_articles=[a.get('link', '') for a in to_analyze if a.get('link')]
+    )
+
     # ==================================================
     # STAGE 2: CLAUDE ANALYSIS (parallel)
     # ==================================================
@@ -779,14 +804,17 @@ def run_agent(
 
     if not to_analyze:
         print("  No articles to analyze")
+        cache.complete_run()
         metrics.complete()
         metrics.print_summary()
         return
 
     print(f"  Analyzing with {MAX_CONCURRENT_CLAUDE_CALLS} parallel workers...")
 
+    cache.update_run("analyzing")
     results = analyze_articles_parallel(anthropic, to_analyze, dedup, cache, metrics)
     metrics.increment('articles_analyzed', len(to_analyze))
+    cache.update_run("analyzing", articles_analyzed=len(to_analyze), articles_relevant=len(results))
     print(f"  Relevant results: {len(results)}")
 
     # ==================================================
@@ -796,6 +824,7 @@ def run_agent(
     print("STAGE 3: Post-filter and Write to Notion")
     print(f"{'='*40}")
 
+    cache.update_run("writing")
     new_entries = 0
     skipped_filtered = 0
     skipped_deal_dupe = 0
@@ -841,6 +870,14 @@ def run_agent(
     # SUMMARY
     # ==================================================
 
+    # Mark run as complete
+    cache.update_run(
+        "complete",
+        entries_written=new_entries,
+        entries_filtered=skipped_filtered,
+        entries_duplicate=skipped_deal_dupe
+    )
+    cache.complete_run()
     metrics.complete()
 
     print(f"\n{'='*60}")

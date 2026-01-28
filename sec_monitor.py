@@ -9,6 +9,7 @@ Uses SEC EDGAR API (free, no authentication required)
 Filters to companies with market cap >$400M
 """
 
+import os
 import re
 import requests
 from datetime import datetime, timedelta
@@ -29,7 +30,6 @@ SEC_HEADERS = {
 }
 
 # Rate limiter for SEC API (10 requests per second limit)
-import os
 SEC_REQUEST_DELAY = 0.12  # ~8 req/sec to stay under limit
 
 # Minimum market cap filter (in millions)
@@ -143,9 +143,8 @@ def extract_ticker_from_company(company_name: str) -> Optional[str]:
     """
     if not company_name:
         return None
-    
+
     # Look for ticker in parentheses
-    import re
     match = re.search(r'\(([A-Z]{1,5})\)', company_name)
     if match:
         return match.group(1)

@@ -276,7 +276,8 @@ SCOPE_EXCLUSIONS = {
     'Real Estate': [
         'real estate', 'reit', 'property fund', 'warehouse', 'logistics facility',
         'office building', 'commercial real estate', 'data center', 'data centre',
-        'residential', 'rent', 'industrial property', 'retail property'
+        'residential', 'rent', 'industrial property', 'retail property',
+        'cmbs market', 'mortgage trust',
     ],
     'Minority/Non-buyout': [
         'minority stake', 'minority investment', 'takes stake', 'took stake',
@@ -286,14 +287,38 @@ SCOPE_EXCLUSIONS = {
         'fundraising', 'raises fund', 'closes fund', 'closed fund',
         'earnings', 'quarterly results', 'q1 results', 'q2 results', 'q3 results', 'q4 results',
         'stock price', 'analyst', 'rating', 'upgraded', 'downgraded',
-        'ipo', 'goes public', 'valuation', 'venture fund'
+        'ipo', 'goes public', 'valuation', 'venture fund',
+        'fourth quarter for its', 'infrastructure fund', 'wealth channel',
     ],
     'Legal/Regulatory': [
         'investigating', 'investigation', 'investor challenge'
     ],
     'False Positives': [
         'adidas', 'boots leaked', 'gas producer', 'the points guy', 'tpg awards',
-        'silver lake eagles'
+        'silver lake eagles',
+        # KKR = Kolkata Knight Riders (cricket)
+        'kolkata knight riders', 'ipl 2026', 'csk vs kkr', 'kkr vs', 'vs kkr', 'bbl 2025',
+        'win over kkr', 'csk end', 'dhoni',
+        # TPG false positives
+        'tpg online daily', 'the platform group', 'tpg re finance', 'harwood district',
+        # Kantar = market research, not PE
+        'kantar', 'winter olympics',
+        # Blackstone grill brand
+        'blackstone grill', 'blackstone tailgater', 'blackstone griddle',
+        # EQT Corporation = US gas company (NYSE: EQT), not EQT Partners
+        'eqt ties', 'eqt gas', 'gas demand', 'natural gas', 'eqt corporation',
+        'eqt projects', 'eqt foundation', 'derivatives gain',
+        # Tate & Lyle = food company
+        'tate & lyle', 'tate and lyle',
+        # Stock holdings (institutional, not deals)
+        'mellon corp acquires', 'million stake in',
+    ],
+    'Price Targets': [
+        'price target', 'target at', 'target cut', 'target raised',
+    ],
+    'Fund/CLO News': [
+        'clo 10', 'clo ltd', 're-up rate', 'fund iv', 'fund v', 'fund vi',
+        'sophomore vehicle', 'bond offering', 'secured lending',
     ],
 }
 
@@ -422,26 +447,34 @@ def dedupe_by_content(articles: list[dict]) -> list[dict]:
     unique = []
     seen_signatures = []
 
+    def normalize_word(w):
+        """Normalize word: lowercase, strip possessives and punctuation"""
+        w = w.lower().rstrip("'s").rstrip("'").rstrip(",").rstrip(".")
+        return w
+
     for article in articles:
         title = article.get('title', '')
         accounts = article.get('target_accounts', '')
+        accounts_set = set(a.strip() for a in accounts.split(','))
 
-        # Create signature: significant words from title + accounts
-        words = set(w.lower() for w in title.split() if len(w) > 5)
-        signature = (frozenset(words), accounts)
+        # Create signature: significant words from title (normalized, 4+ chars)
+        words = set(normalize_word(w) for w in title.split() if len(w) >= 4)
 
         # Check if similar to any seen article
         is_dupe = False
-        for seen_words, seen_accounts in seen_signatures:
-            if seen_accounts == accounts:
-                overlap = len(words & seen_words)
-                if overlap >= 3:  # At least 3 significant words in common
+        for seen_words, seen_accounts_set in seen_signatures:
+            # Check if any account overlaps (not exact match required)
+            accounts_overlap = bool(accounts_set & seen_accounts_set)
+            if accounts_overlap:
+                word_overlap = len(words & seen_words)
+                # Lower threshold (2) when same PE firm mentioned
+                if word_overlap >= 2:
                     is_dupe = True
                     break
 
         if not is_dupe:
             unique.append(article)
-            seen_signatures.append(signature)
+            seen_signatures.append((words, accounts_set))
 
     return unique
 

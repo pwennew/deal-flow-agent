@@ -7,7 +7,11 @@ import os
 import requests
 import feedparser
 import time
+import urllib3
 from urllib.parse import urlparse
+
+# Disable SSL warnings for environments with cert issues
+urllib3.disable_warnings()
 
 HUBSPOT_API_KEY = os.environ.get("HUBSPOT_API_KEY")
 
@@ -51,7 +55,7 @@ def fetch_hubspot_companies_with_websites():
             params["after"] = after
 
         try:
-            response = requests.get(url, headers=headers, params=params, timeout=30)
+            response = requests.get(url, headers=headers, params=params, timeout=30, verify=False)
             if response.status_code != 200:
                 print(f"HubSpot API error: {response.status_code}")
                 break

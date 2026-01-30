@@ -6,30 +6,24 @@ on:
     - cron: '0 6 * * *'
   workflow_dispatch:
     inputs:
-      rss_only:
-        description: 'Run RSS feeds only (skip PE firms, SEC, bank mandates)'
+      no_hubspot:
+        description: 'Skip HubSpot integration'
         required: false
         type: boolean
         default: false
-      skip_tests:
-        description: 'Skip test run'
+      hours:
+        description: 'Lookback hours (default: 24)'
         required: false
-        type: boolean
-        default: false
+        type: number
+        default: 24
 
 env:
-  NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
-  NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
-  ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-  SEC_CONTACT_EMAIL: ${{ secrets.SEC_CONTACT_EMAIL }}
   HUBSPOT_API_KEY: ${{ secrets.HUBSPOT_API_KEY }}
-  STATE_FILE: .cache/deal_flow_state.json
-  DEAL_FLOW_CACHE_DIR: .cache/
 
 jobs:
-  test:
+  run-rss-monitor:
     runs-on: ubuntu-latest
-    if: ${{ github.event.inputs.skip_tests != 'true' }}
+    timeout-minutes: 15
 
     steps:
       - name: Checkout repository
@@ -46,74 +40,29 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run tests
+      - name: Run RSS Monitor
         run: |
-          python -m pytest tests/ -v --tb=short
-        continue-on-error: true
-
-  run-agent:
-    runs-on: ubuntu-latest
-    needs: [test]
-    if: ${{ always() && (needs.test.result == 'success' || needs.test.result == 'skipped' || github.event.inputs.skip_tests == 'true') }}
-    timeout-minutes: 30
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-          cache: 'pip'
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-
-      # Restore cache from previous runs
-      - name: Restore cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            .cache/
-          key: deal-flow-cache-${{ github.run_id }}
-          restore-keys: |
-            deal-flow-cache-
-
-      - name: Ensure cache directory exists
-        run: mkdir -p .cache
-
-      - name: Run Deal Flow Agent
-        id: run_agent
-        run: |
-          if [ "${{ github.event.inputs.rss_only }}" == "true" ]; then
-            python agent.py --rss-only --auto-confirm 2>&1 | tee agent_output.log
-          else
-            python agent.py --auto-confirm 2>&1 | tee agent_output.log
+          ARGS=""
+          if [ "${{ github.event.inputs.no_hubspot }}" == "true" ]; then
+            ARGS="$ARGS --no-hubspot"
+          fi
+          if [ -n "${{ github.event.inputs.hours }}" ]; then
+            ARGS="$ARGS --hours ${{ github.event.inputs.hours }}"
           fi
 
-          # Extract summary stats for job summary
-          echo "## Deal Flow Agent Run Summary" >> $GITHUB_STEP_SUMMARY
+          python rss_monitor_v2.py $ARGS 2>&1 | tee output.log
+
+          # Summary for job
+          echo "## RSS Monitor Run Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
-          grep -A 20 "^SUMMARY" agent_output.log >> $GITHUB_STEP_SUMMARY || echo "No summary found" >> $GITHUB_STEP_SUMMARY
+          grep -E "^FINAL:|^HubSpot:" output.log >> $GITHUB_STEP_SUMMARY || echo "Run completed" >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
-
-      # Save cache for next run
-      - name: Save cache
-        uses: actions/cache/save@v4
-        if: always()
-        with:
-          path: |
-            .cache/
-          key: deal-flow-cache-${{ github.run_id }}
 
       - name: Upload logs
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: agent-logs
-          path: agent_output.log
+          name: rss-monitor-logs
+          path: output.log
           retention-days: 7

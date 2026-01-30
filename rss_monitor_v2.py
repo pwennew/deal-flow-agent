@@ -101,7 +101,7 @@ SCOPE_EXCLUSIONS = {
         'dividend', 'nav total return', 'share buybacks', 'buybacks'
     ],
     'Credit/Debt': [
-        'credit income fund', 'credit income', 'debt deal', 'bonds'
+        'credit income fund', 'credit income', 'debt deal', 'bonds', 'private credit'
     ],
     'Profit/Results News': [
         'profit jump', 'beats estimates', 'surprise profit'
@@ -119,7 +119,7 @@ SCOPE_EXCLUSIONS = {
         'fundraising', 'raises fund', 'closes fund', 'closed fund',
         'earnings', 'quarterly results', 'q1 results', 'q2 results', 'q3 results', 'q4 results',
         'stock price', 'analyst', 'rating', 'upgraded', 'downgraded',
-        'ipo', 'goes public', 'valuation'
+        'ipo', 'goes public', 'valuation', 'venture fund'
     ],
     'Legal/Regulatory': [
         'investigating', 'investigation', 'investor challenge'

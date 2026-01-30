@@ -218,7 +218,6 @@ FIRM_ALIASES = {
     "providence": "Providence Equity Partners",
     "golden gate": "Golden Gate Capital",
     "riverside": "The Riverside Company",
-    "summit": "Summit Partners",
     "ta": "TA Associates",
     "berkshire": "Berkshire Partners",
     "tcv": "TCV",

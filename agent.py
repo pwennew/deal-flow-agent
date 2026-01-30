@@ -621,7 +621,6 @@ def create_notion_entry(
 
 def run_agent(
     include_pe_firms: bool = True,
-    include_bank_mandates: bool = True,
     auto_confirm: bool = False
 ):
     """Main agent execution with all improvements"""
@@ -629,7 +628,7 @@ def run_agent(
     print(f"\n{'='*60}")
     print(f"Deal Flow Agent v6.0 - {datetime.now().strftime('%Y-%m-%d %H:%M')}")
     print(f"{'='*60}")
-    print(f"Sources: RSS{'+ PE Firms' if include_pe_firms else ''}{'+ Bank Mandates' if include_bank_mandates else ''}")
+    print(f"Sources: RSS{'+ PE Firms' if include_pe_firms else ''}")
     print(f"Improvements: Consolidated cache, Structured logging, Rate limiting, Retries")
     print(f"{'='*60}\n")
 
@@ -717,26 +716,6 @@ def run_agent(
             metrics.set_source_count('pe_firms', pe_count)
         except Exception as e:
             logger.error("PE firm monitor error", exc=e)
-
-    # SOURCE 3: Bank Mandates
-    if include_bank_mandates:
-        print("\n" + "=" * 40)
-        print("SOURCE 3: Bank Mandate Announcements")
-        print("=" * 40)
-        try:
-            from bank_mandate_monitor import fetch_bank_mandate_signals, format_for_claude_analysis as format_bank
-            bank_signals = fetch_bank_mandate_signals()
-            bank_articles = format_bank(bank_signals)
-            bank_count = 0
-            for article in bank_articles:
-                if not dedup.is_url_duplicate(article.get('link', '')):
-                    dedup.mark_processed(article)
-                    all_articles.append(article)
-                    bank_count += 1
-            logger.info(f"Added {bank_count} bank mandate articles")
-            metrics.set_source_count('bank_mandates', bank_count)
-        except Exception as e:
-            logger.error("Bank mandate monitor error", exc=e)
 
     metrics.increment('articles_collected', len(all_articles))
     cache.update_run("collecting", articles_collected=len(all_articles))
@@ -891,7 +870,6 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Deal Flow Agent v6.0")
     parser.add_argument("--no-pe-firms", action="store_true", help="Skip PE firm press releases")
-    parser.add_argument("--no-bank-mandates", action="store_true", help="Skip bank mandate announcements")
     parser.add_argument("--rss-only", action="store_true", help="Only use RSS feeds")
     parser.add_argument("--auto-confirm", "-y", action="store_true", help="Skip confirmation prompts")
     parser.add_argument("--verbose", "-v", action="store_true", help="Enable debug logging")
@@ -902,11 +880,9 @@ if __name__ == "__main__":
         logger.set_level("DEBUG")
 
     if args.rss_only:
-        run_agent(include_pe_firms=False, include_bank_mandates=False,
-                  auto_confirm=args.auto_confirm)
+        run_agent(include_pe_firms=False, auto_confirm=args.auto_confirm)
     else:
         run_agent(
             include_pe_firms=not args.no_pe_firms,
-            include_bank_mandates=not args.no_bank_mandates,
             auto_confirm=args.auto_confirm
         )

@@ -19,11 +19,15 @@ import re
 import os
 import time
 import urllib.parse
+import urllib3
 import requests
 from datetime import datetime
 from typing import Optional
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from target_accounts import TARGET_PE_FIRMS, FIRM_ALIASES, match_pe_firm
+from target_accounts import TARGET_PE_FIRMS, FIRM_ALIASES, match_pe_firm, get_company_id, get_target_firms
+
+# Disable SSL warnings
+urllib3.disable_warnings()
 
 # HubSpot API
 HUBSPOT_API_KEY = os.environ.get("HUBSPOT_API_KEY")
@@ -90,6 +94,163 @@ ASIA_OCEANIA_TERMS = [
     'delhi', 'bangalore', 'sydney', 'melbourne', 'auckland',
     'asia', 'asian', 'apac', 'asia-pacific', 'asia pacific',
 ]
+
+# =============================================================================
+# DEAL KEYWORD FILTER (must match at least one)
+# =============================================================================
+
+DEAL_KEYWORDS = [
+    # Acquisition/completion terms
+    'acquires', 'acquired', 'acquisition', 'acquiring',
+    'completes', 'completed', 'completion',
+    'closes', 'closed', 'closing',
+    'finalizes', 'finalized',
+    # Agreement terms
+    'signs', 'signed', 'signing',
+    'agrees', 'agreed', 'agreement',
+    'announces', 'announced', 'announcement',
+    # Deal types
+    'buyout', 'buy-out', 'buys',
+    'purchase', 'purchased', 'purchasing',
+    'merger', 'merges', 'merged',
+    'deal', 'transaction',
+    # Carve-out specific
+    'carve-out', 'carveout', 'carve out',
+    'divestiture', 'divests', 'divested',
+    'spin-off', 'spinoff', 'spins off',
+    'sells', 'sold', 'sale of',
+]
+
+
+def has_deal_keywords(text: str) -> tuple[bool, list[str]]:
+    """
+    Check if text contains deal-related keywords.
+    Returns (has_keywords, list_of_matched_keywords)
+    """
+    if not text:
+        return False, []
+
+    text_lower = text.lower()
+    matched = []
+
+    for keyword in DEAL_KEYWORDS:
+        if keyword in text_lower:
+            matched.append(keyword)
+
+    return len(matched) > 0, matched
+
+
+# =============================================================================
+# PE FIRM DIRECT RSS FEEDS (from scan of HubSpot companies)
+# =============================================================================
+
+PE_FIRM_RSS_FEEDS = {
+    # Company Name -> RSS Feed URL
+    "Montagu": "https://montagu.com/feed",
+    "H.I.G. Capital": "https://higcapital.com/feed",
+    "Altor Equity Partners": "https://altor.com/feed",
+    "Flexpoint Ford": "https://flexpointford.com/feed",
+    "Levine Leichtman Capital Partners": "https://llcp.com/feed",
+    "Kohlberg & Company": "https://kohlberg.com/feed",
+    "IK Partners": "https://ikpartners.com/feed",
+    "Berkshire Partners": "https://berkshirepartners.com/feed",
+    "Alvarez & Marsal Capital Partners": "https://amcapitalpartners.com/feed",
+    "Vestar Capital Partners": "https://vestarcapital.com/feed",
+    "Warburg Pincus": "https://warburgpincus.com/feed",
+    "Summa Equity": "https://summaequity.com/feed",
+    "Rivean Capital": "https://riveancapital.com/feed",
+    "SK Capital Partners": "https://skcapitalpartners.com/feed",
+    "Nautic Partners": "https://nautic.com/feed",
+    "Arcline Investment Management": "https://arcline.com/feed",
+    "Waterland Private Equity Investments": "https://waterland.nl/feed",
+    "Leonard Green & Partners": "https://leonardgreen.com/feed",
+    "Vistria Group": "https://vistria.com/feed",
+    "Oak Hill Capital": "https://oakhillcapital.com/feed",
+    "Alpine Investors": "https://alpineinvestors.com/feed",
+    "GTCR": "https://gtcr.com/feed",
+    "Genstar Capital": "https://genstarcapital.com/feed",
+    "Hellman & Friedman": "https://hf.com/feed",
+    "The Jordan Company": "https://thejordancompany.com/feed",
+    "Brightstar Capital Partners": "https://brightstarcapitalpartners.com/feed",
+    "Sagard": "https://sagard.com/feed",
+    "Incline Equity Partners": "https://inclineequity.com/feed",
+    "New Mountain Capital": "https://newmountaincapital.com/feed",
+    "Lindsay Goldberg": "https://lindsaygoldberg.com/feed",
+    "Wind Point Partners": "https://windpointpartners.com/feed",
+    "Gemspring Capital": "https://gemspring.com/feed",
+    "Cortec Group": "https://cortecgroup.com/feed",
+    "SDC Capital Partners": "https://sdccapital.com/feed",
+    "Cinven": "https://cinven.com/feed",
+    "GHO Capital Partners": "https://ghocapital.com/feed",
+    "AEA Investors": "https://aeainvestors.com/feed",
+    "Blackstone": "https://blackstone.com/feed",
+    "Trivest Partners": "https://trivest.com/feed",
+    "Gridiron Capital": "https://gridironcapital.com/feed",
+    "Platinum Equity": "https://platinumequity.com/feed",
+    "Frazier Healthcare Partners": "https://frazierhealthcare.com/feed",
+    "LLR Partners": "https://llrpartners.com/rss",
+    "Pacific Equity Partners": "https://pep.com.au/feed/",
+    "TDR Capital": "https://tdrcapital.com/feed/",
+    "Greenbriar Equity Group": "https://greenbriarequity.com/feed/",
+    "The Sterling Group": "https://sterling-group.com/feed",
+    "Lovell Minnick Partners": "https://lmp.com/feed",
+    "Kinderhook Industries": "https://kinderhook.com/feed/",
+    "Tate & Lyle": "https://www.tateandlyle.com/rss.xml",
+}
+
+
+def fetch_pe_firm_rss_articles(lookback_hours: int = 24, verbose: bool = True) -> list[dict]:
+    """
+    Fetch articles from PE firm direct RSS feeds.
+    Filters for deal keywords before returning.
+
+    Returns list of articles that contain deal announcements.
+    """
+    if verbose:
+        print(f"\nFetching from {len(PE_FIRM_RSS_FEEDS)} PE firm RSS feeds...")
+
+    all_articles = []
+
+    for firm_name, feed_url in PE_FIRM_RSS_FEEDS.items():
+        try:
+            feed = feedparser.parse(feed_url)
+
+            for entry in feed.entries[:10]:  # Latest 10 per firm
+                published = entry.get("published", "")
+
+                if not is_within_hours(published, lookback_hours):
+                    continue
+
+                title = entry.get("title", "")
+                summary = entry.get("summary", entry.get("description", ""))[:500]
+                text = f"{title} {summary}"
+
+                # Filter for deal keywords
+                has_deal, keywords = has_deal_keywords(text)
+                if not has_deal:
+                    continue
+
+                all_articles.append({
+                    "title": title,
+                    "link": entry.get("link", ""),
+                    "summary": summary,
+                    "published": published,
+                    "source": f"{firm_name} (Direct)",
+                    "target_accounts": firm_name,
+                    "deal_keywords": ", ".join(keywords[:3]),
+                })
+
+        except Exception as e:
+            if verbose:
+                print(f"  Warning: Failed to fetch {firm_name}: {e}")
+
+        time.sleep(0.2)  # Rate limiting
+
+    if verbose:
+        print(f"  Found {len(all_articles)} deal announcements from PE firm feeds")
+
+    return all_articles
+
 
 SCOPE_EXCLUSIONS = {
     'Specialty Finance': [
@@ -428,47 +589,6 @@ def export_to_csv(articles: list[dict], filename: str):
 # HUBSPOT INTEGRATION
 # =============================================================================
 
-def hubspot_search_company(firm_name: str) -> Optional[str]:
-    """
-    Search HubSpot for a Company by name.
-    Returns company ID if found, None otherwise.
-    """
-    if not HUBSPOT_API_KEY:
-        return None
-
-    url = "https://api.hubapi.com/crm/v3/objects/companies/search"
-    headers = {
-        "Authorization": f"Bearer {HUBSPOT_API_KEY}",
-        "Content-Type": "application/json"
-    }
-
-    # Try exact match first, then partial
-    for query in [firm_name, firm_name.split()[0] if ' ' in firm_name else firm_name]:
-        payload = {
-            "filterGroups": [{
-                "filters": [{
-                    "propertyName": "name",
-                    "operator": "CONTAINS_TOKEN",
-                    "value": query
-                }]
-            }],
-            "properties": ["name"],
-            "limit": 5
-        }
-
-        try:
-            response = requests.post(url, headers=headers, json=payload, timeout=10)
-            if response.status_code == 200:
-                results = response.json().get("results", [])
-                # Find best match
-                for company in results:
-                    company_name = company.get("properties", {}).get("name", "").lower()
-                    if firm_name.lower() in company_name or company_name in firm_name.lower():
-                        return company["id"]
-        except Exception:
-            pass
-
-    return None
 
 
 def hubspot_create_note(company_id: str, article: dict) -> bool:
@@ -517,7 +637,7 @@ Link: {link}"""
     }
 
     try:
-        response = requests.post(url, headers=headers, json=payload, timeout=10)
+        response = requests.post(url, headers=headers, json=payload, timeout=10, verify=False)
         return response.status_code == 201
     except Exception:
         return False
@@ -526,6 +646,7 @@ Link: {link}"""
 def write_to_hubspot(articles: list[dict], verbose: bool = True) -> dict:
     """
     Write articles to HubSpot as Notes on Company records.
+    Uses pre-cached company IDs from target_accounts.py.
 
     Returns dict with counts: {written, skipped_no_match, errors}
     """
@@ -535,7 +656,6 @@ def write_to_hubspot(articles: list[dict], verbose: bool = True) -> dict:
         return {"written": 0, "skipped_no_match": 0, "errors": 0}
 
     stats = {"written": 0, "skipped_no_match": 0, "errors": 0}
-    company_cache = {}  # Cache firm name -> company ID lookups
 
     for article in articles:
         firms = article.get('target_accounts', '').split(', ')
@@ -545,12 +665,8 @@ def write_to_hubspot(articles: list[dict], verbose: bool = True) -> dict:
             if not firm:
                 continue
 
-            # Check cache first
-            if firm not in company_cache:
-                company_cache[firm] = hubspot_search_company(firm)
-                time.sleep(0.1)  # Rate limiting
-
-            company_id = company_cache[firm]
+            # Get company ID from cached lookup
+            company_id = get_company_id(firm)
 
             if not company_id:
                 stats["skipped_no_match"] += 1
@@ -584,34 +700,49 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="RSS Monitor - Deal Flow Agent")
     parser.add_argument("--no-hubspot", action="store_true", help="Skip HubSpot integration")
     parser.add_argument("--hours", type=int, default=24, help="Lookback hours (default: 24)")
+    parser.add_argument("--pe-feeds-only", action="store_true", help="Only fetch PE firm direct RSS feeds")
     args = parser.parse_args()
 
     print("=" * 70)
-    print("RSS Monitor - Simplified Deal Flow Agent")
+    print("RSS Monitor - Deal Flow Agent")
     print("=" * 70)
     print()
 
-    # Run with both approaches combined
-    articles = run_pipeline(
-        use_firm_searches=True,
-        use_pe_sources=True,
+    all_articles = []
+
+    # 1. General RSS pipeline (news sources + Google News)
+    if not args.pe_feeds_only:
+        articles = run_pipeline(
+            use_firm_searches=True,
+            use_pe_sources=True,
+            lookback_hours=args.hours,
+            verbose=True
+        )
+        all_articles.extend(articles)
+        print(f"\nGeneral RSS: {len(articles)} articles")
+
+    # 2. PE Firm direct RSS feeds (filtered for deals)
+    pe_articles = fetch_pe_firm_rss_articles(
         lookback_hours=args.hours,
         verbose=True
     )
+    all_articles.extend(pe_articles)
 
     print()
-    print(f"FINAL: {len(articles)} unique deal-related articles")
+    print(f"FINAL: {len(all_articles)} total articles")
+    print(f"  - General RSS: {len(all_articles) - len(pe_articles)}")
+    print(f"  - PE firm feeds (deal-filtered): {len(pe_articles)}")
     print()
 
     # Export to CSV
-    export_to_csv(articles, 'rss_monitor_output.csv')
+    export_to_csv(all_articles, 'rss_monitor_output.csv')
     print(f"Exported to: rss_monitor_output.csv")
 
     # Write to HubSpot
     if not args.no_hubspot:
         print()
         print("Writing to HubSpot...")
-        stats = write_to_hubspot(articles, verbose=True)
+        stats = write_to_hubspot(all_articles, verbose=True)
         print()
         print(f"HubSpot: {stats['written']} notes created, "
               f"{stats['skipped_no_match']} no match, "
@@ -620,5 +751,5 @@ if __name__ == "__main__":
     # Show sample
     print()
     print("Sample articles:")
-    for i, a in enumerate(articles[:10], 1):
+    for i, a in enumerate(all_articles[:10], 1):
         print(f"  {i}. [{a['target_accounts']}] {a['title'][:60]}")

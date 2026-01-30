@@ -371,8 +371,8 @@ def find_target_accounts(text: str) -> list[tuple[str, str, int]]:
             if not any(m[1] == canonical for m in matches):
                 matches.append((alias, canonical, 100))
 
-    # Check canonical names
-    for firm in TARGET_PE_FIRMS:
+    # Check canonical names from HubSpot
+    for firm in get_target_firms():
         firm_lower = firm.lower()
         pattern = r'\b' + re.escape(firm_lower) + r'\b'
         if re.search(pattern, text_lower):

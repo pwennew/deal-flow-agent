@@ -276,7 +276,8 @@ SCOPE_EXCLUSIONS = {
     'Real Estate': [
         'real estate', 'reit', 'property fund', 'warehouse', 'logistics facility',
         'office building', 'commercial real estate', 'data center', 'data centre',
-        'residential', 'rent', 'industrial property', 'retail property'
+        'residential', 'rent', 'industrial property', 'retail property',
+        'cmbs market', 'mortgage trust',
     ],
     'Minority/Non-buyout': [
         'minority stake', 'minority investment', 'takes stake', 'took stake',
@@ -286,14 +287,38 @@ SCOPE_EXCLUSIONS = {
         'fundraising', 'raises fund', 'closes fund', 'closed fund',
         'earnings', 'quarterly results', 'q1 results', 'q2 results', 'q3 results', 'q4 results',
         'stock price', 'analyst', 'rating', 'upgraded', 'downgraded',
-        'ipo', 'goes public', 'valuation', 'venture fund'
+        'ipo', 'goes public', 'valuation', 'venture fund',
+        'fourth quarter for its', 'infrastructure fund', 'wealth channel',
     ],
     'Legal/Regulatory': [
         'investigating', 'investigation', 'investor challenge'
     ],
     'False Positives': [
         'adidas', 'boots leaked', 'gas producer', 'the points guy', 'tpg awards',
-        'silver lake eagles'
+        'silver lake eagles',
+        # KKR = Kolkata Knight Riders (cricket)
+        'kolkata knight riders', 'ipl 2026', 'csk vs kkr', 'kkr vs', 'vs kkr', 'bbl 2025',
+        'win over kkr', 'csk end', 'dhoni',
+        # TPG false positives
+        'tpg online daily', 'the platform group', 'tpg re finance', 'harwood district',
+        # Kantar = market research, not PE
+        'kantar', 'winter olympics',
+        # Blackstone grill brand
+        'blackstone grill', 'blackstone tailgater', 'blackstone griddle',
+        # EQT Corporation = US gas company (NYSE: EQT), not EQT Partners
+        'eqt ties', 'eqt gas', 'gas demand', 'natural gas', 'eqt corporation',
+        'eqt projects', 'eqt foundation', 'derivatives gain',
+        # Tate & Lyle = food company
+        'tate & lyle', 'tate and lyle',
+        # Stock holdings (institutional, not deals)
+        'mellon corp acquires', 'million stake in',
+    ],
+    'Price Targets': [
+        'price target', 'target at', 'target cut', 'target raised',
+    ],
+    'Fund/CLO News': [
+        'clo 10', 'clo ltd', 're-up rate', 'fund iv', 'fund v', 'fund vi',
+        'sophomore vehicle', 'bond offering', 'secured lending',
     ],
 }
 

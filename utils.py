@@ -268,7 +268,6 @@ class RateLimiter:
 
 # Pre-configured rate limiters
 notion_rate_limiter = RateLimiter(requests_per_second=2.5)  # Notion limit is 3/sec
-sec_rate_limiter = RateLimiter(requests_per_second=8)  # SEC limit is 10/sec
 
 
 # ==========================================================================

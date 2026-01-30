@@ -64,7 +64,7 @@ RSS_FEEDS_PE_SOURCES = [
 def generate_firm_search_feeds() -> list[str]:
     """Generate Google News RSS feeds for batches of target firms"""
     feeds = []
-    firms_list = list(TARGET_PE_FIRMS)
+    firms_list = list(get_target_firms())
     batch_size = 5
 
     for i in range(0, len(firms_list), batch_size):

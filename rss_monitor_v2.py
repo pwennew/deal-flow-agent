@@ -447,26 +447,34 @@ def dedupe_by_content(articles: list[dict]) -> list[dict]:
     unique = []
     seen_signatures = []
 
+    def normalize_word(w):
+        """Normalize word: lowercase, strip possessives and punctuation"""
+        w = w.lower().rstrip("'s").rstrip("'").rstrip(",").rstrip(".")
+        return w
+
     for article in articles:
         title = article.get('title', '')
         accounts = article.get('target_accounts', '')
+        accounts_set = set(a.strip() for a in accounts.split(','))
 
-        # Create signature: significant words from title + accounts
-        words = set(w.lower() for w in title.split() if len(w) > 5)
-        signature = (frozenset(words), accounts)
+        # Create signature: significant words from title (normalized, 4+ chars)
+        words = set(normalize_word(w) for w in title.split() if len(w) >= 4)
 
         # Check if similar to any seen article
         is_dupe = False
-        for seen_words, seen_accounts in seen_signatures:
-            if seen_accounts == accounts:
-                overlap = len(words & seen_words)
-                if overlap >= 3:  # At least 3 significant words in common
+        for seen_words, seen_accounts_set in seen_signatures:
+            # Check if any account overlaps (not exact match required)
+            accounts_overlap = bool(accounts_set & seen_accounts_set)
+            if accounts_overlap:
+                word_overlap = len(words & seen_words)
+                # Lower threshold (2) when same PE firm mentioned
+                if word_overlap >= 2:
                     is_dupe = True
                     break
 
         if not is_dupe:
             unique.append(article)
-            seen_signatures.append(signature)
+            seen_signatures.append((words, accounts_set))
 
     return unique
 

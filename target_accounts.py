@@ -48,7 +48,16 @@ def fetch_hubspot_companies() -> dict[str, str]:
             params["after"] = after
 
         try:
-            response = requests.get(url, headers=headers, params=params, timeout=30, verify=False)
+            # Retry logic for transient errors (503, etc.)
+            response = None
+            for attempt in range(3):
+                response = requests.get(url, headers=headers, params=params, timeout=30, verify=False)
+                if response.status_code == 200:
+                    break
+                if response.status_code in (503, 502, 504):
+                    time.sleep(2 ** attempt)  # Exponential backoff: 1s, 2s, 4s
+                    continue
+                break  # Other errors, don't retry
 
             if response.status_code != 200:
                 print(f"  Warning: HubSpot API returned {response.status_code}")

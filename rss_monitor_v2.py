@@ -64,7 +64,7 @@ RSS_FEEDS_PE_SOURCES = [
 def generate_firm_search_feeds() -> list[str]:
     """Generate Google News RSS feeds for batches of target firms"""
     feeds = []
-    firms_list = list(TARGET_PE_FIRMS)
+    firms_list = list(get_target_firms())
     batch_size = 5
 
     for i in range(0, len(firms_list), batch_size):
@@ -371,8 +371,8 @@ def find_target_accounts(text: str) -> list[tuple[str, str, int]]:
             if not any(m[1] == canonical for m in matches):
                 matches.append((alias, canonical, 100))
 
-    # Check canonical names
-    for firm in TARGET_PE_FIRMS:
+    # Check canonical names from HubSpot
+    for firm in get_target_firms():
         firm_lower = firm.lower()
         pattern = r'\b' + re.escape(firm_lower) + r'\b'
         if re.search(pattern, text_lower):
@@ -591,10 +591,6 @@ def export_to_csv(articles: list[dict], filename: str):
 
 
 
-# Paul Ennew's HubSpot owner ID for note assignment
-HUBSPOT_OWNER_ID = "77858346"
-
-
 def hubspot_create_note(company_id: str, article: dict) -> bool:
     """
     Create a Note on a HubSpot Company with article details.
@@ -627,8 +623,7 @@ Firms mentioned: {all_firms}<br><br>
     payload = {
         "properties": {
             "hs_timestamp": datetime.now().isoformat() + "Z",
-            "hs_note_body": note_body,
-            "hubspot_owner_id": HUBSPOT_OWNER_ID
+            "hs_note_body": note_body
         },
         "associations": [{
             "to": {"id": company_id},

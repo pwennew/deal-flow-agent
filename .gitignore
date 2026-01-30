@@ -33,3 +33,6 @@ Thumbs.db
 # Generated test exports
 step1_*.json
 step1_*.txt
+
+# RSS monitor output
+rss_monitor_output.csv

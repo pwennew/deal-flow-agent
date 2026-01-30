@@ -1,163 +1,115 @@
 """
 Target PE Accounts for Deal Flow Agent filtering
-Filters Tier 2-4 deals to target PE firms only (no strategic buyers)
-
-Uses fuzzy matching (rapidfuzz) for typo tolerance and name variations.
+Fetches company list from HubSpot, then applies fuzzy matching.
 """
 
+import os
+import time
+import requests
 from rapidfuzz import fuzz, process
+
+# HubSpot API
+HUBSPOT_API_KEY = os.environ.get("HUBSPOT_API_KEY")
 
 # Fuzzy matching threshold (0-100). 85+ = high confidence match
 FUZZY_MATCH_THRESHOLD = 85
 
-TARGET_PE_FIRMS = {
-    "ABRY Partners",
-    "ACON Investments",
-    "Actis",
-    "Advent International",
-    "Audax Private Equity",
-    "Affinity Equity Partners",
-    "Altaris Capital Partners",
-    "American Industrial Partners",
-    "American Securities",
-    "Antin Infrastructure Partners",
-    "Apax Partners",
-    "Apollo Global Management",
-    "Aquiline Capital Partners",
-    "Arcline Investment Management",
-    "Arcmont Asset Management",
-    "Ardian",
-    "Arsenal Capital Partners",
-    "Astorg",
-    "AURELIUS Group",
-    "Bain Capital",
-    "BC Partners",
-    "Berkshire Partners",
-    "BGH Capital",
-    "Blackstone",
-    "Blue Wolf Capital Partners",
-    "Bridgepoint",
-    "Bruckmann Rosser Sherrill",
-    "Carlyle Group",
-    "Charterhouse Capital Partners",
-    "Cinven",
-    "Clayton Dubilier & Rice",
-    "Clearlake Capital Group",
-    "Court Square",
-    "CVC Capital Partners",
-    "EagleTree Capital",
-    "EQT",
-    "Eurazeo",
-    "Flexpoint Ford",
-    "Forbion",
-    "Francisco Partners",
-    "FSN Capital",
-    "General Atlantic",
-    "Genstar Capital",
-    "GI Partners",
-    "Golden Gate Capital",
-    "Great Hill Partners",
-    "Gryphon Investors",
-    "GTCR",
-    "H.I.G. Capital",
-    "Harvest Partners",
-    "HayFin Capital Management",
-    "Hellman & Friedman",
-    "HGGC",
-    "Housatonic Partners",
-    "Hg",
-    "ICG",
-    "IK Partners",
-    "Incline Equity Partners",
-    "Inflexion",
-    "Insight Partners",
-    "Intermediate Capital Group",
-    "JMI Equity",
-    "K1 Investment Management",
-    "Kelso & Company",
-    "Kohlberg & Company",
-    "KKR",
-    "KPS Capital Partners",
-    "L Catterton",
-    "Lee Equity Partners",
-    "Leonard Green & Partners",
-    "Levine Leichtman Capital Partners",
-    "Livingbridge",
-    "LLR Partners",
-    "Madison Dearborn Partners",
-    "Main Post Partners",
-    "MBK Partners",
-    "Montagu Private Equity",
-    "New Mountain Capital",
-    "NewQuest Capital Partners",
-    "Nordic Capital",
-    "Norvestor",
-    "Oak Hill Capital Partners",
-    "Odyssey Investment Partners",
-    "One Rock Capital Partners",
-    "Onex",
-    "Owl Rock Capital",
-    "PAI Partners",
-    "Pacific Equity Partners",
-    "Pamplona Capital Management",
-    "Parthenon Capital",
-    "Peak Rock Capital",
-    "Permira Advisers",
-    "Platinum Equity",
-    "Providence Equity Partners",
-    "Quadrant Private Equity",
-    "RBC Capital Partners",
-    "Resurgens Technology Partners",
-    "Reverence Capital Partners",
-    "Rhône Group",
-    "Ridgemont Equity Partners",
-    "Rivean Capital",
-    "Riverside Company",
-    "Roark Capital Group",
-    "SDC Capital Partners",
-    "Silver Lake",
-    "SK Capital Partners",
-    "Snow Phipps Group",
-    "Sole Source Capital",
-    "Solis Capital Partners",
-    "Spectrum Equity",
-    "Stone Point Capital",
-    "Summit Partners",
-    "Sun Capital Partners",
-    "Sycamore Partners",
-    "TA Associates",
-    "TCV",
-    "TDR Capital",
-    "TH Lee",
-    "The Carlyle Group",
-    "The Riverside Company",
-    "The Sterling Group",
-    "Thoma Bravo",
-    "Thomas H. Lee Partners",
-    "TPG",
-    "Trilantic Capital Partners",
-    "Triton Partners",
-    "Ufenau Capital Partners",
-    "Veritas Capital",
-    "Victory Park Capital",
-    "Vista Equity Partners",
-    "Vitruvian Partners",
-    "Warburg Pincus",
-    "Water Street Healthcare Partners",
-    "Webster Equity Partners",
-    "Welsh Carson Anderson & Stowe",
-    "WindRose Health Investors",
-    "Wynnchurch Capital",
-}
+# Cache for HubSpot companies
+_HUBSPOT_COMPANIES = None
+_NORMALIZED_TARGETS = None
+
+
+def fetch_hubspot_companies() -> set[str]:
+    """
+    Fetch all company names from HubSpot.
+    Returns set of company names.
+    """
+    if not HUBSPOT_API_KEY:
+        print("  Warning: HUBSPOT_API_KEY not set, using empty company list")
+        return set()
+
+    companies = set()
+    url = "https://api.hubapi.com/crm/v3/objects/companies"
+    headers = {
+        "Authorization": f"Bearer {HUBSPOT_API_KEY}",
+        "Content-Type": "application/json"
+    }
+    params = {
+        "limit": 100,
+        "properties": "name"
+    }
+
+    after = None
+    page = 0
+
+    while True:
+        if after:
+            params["after"] = after
+
+        try:
+            response = requests.get(url, headers=headers, params=params, timeout=30)
+
+            if response.status_code != 200:
+                print(f"  Warning: HubSpot API returned {response.status_code}")
+                break
+
+            data = response.json()
+            results = data.get("results", [])
+
+            for company in results:
+                name = company.get("properties", {}).get("name")
+                if name:
+                    companies.add(name)
+
+            # Check for next page
+            paging = data.get("paging", {})
+            next_page = paging.get("next", {})
+            after = next_page.get("after")
+
+            if not after:
+                break
+
+            page += 1
+            time.sleep(0.1)  # Rate limiting
+
+        except Exception as e:
+            print(f"  Warning: HubSpot API error: {e}")
+            break
+
+    return companies
+
+
+def get_target_firms() -> set[str]:
+    """Get target PE firms from HubSpot (cached)"""
+    global _HUBSPOT_COMPANIES
+    if _HUBSPOT_COMPANIES is None:
+        print("  Fetching target accounts from HubSpot...")
+        _HUBSPOT_COMPANIES = fetch_hubspot_companies()
+        print(f"  Loaded {len(_HUBSPOT_COMPANIES)} companies from HubSpot")
+    return _HUBSPOT_COMPANIES
+
+
+def refresh_target_firms():
+    """Force refresh of HubSpot companies cache"""
+    global _HUBSPOT_COMPANIES, _NORMALIZED_TARGETS
+    _HUBSPOT_COMPANIES = None
+    _NORMALIZED_TARGETS = None
+    return get_target_firms()
+
+
+# For backwards compatibility
+TARGET_PE_FIRMS = set()  # Will be populated dynamically
+
 
 # Common variations for matching (checked before fuzzy)
+# These map common shorthand to likely HubSpot company names
 FIRM_ALIASES = {
     "blackstone group": "Blackstone",
     "the blackstone group": "Blackstone",
     "kkr & co": "KKR",
-    "carlyle": "The Carlyle Group",
-    "carlyle group": "The Carlyle Group",
-    "the carlyle group": "The Carlyle Group",
+    "carlyle": "Carlyle Group",
+    "carlyle group": "Carlyle Group",
+    "the carlyle group": "Carlyle Group",
     "apollo": "Apollo Global Management",
     "apollo management": "Apollo Global Management",
     "bain": "Bain Capital",
@@ -206,7 +158,6 @@ FIRM_ALIASES = {
     "triton": "Triton Partners",
     "apax": "Apax Partners",
     "bc partners": "BC Partners",
-    "pai partners": "PAI Partners",
     "gtcr": "GTCR",
     "oak hill": "Oak Hill Capital Partners",
     "madison dearborn": "Madison Dearborn Partners",
@@ -217,7 +168,7 @@ FIRM_ALIASES = {
     "roark": "Roark Capital Group",
     "providence": "Providence Equity Partners",
     "golden gate": "Golden Gate Capital",
-    "riverside": "The Riverside Company",
+    "riverside": "Riverside Company",
     "ta": "TA Associates",
     "berkshire": "Berkshire Partners",
     "tcv": "TCV",
@@ -252,26 +203,6 @@ FIRM_ALIASES = {
     "parthenon": "Parthenon Capital",
 }
 
-# Signal types requiring target account filtering
-FILTERED_SIGNAL_TYPES = {"Definitive Agreement", "Deal Completed"}
-
-# Valid geographies
-VALID_GEOGRAPHIES = {"US", "UK", "Europe", "Global"}
-
-# Pre-build normalized lookup for fuzzy matching
-_NORMALIZED_TARGETS = None
-
-
-def _get_normalized_targets() -> dict[str, str]:
-    """Build normalized name -> canonical name mapping (cached)"""
-    global _NORMALIZED_TARGETS
-    if _NORMALIZED_TARGETS is None:
-        _NORMALIZED_TARGETS = {}
-        for firm in TARGET_PE_FIRMS:
-            normalized = normalize_firm_name(firm)
-            _NORMALIZED_TARGETS[normalized] = firm
-    return _NORMALIZED_TARGETS
-
 
 def normalize_firm_name(name: str) -> str:
     """Normalize firm name for comparison"""
@@ -281,99 +212,76 @@ def normalize_firm_name(name: str) -> str:
     # Remove punctuation that causes matching issues
     n = n.replace(".", "").replace("&", "and").replace("-", " ")
     # Strip common suffixes
-    for suffix in [" llc", " lp", " ltd", " inc", " partners", " capital", " group", 
+    for suffix in [" llc", " lp", " ltd", " inc", " partners", " capital", " group",
                    " management", " advisers", " advisors", " private equity", " equity"]:
         if n.endswith(suffix):
             n = n[:-len(suffix)].strip()
     return n
 
 
-def is_target_pe_firm(pe_buyer: str, threshold: int = FUZZY_MATCH_THRESHOLD) -> bool:
-    """
-    Check if PE buyer is in target accounts list using fuzzy matching.
-    
-    Matching hierarchy:
-    1. Exact alias match (fastest)
-    2. Exact normalized match
-    3. Fuzzy match against all targets (handles typos)
-    
-    Args:
-        pe_buyer: Name of PE firm to check
-        threshold: Minimum fuzzy match score (0-100). Default 85.
-    
-    Returns:
-        True if match found, False otherwise
-    """
-    if not pe_buyer:
-        return False
-    
-    pe_lower = pe_buyer.lower().strip()
-    
-    # 1. Check aliases first (exact match on known variations)
-    if pe_lower in FIRM_ALIASES:
-        return True
-    
-    # 2. Check exact normalized match
-    pe_normalized = normalize_firm_name(pe_buyer)
-    normalized_targets = _get_normalized_targets()
-    
-    if pe_normalized in normalized_targets:
-        return True
-    
-    # 3. Fuzzy match against normalized targets
-    # Use token_set_ratio: handles word reordering and partial matches
-    # e.g. "KPS Capital Partners" matches "Partners Capital KPS"
-    match = process.extractOne(
-        pe_normalized,
-        normalized_targets.keys(),
-        scorer=fuzz.token_set_ratio,
-        score_cutoff=threshold
-    )
-    
-    if match:
-        return True
-    
-    # 4. Also try WRatio (weighted ratio) for cases where token_set fails
-    # Handles substring scenarios better
-    match = process.extractOne(
-        pe_normalized,
-        normalized_targets.keys(),
-        scorer=fuzz.WRatio,
-        score_cutoff=threshold
-    )
-    
-    return match is not None
+def _get_normalized_targets() -> dict[str, str]:
+    """Build normalized name -> canonical name mapping (cached)"""
+    global _NORMALIZED_TARGETS
+    if _NORMALIZED_TARGETS is None:
+        _NORMALIZED_TARGETS = {}
+        for firm in get_target_firms():
+            normalized = normalize_firm_name(firm)
+            _NORMALIZED_TARGETS[normalized] = firm
+    return _NORMALIZED_TARGETS
 
 
 def match_pe_firm(pe_buyer: str, threshold: int = FUZZY_MATCH_THRESHOLD) -> tuple[bool, str | None, int]:
     """
-    Match PE buyer to target list and return match details.
-    
+    Match PE buyer to target list (from HubSpot) using fuzzy matching.
+
+    Matching hierarchy:
+    1. Exact alias match (fastest)
+    2. Exact normalized match
+    3. Fuzzy match against all targets (handles typos)
+
     Args:
         pe_buyer: Name of PE firm to check
         threshold: Minimum fuzzy match score (0-100)
-    
+
     Returns:
         Tuple of (is_match, matched_firm_name, confidence_score)
         If no match: (False, None, 0)
     """
     if not pe_buyer:
         return False, None, 0
-    
+
     pe_lower = pe_buyer.lower().strip()
-    
-    # 1. Check aliases
+
+    # 1. Check aliases - map to canonical name, then verify in HubSpot
     if pe_lower in FIRM_ALIASES:
         canonical = FIRM_ALIASES[pe_lower]
-        return True, canonical, 100
-    
+        # Verify the canonical name exists in HubSpot
+        normalized_targets = _get_normalized_targets()
+        canonical_normalized = normalize_firm_name(canonical)
+        if canonical_normalized in normalized_targets:
+            return True, normalized_targets[canonical_normalized], 100
+        # If alias target not in HubSpot, try fuzzy match on alias target
+        match = process.extractOne(
+            canonical_normalized,
+            normalized_targets.keys(),
+            scorer=fuzz.token_set_ratio,
+            score_cutoff=threshold
+        )
+        if match:
+            matched_normalized, score, _ = match
+            return True, normalized_targets[matched_normalized], int(score)
+
     # 2. Exact normalized match
     pe_normalized = normalize_firm_name(pe_buyer)
     normalized_targets = _get_normalized_targets()
-    
+
+    if not normalized_targets:
+        # No HubSpot companies loaded
+        return False, None, 0
+
     if pe_normalized in normalized_targets:
         return True, normalized_targets[pe_normalized], 100
-    
+
     # 3. Fuzzy match - try token_set_ratio first
     match = process.extractOne(
         pe_normalized,
@@ -381,11 +289,11 @@ def match_pe_firm(pe_buyer: str, threshold: int = FUZZY_MATCH_THRESHOLD) -> tupl
         scorer=fuzz.token_set_ratio,
         score_cutoff=threshold
     )
-    
+
     if match:
         matched_normalized, score, _ = match
         return True, normalized_targets[matched_normalized], int(score)
-    
+
     # 4. Try WRatio as fallback
     match = process.extractOne(
         pe_normalized,
@@ -393,51 +301,15 @@ def match_pe_firm(pe_buyer: str, threshold: int = FUZZY_MATCH_THRESHOLD) -> tupl
         scorer=fuzz.WRatio,
         score_cutoff=threshold
     )
-    
+
     if match:
         matched_normalized, score, _ = match
         return True, normalized_targets[matched_normalized], int(score)
-    
+
     return False, None, 0
 
 
-def is_valid_geography(geography: str) -> bool:
-    """Check if geography is US, UK, Europe or Global"""
-    if not geography:
-        return False
-    
-    # Handle list
-    if isinstance(geography, list):
-        geography = geography[0] if geography else ""
-    
-    # Check each part of comma-separated geography
-    geo_parts = [g.strip() for g in geography.split(',')]
-    return all(g in VALID_GEOGRAPHIES for g in geo_parts)
-
-
-def passes_tier2_filter(signal_type: str, pe_buyer: str, geography: str) -> tuple[bool, str]:
-    """
-    Filter for Tier 2-4 signals (Definitive Agreement, Deal Completed).
-    ONLY checks: target PE firm + valid geography.
-    No PE buyer = strategic buyer = filter out.
-    """
-    if signal_type not in FILTERED_SIGNAL_TYPES:
-        return True, "Tier 1 signal - standard filters apply"
-    
-    # Must have PE buyer (no strategic buyers)
-    if not pe_buyer or pe_buyer.lower() in ["unknown", "undisclosed", "n/a", "none", "tbd", ""]:
-        return False, "No PE buyer (strategic buyer)"
-    
-    # Must be target PE firm (now with fuzzy matching)
-    is_match, matched_firm, confidence = match_pe_firm(pe_buyer)
-    if not is_match:
-        return False, f"Non-target PE: {pe_buyer}"
-    
-    # Must be valid geography
-    if not is_valid_geography(geography):
-        return False, f"Invalid geography: {geography}"
-    
-    # Include confidence in success message for debugging
-    if confidence < 100:
-        return True, f"Target PE (fuzzy {confidence}%): {pe_buyer} -> {matched_firm}"
-    return True, f"Target PE + valid geo: {matched_firm}"
+def is_target_pe_firm(pe_buyer: str, threshold: int = FUZZY_MATCH_THRESHOLD) -> bool:
+    """Check if PE buyer is in target accounts list using fuzzy matching."""
+    is_match, _, _ = match_pe_firm(pe_buyer, threshold)
+    return is_match

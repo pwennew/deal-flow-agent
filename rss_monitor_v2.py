@@ -591,10 +591,6 @@ def export_to_csv(articles: list[dict], filename: str):
 
 
 
-# Paul Ennew's HubSpot owner ID for note assignment
-HUBSPOT_OWNER_ID = "77858346"
-
-
 def hubspot_create_note(company_id: str, article: dict) -> bool:
     """
     Create a Note on a HubSpot Company with article details.
@@ -627,8 +623,7 @@ Firms mentioned: {all_firms}<br><br>
     payload = {
         "properties": {
             "hs_timestamp": datetime.now().isoformat() + "Z",
-            "hs_note_body": note_body,
-            "hubspot_owner_id": HUBSPOT_OWNER_ID
+            "hs_note_body": note_body
         },
         "associations": [{
             "to": {"id": company_id},

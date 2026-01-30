@@ -16,11 +16,17 @@ Pipeline:
 import feedparser
 import csv
 import re
+import os
+import time
 import urllib.parse
+import requests
 from datetime import datetime
 from typing import Optional
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from target_accounts import TARGET_PE_FIRMS, FIRM_ALIASES, match_pe_firm
+
+# HubSpot API
+HUBSPOT_API_KEY = os.environ.get("HUBSPOT_API_KEY")
 
 
 # =============================================================================
@@ -419,10 +425,167 @@ def export_to_csv(articles: list[dict], filename: str):
 
 
 # =============================================================================
+# HUBSPOT INTEGRATION
+# =============================================================================
+
+def hubspot_search_company(firm_name: str) -> Optional[str]:
+    """
+    Search HubSpot for a Company by name.
+    Returns company ID if found, None otherwise.
+    """
+    if not HUBSPOT_API_KEY:
+        return None
+
+    url = "https://api.hubapi.com/crm/v3/objects/companies/search"
+    headers = {
+        "Authorization": f"Bearer {HUBSPOT_API_KEY}",
+        "Content-Type": "application/json"
+    }
+
+    # Try exact match first, then partial
+    for query in [firm_name, firm_name.split()[0] if ' ' in firm_name else firm_name]:
+        payload = {
+            "filterGroups": [{
+                "filters": [{
+                    "propertyName": "name",
+                    "operator": "CONTAINS_TOKEN",
+                    "value": query
+                }]
+            }],
+            "properties": ["name"],
+            "limit": 5
+        }
+
+        try:
+            response = requests.post(url, headers=headers, json=payload, timeout=10)
+            if response.status_code == 200:
+                results = response.json().get("results", [])
+                # Find best match
+                for company in results:
+                    company_name = company.get("properties", {}).get("name", "").lower()
+                    if firm_name.lower() in company_name or company_name in firm_name.lower():
+                        return company["id"]
+        except Exception:
+            pass
+
+    return None
+
+
+def hubspot_create_note(company_id: str, article: dict) -> bool:
+    """
+    Create a Note on a HubSpot Company with article details.
+    Returns True if successful.
+    """
+    if not HUBSPOT_API_KEY:
+        return False
+
+    url = "https://api.hubapi.com/crm/v3/objects/notes"
+    headers = {
+        "Authorization": f"Bearer {HUBSPOT_API_KEY}",
+        "Content-Type": "application/json"
+    }
+
+    # Format note body
+    title = article.get('title', 'Untitled')
+    source = article.get('source', 'Unknown')
+    published = article.get('published', '')
+    link = article.get('link', '')
+    all_firms = article.get('target_accounts', '')
+
+    note_body = f"""📰 DEAL INTELLIGENCE
+
+{title}
+
+Source: {source}
+Date: {published}
+Firms mentioned: {all_firms}
+
+Link: {link}"""
+
+    payload = {
+        "properties": {
+            "hs_timestamp": datetime.now().isoformat() + "Z",
+            "hs_note_body": note_body
+        },
+        "associations": [{
+            "to": {"id": company_id},
+            "types": [{
+                "associationCategory": "HUBSPOT_DEFINED",
+                "associationTypeId": 190  # Note to Company
+            }]
+        }]
+    }
+
+    try:
+        response = requests.post(url, headers=headers, json=payload, timeout=10)
+        return response.status_code == 201
+    except Exception:
+        return False
+
+
+def write_to_hubspot(articles: list[dict], verbose: bool = True) -> dict:
+    """
+    Write articles to HubSpot as Notes on Company records.
+
+    Returns dict with counts: {written, skipped_no_match, errors}
+    """
+    if not HUBSPOT_API_KEY:
+        if verbose:
+            print("  HubSpot API key not configured - skipping")
+        return {"written": 0, "skipped_no_match": 0, "errors": 0}
+
+    stats = {"written": 0, "skipped_no_match": 0, "errors": 0}
+    company_cache = {}  # Cache firm name -> company ID lookups
+
+    for article in articles:
+        firms = article.get('target_accounts', '').split(', ')
+
+        for firm in firms:
+            firm = firm.strip()
+            if not firm:
+                continue
+
+            # Check cache first
+            if firm not in company_cache:
+                company_cache[firm] = hubspot_search_company(firm)
+                time.sleep(0.1)  # Rate limiting
+
+            company_id = company_cache[firm]
+
+            if not company_id:
+                stats["skipped_no_match"] += 1
+                if verbose:
+                    print(f"    No HubSpot match for: {firm}")
+                continue
+
+            # Create note
+            success = hubspot_create_note(company_id, article)
+            time.sleep(0.1)  # Rate limiting
+
+            if success:
+                stats["written"] += 1
+                if verbose:
+                    print(f"    ✓ Added note to {firm}")
+            else:
+                stats["errors"] += 1
+                if verbose:
+                    print(f"    ✗ Failed to add note to {firm}")
+
+    return stats
+
+
+# =============================================================================
 # CLI
 # =============================================================================
 
 if __name__ == "__main__":
+    import argparse
+
+    parser = argparse.ArgumentParser(description="RSS Monitor - Deal Flow Agent")
+    parser.add_argument("--no-hubspot", action="store_true", help="Skip HubSpot integration")
+    parser.add_argument("--hours", type=int, default=24, help="Lookback hours (default: 24)")
+    args = parser.parse_args()
+
     print("=" * 70)
     print("RSS Monitor - Simplified Deal Flow Agent")
     print("=" * 70)
@@ -432,7 +595,7 @@ if __name__ == "__main__":
     articles = run_pipeline(
         use_firm_searches=True,
         use_pe_sources=True,
-        lookback_hours=24,
+        lookback_hours=args.hours,
         verbose=True
     )
 
@@ -440,9 +603,19 @@ if __name__ == "__main__":
     print(f"FINAL: {len(articles)} unique deal-related articles")
     print()
 
-    # Export
+    # Export to CSV
     export_to_csv(articles, 'rss_monitor_output.csv')
     print(f"Exported to: rss_monitor_output.csv")
+
+    # Write to HubSpot
+    if not args.no_hubspot:
+        print()
+        print("Writing to HubSpot...")
+        stats = write_to_hubspot(articles, verbose=True)
+        print()
+        print(f"HubSpot: {stats['written']} notes created, "
+              f"{stats['skipped_no_match']} no match, "
+              f"{stats['errors']} errors")
 
     # Show sample
     print()

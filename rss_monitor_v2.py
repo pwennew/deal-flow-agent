@@ -591,6 +591,10 @@ def export_to_csv(articles: list[dict], filename: str):
 
 
 
+# Paul Ennew's HubSpot owner ID for note assignment
+HUBSPOT_OWNER_ID = "77858346"
+
+
 def hubspot_create_note(company_id: str, article: dict) -> bool:
     """
     Create a Note on a HubSpot Company with article details.
@@ -605,27 +609,26 @@ def hubspot_create_note(company_id: str, article: dict) -> bool:
         "Content-Type": "application/json"
     }
 
-    # Format note body
+    # Format note body with HTML for clickable link
     title = article.get('title', 'Untitled')
     source = article.get('source', 'Unknown')
     published = article.get('published', '')
     link = article.get('link', '')
     all_firms = article.get('target_accounts', '')
 
-    note_body = f"""📰 DEAL INTELLIGENCE
-
-{title}
-
-Source: {source}
-Date: {published}
-Firms mentioned: {all_firms}
-
-Link: {link}"""
+    # Use HTML formatting with clickable link
+    note_body = f"""📰 DEAL INTELLIGENCE<br><br>
+<strong>{title}</strong><br><br>
+Source: {source}<br>
+Date: {published}<br>
+Firms mentioned: {all_firms}<br><br>
+<a href="{link}">Read Article</a>"""
 
     payload = {
         "properties": {
             "hs_timestamp": datetime.now().isoformat() + "Z",
-            "hs_note_body": note_body
+            "hs_note_body": note_body,
+            "hubspot_owner_id": HUBSPOT_OWNER_ID
         },
         "associations": [{
             "to": {"id": company_id},

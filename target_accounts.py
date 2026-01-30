@@ -14,21 +14,22 @@ HUBSPOT_API_KEY = os.environ.get("HUBSPOT_API_KEY")
 # Fuzzy matching threshold (0-100). 85+ = high confidence match
 FUZZY_MATCH_THRESHOLD = 85
 
-# Cache for HubSpot companies
+# Cache for HubSpot companies: {name: hubspot_id}
 _HUBSPOT_COMPANIES = None
 _NORMALIZED_TARGETS = None
+_COMPANY_IDS = None  # {normalized_name: hubspot_id}
 
 
-def fetch_hubspot_companies() -> set[str]:
+def fetch_hubspot_companies() -> dict[str, str]:
     """
-    Fetch all company names from HubSpot.
-    Returns set of company names.
+    Fetch all company names and IDs from HubSpot.
+    Returns dict of {company_name: hubspot_id}
     """
     if not HUBSPOT_API_KEY:
         print("  Warning: HUBSPOT_API_KEY not set, using empty company list")
-        return set()
+        return {}
 
-    companies = set()
+    companies = {}
     url = "https://api.hubapi.com/crm/v3/objects/companies"
     headers = {
         "Authorization": f"Bearer {HUBSPOT_API_KEY}",
@@ -47,7 +48,7 @@ def fetch_hubspot_companies() -> set[str]:
             params["after"] = after
 
         try:
-            response = requests.get(url, headers=headers, params=params, timeout=30)
+            response = requests.get(url, headers=headers, params=params, timeout=30, verify=False)
 
             if response.status_code != 200:
                 print(f"  Warning: HubSpot API returned {response.status_code}")
@@ -58,8 +59,9 @@ def fetch_hubspot_companies() -> set[str]:
 
             for company in results:
                 name = company.get("properties", {}).get("name")
-                if name:
-                    companies.add(name)
+                company_id = company.get("id")
+                if name and company_id:
+                    companies[name] = company_id
 
             # Check for next page
             paging = data.get("paging", {})
@@ -80,20 +82,45 @@ def fetch_hubspot_companies() -> set[str]:
 
 
 def get_target_firms() -> set[str]:
-    """Get target PE firms from HubSpot (cached)"""
-    global _HUBSPOT_COMPANIES
+    """Get target PE firm names from HubSpot (cached)"""
+    global _HUBSPOT_COMPANIES, _COMPANY_IDS
     if _HUBSPOT_COMPANIES is None:
         print("  Fetching target accounts from HubSpot...")
-        _HUBSPOT_COMPANIES = fetch_hubspot_companies()
+        companies_dict = fetch_hubspot_companies()
+        _HUBSPOT_COMPANIES = set(companies_dict.keys())
+        # Build ID lookup by normalized name
+        _COMPANY_IDS = {}
+        for name, company_id in companies_dict.items():
+            normalized = normalize_firm_name(name)
+            _COMPANY_IDS[normalized] = company_id
+            _COMPANY_IDS[name] = company_id  # Also store exact name
         print(f"  Loaded {len(_HUBSPOT_COMPANIES)} companies from HubSpot")
     return _HUBSPOT_COMPANIES
 
 
+def get_company_id(firm_name: str) -> str | None:
+    """Get HubSpot company ID for a firm name"""
+    global _COMPANY_IDS
+    if _COMPANY_IDS is None:
+        get_target_firms()  # Initialize cache
+    if _COMPANY_IDS is None:
+        return None
+
+    # Try exact match first
+    if firm_name in _COMPANY_IDS:
+        return _COMPANY_IDS[firm_name]
+
+    # Try normalized match
+    normalized = normalize_firm_name(firm_name)
+    return _COMPANY_IDS.get(normalized)
+
+
 def refresh_target_firms():
     """Force refresh of HubSpot companies cache"""
-    global _HUBSPOT_COMPANIES, _NORMALIZED_TARGETS
+    global _HUBSPOT_COMPANIES, _NORMALIZED_TARGETS, _COMPANY_IDS
     _HUBSPOT_COMPANIES = None
     _NORMALIZED_TARGETS = None
+    _COMPANY_IDS = None
     return get_target_firms()
 
 

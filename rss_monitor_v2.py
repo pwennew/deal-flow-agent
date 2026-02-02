@@ -298,7 +298,7 @@ SCOPE_EXCLUSIONS = {
         'tax treatment', 'distributions',
         # Additional non-deal patterns
         'year in review', 'anniversary', 'top picks', 'stock picks',
-        'reduces stake', 'lowers holdings', 'holdings in',
+        'reduces stake', 'lowers holdings', 'increases holdings', 'cuts holdings',
         'analysts have this', 'buy the winner', 'ripe for a turnaround',
         'suddenly paying attention', 'board seat', 'epstein',
         'ceos must act', 'ai chief',

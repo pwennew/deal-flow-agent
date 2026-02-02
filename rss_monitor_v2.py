@@ -262,7 +262,8 @@ SCOPE_EXCLUSIONS = {
     'PE Firm Stock News': [
         'share price pullback', 'stock position', 'stock holdings in',
         'acquires shares of', 'bullish or bearish', 'options begin trading',
-        'core holding', 'shares up', 'buys back', 'share price', 'derivative'
+        'core holding', 'shares up', 'buys back', 'share price', 'derivative',
+        'apo one', 'nyse:bx', 'nyse: bx',
     ],
     'Dividend/NAV News': [
         'dividend', 'nav total return', 'share buybacks', 'buybacks'
@@ -278,7 +279,7 @@ SCOPE_EXCLUSIONS = {
         'real estate', 'reit', 'property fund', 'warehouse', 'logistics facility',
         'office building', 'commercial real estate', 'data center', 'data centre',
         'residential', 'rent', 'industrial property', 'retail property',
-        'cmbs market', 'mortgage trust',
+        'cmbs market', 'mortgage trust', 'office towers', 'mortgage investment trust',
     ],
     'Minority/Non-buyout': [
         'minority stake', 'minority investment', 'takes stake', 'took stake',
@@ -290,7 +291,9 @@ SCOPE_EXCLUSIONS = {
         'stock price', 'analyst', 'rating', 'upgraded', 'downgraded',
         'ipo', 'goes public', 'valuation', 'venture fund',
         'fourth quarter for its', 'infrastructure fund', 'wealth channel',
-        'strategic expansion',
+        'strategic expansion', 'conference call', 'investment analysis',
+        'analysts offer insights', 'bankruptcy', 'retail clients',
+        'tax treatment', 'distributions',
     ],
     'Legal/Regulatory': [
         'investigating', 'investigation', 'investor challenge'
@@ -298,9 +301,10 @@ SCOPE_EXCLUSIONS = {
     'False Positives': [
         'adidas', 'boots leaked', 'gas producer', 'the points guy', 'tpg awards',
         'silver lake eagles',
-        # KKR = Kolkata Knight Riders (cricket)
+        # KKR = Kolkata Knight Riders (cricket) and general cricket terms
         'kolkata knight riders', 'ipl 2026', 'csk vs kkr', 'kkr vs', 'vs kkr', 'bbl 2025',
-        'win over kkr', 'csk end', 'dhoni',
+        'win over kkr', 'csk end', 'dhoni', 'cricket', 'bowling action', 't20 world cup',
+        'icc', 'bcb', 'mustafizur', 'pathirana', 'cricketaddictor', 'csk for kkr',
         # TPG false positives
         'tpg online daily', 'the platform group', 'tpg re finance', 'harwood district',
         # Kantar = market research, not PE
@@ -315,7 +319,11 @@ SCOPE_EXCLUSIONS = {
         # Stock holdings (institutional, not deals)
         'mellon corp acquires', 'million stake in',
         # Singapore companies (Asia filter backup)
-        'singtel', 'stt gdc',
+        'singtel', 'stt gdc', 'econ healthcare', 'cccs',
+        # Leonard Valve (not Leonard Green & Partners)
+        'leonard valve', 'a.o. smith', 'a o smith',
+        # Delek Logistics (not a PE firm)
+        'delek logistics',
     ],
     'Price Targets': [
         'price target', 'target at', 'target cut', 'target raised',

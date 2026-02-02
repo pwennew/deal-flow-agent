@@ -285,7 +285,9 @@ SCOPE_EXCLUSIONS = {
     ],
     'Minority/Non-buyout': [
         'minority stake', 'minority investment', 'takes stake', 'took stake',
-        'growth investment', 'growth equity', 'invests in', 'buys stake', 'secondaries'
+        'growth investment', 'growth equity', 'invests in', 'buys stake', 'secondaries',
+        'sells stake', 'sells its stake', 'secures investment', 'secures funding',
+        'provides funding'
     ],
     'Non-deal News': [
         'fundraising', 'raises fund', 'closes fund', 'closed fund',

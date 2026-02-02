@@ -93,6 +93,8 @@ ASIA_OCEANIA_TERMS = [
     'beijing', 'shanghai', 'shenzhen', 'tokyo', 'osaka', 'seoul', 'mumbai',
     'delhi', 'bangalore', 'sydney', 'melbourne', 'auckland',
     'asia', 'asian', 'apac', 'asia-pacific', 'asia pacific',
+    # Additional Indian cities/terms
+    'chennai', 'hyderabad', 'kolkata', 'pune', 'idfc', 'crore', 'rupee',
 ]
 
 # =============================================================================
@@ -294,6 +296,12 @@ SCOPE_EXCLUSIONS = {
         'strategic expansion', 'conference call', 'investment analysis',
         'analysts offer insights', 'bankruptcy', 'retail clients',
         'tax treatment', 'distributions',
+        # Additional non-deal patterns
+        'year in review', 'anniversary', 'top picks', 'stock picks',
+        'reduces stake', 'lowers holdings', 'holdings in',
+        'analysts have this', 'buy the winner', 'ripe for a turnaround',
+        'suddenly paying attention', 'board seat', 'epstein',
+        'ceos must act', 'ai chief',
     ],
     'Legal/Regulatory': [
         'investigating', 'investigation', 'investor challenge'
@@ -305,15 +313,18 @@ SCOPE_EXCLUSIONS = {
         'kolkata knight riders', 'ipl 2026', 'csk vs kkr', 'kkr vs', 'vs kkr', 'bbl 2025',
         'win over kkr', 'csk end', 'dhoni', 'cricket', 'bowling action', 't20 world cup',
         'icc', 'bcb', 'mustafizur', 'pathirana', 'cricketaddictor', 'csk for kkr',
-        # TPG false positives
+        # TPG false positives (TPG Telecom = Australian telco)
         'tpg online daily', 'the platform group', 'tpg re finance', 'harwood district',
+        'tpg telecom', 'telstra',
         # Kantar = market research, not PE
         'kantar', 'winter olympics',
-        # Blackstone grill brand
+        # Blackstone grill/griddle brand
         'blackstone grill', 'blackstone tailgater', 'blackstone griddle',
+        'blackstone cover', 'bronco line', 'outdoor grill',
         # EQT Corporation = US gas company (NYSE: EQT), not EQT Partners
         'eqt ties', 'eqt gas', 'gas demand', 'natural gas', 'eqt corporation',
         'eqt projects', 'eqt foundation', 'derivatives gain',
+        'gas power reliability', 'strategic pivot',
         # Tate & Lyle = food company
         'tate & lyle', 'tate and lyle',
         # Stock holdings (institutional, not deals)
@@ -324,6 +335,16 @@ SCOPE_EXCLUSIONS = {
         'leonard valve', 'a.o. smith', 'a o smith',
         # Delek Logistics (not a PE firm)
         'delek logistics',
+        # Apollo Neuroscience (not Apollo Global Management)
+        'apollo neuroscience',
+        # Court Square protest news (not Court Square PE)
+        'anti-ice protesters', 'protesters gather',
+        # Montagu Island (not Montagu PE)
+        'montagu island', 'earthquake',
+        # KKR Malaysian infrastructure (not deals)
+        'g1-g4 contractors',
+        # Hotel/hospitality (real estate adjacent)
+        'hotelier', 'gran canaria',
     ],
     'Price Targets': [
         'price target', 'target at', 'target cut', 'target raised',

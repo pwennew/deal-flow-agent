@@ -302,6 +302,13 @@ SCOPE_EXCLUSIONS = {
         'analysts have this', 'buy the winner', 'ripe for a turnaround',
         'suddenly paying attention', 'board seat', 'epstein',
         'ceos must act', 'ai chief',
+        # More non-deal patterns from HubSpot review
+        'outpaces rivals', 'race for private', 'investment empire',
+        'to present at', 'doubling down on', 'funding gap',
+        'buys shares of', 'shares of apollo', 'shares of kkr', 'shares of blackstone',
+        'extension period', 'concession company',
+        'hedge fund platform', 'posted a', '% gain', '% return',
+        'subordinated notes', 'precision trading', 'notes due',
     ],
     'Legal/Regulatory': [
         'investigating', 'investigation', 'investor challenge'

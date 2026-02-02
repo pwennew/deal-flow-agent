@@ -285,7 +285,9 @@ SCOPE_EXCLUSIONS = {
     ],
     'Minority/Non-buyout': [
         'minority stake', 'minority investment', 'takes stake', 'took stake',
-        'growth investment', 'growth equity', 'invests in', 'buys stake', 'secondaries'
+        'growth investment', 'growth equity', 'invests in', 'buys stake', 'secondaries',
+        'sells stake', 'sells its stake', 'secures investment', 'secures funding',
+        'provides funding'
     ],
     'Non-deal News': [
         'fundraising', 'raises fund', 'closes fund', 'closed fund',
@@ -718,18 +720,22 @@ def write_to_hubspot(articles: list[dict], verbose: bool = True) -> dict:
     """
     Write articles to HubSpot as Notes on Company records.
     Uses pre-cached company IDs from target_accounts.py.
+    Deduplicates by company_id to avoid creating multiple notes on same company.
 
-    Returns dict with counts: {written, skipped_no_match, errors}
+    Returns dict with counts: {written, skipped_no_match, skipped_duplicate, errors}
     """
     if not HUBSPOT_API_KEY:
         if verbose:
             print("  HubSpot API key not configured - skipping")
-        return {"written": 0, "skipped_no_match": 0, "errors": 0}
+        return {"written": 0, "skipped_no_match": 0, "skipped_duplicate": 0, "errors": 0}
 
-    stats = {"written": 0, "skipped_no_match": 0, "errors": 0}
+    stats = {"written": 0, "skipped_no_match": 0, "skipped_duplicate": 0, "errors": 0}
 
     for article in articles:
         firms = article.get('target_accounts', '').split(', ')
+
+        # Track company_ids we've written to for this article (avoid duplicates)
+        written_company_ids = set()
 
         for firm in firms:
             firm = firm.strip()
@@ -745,12 +751,20 @@ def write_to_hubspot(articles: list[dict], verbose: bool = True) -> dict:
                     print(f"    No HubSpot match for: {firm}")
                 continue
 
+            # Skip if we already wrote to this company for this article
+            if company_id in written_company_ids:
+                stats["skipped_duplicate"] += 1
+                if verbose:
+                    print(f"    Skipping duplicate: {firm} (same company as previous)")
+                continue
+
             # Create note
             success = hubspot_create_note(company_id, article)
             time.sleep(0.1)  # Rate limiting
 
             if success:
                 stats["written"] += 1
+                written_company_ids.add(company_id)
                 if verbose:
                     print(f"    ✓ Added note to {firm}")
             else:
@@ -817,6 +831,7 @@ if __name__ == "__main__":
         print()
         print(f"HubSpot: {stats['written']} notes created, "
               f"{stats['skipped_no_match']} no match, "
+              f"{stats.get('skipped_duplicate', 0)} duplicates skipped, "
               f"{stats['errors']} errors")
 
     # Show sample

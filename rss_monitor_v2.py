@@ -268,7 +268,8 @@ SCOPE_EXCLUSIONS = {
         'dividend', 'nav total return', 'share buybacks', 'buybacks'
     ],
     'Credit/Debt': [
-        'credit income fund', 'credit income', 'debt deal', 'bonds', 'private credit'
+        'credit income fund', 'credit income', 'debt deal', 'bonds', 'private credit',
+        'credit finance',
     ],
     'Profit/Results News': [
         'profit jump', 'beats estimates', 'surprise profit'
@@ -289,6 +290,7 @@ SCOPE_EXCLUSIONS = {
         'stock price', 'analyst', 'rating', 'upgraded', 'downgraded',
         'ipo', 'goes public', 'valuation', 'venture fund',
         'fourth quarter for its', 'infrastructure fund', 'wealth channel',
+        'strategic expansion',
     ],
     'Legal/Regulatory': [
         'investigating', 'investigation', 'investor challenge'
@@ -312,6 +314,8 @@ SCOPE_EXCLUSIONS = {
         'tate & lyle', 'tate and lyle',
         # Stock holdings (institutional, not deals)
         'mellon corp acquires', 'million stake in',
+        # Singapore companies (Asia filter backup)
+        'singtel', 'stt gdc',
     ],
     'Price Targets': [
         'price target', 'target at', 'target cut', 'target raised',

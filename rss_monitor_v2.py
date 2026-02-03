@@ -292,7 +292,7 @@ SCOPE_EXCLUSIONS = {
     ],
     'Minority/Non-buyout': [
         'minority stake', 'minority investment', 'majority stake', 'takes stake', 'took stake',
-        'growth investment', 'growth equity', 'invests in', 'buys stake', 'secondaries',
+        'growth investment', 'growth equity', 'invests in', 'to invest in', 'buys stake', 'secondaries',
         'sells stake', 'sells its stake', 'secures investment', 'secures funding',
         'provides funding',
         # Additional stake patterns
@@ -317,6 +317,7 @@ SCOPE_EXCLUSIONS = {
         'tax treatment', 'distributions',
         # Additional non-deal patterns
         'year in review', 'anniversary', 'top picks', 'stock picks',
+        'past picks', 'past stock',
         'reduces stake', 'lowers holdings', 'increases holdings', 'cuts holdings',
         'analysts have this', 'buy the winner', 'ripe for a turnaround',
         'suddenly paying attention', 'board seat', 'epstein',
@@ -335,7 +336,7 @@ SCOPE_EXCLUSIONS = {
     ],
     'Legal/Regulatory': [
         'investigating', 'investigation', 'investor challenge',
-        'settle shareholder', 'settle lawsuit',
+        'settle shareholder', 'settle shareholders', 'settle lawsuit',
     ],
     'False Positives': [
         'adidas', 'boots leaked', 'gas producer', 'the points guy', 'tpg awards',
@@ -582,8 +583,17 @@ def dedupe_by_content(articles: list[dict]) -> list[dict]:
         w = w.lower().rstrip("'s").rstrip("'").rstrip(",").rstrip(".")
         return w
 
+    def normalize_title(title):
+        """Normalize title for comparison - remove source suffixes and common variations"""
+        # Remove source suffix like "- Bloomberg", "- Reuters", etc.
+        title = re.sub(r'\s*[-–—|]\s*[A-Za-z][A-Za-z\s\.]+$', '', title)
+        # Normalize whitespace
+        title = ' '.join(title.split())
+        return title.lower()
+
     for article in articles:
         title = article.get('title', '')
+        normalized_title = normalize_title(title)
         accounts = article.get('target_accounts', '')
         accounts_set = set(a.strip() for a in accounts.split(','))
 
@@ -592,19 +602,31 @@ def dedupe_by_content(articles: list[dict]) -> list[dict]:
 
         # Check if similar to any seen article
         is_dupe = False
-        for seen_words, seen_accounts_set in seen_signatures:
-            # Check if any account overlaps (not exact match required)
+        for seen_words, seen_accounts_set, seen_title in seen_signatures:
+            # Method 1: High word overlap regardless of account overlap
+            word_overlap = len(words & seen_words)
+            if word_overlap >= 4:
+                is_dupe = True
+                break
+
+            # Method 2: Account overlap with lower word threshold
             accounts_overlap = bool(accounts_set & seen_accounts_set)
-            if accounts_overlap:
-                word_overlap = len(words & seen_words)
-                # Lower threshold (2) when same PE firm mentioned
-                if word_overlap >= 2:
+            if accounts_overlap and word_overlap >= 2:
+                is_dupe = True
+                break
+
+            # Method 3: Very similar normalized titles (catches reformatted same story)
+            if len(normalized_title) > 20 and len(seen_title) > 20:
+                # Check if one title contains significant portion of other
+                shorter = min(normalized_title, seen_title, key=len)
+                longer = max(normalized_title, seen_title, key=len)
+                if shorter in longer or longer.startswith(shorter[:30]):
                     is_dupe = True
                     break
 
         if not is_dupe:
             unique.append(article)
-            seen_signatures.append((words, accounts_set))
+            seen_signatures.append((words, accounts_set, normalized_title))
 
     return unique
 
@@ -900,6 +922,11 @@ if __name__ == "__main__":
         verbose=True
     )
     all_articles.extend(pe_articles)
+
+    # Final deduplication across all sources
+    before_dedup = len(all_articles)
+    all_articles = dedupe_by_content(all_articles)
+    print(f"  Final dedup: {before_dedup} -> {len(all_articles)} articles")
 
     print()
     print(f"FINAL: {len(all_articles)} total articles")

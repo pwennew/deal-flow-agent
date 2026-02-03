@@ -376,6 +376,8 @@ SCOPE_EXCLUSIONS = {
         'delek logistics',
         # Apollo Neuroscience (not Apollo Global Management)
         'apollo neuroscience',
+        # Apollo.io (sales software, not Apollo Global Management)
+        'apollo.io',
         # Court Square protest/theater news (not Court Square PE)
         'anti-ice protesters', 'protesters gather', 'court square theater',
         # Montagu Island (not Montagu PE)
@@ -423,6 +425,7 @@ SCOPE_EXCLUSIONS = {
         'private debt continuation', 'energy transition fund',
         'best years yet', 'first close', 'closes oversubscribed',
         'flagship buyout fund', 'flagship fund',
+        'launches fund', 'launches private equity', 'launches pe fund',
     ],
     'Personnel/Events': [
         # Personnel moves
@@ -441,6 +444,7 @@ SCOPE_EXCLUSIONS = {
         # Analyst commentary
         'bofa sees', 'bank of america sees', 'ai disruption', 'giant software bet',
         'split between mega-deals', 'enters 2026',
+        'sustainability office', 'view from the',
     ],
 }
 

@@ -375,15 +375,21 @@ SCOPE_EXCLUSIONS = {
         # BC = British Columbia (Canadian province)
         'bc halts', 'bc housing', 'b.c. forestry', 'bc sets up', 'bc drug',
         'the tyee', 'coast reporter', 'bakersfield.com',
-        'experience bc', 'iconic ways',
+        'experience bc', 'iconic ways', 'bc pension', 'toronto, bc',
+        'bc conservatives', 'yukon-bc', 'bc grid',
         # BC = Boston College (university and sports)
         'boston college', 'bc athletics', 'beanpot', 'bc hockey', 'bc men',
         'bc heads', 'bc receives gift', 'bcheights.com', 'bc takes on',
         'duke blue devils', 'acc win', 'bruins prospects',
+        'rally against bc', 'bc girls', 'bc senior', 'bc club',
         # BC Lions (Canadian football team)
         'bc lions', 'lions add veteran', 'lions re-sign', 'quarterback chase brice',
         # BC Place (stadium)
         'bc place', 'noah kahan',
+        # BC in soccer (Atalanta BC, etc)
+        'atalanta bc', 'bc vs',
+        # BC.Game, BC.Poker (crypto gambling)
+        'bc.game', 'bc.poker',
         # Bridgepoint Hospital (not Bridgepoint PE)
         'bridgepoint hospital', 'hennick bridgepoint',
         # Charles River Associates (consulting, not PE)
@@ -488,6 +494,21 @@ def find_target_accounts(text: str) -> list[tuple[str, str, int]]:
     matches = []
     text_lower = text.lower()
 
+    # Short firm names that are ambiguous need PE context to match
+    # (e.g., "BC" could be British Columbia, Boston College, etc.)
+    AMBIGUOUS_SHORT_NAMES = {'bc', 'eqt', 'cvc', 'pep', 'kkr', 'tpg'}
+    PE_CONTEXT_PATTERNS = [
+        r'private equity', r'buyout', r'acqui', r'portfolio',
+        r'partners', r'capital', r'-backed', r'deal', r'takeover',
+    ]
+
+    def has_pe_context(text_lower: str) -> bool:
+        """Check if text has PE-related context"""
+        for pattern in PE_CONTEXT_PATTERNS:
+            if re.search(pattern, text_lower):
+                return True
+        return False
+
     # Check aliases (exact match)
     for alias, canonical in FIRM_ALIASES.items():
         pattern = r'\b' + re.escape(alias) + r'\b'
@@ -500,6 +521,10 @@ def find_target_accounts(text: str) -> list[tuple[str, str, int]]:
         firm_lower = firm.lower()
         pattern = r'\b' + re.escape(firm_lower) + r'\b'
         if re.search(pattern, text_lower):
+            # For short ambiguous names, require PE context
+            if firm_lower in AMBIGUOUS_SHORT_NAMES:
+                if not has_pe_context(text_lower):
+                    continue  # Skip match without PE context
             if not any(m[1] == firm for m in matches):
                 matches.append((firm, firm, 100))
 

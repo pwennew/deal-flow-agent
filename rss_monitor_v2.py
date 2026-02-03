@@ -425,6 +425,7 @@ SCOPE_EXCLUSIONS = {
         'private debt continuation', 'energy transition fund',
         'best years yet', 'first close', 'closes oversubscribed',
         'flagship buyout fund', 'flagship fund',
+        'launches fund', 'launches private equity', 'launches pe fund',
     ],
     'Personnel/Events': [
         # Personnel moves

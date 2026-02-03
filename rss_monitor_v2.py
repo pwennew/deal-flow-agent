@@ -273,6 +273,9 @@ SCOPE_EXCLUSIONS = {
     'Credit/Debt': [
         'credit income fund', 'credit income', 'debt deal', 'bonds', 'private credit',
         'credit finance',
+        # Additional credit/debt patterns
+        'issues bonds', 'refinances debt', 'credit fund', 'lends to',
+        'direct lending', 'loan fund', 'debt financing', 'credit facility',
     ],
     'Profit/Results News': [
         'profit jump', 'beats estimates', 'surprise profit'
@@ -287,7 +290,14 @@ SCOPE_EXCLUSIONS = {
         'minority stake', 'minority investment', 'majority stake', 'takes stake', 'took stake',
         'growth investment', 'growth equity', 'invests in', 'buys stake', 'secondaries',
         'sells stake', 'sells its stake', 'secures investment', 'secures funding',
-        'provides funding'
+        'provides funding',
+        # Additional stake patterns
+        'acquires stake', 'acquired stake', 'bought stake', 'purchasing stake',
+        'to take stake', 'grabs stake', 'picks up stake', 'gets stake',
+        # Stake exits/sales
+        'to sell stake', 'exits stake', 'divests stake', 'offloads stake',
+        # Growth/expansion capital (not buyouts)
+        'growth capital', 'expansion capital',
     ],
     'Asset Purchase': [
         'asset purchase', 'buys assets', 'acquires assets', 'oil assets', 'gas assets',
@@ -314,6 +324,9 @@ SCOPE_EXCLUSIONS = {
         'extension period', 'concession company',
         'hedge fund platform', 'posted a', '% gain', '% return',
         'subordinated notes', 'precision trading', 'notes due',
+        # Investment/funding round patterns (not acquisitions)
+        'makes investment', 'leads investment', 'leads funding', 'funding round',
+        'participates in funding', 'backs company', 'raises funds',
     ],
     'Legal/Regulatory': [
         'investigating', 'investigation', 'investor challenge'

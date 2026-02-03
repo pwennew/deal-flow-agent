@@ -284,10 +284,13 @@ SCOPE_EXCLUSIONS = {
         'cmbs market', 'mortgage trust', 'office towers', 'mortgage investment trust',
     ],
     'Minority/Non-buyout': [
-        'minority stake', 'minority investment', 'takes stake', 'took stake',
+        'minority stake', 'minority investment', 'majority stake', 'takes stake', 'took stake',
         'growth investment', 'growth equity', 'invests in', 'buys stake', 'secondaries',
         'sells stake', 'sells its stake', 'secures investment', 'secures funding',
         'provides funding'
+    ],
+    'Asset Purchase': [
+        'asset purchase', 'buys assets', 'acquires assets', 'oil assets', 'gas assets',
     ],
     'Non-deal News': [
         'fundraising', 'raises fund', 'closes fund', 'closed fund',

@@ -428,7 +428,7 @@ SCOPE_EXCLUSIONS = {
         # Personnel moves
         'welcomes', 'as principal', 'promotes', 'to coo', 'hires',
         'veteran to lead', 'quits uk', 'to speak at', 'to present at',
-        'appoints', 'takes on extra role', 'named as', 'moves to switzerland',
+        'appoints new', 'takes on extra role', 'named as', 'moves to switzerland',
         # Shareholder/investor events
         'shareholder update', 'investor day',
     ],

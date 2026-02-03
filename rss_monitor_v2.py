@@ -292,7 +292,7 @@ SCOPE_EXCLUSIONS = {
     ],
     'Minority/Non-buyout': [
         'minority stake', 'minority investment', 'majority stake', 'takes stake', 'took stake',
-        'growth investment', 'growth equity', 'invests in', 'buys stake', 'secondaries',
+        'growth investment', 'growth equity', 'invests in', 'to invest in', 'buys stake', 'secondaries',
         'sells stake', 'sells its stake', 'secures investment', 'secures funding',
         'provides funding',
         # Additional stake patterns

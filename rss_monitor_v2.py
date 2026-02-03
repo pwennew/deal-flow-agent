@@ -336,7 +336,7 @@ SCOPE_EXCLUSIONS = {
     ],
     'Legal/Regulatory': [
         'investigating', 'investigation', 'investor challenge',
-        'settle shareholder', 'settle lawsuit',
+        'settle shareholder', 'settle shareholders', 'settle lawsuit',
     ],
     'False Positives': [
         'adidas', 'boots leaked', 'gas producer', 'the points guy', 'tpg awards',

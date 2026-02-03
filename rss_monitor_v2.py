@@ -267,7 +267,7 @@ SCOPE_EXCLUSIONS = {
         'core holding', 'shares up', 'buys back', 'share price', 'derivative',
         'apo one', 'nyse:bx', 'nyse: bx',
         'shares gain', 'shares give up gain', 'shares rise', 'shares fall',
-        'sleeper stock',
+        'sleeper stock', 'sells shares',
     ],
     'Dividend/NAV News': [
         'dividend', 'nav total return', 'share buybacks', 'buybacks',
@@ -282,7 +282,8 @@ SCOPE_EXCLUSIONS = {
         'new financing', 'investment financing', 'housing finance',
     ],
     'Profit/Results News': [
-        'profit jump', 'beats estimates', 'surprise profit'
+        'profit jump', 'beats estimates', 'surprise profit',
+        'financial results', 'reports strong', 'reports quarterly',
     ],
     'Real Estate': [
         'real estate', 'reit', 'property fund', 'warehouse', 'logistics facility',
@@ -354,6 +355,10 @@ SCOPE_EXCLUSIONS = {
         'blackstone grill', 'blackstone tailgater', 'blackstone griddle',
         'blackstone cover', 'bronco line', 'outdoor grill', 'electric griddle',
         'wayfair', 'walmart just slashed',
+        # Blackstone Edge = place in UK (not Blackstone PE)
+        'blackstone edge',
+        # Ardian Nikulaj = person name (not Ardian PE)
+        'ardian nikulaj',
         # EQT Corporation = US gas company (NYSE: EQT), not EQT Partners
         'eqt ties', 'eqt gas', 'gas demand', 'natural gas', 'eqt corporation',
         'eqt projects', 'eqt foundation', 'derivatives gain',
@@ -417,11 +422,13 @@ SCOPE_EXCLUSIONS = {
         # Additional fund/PE industry news
         'private debt continuation', 'energy transition fund',
         'best years yet', 'first close', 'closes oversubscribed',
+        'flagship buyout fund', 'flagship fund',
     ],
     'Personnel/Events': [
         # Personnel moves
         'welcomes', 'as principal', 'promotes', 'to coo', 'hires',
         'veteran to lead', 'quits uk', 'to speak at', 'to present at',
+        'appoints new', 'takes on extra role', 'named as', 'moves to switzerland',
         # Shareholder/investor events
         'shareholder update', 'investor day',
     ],
@@ -431,6 +438,9 @@ SCOPE_EXCLUSIONS = {
         'talent woes', 'legacy anxiety', 'family office',
         'stressed out:', 'the pipeline:', 'the truth about',
         'quiet giant', 'power move',
+        # Analyst commentary
+        'bofa sees', 'bank of america sees', 'ai disruption', 'giant software bet',
+        'split between mega-deals', 'enters 2026',
     ],
 }
 

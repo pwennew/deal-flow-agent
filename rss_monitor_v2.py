@@ -266,9 +266,12 @@ SCOPE_EXCLUSIONS = {
         'acquires shares of', 'bullish or bearish', 'options begin trading',
         'core holding', 'shares up', 'buys back', 'share price', 'derivative',
         'apo one', 'nyse:bx', 'nyse: bx',
+        'shares gain', 'shares give up gain', 'shares rise', 'shares fall',
+        'sleeper stock',
     ],
     'Dividend/NAV News': [
-        'dividend', 'nav total return', 'share buybacks', 'buybacks'
+        'dividend', 'nav total return', 'share buybacks', 'buybacks',
+        'share buyback', 'buyback programme', 'share buyout',
     ],
     'Credit/Debt': [
         'credit income fund', 'credit income', 'debt deal', 'bonds', 'private credit',
@@ -276,6 +279,7 @@ SCOPE_EXCLUSIONS = {
         # Additional credit/debt patterns
         'issues bonds', 'refinances debt', 'credit fund', 'lends to',
         'direct lending', 'loan fund', 'debt financing', 'credit facility',
+        'new financing', 'investment financing', 'housing finance',
     ],
     'Profit/Results News': [
         'profit jump', 'beats estimates', 'surprise profit'
@@ -297,7 +301,7 @@ SCOPE_EXCLUSIONS = {
         # Stake exits/sales
         'to sell stake', 'exits stake', 'divests stake', 'offloads stake',
         # Growth/expansion capital (not buyouts)
-        'growth capital', 'expansion capital',
+        'growth capital', 'expansion capital', 'majority investment',
     ],
     'Asset Purchase': [
         'asset purchase', 'buys assets', 'acquires assets', 'oil assets', 'gas assets',
@@ -327,9 +331,11 @@ SCOPE_EXCLUSIONS = {
         # Investment/funding round patterns (not acquisitions)
         'makes investment', 'leads investment', 'leads funding', 'funding round',
         'participates in funding', 'backs company', 'raises funds',
+        'take-private',
     ],
     'Legal/Regulatory': [
-        'investigating', 'investigation', 'investor challenge'
+        'investigating', 'investigation', 'investor challenge',
+        'settle shareholder', 'settle lawsuit',
     ],
     'False Positives': [
         'adidas', 'boots leaked', 'gas producer', 'the points guy', 'tpg awards',
@@ -409,7 +415,7 @@ SCOPE_EXCLUSIONS = {
         'sophomore vehicle', 'bond offering', 'secured lending',
         # Additional fund/PE industry news
         'private debt continuation', 'energy transition fund',
-        'best years yet', 'first close',
+        'best years yet', 'first close', 'closes oversubscribed',
     ],
     'Personnel/Events': [
         # Personnel moves

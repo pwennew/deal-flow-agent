@@ -266,9 +266,12 @@ SCOPE_EXCLUSIONS = {
         'acquires shares of', 'bullish or bearish', 'options begin trading',
         'core holding', 'shares up', 'buys back', 'share price', 'derivative',
         'apo one', 'nyse:bx', 'nyse: bx',
+        'shares gain', 'shares give up gain', 'shares rise', 'shares fall',
+        'sleeper stock',
     ],
     'Dividend/NAV News': [
-        'dividend', 'nav total return', 'share buybacks', 'buybacks'
+        'dividend', 'nav total return', 'share buybacks', 'buybacks',
+        'share buyback', 'buyback programme', 'share buyout',
     ],
     'Credit/Debt': [
         'credit income fund', 'credit income', 'debt deal', 'bonds', 'private credit',
@@ -276,6 +279,7 @@ SCOPE_EXCLUSIONS = {
         # Additional credit/debt patterns
         'issues bonds', 'refinances debt', 'credit fund', 'lends to',
         'direct lending', 'loan fund', 'debt financing', 'credit facility',
+        'new financing', 'investment financing', 'housing finance',
     ],
     'Profit/Results News': [
         'profit jump', 'beats estimates', 'surprise profit'
@@ -297,7 +301,7 @@ SCOPE_EXCLUSIONS = {
         # Stake exits/sales
         'to sell stake', 'exits stake', 'divests stake', 'offloads stake',
         # Growth/expansion capital (not buyouts)
-        'growth capital', 'expansion capital',
+        'growth capital', 'expansion capital', 'majority investment',
     ],
     'Asset Purchase': [
         'asset purchase', 'buys assets', 'acquires assets', 'oil assets', 'gas assets',
@@ -327,9 +331,11 @@ SCOPE_EXCLUSIONS = {
         # Investment/funding round patterns (not acquisitions)
         'makes investment', 'leads investment', 'leads funding', 'funding round',
         'participates in funding', 'backs company', 'raises funds',
+        'take-private',
     ],
     'Legal/Regulatory': [
-        'investigating', 'investigation', 'investor challenge'
+        'investigating', 'investigation', 'investor challenge',
+        'settle shareholder', 'settle lawsuit',
     ],
     'False Positives': [
         'adidas', 'boots leaked', 'gas producer', 'the points guy', 'tpg awards',
@@ -340,16 +346,18 @@ SCOPE_EXCLUSIONS = {
         'icc', 'bcb', 'mustafizur', 'pathirana', 'cricketaddictor', 'csk for kkr',
         # TPG false positives (TPG Telecom = Australian telco)
         'tpg online daily', 'the platform group', 'tpg re finance', 'harwood district',
-        'tpg telecom', 'telstra',
+        'tpg telecom', 'telstra', '50gb mobile plan', 'mobile plan',
         # Kantar = market research, not PE
         'kantar', 'winter olympics',
         # Blackstone grill/griddle brand
         'blackstone grill', 'blackstone tailgater', 'blackstone griddle',
-        'blackstone cover', 'bronco line', 'outdoor grill',
+        'blackstone cover', 'bronco line', 'outdoor grill', 'electric griddle',
+        'wayfair', 'walmart just slashed',
         # EQT Corporation = US gas company (NYSE: EQT), not EQT Partners
         'eqt ties', 'eqt gas', 'gas demand', 'natural gas', 'eqt corporation',
         'eqt projects', 'eqt foundation', 'derivatives gain',
         'gas power reliability', 'strategic pivot',
+        'eqt corp', 'eqt stock', 'nyse: eqt', 'nyse:eqt',
         # Tate & Lyle = food company
         'tate & lyle', 'tate and lyle',
         # Stock holdings (institutional, not deals)
@@ -362,21 +370,66 @@ SCOPE_EXCLUSIONS = {
         'delek logistics',
         # Apollo Neuroscience (not Apollo Global Management)
         'apollo neuroscience',
-        # Court Square protest news (not Court Square PE)
-        'anti-ice protesters', 'protesters gather',
+        # Court Square protest/theater news (not Court Square PE)
+        'anti-ice protesters', 'protesters gather', 'court square theater',
         # Montagu Island (not Montagu PE)
         'montagu island', 'earthquake',
         # KKR Malaysian infrastructure (not deals)
         'g1-g4 contractors',
         # Hotel/hospitality (real estate adjacent)
         'hotelier', 'gran canaria',
+        # BC = British Columbia (Canadian province)
+        'bc halts', 'bc housing', 'b.c. forestry', 'bc sets up', 'bc drug',
+        'the tyee', 'coast reporter', 'bakersfield.com',
+        'experience bc', 'iconic ways', 'bc pension', 'toronto, bc',
+        'bc conservatives', 'yukon-bc', 'bc grid',
+        # BC = Boston College (university and sports)
+        'boston college', 'bc athletics', 'beanpot', 'bc hockey', 'bc men',
+        'bc heads', 'bc receives gift', 'bcheights.com', 'bc takes on',
+        'duke blue devils', 'acc win', 'bruins prospects',
+        'rally against bc', 'bc girls', 'bc senior', 'bc club',
+        # BC Lions (Canadian football team)
+        'bc lions', 'lions add veteran', 'lions re-sign', 'quarterback chase brice',
+        # BC Place (stadium)
+        'bc place', 'noah kahan',
+        # BC in soccer (Atalanta BC, etc)
+        'atalanta bc', 'bc vs',
+        # BC.Game, BC.Poker (crypto gambling)
+        'bc.game', 'bc.poker',
+        # Bridgepoint Hospital (not Bridgepoint PE)
+        'bridgepoint hospital', 'hennick bridgepoint',
+        # Charles River Associates (consulting, not PE)
+        'charles river associates',
     ],
     'Price Targets': [
         'price target', 'target at', 'target cut', 'target raised',
+        # Additional stock analysis patterns
+        'buy recommendation', 'raises target price', 'reiterates buy',
+        'stock rank', 'stock outlook', 'wall street estimates',
+        'q4 performance', 'shares down', 'shares up', 'stock underperforms',
+        's&p 500 movers', 'winners:', 'losers:',
+        'portfolio update', 'price targets for',
     ],
     'Fund/CLO News': [
         'clo 10', 'clo ltd', 're-up rate', 'fund iv', 'fund v', 'fund vi',
         'sophomore vehicle', 'bond offering', 'secured lending',
+        # Additional fund/PE industry news
+        'private debt continuation', 'energy transition fund',
+        'best years yet', 'first close', 'closes oversubscribed',
+    ],
+    'Personnel/Events': [
+        # Personnel moves
+        'welcomes', 'as principal', 'promotes', 'to coo', 'hires',
+        'veteran to lead', 'quits uk', 'to speak at', 'to present at',
+        # Shareholder/investor events
+        'shareholder update', 'investor day',
+    ],
+    'Industry Commentary': [
+        # PE industry news (not deals)
+        'private equity top', 'how private equity', 'weathering higher',
+        'talent woes', 'legacy anxiety', 'family office',
+        'stressed out:', 'the pipeline:', 'the truth about',
+        'quiet giant', 'power move',
     ],
 }
 
@@ -447,6 +500,21 @@ def find_target_accounts(text: str) -> list[tuple[str, str, int]]:
     matches = []
     text_lower = text.lower()
 
+    # Short firm names that are ambiguous need PE context to match
+    # (e.g., "BC" could be British Columbia, Boston College, etc.)
+    AMBIGUOUS_SHORT_NAMES = {'bc', 'eqt', 'cvc', 'pep', 'kkr', 'tpg'}
+    PE_CONTEXT_PATTERNS = [
+        r'private equity', r'buyout', r'acqui', r'portfolio',
+        r'partners', r'capital', r'-backed', r'deal', r'takeover',
+    ]
+
+    def has_pe_context(text_lower: str) -> bool:
+        """Check if text has PE-related context"""
+        for pattern in PE_CONTEXT_PATTERNS:
+            if re.search(pattern, text_lower):
+                return True
+        return False
+
     # Check aliases (exact match)
     for alias, canonical in FIRM_ALIASES.items():
         pattern = r'\b' + re.escape(alias) + r'\b'
@@ -459,6 +527,10 @@ def find_target_accounts(text: str) -> list[tuple[str, str, int]]:
         firm_lower = firm.lower()
         pattern = r'\b' + re.escape(firm_lower) + r'\b'
         if re.search(pattern, text_lower):
+            # For short ambiguous names, require PE context
+            if firm_lower in AMBIGUOUS_SHORT_NAMES:
+                if not has_pe_context(text_lower):
+                    continue  # Skip match without PE context
             if not any(m[1] == firm for m in matches):
                 matches.append((firm, firm, 100))
 

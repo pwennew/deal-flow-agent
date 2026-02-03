@@ -923,6 +923,11 @@ if __name__ == "__main__":
     )
     all_articles.extend(pe_articles)
 
+    # Final deduplication across all sources
+    before_dedup = len(all_articles)
+    all_articles = dedupe_by_content(all_articles)
+    print(f"  Final dedup: {before_dedup} -> {len(all_articles)} articles")
+
     print()
     print(f"FINAL: {len(all_articles)} total articles")
     print(f"  - General RSS: {len(all_articles) - len(pe_articles)}")

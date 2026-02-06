@@ -179,10 +179,31 @@ CARVEOUT_DEAL_TYPES = [
     'sell-off', 'selloff',
     'business unit', 'business segment',
     'division', 'subsidiary', 'unit sale',
-    'ict unit', 'health unit', 'oem unit',  # specific unit types (avoid "united")
     'non-core', 'non core', 'noncore',
     'strategic sale', 'asset sale',
 ]
+
+
+def has_carveout_context(text_lower: str) -> bool:
+    """Check if text has carve-out context (division/unit/subsidiary being sold)"""
+    # Check standard carve-out terms
+    if any(dt in text_lower for dt in CARVEOUT_DEAL_TYPES):
+        return True
+
+    # Check for "unit" but not "united"
+    import re
+    # Match "unit" as whole word, but exclude if preceded by "unit" in "united"
+    if re.search(r'\bunit\b', text_lower):
+        # Make sure it's not "united"
+        if 'united' not in text_lower:
+            return True
+        # If "united" is present, check if there's another "unit" that's not part of "united"
+        # Remove "united" and check if "unit" still exists
+        text_without_united = text_lower.replace('united', '')
+        if re.search(r'\bunit\b', text_without_united):
+            return True
+
+    return False
 
 
 def is_carveout_deal(text: str) -> tuple[bool, str, str]:
@@ -201,7 +222,7 @@ def is_carveout_deal(text: str) -> tuple[bool, str, str]:
     text_lower = text.lower()
 
     # First check if this has carve-out context (required for most patterns)
-    has_carveout_context = any(dt in text_lower for dt in CARVEOUT_DEAL_TYPES)
+    has_context = has_carveout_context(text_lower)
 
     # Explicit carve-out terms that don't need additional context
     EXPLICIT_CARVEOUT_TERMS = [
@@ -215,10 +236,10 @@ def is_carveout_deal(text: str) -> tuple[bool, str, str]:
     for pattern in CARVEOUT_STAGE_3_CLOSING:
         if pattern in text_lower:
             # Divestiture/sale patterns always match
-            if 'divest' in pattern or 'sale' in pattern or has_carveout_context or has_explicit_carveout:
+            if 'divest' in pattern or 'sale' in pattern or has_context or has_explicit_carveout:
                 return True, 'closing', pattern
             # Other patterns (like 'finalise') need carveout context
-            if has_carveout_context or has_explicit_carveout:
+            if has_context or has_explicit_carveout:
                 return True, 'closing', pattern
 
     # Check Stage 2 (agreement reached)
@@ -228,7 +249,7 @@ def is_carveout_deal(text: str) -> tuple[bool, str, str]:
             if 'divest' in pattern or 'sale' in pattern:
                 return True, 'agreement', pattern
             # Other patterns need carveout context
-            if has_carveout_context or has_explicit_carveout:
+            if has_context or has_explicit_carveout:
                 return True, 'agreement', pattern
 
     # Check Stage 1 (exploration)
@@ -238,11 +259,11 @@ def is_carveout_deal(text: str) -> tuple[bool, str, str]:
             if 'divest' in pattern or 'sale' in pattern or 'sell' in pattern:
                 return True, 'exploration', pattern
             # Other patterns need carveout context
-            if has_carveout_context or has_explicit_carveout:
+            if has_context or has_explicit_carveout:
                 return True, 'exploration', pattern
 
     # Also match deal verbs WITH carveout context
-    if has_carveout_context or has_explicit_carveout:
+    if has_context or has_explicit_carveout:
         deal_verbs = ['acquires', 'acquired', 'buys', 'bought', 'sells', 'sold',
                       'announces', 'announced', 'completes', 'completed', 'closes', 'closed']
         for verb in deal_verbs:

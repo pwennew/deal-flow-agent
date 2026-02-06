@@ -816,7 +816,7 @@ def run_pipeline(
     lookback_hours: int = 24,
     max_workers: int = 15,
     verbose: bool = True,
-    carveout_only: bool = False
+    carveout_only: bool = True
 ) -> list[dict]:
     """
     Run the full RSS Monitor pipeline.
@@ -1067,13 +1067,13 @@ if __name__ == "__main__":
     parser.add_argument("--no-hubspot", action="store_true", help="Skip HubSpot integration")
     parser.add_argument("--hours", type=int, default=24, help="Lookback hours (default: 24)")
     parser.add_argument("--pe-feeds-only", action="store_true", help="Only fetch PE firm direct RSS feeds")
-    parser.add_argument("--carveout-only", action="store_true", help="Only return carve-out/divestiture deals")
+    parser.add_argument("--all-deals", action="store_true", help="Include all deals, not just carve-outs/divestitures")
     args = parser.parse_args()
 
     print("=" * 70)
     print("RSS Monitor - Deal Flow Agent")
     print("=" * 70)
-    if args.carveout_only:
+    if not args.all_deals:
         print("MODE: Carve-out/Divestiture deals only")
     print()
 
@@ -1086,7 +1086,7 @@ if __name__ == "__main__":
             use_pe_sources=True,
             lookback_hours=args.hours,
             verbose=True,
-            carveout_only=args.carveout_only
+            carveout_only=not args.all_deals
         )
         all_articles.extend(articles)
         print(f"\nGeneral RSS: {len(articles)} articles")

@@ -247,10 +247,10 @@ def is_carveout_deal(text: str) -> tuple[bool, str, str]:
     # Check Stage 2 (agreement reached)
     for pattern in CARVEOUT_STAGE_2_AGREEMENT:
         if pattern in text_lower:
-            # Divestiture/sale patterns always match
-            if 'divest' in pattern or 'sale' in pattern:
+            # Divestiture patterns always indicate carve-out
+            if 'divest' in pattern:
                 return True, 'agreement', pattern
-            # Other patterns need carveout context
+            # Sale/sell patterns need carveout context (to avoid PE exits)
             if has_context or has_explicit_carveout:
                 return True, 'agreement', pattern
 

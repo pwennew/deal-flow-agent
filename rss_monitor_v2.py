@@ -81,6 +81,141 @@ def generate_firm_search_feeds() -> list[str]:
 
 
 # =============================================================================
+# CARVE-OUT / DIVESTITURE ALLOWLIST (deals user wants to capture)
+# =============================================================================
+# Three stages: 1) Pre-agreement/exploration, 2) Agreement/signing, 3) Closing/completion
+
+CARVEOUT_STAGE_1_EXPLORATION = [
+    # Exploring sale
+    'exploring sale', 'explores sale', 'explore sale',
+    'exploring divestiture', 'explores divestiture',
+    'exploring options', 'exploring strategic options',
+    # Strategic review
+    'strategic review', 'review of strategic alternatives',
+    'reviewing strategic alternatives', 'evaluating strategic alternatives',
+    # Considering/planning
+    'considering divestiture', 'considers divestiture',
+    'considering sale', 'considers sale',
+    'plans to divest', 'plans to sell',
+    'planning to divest', 'planning to sell',
+    # Negotiations
+    'in talks to sell', 'in negotiations to sell',
+    'in discussions to sell', 'negotiating sale',
+    # Seeking buyer
+    'seeking buyer', 'seeking buyers', 'seeks buyer',
+    'looking for buyer', 'looking for buyers',
+    # Other exploration
+    'mulling sale', 'weighing sale', 'eyeing sale',
+    'may sell', 'could sell', 'could divest',
+    'preparing to sell', 'preparing sale', 'prepares sale',
+    'looking to sell', 'set to sell', 'poised to sell',
+    'readies sale', 'readying sale',
+]
+
+CARVEOUT_STAGE_2_AGREEMENT = [
+    # Agrees to sell/divest
+    'agrees to sell', 'agreed to sell', 'agree to sell',
+    'agrees to divest', 'agreed to divest',
+    # Enters agreement
+    'enters agreement to sell', 'entered agreement to sell',
+    'enters into agreement to sell', 'entered into agreement to sell',
+    # Signs agreement
+    'signs agreement to sell', 'signed agreement to sell',
+    'signs definitive agreement', 'signed definitive agreement',
+    # Reaches agreement
+    'reaches agreement to sell', 'reached agreement to sell',
+    'reaches definitive agreement', 'reached definitive agreement',
+    'reaches deal to sell', 'reached deal to sell',
+    # Announces
+    'announces divestiture', 'announced divestiture',
+    'announces sale of', 'announced sale of',
+    'announces agreement to sell', 'announced agreement to sell',
+    # Will sell/divest
+    'will sell its', 'will divest its', 'will divest the',
+    'to sell its', 'to divest its',
+    # Acquisition side (PE buying carve-out)
+    'to acquire the', 'agrees to acquire', 'agreed to acquire',
+    'to buy the', 'agrees to buy', 'agreed to buy',
+    'acquisition of', 'carve-out acquisition',
+]
+
+CARVEOUT_STAGE_3_CLOSING = [
+    # Completes
+    'completes sale of', 'completed sale of', 'complete sale of',
+    'completes divestiture', 'completed divestiture',
+    'completes sale to', 'completed sale to',
+    # Closes
+    'closes transaction', 'closed transaction', 'transaction closes',
+    'closes sale', 'closed sale', 'sale closes',
+    'closes divestiture', 'closed divestiture',
+    # Finalizes
+    'finalizes sale', 'finalized sale', 'finalize sale',
+    'finalizes divestiture', 'finalized divestiture',
+    # Has sold
+    'has sold', 'has divested', 'has completed',
+    'sold its', 'divested its',
+    # Completion
+    'sale completed', 'divestiture completed', 'transaction completed',
+    'sale complete', 'divestiture complete',
+]
+
+# Deal type terms that indicate carve-out/divestiture context
+CARVEOUT_DEAL_TYPES = [
+    'carve-out', 'carve out', 'carveout',
+    'divestiture', 'divestment', 'divest',
+    'spin-off', 'spinoff', 'spin off',
+    'sell-off', 'selloff',
+    'business unit', 'business segment',
+    'division', 'subsidiary', 'unit sale',
+    'non-core', 'non core', 'noncore',
+    'strategic sale', 'asset sale',
+]
+
+
+def is_carveout_deal(text: str) -> tuple[bool, str, str]:
+    """
+    Check if text matches carve-out/divestiture deal patterns.
+    Returns (is_match, stage, matched_pattern)
+
+    Stages: 'exploration', 'agreement', 'closing'
+    """
+    if not text:
+        return False, '', ''
+
+    text_lower = text.lower()
+
+    # Check Stage 3 first (most definitive - deal closed)
+    for pattern in CARVEOUT_STAGE_3_CLOSING:
+        if pattern in text_lower:
+            return True, 'closing', pattern
+
+    # Check Stage 2 (agreement reached)
+    for pattern in CARVEOUT_STAGE_2_AGREEMENT:
+        if pattern in text_lower:
+            return True, 'agreement', pattern
+
+    # Check Stage 1 (exploration)
+    for pattern in CARVEOUT_STAGE_1_EXPLORATION:
+        if pattern in text_lower:
+            return True, 'exploration', pattern
+
+    # Also match deal type terms with generic deal verbs
+    has_deal_type = any(dt in text_lower for dt in CARVEOUT_DEAL_TYPES)
+    if has_deal_type:
+        # Check for deal action verbs
+        deal_verbs = ['acquires', 'acquired', 'buys', 'bought', 'sells', 'sold',
+                      'announces', 'announced', 'completes', 'completed', 'closes', 'closed']
+        for verb in deal_verbs:
+            if verb in text_lower:
+                # Find which deal type matched
+                for dt in CARVEOUT_DEAL_TYPES:
+                    if dt in text_lower:
+                        return True, 'deal_type_match', f"{verb} + {dt}"
+
+    return False, '', ''
+
+
+# =============================================================================
 # EXCLUSION FILTERS
 # =============================================================================
 
@@ -680,7 +815,8 @@ def run_pipeline(
     use_pe_sources: bool = True,
     lookback_hours: int = 24,
     max_workers: int = 15,
-    verbose: bool = True
+    verbose: bool = True,
+    carveout_only: bool = False
 ) -> list[dict]:
     """
     Run the full RSS Monitor pipeline.
@@ -691,6 +827,7 @@ def run_pipeline(
         lookback_hours: How far back to look for articles
         max_workers: Max parallel feed fetches
         verbose: Print progress
+        carveout_only: Only return articles matching carve-out/divestiture patterns
 
     Returns:
         List of filtered, deduplicated articles
@@ -760,7 +897,25 @@ def run_pipeline(
     if verbose:
         print(f"  After scope filter: {len(scope_filtered)}")
 
-    # Step 6: Content deduplication
+    # Step 6: Detect carve-out/divestiture deals and add deal_stage metadata
+    for article in scope_filtered:
+        text = f"{article['title']} {article.get('summary', '')}"
+        is_carveout, stage, pattern = is_carveout_deal(text)
+        if is_carveout:
+            article['deal_stage'] = stage
+            article['carveout_pattern'] = pattern
+        else:
+            article['deal_stage'] = ''
+            article['carveout_pattern'] = ''
+
+    # Optional: Filter to only carve-out/divestiture deals
+    if carveout_only:
+        carveout_filtered = [a for a in scope_filtered if a.get('deal_stage')]
+        if verbose:
+            print(f"  After carveout filter: {len(carveout_filtered)}")
+        scope_filtered = carveout_filtered
+
+    # Step 7: Content deduplication
     final_articles = dedupe_by_content(scope_filtered)
 
     if verbose:
@@ -773,13 +928,15 @@ def export_to_csv(articles: list[dict], filename: str):
     """Export articles to CSV"""
     with open(filename, 'w', newline='') as f:
         writer = csv.writer(f)
-        writer.writerow(['Title', 'Source', 'Published', 'Target Accounts', 'Link'])
+        writer.writerow(['Title', 'Source', 'Published', 'Target Accounts', 'Deal Stage', 'Carveout Pattern', 'Link'])
         for a in articles:
             writer.writerow([
                 a.get('title', ''),
                 a.get('source', ''),
                 a.get('published', ''),
                 a.get('target_accounts', ''),
+                a.get('deal_stage', ''),
+                a.get('carveout_pattern', ''),
                 a.get('link', '')
             ])
 
@@ -910,11 +1067,14 @@ if __name__ == "__main__":
     parser.add_argument("--no-hubspot", action="store_true", help="Skip HubSpot integration")
     parser.add_argument("--hours", type=int, default=24, help="Lookback hours (default: 24)")
     parser.add_argument("--pe-feeds-only", action="store_true", help="Only fetch PE firm direct RSS feeds")
+    parser.add_argument("--carveout-only", action="store_true", help="Only return carve-out/divestiture deals")
     args = parser.parse_args()
 
     print("=" * 70)
     print("RSS Monitor - Deal Flow Agent")
     print("=" * 70)
+    if args.carveout_only:
+        print("MODE: Carve-out/Divestiture deals only")
     print()
 
     all_articles = []
@@ -925,7 +1085,8 @@ if __name__ == "__main__":
             use_firm_searches=True,
             use_pe_sources=True,
             lookback_hours=args.hours,
-            verbose=True
+            verbose=True,
+            carveout_only=args.carveout_only
         )
         all_articles.extend(articles)
         print(f"\nGeneral RSS: {len(articles)} articles")
@@ -963,8 +1124,21 @@ if __name__ == "__main__":
               f"{stats.get('skipped_duplicate', 0)} duplicates skipped, "
               f"{stats['errors']} errors")
 
+    # Show carve-out deal stage breakdown
+    stages = {}
+    for a in all_articles:
+        stage = a.get('deal_stage', '') or 'other'
+        stages[stage] = stages.get(stage, 0) + 1
+    print()
+    print("Deal stage breakdown:")
+    for stage, count in sorted(stages.items()):
+        stage_label = stage if stage else 'other'
+        print(f"  {stage_label}: {count}")
+
     # Show sample
     print()
     print("Sample articles:")
     for i, a in enumerate(all_articles[:10], 1):
-        print(f"  {i}. [{a['target_accounts']}] {a['title'][:60]}")
+        stage = a.get('deal_stage', '')
+        stage_tag = f" [{stage}]" if stage else ""
+        print(f"  {i}. [{a['target_accounts']}]{stage_tag} {a['title'][:55]}")

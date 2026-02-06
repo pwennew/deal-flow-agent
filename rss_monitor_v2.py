@@ -45,19 +45,19 @@ RSS_FEEDS_PE_SOURCES = [
     "https://feed.businesswire.com/rss/home/?rss=G1QFDERJXkJeEFpRWw==",
 
     # Premium journalism via Google News
-    "https://news.google.com/rss/search?q=site:ft.com+private+equity+when:2d&hl=en-US&gl=US&ceid=US:en",
-    "https://news.google.com/rss/search?q=site:wsj.com+private+equity+when:2d&hl=en-US&gl=US&ceid=US:en",
-    "https://news.google.com/rss/search?q=site:bloomberg.com+private+equity+when:2d&hl=en-US&gl=US&ceid=US:en",
-    "https://news.google.com/rss/search?q=site:reuters.com+private+equity+when:2d&hl=en-US&gl=US&ceid=US:en",
+    "https://news.google.com/rss/search?q=site:ft.com+private+equity+when:7d&hl=en-US&gl=US&ceid=US:en",
+    "https://news.google.com/rss/search?q=site:wsj.com+private+equity+when:7d&hl=en-US&gl=US&ceid=US:en",
+    "https://news.google.com/rss/search?q=site:bloomberg.com+private+equity+when:7d&hl=en-US&gl=US&ceid=US:en",
+    "https://news.google.com/rss/search?q=site:reuters.com+private+equity+when:7d&hl=en-US&gl=US&ceid=US:en",
 
     # Deal-focused queries
-    "https://news.google.com/rss/search?q=private+equity+acquisition+when:2d&hl=en-US&gl=US&ceid=US:en",
-    "https://news.google.com/rss/search?q=private+equity+buyout+when:2d&hl=en-US&gl=US&ceid=US:en",
-    "https://news.google.com/rss/search?q=leveraged+buyout+when:2d&hl=en-US&gl=US&ceid=US:en",
+    "https://news.google.com/rss/search?q=private+equity+acquisition+when:7d&hl=en-US&gl=US&ceid=US:en",
+    "https://news.google.com/rss/search?q=private+equity+buyout+when:7d&hl=en-US&gl=US&ceid=US:en",
+    "https://news.google.com/rss/search?q=leveraged+buyout+when:7d&hl=en-US&gl=US&ceid=US:en",
 
     # UK/Europe
-    "https://news.google.com/rss/search?q=private+equity+when:2d&hl=en-GB&gl=GB&ceid=GB:en",
-    "https://news.google.com/rss/search?q=buyout+acquisition+when:2d&hl=en-GB&gl=GB&ceid=GB:en",
+    "https://news.google.com/rss/search?q=private+equity+when:7d&hl=en-GB&gl=GB&ceid=GB:en",
+    "https://news.google.com/rss/search?q=buyout+acquisition+when:7d&hl=en-GB&gl=GB&ceid=GB:en",
 ]
 
 
@@ -74,8 +74,8 @@ def generate_firm_search_feeds() -> list[str]:
         encoded = urllib.parse.quote(query)
 
         # US and UK/Europe feeds
-        feeds.append(f"https://news.google.com/rss/search?q={encoded}+when:2d&hl=en-US&gl=US&ceid=US:en")
-        feeds.append(f"https://news.google.com/rss/search?q={encoded}+when:2d&hl=en-GB&gl=GB&ceid=GB:en")
+        feeds.append(f"https://news.google.com/rss/search?q={encoded}+when:7d&hl=en-US&gl=US&ceid=US:en")
+        feeds.append(f"https://news.google.com/rss/search?q={encoded}+when:7d&hl=en-GB&gl=GB&ceid=GB:en")
 
     return feeds
 
@@ -144,6 +144,8 @@ CARVEOUT_STAGE_2_AGREEMENT = [
     # Generic acquisition/sale verbs (PE firms announcing deals)
     'acquires', 'acquired', 'acquisitions',
     'sells', 'sold',
+    # Spin-out variations
+    'spins out', 'spun out',
 ]
 
 CARVEOUT_STAGE_3_CLOSING = [
@@ -228,7 +230,7 @@ def is_carveout_deal(text: str) -> tuple[bool, str, str]:
     EXPLICIT_CARVEOUT_TERMS = [
         'carve-out', 'carve out', 'carveout',
         'divestiture', 'divestment', 'divests', 'divested', 'divesting',
-        'spin-off', 'spinoff', 'spins off', 'spun off',
+        'spin-off', 'spinoff', 'spins off', 'spun off', 'spins out', 'spun out',
     ]
     has_explicit_carveout = any(term in text_lower for term in EXPLICIT_CARVEOUT_TERMS)
 

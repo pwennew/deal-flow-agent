@@ -128,7 +128,7 @@ CARVEOUT_STAGE_2_AGREEMENT = [
     'reaches deal to sell', 'reached deal to sell',
     # Announces / sale of
     'announces divestiture', 'announced divestiture',
-    'announces sale of', 'announced sale of', 'sale of',
+    'announces sale of', 'announced sale of', 'sale of', 'sale to',
     'announces agreement to sell', 'announced agreement to sell',
     'announces acquisition', 'announced acquisition',
     # Will sell/divest
@@ -138,8 +138,9 @@ CARVEOUT_STAGE_2_AGREEMENT = [
     'to acquire the', 'to acquire', 'agrees to acquire', 'agreed to acquire',
     'to buy the', 'agrees to buy', 'agreed to buy',
     'acquisition of', 'carve-out acquisition',
-    # Generic acquisition verbs (PE firms announcing deals)
-    'acquires', 'acquired',
+    # Generic acquisition/sale verbs (PE firms announcing deals)
+    'acquires', 'acquired', 'acquisitions',
+    'sells', 'sold',
 ]
 
 CARVEOUT_STAGE_3_CLOSING = [
@@ -424,6 +425,8 @@ SCOPE_EXCLUSIONS = {
     'Profit/Results News': [
         'profit jump', 'beats estimates', 'surprise profit',
         'financial results', 'reports strong', 'reports quarterly',
+        'quarterly profit', 'fourth quarter', 'q4 results', 'q1 results',
+        'q2 results', 'q3 results', 'profit rises', 'profit falls',
     ],
     'Real Estate': [
         'real estate', 'reit', 'property fund', 'warehouse', 'logistics facility',
@@ -478,6 +481,7 @@ SCOPE_EXCLUSIONS = {
     'Legal/Regulatory': [
         'investigating', 'investigation', 'investor challenge',
         'settle shareholder', 'settle shareholders', 'settle lawsuit',
+        'investor alert', 'pomerantz law', 'law firm investigates',
     ],
     'False Positives': [
         'adidas', 'boots leaked', 'gas producer', 'the points guy', 'tpg awards',
@@ -522,6 +526,10 @@ SCOPE_EXCLUSIONS = {
         'anti-ice protesters', 'protesters gather', 'court square theater',
         # Montagu Island (not Montagu PE)
         'montagu island', 'earthquake',
+        # Montagu Evans (real estate consultancy, not Montagu PE)
+        'montagu evans',
+        # Border to Coast (pension fund, not PE)
+        'border to coast',
         # KKR Malaysian infrastructure (not deals)
         'g1-g4 contractors',
         # Hotel/hospitality (real estate adjacent)
@@ -557,6 +565,8 @@ SCOPE_EXCLUSIONS = {
         'q4 performance', 'shares down', 'shares up', 'stock underperforms',
         's&p 500 movers', 'winners:', 'losers:',
         'portfolio update', 'price targets for',
+        # Stock buy/sell recommendations
+        'should you buy', 'should i buy', 'buy before', 'sell before',
     ],
     'Fund/CLO News': [
         'clo 10', 'clo ltd', 're-up rate', 'fund iv', 'fund v', 'fund vi',
@@ -566,12 +576,15 @@ SCOPE_EXCLUSIONS = {
         'best years yet', 'first close', 'closes oversubscribed',
         'flagship buyout fund', 'flagship fund', 'debut buyout fund',
         'launches fund', 'launches private equity', 'launches pe fund',
+        'hard cap close', 'hard cap', 'final close',
     ],
     'Personnel/Events': [
         # Personnel moves
         'welcomes', 'as principal', 'promotes', 'to coo', 'hires',
         'veteran to lead', 'quits uk', 'to speak at', 'to present at',
         'appoints new', 'takes on extra role', 'named as', 'moves to switzerland',
+        'names co-ceo', 'names ceo', 'names cfo', 'names coo',
+        'partner hire', 'double partner',
         # Shareholder/investor events
         'shareholder update', 'investor day',
     ],

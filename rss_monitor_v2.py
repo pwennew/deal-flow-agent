@@ -96,11 +96,14 @@ CARVEOUT_STAGE_1_EXPLORATION = [
     # Considering/planning
     'considering divestiture', 'considers divestiture',
     'considering sale', 'considers sale',
+    'consider selling', 'considering selling', 'considers selling',
     'plans to divest', 'plans to sell',
     'planning to divest', 'planning to sell',
-    # Negotiations
+    # Negotiations / nearing deal
     'in talks to sell', 'in negotiations to sell',
     'in discussions to sell', 'negotiating sale',
+    'nears deal', 'near deal', 'nearing deal',
+    'nears $', 'nears €', 'nears £', 'nears us$',
     # Seeking buyer
     'seeking buyer', 'seeking buyers', 'seeks buyer',
     'looking for buyer', 'looking for buyers',
@@ -131,9 +134,9 @@ CARVEOUT_STAGE_2_AGREEMENT = [
     'announces sale of', 'announced sale of', 'sale of', 'sale to',
     'announces agreement to sell', 'announced agreement to sell',
     'announces acquisition', 'announced acquisition',
-    # Will sell/divest
+    # Will sell/divest / to sell
     'will sell its', 'will divest its', 'will divest the',
-    'to sell its', 'to divest its',
+    'to sell its', 'to divest its', 'to sell',
     # Acquisition side (PE buying carve-out)
     'to acquire the', 'to acquire', 'agrees to acquire', 'agreed to acquire',
     'to buy the', 'agrees to buy', 'agreed to buy',
@@ -157,6 +160,9 @@ CARVEOUT_STAGE_3_CLOSING = [
     # Finalizes
     'finalizes sale', 'finalized sale', 'finalize sale',
     'finalizes divestiture', 'finalized divestiture',
+    'finalise deal', 'finalize deal', 'finalises deal', 'finalizes deal',
+    'finalised deal', 'finalized deal',
+    'finalise', 'finalize', 'finalised', 'finalized',
     # Has sold
     'has sold', 'has divested', 'has completed',
     'sold its', 'divested its',
@@ -435,7 +441,7 @@ SCOPE_EXCLUSIONS = {
         'cmbs market', 'mortgage trust', 'office towers', 'mortgage investment trust',
     ],
     'Minority/Non-buyout': [
-        'minority stake', 'minority investment', 'majority stake', 'takes stake', 'took stake',
+        'minority stake', 'minority investment', 'takes stake', 'took stake',
         'growth investment', 'growth equity', 'invests in', 'to invest in', 'buys stake', 'secondaries',
         'sells stake', 'sells its stake', 'secures investment', 'secures funding',
         'provides funding',

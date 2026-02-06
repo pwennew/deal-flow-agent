@@ -45,19 +45,19 @@ RSS_FEEDS_PE_SOURCES = [
     "https://feed.businesswire.com/rss/home/?rss=G1QFDERJXkJeEFpRWw==",
 
     # Premium journalism via Google News
-    "https://news.google.com/rss/search?q=site:ft.com+private+equity+when:2d&hl=en-US&gl=US&ceid=US:en",
-    "https://news.google.com/rss/search?q=site:wsj.com+private+equity+when:2d&hl=en-US&gl=US&ceid=US:en",
-    "https://news.google.com/rss/search?q=site:bloomberg.com+private+equity+when:2d&hl=en-US&gl=US&ceid=US:en",
-    "https://news.google.com/rss/search?q=site:reuters.com+private+equity+when:2d&hl=en-US&gl=US&ceid=US:en",
+    "https://news.google.com/rss/search?q=site:ft.com+private+equity+when:7d&hl=en-US&gl=US&ceid=US:en",
+    "https://news.google.com/rss/search?q=site:wsj.com+private+equity+when:7d&hl=en-US&gl=US&ceid=US:en",
+    "https://news.google.com/rss/search?q=site:bloomberg.com+private+equity+when:7d&hl=en-US&gl=US&ceid=US:en",
+    "https://news.google.com/rss/search?q=site:reuters.com+private+equity+when:7d&hl=en-US&gl=US&ceid=US:en",
 
     # Deal-focused queries
-    "https://news.google.com/rss/search?q=private+equity+acquisition+when:2d&hl=en-US&gl=US&ceid=US:en",
-    "https://news.google.com/rss/search?q=private+equity+buyout+when:2d&hl=en-US&gl=US&ceid=US:en",
-    "https://news.google.com/rss/search?q=leveraged+buyout+when:2d&hl=en-US&gl=US&ceid=US:en",
+    "https://news.google.com/rss/search?q=private+equity+acquisition+when:7d&hl=en-US&gl=US&ceid=US:en",
+    "https://news.google.com/rss/search?q=private+equity+buyout+when:7d&hl=en-US&gl=US&ceid=US:en",
+    "https://news.google.com/rss/search?q=leveraged+buyout+when:7d&hl=en-US&gl=US&ceid=US:en",
 
     # UK/Europe
-    "https://news.google.com/rss/search?q=private+equity+when:2d&hl=en-GB&gl=GB&ceid=GB:en",
-    "https://news.google.com/rss/search?q=buyout+acquisition+when:2d&hl=en-GB&gl=GB&ceid=GB:en",
+    "https://news.google.com/rss/search?q=private+equity+when:7d&hl=en-GB&gl=GB&ceid=GB:en",
+    "https://news.google.com/rss/search?q=buyout+acquisition+when:7d&hl=en-GB&gl=GB&ceid=GB:en",
 ]
 
 
@@ -74,10 +74,207 @@ def generate_firm_search_feeds() -> list[str]:
         encoded = urllib.parse.quote(query)
 
         # US and UK/Europe feeds
-        feeds.append(f"https://news.google.com/rss/search?q={encoded}+when:2d&hl=en-US&gl=US&ceid=US:en")
-        feeds.append(f"https://news.google.com/rss/search?q={encoded}+when:2d&hl=en-GB&gl=GB&ceid=GB:en")
+        feeds.append(f"https://news.google.com/rss/search?q={encoded}+when:7d&hl=en-US&gl=US&ceid=US:en")
+        feeds.append(f"https://news.google.com/rss/search?q={encoded}+when:7d&hl=en-GB&gl=GB&ceid=GB:en")
 
     return feeds
+
+
+# =============================================================================
+# CARVE-OUT / DIVESTITURE ALLOWLIST (deals user wants to capture)
+# =============================================================================
+# Three stages: 1) Pre-agreement/exploration, 2) Agreement/signing, 3) Closing/completion
+
+CARVEOUT_STAGE_1_EXPLORATION = [
+    # Exploring sale
+    'exploring sale', 'explores sale', 'explore sale',
+    'exploring divestiture', 'explores divestiture',
+    'exploring options', 'exploring strategic options',
+    # Strategic review
+    'strategic review', 'review of strategic alternatives',
+    'reviewing strategic alternatives', 'evaluating strategic alternatives',
+    # Considering/planning
+    'considering divestiture', 'considers divestiture',
+    'considering sale', 'considers sale',
+    'consider selling', 'considering selling', 'considers selling',
+    'plans to divest', 'plans to sell',
+    'planning to divest', 'planning to sell',
+    # Negotiations / nearing deal
+    'in talks to sell', 'in negotiations to sell',
+    'in discussions to sell', 'negotiating sale',
+    'nears deal', 'near deal', 'nearing deal',
+    'nears $', 'nears €', 'nears £', 'nears us$',
+    # Seeking buyer
+    'seeking buyer', 'seeking buyers', 'seeks buyer',
+    'looking for buyer', 'looking for buyers',
+    # Other exploration
+    'mulling sale', 'weighing sale', 'eyeing sale',
+    'may sell', 'could sell', 'could divest',
+    'preparing to sell', 'preparing sale', 'prepares sale',
+    'looking to sell', 'set to sell', 'poised to sell',
+    'readies sale', 'readying sale',
+]
+
+CARVEOUT_STAGE_2_AGREEMENT = [
+    # Agrees to sell/divest
+    'agrees to sell', 'agreed to sell', 'agree to sell',
+    'agrees to divest', 'agreed to divest',
+    # Enters agreement
+    'enters agreement to sell', 'entered agreement to sell',
+    'enters into agreement to sell', 'entered into agreement to sell',
+    # Signs agreement
+    'signs agreement to sell', 'signed agreement to sell',
+    'signs definitive agreement', 'signed definitive agreement',
+    # Reaches agreement
+    'reaches agreement to sell', 'reached agreement to sell',
+    'reaches definitive agreement', 'reached definitive agreement',
+    'reaches deal to sell', 'reached deal to sell',
+    # Announces / sale of
+    'announces divestiture', 'announced divestiture',
+    'announces sale of', 'announced sale of', 'sale of', 'sale to',
+    'announces agreement to sell', 'announced agreement to sell',
+    'announces acquisition', 'announced acquisition',
+    # Will sell/divest / to sell
+    'will sell its', 'will divest its', 'will divest the',
+    'to sell its', 'to divest its', 'to sell',
+    # Acquisition side (PE buying carve-out)
+    'to acquire the', 'to acquire', 'agrees to acquire', 'agreed to acquire',
+    'to buy the', 'agrees to buy', 'agreed to buy',
+    'acquisition of', 'carve-out acquisition',
+    # Generic acquisition/sale verbs (PE firms announcing deals)
+    'acquires', 'acquired', 'acquisitions',
+    'sells', 'sold',
+    # Spin-out variations
+    'spins out', 'spun out',
+]
+
+CARVEOUT_STAGE_3_CLOSING = [
+    # Completes
+    'completes sale of', 'completed sale of', 'complete sale of',
+    'completes divestiture', 'completed divestiture',
+    'completes sale to', 'completed sale to',
+    'completes acquisition', 'completed acquisition',
+    # Closes
+    'closes transaction', 'closed transaction', 'transaction closes',
+    'closes sale', 'closed sale', 'sale closes',
+    'closes divestiture', 'closed divestiture',
+    'announces closing', 'announced closing', 'closing of',
+    # Finalizes
+    'finalizes sale', 'finalized sale', 'finalize sale',
+    'finalizes divestiture', 'finalized divestiture',
+    'finalise deal', 'finalize deal', 'finalises deal', 'finalizes deal',
+    'finalised deal', 'finalized deal',
+    'finalise', 'finalize', 'finalised', 'finalized',
+    # Has sold
+    'has sold', 'has divested', 'has completed',
+    'sold its', 'divested its',
+    # Completion
+    'sale completed', 'divestiture completed', 'transaction completed',
+    'sale complete', 'divestiture complete',
+]
+
+# Deal type terms that indicate carve-out/divestiture context
+CARVEOUT_DEAL_TYPES = [
+    'carve-out', 'carve out', 'carveout',
+    'divestiture', 'divestment', 'divest',
+    'spin-off', 'spinoff', 'spin off',
+    'sell-off', 'selloff',
+    'business unit', 'business segment',
+    'division', 'subsidiary', 'unit sale',
+    'non-core', 'non core', 'noncore',
+    'strategic sale', 'asset sale',
+]
+
+
+def has_carveout_context(text_lower: str) -> bool:
+    """Check if text has carve-out context (division/unit/subsidiary being sold)"""
+    # Check standard carve-out terms
+    if any(dt in text_lower for dt in CARVEOUT_DEAL_TYPES):
+        return True
+
+    # Check for "unit" but not "united"
+    import re
+    # Match "unit" as whole word, but exclude if preceded by "unit" in "united"
+    if re.search(r'\bunit\b', text_lower):
+        # Make sure it's not "united"
+        if 'united' not in text_lower:
+            return True
+        # If "united" is present, check if there's another "unit" that's not part of "united"
+        # Remove "united" and check if "unit" still exists
+        text_without_united = text_lower.replace('united', '')
+        if re.search(r'\bunit\b', text_without_united):
+            return True
+
+    return False
+
+
+def is_carveout_deal(text: str) -> tuple[bool, str, str]:
+    """
+    Check if text matches carve-out/divestiture deal patterns.
+    Returns (is_match, stage, matched_pattern)
+
+    Stages: 'exploration', 'agreement', 'closing'
+
+    IMPORTANT: Only matches carve-outs (selling divisions/units/subsidiaries),
+    NOT general acquisitions of whole companies.
+    """
+    if not text:
+        return False, '', ''
+
+    text_lower = text.lower()
+
+    # First check if this has carve-out context (required for most patterns)
+    has_context = has_carveout_context(text_lower)
+
+    # Explicit carve-out terms that don't need additional context
+    EXPLICIT_CARVEOUT_TERMS = [
+        'carve-out', 'carve out', 'carveout',
+        'divestiture', 'divestment', 'divests', 'divested', 'divesting',
+        'spin-off', 'spinoff', 'spins off', 'spun off', 'spins out', 'spun out',
+    ]
+    has_explicit_carveout = any(term in text_lower for term in EXPLICIT_CARVEOUT_TERMS)
+
+    # Check Stage 3 first (most definitive - deal closed)
+    for pattern in CARVEOUT_STAGE_3_CLOSING:
+        if pattern in text_lower:
+            # Divestiture/sale patterns always match
+            if 'divest' in pattern or 'sale' in pattern or has_context or has_explicit_carveout:
+                return True, 'closing', pattern
+            # Other patterns (like 'finalise') need carveout context
+            if has_context or has_explicit_carveout:
+                return True, 'closing', pattern
+
+    # Check Stage 2 (agreement reached)
+    for pattern in CARVEOUT_STAGE_2_AGREEMENT:
+        if pattern in text_lower:
+            # Divestiture/sale patterns always match
+            if 'divest' in pattern or 'sale' in pattern:
+                return True, 'agreement', pattern
+            # Other patterns need carveout context
+            if has_context or has_explicit_carveout:
+                return True, 'agreement', pattern
+
+    # Check Stage 1 (exploration)
+    for pattern in CARVEOUT_STAGE_1_EXPLORATION:
+        if pattern in text_lower:
+            # Divestiture/sale patterns always match
+            if 'divest' in pattern or 'sale' in pattern or 'sell' in pattern:
+                return True, 'exploration', pattern
+            # Other patterns need carveout context
+            if has_context or has_explicit_carveout:
+                return True, 'exploration', pattern
+
+    # Also match deal verbs WITH carveout context
+    if has_context or has_explicit_carveout:
+        deal_verbs = ['acquires', 'acquired', 'buys', 'bought', 'sells', 'sold',
+                      'announces', 'announced', 'completes', 'completed', 'closes', 'closed']
+        for verb in deal_verbs:
+            if verb in text_lower:
+                for dt in CARVEOUT_DEAL_TYPES:
+                    if dt in text_lower:
+                        return True, 'deal_type_match', f"{verb} + {dt}"
+
+    return False, '', ''
 
 
 # =============================================================================
@@ -284,6 +481,8 @@ SCOPE_EXCLUSIONS = {
     'Profit/Results News': [
         'profit jump', 'beats estimates', 'surprise profit',
         'financial results', 'reports strong', 'reports quarterly',
+        'quarterly profit', 'fourth quarter', 'q4 results', 'q1 results',
+        'q2 results', 'q3 results', 'profit rises', 'profit falls',
     ],
     'Real Estate': [
         'real estate', 'reit', 'property fund', 'warehouse', 'logistics facility',
@@ -292,7 +491,7 @@ SCOPE_EXCLUSIONS = {
         'cmbs market', 'mortgage trust', 'office towers', 'mortgage investment trust',
     ],
     'Minority/Non-buyout': [
-        'minority stake', 'minority investment', 'majority stake', 'takes stake', 'took stake',
+        'minority stake', 'minority investment', 'takes stake', 'took stake',
         'growth investment', 'growth equity', 'invests in', 'to invest in', 'buys stake', 'secondaries',
         'sells stake', 'sells its stake', 'secures investment', 'secures funding',
         'provides funding',
@@ -338,6 +537,7 @@ SCOPE_EXCLUSIONS = {
     'Legal/Regulatory': [
         'investigating', 'investigation', 'investor challenge',
         'settle shareholder', 'settle shareholders', 'settle lawsuit',
+        'investor alert', 'pomerantz law', 'law firm investigates',
     ],
     'False Positives': [
         'adidas', 'boots leaked', 'gas producer', 'the points guy', 'tpg awards',
@@ -382,6 +582,10 @@ SCOPE_EXCLUSIONS = {
         'anti-ice protesters', 'protesters gather', 'court square theater',
         # Montagu Island (not Montagu PE)
         'montagu island', 'earthquake',
+        # Montagu Evans (real estate consultancy, not Montagu PE)
+        'montagu evans',
+        # Border to Coast (pension fund, not PE)
+        'border to coast',
         # KKR Malaysian infrastructure (not deals)
         'g1-g4 contractors',
         # Hotel/hospitality (real estate adjacent)
@@ -417,6 +621,8 @@ SCOPE_EXCLUSIONS = {
         'q4 performance', 'shares down', 'shares up', 'stock underperforms',
         's&p 500 movers', 'winners:', 'losers:',
         'portfolio update', 'price targets for',
+        # Stock buy/sell recommendations
+        'should you buy', 'should i buy', 'buy before', 'sell before',
     ],
     'Fund/CLO News': [
         'clo 10', 'clo ltd', 're-up rate', 'fund iv', 'fund v', 'fund vi',
@@ -424,14 +630,17 @@ SCOPE_EXCLUSIONS = {
         # Additional fund/PE industry news
         'private debt continuation', 'energy transition fund',
         'best years yet', 'first close', 'closes oversubscribed',
-        'flagship buyout fund', 'flagship fund',
+        'flagship buyout fund', 'flagship fund', 'debut buyout fund',
         'launches fund', 'launches private equity', 'launches pe fund',
+        'hard cap close', 'hard cap', 'final close',
     ],
     'Personnel/Events': [
         # Personnel moves
         'welcomes', 'as principal', 'promotes', 'to coo', 'hires',
         'veteran to lead', 'quits uk', 'to speak at', 'to present at',
         'appoints new', 'takes on extra role', 'named as', 'moves to switzerland',
+        'names co-ceo', 'names ceo', 'names cfo', 'names coo',
+        'partner hire', 'double partner',
         # Shareholder/investor events
         'shareholder update', 'investor day',
     ],
@@ -680,7 +889,8 @@ def run_pipeline(
     use_pe_sources: bool = True,
     lookback_hours: int = 24,
     max_workers: int = 15,
-    verbose: bool = True
+    verbose: bool = True,
+    carveout_only: bool = True
 ) -> list[dict]:
     """
     Run the full RSS Monitor pipeline.
@@ -691,6 +901,7 @@ def run_pipeline(
         lookback_hours: How far back to look for articles
         max_workers: Max parallel feed fetches
         verbose: Print progress
+        carveout_only: Only return articles matching carve-out/divestiture patterns
 
     Returns:
         List of filtered, deduplicated articles
@@ -760,7 +971,25 @@ def run_pipeline(
     if verbose:
         print(f"  After scope filter: {len(scope_filtered)}")
 
-    # Step 6: Content deduplication
+    # Step 6: Detect carve-out/divestiture deals and add deal_stage metadata
+    for article in scope_filtered:
+        text = f"{article['title']} {article.get('summary', '')}"
+        is_carveout, stage, pattern = is_carveout_deal(text)
+        if is_carveout:
+            article['deal_stage'] = stage
+            article['carveout_pattern'] = pattern
+        else:
+            article['deal_stage'] = ''
+            article['carveout_pattern'] = ''
+
+    # Optional: Filter to only carve-out/divestiture deals
+    if carveout_only:
+        carveout_filtered = [a for a in scope_filtered if a.get('deal_stage')]
+        if verbose:
+            print(f"  After carveout filter: {len(carveout_filtered)}")
+        scope_filtered = carveout_filtered
+
+    # Step 7: Content deduplication
     final_articles = dedupe_by_content(scope_filtered)
 
     if verbose:
@@ -773,13 +1002,15 @@ def export_to_csv(articles: list[dict], filename: str):
     """Export articles to CSV"""
     with open(filename, 'w', newline='') as f:
         writer = csv.writer(f)
-        writer.writerow(['Title', 'Source', 'Published', 'Target Accounts', 'Link'])
+        writer.writerow(['Title', 'Source', 'Published', 'Target Accounts', 'Deal Stage', 'Carveout Pattern', 'Link'])
         for a in articles:
             writer.writerow([
                 a.get('title', ''),
                 a.get('source', ''),
                 a.get('published', ''),
                 a.get('target_accounts', ''),
+                a.get('deal_stage', ''),
+                a.get('carveout_pattern', ''),
                 a.get('link', '')
             ])
 
@@ -910,11 +1141,14 @@ if __name__ == "__main__":
     parser.add_argument("--no-hubspot", action="store_true", help="Skip HubSpot integration")
     parser.add_argument("--hours", type=int, default=24, help="Lookback hours (default: 24)")
     parser.add_argument("--pe-feeds-only", action="store_true", help="Only fetch PE firm direct RSS feeds")
+    parser.add_argument("--all-deals", action="store_true", help="Include all deals, not just carve-outs/divestitures")
     args = parser.parse_args()
 
     print("=" * 70)
     print("RSS Monitor - Deal Flow Agent")
     print("=" * 70)
+    if not args.all_deals:
+        print("MODE: Carve-out/Divestiture deals only")
     print()
 
     all_articles = []
@@ -925,7 +1159,8 @@ if __name__ == "__main__":
             use_firm_searches=True,
             use_pe_sources=True,
             lookback_hours=args.hours,
-            verbose=True
+            verbose=True,
+            carveout_only=not args.all_deals
         )
         all_articles.extend(articles)
         print(f"\nGeneral RSS: {len(articles)} articles")
@@ -935,6 +1170,23 @@ if __name__ == "__main__":
         lookback_hours=args.hours,
         verbose=True
     )
+
+    # Apply carveout detection to PE firm articles
+    for article in pe_articles:
+        text = f"{article['title']} {article.get('summary', '')}"
+        is_carveout, stage, pattern = is_carveout_deal(text)
+        if is_carveout:
+            article['deal_stage'] = stage
+            article['carveout_pattern'] = pattern
+        else:
+            article['deal_stage'] = ''
+            article['carveout_pattern'] = ''
+
+    # Filter PE articles to carveout-only if enabled
+    if not args.all_deals:
+        pe_articles = [a for a in pe_articles if a.get('deal_stage')]
+        print(f"  After carveout filter: {len(pe_articles)} PE firm articles")
+
     all_articles.extend(pe_articles)
 
     # Final deduplication across all sources
@@ -963,8 +1215,21 @@ if __name__ == "__main__":
               f"{stats.get('skipped_duplicate', 0)} duplicates skipped, "
               f"{stats['errors']} errors")
 
+    # Show carve-out deal stage breakdown
+    stages = {}
+    for a in all_articles:
+        stage = a.get('deal_stage', '') or 'other'
+        stages[stage] = stages.get(stage, 0) + 1
+    print()
+    print("Deal stage breakdown:")
+    for stage, count in sorted(stages.items()):
+        stage_label = stage if stage else 'other'
+        print(f"  {stage_label}: {count}")
+
     # Show sample
     print()
     print("Sample articles:")
     for i, a in enumerate(all_articles[:10], 1):
-        print(f"  {i}. [{a['target_accounts']}] {a['title'][:60]}")
+        stage = a.get('deal_stage', '')
+        stage_tag = f" [{stage}]" if stage else ""
+        print(f"  {i}. [{a['target_accounts']}]{stage_tag} {a['title'][:55]}")

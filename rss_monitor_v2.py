@@ -179,7 +179,7 @@ CARVEOUT_DEAL_TYPES = [
     'sell-off', 'selloff',
     'business unit', 'business segment',
     'division', 'subsidiary', 'unit sale',
-    ' unit',  # standalone unit (space prefix to avoid matching "community" etc)
+    'ict unit', 'health unit', 'oem unit',  # specific unit types (avoid "united")
     'non-core', 'non core', 'noncore',
     'strategic sale', 'asset sale',
 ]

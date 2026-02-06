@@ -179,6 +179,7 @@ CARVEOUT_DEAL_TYPES = [
     'sell-off', 'selloff',
     'business unit', 'business segment',
     'division', 'subsidiary', 'unit sale',
+    ' unit',  # standalone unit (space prefix to avoid matching "community" etc)
     'non-core', 'non core', 'noncore',
     'strategic sale', 'asset sale',
 ]
@@ -190,36 +191,62 @@ def is_carveout_deal(text: str) -> tuple[bool, str, str]:
     Returns (is_match, stage, matched_pattern)
 
     Stages: 'exploration', 'agreement', 'closing'
+
+    IMPORTANT: Only matches carve-outs (selling divisions/units/subsidiaries),
+    NOT general acquisitions of whole companies.
     """
     if not text:
         return False, '', ''
 
     text_lower = text.lower()
 
+    # First check if this has carve-out context (required for most patterns)
+    has_carveout_context = any(dt in text_lower for dt in CARVEOUT_DEAL_TYPES)
+
+    # Explicit carve-out terms that don't need additional context
+    EXPLICIT_CARVEOUT_TERMS = [
+        'carve-out', 'carve out', 'carveout',
+        'divestiture', 'divestment', 'divests', 'divested', 'divesting',
+        'spin-off', 'spinoff', 'spins off', 'spun off',
+    ]
+    has_explicit_carveout = any(term in text_lower for term in EXPLICIT_CARVEOUT_TERMS)
+
     # Check Stage 3 first (most definitive - deal closed)
     for pattern in CARVEOUT_STAGE_3_CLOSING:
         if pattern in text_lower:
-            return True, 'closing', pattern
+            # Divestiture/sale patterns always match
+            if 'divest' in pattern or 'sale' in pattern or has_carveout_context or has_explicit_carveout:
+                return True, 'closing', pattern
+            # Other patterns (like 'finalise') need carveout context
+            if has_carveout_context or has_explicit_carveout:
+                return True, 'closing', pattern
 
     # Check Stage 2 (agreement reached)
     for pattern in CARVEOUT_STAGE_2_AGREEMENT:
         if pattern in text_lower:
-            return True, 'agreement', pattern
+            # Divestiture/sale patterns always match
+            if 'divest' in pattern or 'sale' in pattern:
+                return True, 'agreement', pattern
+            # Other patterns need carveout context
+            if has_carveout_context or has_explicit_carveout:
+                return True, 'agreement', pattern
 
     # Check Stage 1 (exploration)
     for pattern in CARVEOUT_STAGE_1_EXPLORATION:
         if pattern in text_lower:
-            return True, 'exploration', pattern
+            # Divestiture/sale patterns always match
+            if 'divest' in pattern or 'sale' in pattern or 'sell' in pattern:
+                return True, 'exploration', pattern
+            # Other patterns need carveout context
+            if has_carveout_context or has_explicit_carveout:
+                return True, 'exploration', pattern
 
-    # Also match deal type terms with generic deal verbs
-    has_deal_type = any(dt in text_lower for dt in CARVEOUT_DEAL_TYPES)
-    if has_deal_type:
-        # Check for deal action verbs
+    # Also match deal verbs WITH carveout context
+    if has_carveout_context or has_explicit_carveout:
         deal_verbs = ['acquires', 'acquired', 'buys', 'bought', 'sells', 'sold',
                       'announces', 'announced', 'completes', 'completed', 'closes', 'closed']
         for verb in deal_verbs:
             if verb in text_lower:
-                # Find which deal type matched
                 for dt in CARVEOUT_DEAL_TYPES:
                     if dt in text_lower:
                         return True, 'deal_type_match', f"{verb} + {dt}"

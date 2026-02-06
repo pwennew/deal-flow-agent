@@ -126,17 +126,20 @@ CARVEOUT_STAGE_2_AGREEMENT = [
     'reaches agreement to sell', 'reached agreement to sell',
     'reaches definitive agreement', 'reached definitive agreement',
     'reaches deal to sell', 'reached deal to sell',
-    # Announces
+    # Announces / sale of
     'announces divestiture', 'announced divestiture',
-    'announces sale of', 'announced sale of',
+    'announces sale of', 'announced sale of', 'sale of',
     'announces agreement to sell', 'announced agreement to sell',
+    'announces acquisition', 'announced acquisition',
     # Will sell/divest
     'will sell its', 'will divest its', 'will divest the',
     'to sell its', 'to divest its',
     # Acquisition side (PE buying carve-out)
-    'to acquire the', 'agrees to acquire', 'agreed to acquire',
+    'to acquire the', 'to acquire', 'agrees to acquire', 'agreed to acquire',
     'to buy the', 'agrees to buy', 'agreed to buy',
     'acquisition of', 'carve-out acquisition',
+    # Generic acquisition verbs (PE firms announcing deals)
+    'acquires', 'acquired',
 ]
 
 CARVEOUT_STAGE_3_CLOSING = [
@@ -144,10 +147,12 @@ CARVEOUT_STAGE_3_CLOSING = [
     'completes sale of', 'completed sale of', 'complete sale of',
     'completes divestiture', 'completed divestiture',
     'completes sale to', 'completed sale to',
+    'completes acquisition', 'completed acquisition',
     # Closes
     'closes transaction', 'closed transaction', 'transaction closes',
     'closes sale', 'closed sale', 'sale closes',
     'closes divestiture', 'closed divestiture',
+    'announces closing', 'announced closing', 'closing of',
     # Finalizes
     'finalizes sale', 'finalized sale', 'finalize sale',
     'finalizes divestiture', 'finalized divestiture',
@@ -1096,6 +1101,23 @@ if __name__ == "__main__":
         lookback_hours=args.hours,
         verbose=True
     )
+
+    # Apply carveout detection to PE firm articles
+    for article in pe_articles:
+        text = f"{article['title']} {article.get('summary', '')}"
+        is_carveout, stage, pattern = is_carveout_deal(text)
+        if is_carveout:
+            article['deal_stage'] = stage
+            article['carveout_pattern'] = pattern
+        else:
+            article['deal_stage'] = ''
+            article['carveout_pattern'] = ''
+
+    # Filter PE articles to carveout-only if enabled
+    if not args.all_deals:
+        pe_articles = [a for a in pe_articles if a.get('deal_stage')]
+        print(f"  After carveout filter: {len(pe_articles)} PE firm articles")
+
     all_articles.extend(pe_articles)
 
     # Final deduplication across all sources

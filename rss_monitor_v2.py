@@ -104,6 +104,9 @@ CARVEOUT_STAGE_1_EXPLORATION = [
     'in discussions to sell', 'negotiating sale',
     'nears deal', 'near deal', 'nearing deal',
     'nears $', 'nears €', 'nears £', 'nears us$',
+    # Bidding / offers
+    'bids for', 'submit bids', 'make offers', 'makes offer',
+    'first-round bids', 'second-round bids',
     # Seeking buyer
     'seeking buyer', 'seeking buyers', 'seeks buyer',
     'looking for buyer', 'looking for buyers',
@@ -234,6 +237,22 @@ def is_carveout_deal(text: str) -> tuple[bool, str, str]:
     ]
     has_explicit_carveout = any(term in text_lower for term in EXPLICIT_CARVEOUT_TERMS)
 
+    # If text explicitly mentions carve-out/divestiture/spin-off, it's always a match
+    if has_explicit_carveout:
+        # Determine stage from context
+        for pattern in CARVEOUT_STAGE_3_CLOSING:
+            if pattern in text_lower:
+                return True, 'closing', pattern
+        for pattern in CARVEOUT_STAGE_2_AGREEMENT:
+            if pattern in text_lower:
+                return True, 'agreement', pattern
+        for pattern in CARVEOUT_STAGE_1_EXPLORATION:
+            if pattern in text_lower:
+                return True, 'exploration', pattern
+        # Explicit term present but no stage detected - classify by explicit term
+        matched_term = next(t for t in EXPLICIT_CARVEOUT_TERMS if t in text_lower)
+        return True, 'deal', matched_term
+
     # Check Stage 3 first (most definitive - deal closed)
     for pattern in CARVEOUT_STAGE_3_CLOSING:
         if pattern in text_lower:
@@ -247,10 +266,10 @@ def is_carveout_deal(text: str) -> tuple[bool, str, str]:
     # Check Stage 2 (agreement reached)
     for pattern in CARVEOUT_STAGE_2_AGREEMENT:
         if pattern in text_lower:
-            # Divestiture/sale patterns always match
-            if 'divest' in pattern or 'sale' in pattern:
+            # Divestiture patterns always indicate carve-out
+            if 'divest' in pattern:
                 return True, 'agreement', pattern
-            # Other patterns need carveout context
+            # Sale/sell patterns need carveout context (to avoid PE exits)
             if has_context or has_explicit_carveout:
                 return True, 'agreement', pattern
 

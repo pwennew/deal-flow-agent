@@ -58,6 +58,22 @@ RSS_FEEDS_PE_SOURCES = [
     # UK/Europe
     "https://news.google.com/rss/search?q=private+equity+when:7d&hl=en-GB&gl=GB&ceid=GB:en",
     "https://news.google.com/rss/search?q=buyout+acquisition+when:7d&hl=en-GB&gl=GB&ceid=GB:en",
+
+    # Carve-out/Divestiture specific searches (catch unit/division sales)
+    "https://news.google.com/rss/search?q=divestiture+when:7d&hl=en-US&gl=US&ceid=US:en",
+    "https://news.google.com/rss/search?q=carve-out+OR+carveout+when:7d&hl=en-US&gl=US&ceid=US:en",
+    "https://news.google.com/rss/search?q=spin-off+OR+spinoff+when:7d&hl=en-US&gl=US&ceid=US:en",
+    "https://news.google.com/rss/search?q=%22sells+unit%22+OR+%22sell+unit%22+when:7d&hl=en-US&gl=US&ceid=US:en",
+    "https://news.google.com/rss/search?q=%22sells+division%22+OR+%22sale+of+unit%22+when:7d&hl=en-US&gl=US&ceid=US:en",
+    "https://news.google.com/rss/search?q=%22business+unit%22+acquisition+when:7d&hl=en-US&gl=US&ceid=US:en",
+    "https://news.google.com/rss/search?q=%22auto+unit%22+OR+%22automotive+unit%22+when:7d&hl=en-US&gl=US&ceid=US:en",
+    # Major PE firms + acquisition (fallback when HubSpot unavailable)
+    "https://news.google.com/rss/search?q=%22Bain+Capital%22+acquisition+when:7d&hl=en-US&gl=US&ceid=US:en",
+    "https://news.google.com/rss/search?q=%22Lone+Star%22+acquisition+when:7d&hl=en-US&gl=US&ceid=US:en",
+    "https://news.google.com/rss/search?q=KKR+acquisition+when:7d&hl=en-US&gl=US&ceid=US:en",
+    "https://news.google.com/rss/search?q=Blackstone+acquisition+when:7d&hl=en-US&gl=US&ceid=US:en",
+    "https://news.google.com/rss/search?q=Apollo+acquisition+when:7d&hl=en-US&gl=US&ceid=US:en",
+    "https://news.google.com/rss/search?q=Carlyle+acquisition+when:7d&hl=en-US&gl=US&ceid=US:en",
 ]
 
 

@@ -149,6 +149,7 @@ FIRM_ALIASES = {
     "apollo": "Apollo Global Management",
     "apollo management": "Apollo Global Management",
     "bain": "Bain Capital",
+    "bain capital": "Bain Capital",
     "cd&r": "Clayton Dubilier & Rice",
     "cdr": "Clayton Dubilier & Rice",
     "hellman friedman": "Hellman & Friedman",
@@ -237,6 +238,18 @@ FIRM_ALIASES = {
     "gi partners": "GI Partners",
     "flexpoint": "Flexpoint Ford",
     "parthenon": "Parthenon Capital",
+    # Additional major PE firms
+    "lone star": "Lone Star Funds",
+    "lone star funds": "Lone Star Funds",
+    "lonestar": "Lone Star Funds",
+    "cerberus": "Cerberus Capital Management",
+    "cerberus capital": "Cerberus Capital Management",
+    "ares": "Ares Management",
+    "ares management": "Ares Management",
+    "centerbridge": "Centerbridge Partners",
+    "centerbridge partners": "Centerbridge Partners",
+    "advent international": "Advent International",
+    "clearlake capital": "Clearlake Capital Group",
 }
 
 

@@ -24,6 +24,9 @@ _PRESS_PATHS = [
     "/news", "/press", "/press-releases", "/media", "/newsroom",
     "/news-and-insights", "/insights", "/news-media",
     "/press-room", "/media-centre", "/media-center",
+    "/about/news", "/about/press", "/about/media",
+    "/who-we-are/news", "/our-news",
+    "/updates", "/announcements", "/portfolio-news",
 ]
 
 
@@ -262,7 +265,16 @@ def _scrape_press_page_playwright(firm: Firm) -> list[Article]:
 
 
 def scrape_firm(firm: Firm) -> list[Article]:
-    """Scrape a firm's press page. Tries HTML first, falls back to Playwright."""
+    """Scrape a firm's press page. Auto-discovers if needed, tries HTML then Playwright."""
+    # If no press_url, try to discover one from domain
+    if not firm.press_url and firm.domain:
+        discovered = discover_press_page(firm)
+        if discovered:
+            firm.press_url = discovered
+        else:
+            logger.debug("No press page found for %s (%s)", firm.name, firm.domain)
+            return []
+
     if not firm.press_url:
         return []
 
@@ -277,12 +289,19 @@ def scrape_firm(firm: Firm) -> list[Article]:
 
 
 def scrape_articles(firms: list[Firm], lookback_hours: int = 24) -> list[Article]:
-    """Scrape articles from firms that have press pages but no RSS feed."""
-    to_scrape = [f for f in firms if f.press_url and not f.feed_url]
+    """Scrape articles from firms without RSS feeds.
+
+    Includes firms with known press_url AND firms with just a domain
+    (press page will be auto-discovered during scraping).
+    """
+    to_scrape = [f for f in firms if not f.feed_url and (f.press_url or f.domain)]
     if not to_scrape:
         return []
 
-    logger.info("Scraping press pages for %d firms", len(to_scrape))
+    logger.info("Scraping press pages for %d firms (%d with known press_url, %d to discover)",
+                len(to_scrape),
+                sum(1 for f in to_scrape if f.press_url),
+                sum(1 for f in to_scrape if not f.press_url))
     cutoff = datetime.now(timezone.utc) - timedelta(hours=lookback_hours)
     all_articles: list[Article] = []
 

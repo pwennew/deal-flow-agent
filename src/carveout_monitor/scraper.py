@@ -147,7 +147,10 @@ def _extract_date(element) -> datetime | None:
         dt = time_tag.get("datetime", "")
         if dt:
             try:
-                return datetime.fromisoformat(dt.replace("Z", "+00:00"))
+                parsed = datetime.fromisoformat(dt.replace("Z", "+00:00"))
+                if parsed.tzinfo is None:
+                    parsed = parsed.replace(tzinfo=timezone.utc)
+                return parsed
             except ValueError:
                 pass
 

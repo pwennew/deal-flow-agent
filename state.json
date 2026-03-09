@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "last_run": "2026-03-09T19:27:25.021018",
+  "last_run": "2026-03-09T22:06:05.134129",
   "seen": {
     "https://www.insightpartners.com/ideas/optain-leadership-profile/": {
       "hash": "8c8a144ba37bf22b",
@@ -10857,6 +10857,2778 @@
     "mailto:contact@norvestor.com": {
       "hash": "c98c338de6f1c188",
       "first_seen": "2026-03-09T19:27:25.021014"
+    },
+    "https://eqtgroup.com/private-capital": {
+      "hash": "4eb96755557681b3",
+      "first_seen": "2026-03-09T22:06:05.127082"
+    },
+    "https://eqtgroup.com/private-capital/eqt-healthcare-growth": {
+      "hash": "ec15944dfd619eea",
+      "first_seen": "2026-03-09T22:06:05.127095"
+    },
+    "https://eqtgroup.com/private-capital/eqt-life-sciences": {
+      "hash": "12611dd0b415cf14",
+      "first_seen": "2026-03-09T22:06:05.127101"
+    },
+    "https://eqtgroup.com/eqt-private-capital-asia": {
+      "hash": "5f6f1b59bc599967",
+      "first_seen": "2026-03-09T22:06:05.127106"
+    },
+    "https://eqtgroup.com/eqt-private-capital-asia/eqt-asian-large-cap-buyout": {
+      "hash": "ad9be05f6261aa87",
+      "first_seen": "2026-03-09T22:06:05.127110"
+    },
+    "https://eqtgroup.com/eqt-private-capital-asia/eqt-asian-mid-market-buyout": {
+      "hash": "2dad7a5b5e94cd65",
+      "first_seen": "2026-03-09T22:06:05.127115"
+    },
+    "https://eqtgroup.com/infrastructure": {
+      "hash": "64df65e4dbf74443",
+      "first_seen": "2026-03-09T22:06:05.127120"
+    },
+    "https://eqtgroup.com/infrastructure/eqt-value-add-infrastructure": {
+      "hash": "a554a4f4bc016df6",
+      "first_seen": "2026-03-09T22:06:05.127127"
+    },
+    "https://eqtgroup.com/infrastructure/eqt-active-core-infrastructure": {
+      "hash": "de8cb8a031b7989c",
+      "first_seen": "2026-03-09T22:06:05.127133"
+    },
+    "https://eqtgroup.com/infrastructure/eqt-transition-infrastructure": {
+      "hash": "b4a26fac9060f5ad",
+      "first_seen": "2026-03-09T22:06:05.127138"
+    },
+    "https://eqtgroup.com/real-estate": {
+      "hash": "856f3a3dcfd93f82",
+      "first_seen": "2026-03-09T22:06:05.127143"
+    },
+    "https://eqtgroup.com/private-wealth": {
+      "hash": "56ddca1175bf28a6",
+      "first_seen": "2026-03-09T22:06:05.127175"
+    },
+    "https://eqtgroup.com/thinq/private-markets/ipo-report-2025": {
+      "hash": "87e0e3d80afca9c0",
+      "first_seen": "2026-03-09T22:06:05.127180"
+    },
+    "https://eqtgroup.com/thinq/Education/what-is-a-private-equity-fund": {
+      "hash": "93cc618aff494dbe",
+      "first_seen": "2026-03-09T22:06:05.127185"
+    },
+    "https://eqtgroup.com/about": {
+      "hash": "e091243e3835db12",
+      "first_seen": "2026-03-09T22:06:05.127190"
+    },
+    "https://eqtgroup.com/about/current-portfolio": {
+      "hash": "b4507d58ec25b685",
+      "first_seen": "2026-03-09T22:06:05.127194"
+    },
+    "https://eqtgroup.com/value-creation": {
+      "hash": "7bc8674b98a48d99",
+      "first_seen": "2026-03-09T22:06:05.127199"
+    },
+    "https://eqtgroup.com/about/digitalization": {
+      "hash": "06c1be3a6c6e3d56",
+      "first_seen": "2026-03-09T22:06:05.127275"
+    },
+    "https://eqtgroup.com/about/governance": {
+      "hash": "b32fb2281fb5615b",
+      "first_seen": "2026-03-09T22:06:05.127281"
+    },
+    "https://eqtgroup.com/about/eqt-network": {
+      "hash": "2f9928caac434336",
+      "first_seen": "2026-03-09T22:06:05.127285"
+    },
+    "https://eqtgroup.com/about/motherbrain": {
+      "hash": "7dfa88ac22b4a278",
+      "first_seen": "2026-03-09T22:06:05.127289"
+    },
+    "https://eqtgroup.com/about/statements-of-purpose": {
+      "hash": "31fa88c64d6c7d61",
+      "first_seen": "2026-03-09T22:06:05.127292"
+    },
+    "https://eqtgroup.com/about/sustainability": {
+      "hash": "5619774f16b5cb8a",
+      "first_seen": "2026-03-09T22:06:05.127297"
+    },
+    "https://eqtgroup.com/about/partnerships": {
+      "hash": "dddfc45e190b1978",
+      "first_seen": "2026-03-09T22:06:05.127302"
+    },
+    "https://eqtgroup.com/eqt-foundation": {
+      "hash": "bdd3da73072f72b8",
+      "first_seen": "2026-03-09T22:06:05.127306"
+    },
+    "https://eqtgroup.com/shareholders/corporate-governance": {
+      "hash": "b30737867299b5f0",
+      "first_seen": "2026-03-09T22:06:05.127311"
+    },
+    "https://eqtgroup.com/thinq/infrastructure/how-we-launched-eqt-infrastructure-despite-being-told-not-to": {
+      "hash": "886d4c21897550a9",
+      "first_seen": "2026-03-09T22:06:05.127315"
+    },
+    "https://eqtgroup.com/thinq/about-thinq/About-thinq-by-eqt": {
+      "hash": "c7b91427c65066be",
+      "first_seen": "2026-03-09T22:06:05.127318"
+    },
+    "https://eqtgroup.com/shareholders/the-eqt-share": {
+      "hash": "6dae666af9073510",
+      "first_seen": "2026-03-09T22:06:05.127321"
+    },
+    "https://eqtgroup.com/shareholders/bondholders": {
+      "hash": "a5285cf13ed25ebd",
+      "first_seen": "2026-03-09T22:06:05.127323"
+    },
+    "https://eqtgroup.com/shareholders/reports-and-presentations": {
+      "hash": "34ae70f84845c886",
+      "first_seen": "2026-03-09T22:06:05.127325"
+    },
+    "https://eqtgroup.com/shareholders/financial-calendar": {
+      "hash": "49797727f436500d",
+      "first_seen": "2026-03-09T22:06:05.127327"
+    },
+    "https://eqtgroup.com/shareholders/the-eqt-share#shareholder-structure-id": {
+      "hash": "4fd0e7a3e0454692",
+      "first_seen": "2026-03-09T22:06:05.127330"
+    },
+    "https://eqtgroup.com/shareholders/bondholders#bonds-outstanding-id": {
+      "hash": "853be06f9b90380d",
+      "first_seen": "2026-03-09T22:06:05.127332"
+    },
+    "https://eqtgroup.com/shareholders/corporate-governance#corporate-documents-id": {
+      "hash": "e9fcfe9798c4ffd3",
+      "first_seen": "2026-03-09T22:06:05.127335"
+    },
+    "tel:+46850655300": {
+      "hash": "39cde5070f669348",
+      "first_seen": "2026-03-09T22:06:05.127337"
+    },
+    "https://eqtgroup.com/cdn-cgi/l/email-protection#14646671676754716560647566607a7166673a777b79": {
+      "hash": "214959ab4fb13c30",
+      "first_seen": "2026-03-09T22:06:05.127340"
+    },
+    "https://eqtgroup.com/about/careers": {
+      "hash": "73a5d537a5bb3ef9",
+      "first_seen": "2026-03-09T22:06:05.127343"
+    },
+    "https://eqtgroup.com/terms-and-conditions": {
+      "hash": "a0427519f4644bed",
+      "first_seen": "2026-03-09T22:06:05.127345"
+    },
+    "https://eqtgroup.com/eqt-cookie-notice": {
+      "hash": "dcea73f961958b82",
+      "first_seen": "2026-03-09T22:06:05.127348"
+    },
+    "https://eqtgroup.com/privacy-notice": {
+      "hash": "a83b46a08d7c5357",
+      "first_seen": "2026-03-09T22:06:05.127350"
+    },
+    "https://eqtgroup.com/eqt-policies-and-statements": {
+      "hash": "9a641035bc4df7c8",
+      "first_seen": "2026-03-09T22:06:05.127352"
+    },
+    "https://eqtgroup.com/complaints-handling-procedure": {
+      "hash": "528d279d14cc0e23",
+      "first_seen": "2026-03-09T22:06:05.127354"
+    },
+    "https://eqtgroup.com/sustainable-finance-disclosure": {
+      "hash": "d1be502afd83e1a6",
+      "first_seen": "2026-03-09T22:06:05.127356"
+    },
+    "https://eqtgroup.com/jp": {
+      "hash": "fd4c9094e674a685",
+      "first_seen": "2026-03-09T22:06:05.127359"
+    },
+    "https://eqtgroup.com#main-content": {
+      "hash": "c8d7705bd278ae08",
+      "first_seen": "2026-03-09T22:06:05.127362"
+    },
+    "https://lp.eqtgroup.com/login": {
+      "hash": "d930ef744c6b4776",
+      "first_seen": "2026-03-09T22:06:05.127367"
+    },
+    "https://eqtgroup.com/sv/aktieagare": {
+      "hash": "d3bdf9d41a70c810",
+      "first_seen": "2026-03-09T22:06:05.127372"
+    },
+    "https://eqtgroup.com/about/offices": {
+      "hash": "771ba391bd276b78",
+      "first_seen": "2026-03-09T22:06:05.127376"
+    },
+    "https://clearlake.com/global-offices/": {
+      "hash": "23706d3d6528a486",
+      "first_seen": "2026-03-09T22:06:05.127381"
+    },
+    "https://clearlake.com/our-businesses/": {
+      "hash": "6a9b439da2892a2d",
+      "first_seen": "2026-03-09T22:06:05.127385"
+    },
+    "https://clearlake.com/private-equity/": {
+      "hash": "b23c4d66dceb9ff2",
+      "first_seen": "2026-03-09T22:06:05.127389"
+    },
+    "https://clearlake.com/private-equity/ops/": {
+      "hash": "b907eb42a40e1839",
+      "first_seen": "2026-03-09T22:06:05.127394"
+    },
+    "https://clearlake.com/credit/private-credit/": {
+      "hash": "324bcf2ae98f25a5",
+      "first_seen": "2026-03-09T22:06:05.127399"
+    },
+    "https://clearlake.com/credit/liquid-credit/": {
+      "hash": "5d5ed4c678d4e23f",
+      "first_seen": "2026-03-09T22:06:05.127402"
+    },
+    "https://clearlake.com/responsibility/": {
+      "hash": "ec7269291c117b3a",
+      "first_seen": "2026-03-09T22:06:05.127407"
+    },
+    "https://portfolio.clearlake.com/login": {
+      "hash": "752b88a7458c708c",
+      "first_seen": "2026-03-09T22:06:05.127412"
+    },
+    "https://clearlake.com/": {
+      "hash": "de8ebeb5acfc37d1",
+      "first_seen": "2026-03-09T22:06:05.127417"
+    },
+    "https://clearlake.com/credit/": {
+      "hash": "a7e74b24f424761b",
+      "first_seen": "2026-03-09T22:06:05.127420"
+    },
+    "https://www.veritascapital.com/strategies/": {
+      "hash": "41526cba38c03b74",
+      "first_seen": "2026-03-09T22:06:05.127422"
+    },
+    "https://www.veritascapital.com/capital-markets/": {
+      "hash": "fa9cb695f6620862",
+      "first_seen": "2026-03-09T22:06:05.127425"
+    },
+    "https://www.veritascapital.com/investor-login/": {
+      "hash": "a60b881902da4f75",
+      "first_seen": "2026-03-09T22:06:05.127427"
+    },
+    "https://veritascapital.com/capital-markets/": {
+      "hash": "4acab43503c500d0",
+      "first_seen": "2026-03-09T22:06:05.127429"
+    },
+    "https://www.veritascapital.com/privacy/": {
+      "hash": "6f1aaf66bfce29a3",
+      "first_seen": "2026-03-09T22:06:05.127432"
+    },
+    "https://tpg.com/news-and-insights/highlights-from-tpg-ai-themes-day-2026": {
+      "hash": "e335e63692a09d4f",
+      "first_seen": "2026-03-09T22:06:05.127435"
+    },
+    "https://tpg.com/news-and-insights/the-rise-of-sector-specialism-in-cvs": {
+      "hash": "820ea81100b3068a",
+      "first_seen": "2026-03-09T22:06:05.127437"
+    },
+    "https://tpg.com/news-and-insights/tpg-partners-with-findhelp-to-expand-access-to-essential-services-for-underserved-populations": {
+      "hash": "679900e44d519bbc",
+      "first_seen": "2026-03-09T22:06:05.127440"
+    },
+    "https://tpg.com/wealth-solutions": {
+      "hash": "79da7eb4c9948918",
+      "first_seen": "2026-03-09T22:06:05.127443"
+    },
+    "https://tpg.com/news-and-insights": {
+      "hash": "532d5daaddd2bc87",
+      "first_seen": "2026-03-09T22:06:05.127445"
+    },
+    "http://shareholders.tpg.com/": {
+      "hash": "7538e00f147ce73d",
+      "first_seen": "2026-03-09T22:06:05.127448"
+    },
+    "https://tpg.com/news-and-insights/insights": {
+      "hash": "030d05792271e588",
+      "first_seen": "2026-03-09T22:06:05.127450"
+    },
+    "https://tpg.com/news-and-insights/the-tpg-take": {
+      "hash": "583a11ebb7e1623f",
+      "first_seen": "2026-03-09T22:06:05.127453"
+    },
+    "https://tpg.com/news-and-insights/partnerships-in-focus": {
+      "hash": "b3d94c43656f9348",
+      "first_seen": "2026-03-09T22:06:05.127455"
+    },
+    "https://tpg.com/news-and-insights/investment-insights": {
+      "hash": "068508d40b7604c8",
+      "first_seen": "2026-03-09T22:06:05.127458"
+    },
+    "https://tpg.com/news-and-insights/tpg-insights": {
+      "hash": "03bfbf6cc3e7438b",
+      "first_seen": "2026-03-09T22:06:05.127460"
+    },
+    "https://tpg.com/approach": {
+      "hash": "1c0ea78066909588",
+      "first_seen": "2026-03-09T22:06:05.127463"
+    },
+    "https://tpg.com/approach/healthcare": {
+      "hash": "5b586c88b398f3b4",
+      "first_seen": "2026-03-09T22:06:05.127466"
+    },
+    "https://tpg.com/approach/technology": {
+      "hash": "35a1e3c5d5cd14fb",
+      "first_seen": "2026-03-09T22:06:05.127468"
+    },
+    "https://tpg.com/approach/internet-digital-media": {
+      "hash": "ada57fb75ca68f0c",
+      "first_seen": "2026-03-09T22:06:05.127470"
+    },
+    "https://tpg.com/approach/business-services": {
+      "hash": "554c793bd70c04a2",
+      "first_seen": "2026-03-09T22:06:05.127473"
+    },
+    "https://tpg.com/remembering-david-bonderman": {
+      "hash": "890b44988146af00",
+      "first_seen": "2026-03-09T22:06:05.127475"
+    },
+    "https://tpg.com/about-us/who-we-are": {
+      "hash": "c53ce129502f7ac9",
+      "first_seen": "2026-03-09T22:06:05.127477"
+    },
+    "https://tpg.com/contact-us": {
+      "hash": "7460ff09f1e4c1e5",
+      "first_seen": "2026-03-09T22:06:05.127480"
+    },
+    "https://tpg.com/platforms/real-estate": {
+      "hash": "3df4e72474e5a6a7",
+      "first_seen": "2026-03-09T22:06:05.127482"
+    },
+    "https://tpg.com/platforms/market-solutions": {
+      "hash": "fc9d66d414b767a2",
+      "first_seen": "2026-03-09T22:06:05.127484"
+    },
+    "https://tpg.com/wealth-solutions/wealth-solutions-private-equity": {
+      "hash": "ef2b1f23021fc01b",
+      "first_seen": "2026-03-09T22:06:05.127487"
+    },
+    "https://tpg.com/wealth-solutions/wealth-solutions-real-estate": {
+      "hash": "6b24db582d209f3b",
+      "first_seen": "2026-03-09T22:06:05.127489"
+    },
+    "https://tpg.com/news-and-insights/news": {
+      "hash": "5965abaf7b1edf50",
+      "first_seen": "2026-03-09T22:06:05.127491"
+    },
+    "https://cms.tpg.com/wp-content/uploads/2025/01/TPG-Website-Terms-of-Use_1.17.24-Current-vFinal.pdf": {
+      "hash": "4f4049b91da3a31e",
+      "first_seen": "2026-03-09T22:06:05.127493"
+    },
+    "https://tpg.com/privacy-cybersecurity": {
+      "hash": "b92bce92942b7d4e",
+      "first_seen": "2026-03-09T22:06:05.127496"
+    },
+    "https://cms.tpg.com/wp-content/uploads/2026/02/TPG-California-Consumer-Privacy-Statement-CCPA-CPRA-Website-Privacy-Notice-Addendum-January-2026-vFinal.pdf": {
+      "hash": "fa5d609701aab190",
+      "first_seen": "2026-03-09T22:06:05.127498"
+    },
+    "https://tpg.com/uk-eu-disclosures": {
+      "hash": "d84047e6a8f2ae47",
+      "first_seen": "2026-03-09T22:06:05.127500"
+    },
+    "https://www.tpg.com/tpg-phishing-and-fraud-notice": {
+      "hash": "2d6d121019395d13",
+      "first_seen": "2026-03-09T22:06:05.127503"
+    },
+    "https://tpg.com/transparency-in-coverage": {
+      "hash": "8a865a77b6c3bdd8",
+      "first_seen": "2026-03-09T22:06:05.127505"
+    },
+    "https://cms.tpg.com/wp-content/uploads/2025/02/Equal-Employment-Opportunity-Policy.pdf": {
+      "hash": "6d5de9eb01fa0aaa",
+      "first_seen": "2026-03-09T22:06:05.127507"
+    },
+    "https://partnersgroup.com/en/about-us/our-approach": {
+      "hash": "58db7d93da189633",
+      "first_seen": "2026-03-09T22:06:05.127510"
+    },
+    "https://partnersgroup.com/en/about-us/our-heritage": {
+      "hash": "1b5eef729a0a09b0",
+      "first_seen": "2026-03-09T22:06:05.127512"
+    },
+    "https://partnersgroup.com/en/about-us/our-sustainability": {
+      "hash": "28e6d3a20629f8a6",
+      "first_seen": "2026-03-09T22:06:05.127514"
+    },
+    "https://partnersgroup.com/en/our-investments/private-equity": {
+      "hash": "811f2f6233736a0b",
+      "first_seen": "2026-03-09T22:06:05.127517"
+    },
+    "https://partnersgroup.com/en/our-investments/infrastructure": {
+      "hash": "ba845497809a5c72",
+      "first_seen": "2026-03-09T22:06:05.127519"
+    },
+    "https://partnersgroup.com/en/our-investments/real-estate": {
+      "hash": "412180380dbf4328",
+      "first_seen": "2026-03-09T22:06:05.127522"
+    },
+    "https://partnersgroup.com/en/our-investments/private-credit": {
+      "hash": "bd2ddc73c2768564",
+      "first_seen": "2026-03-09T22:06:05.132677"
+    },
+    "https://partnersgroup.com/en/our-solutions/institutional-investors": {
+      "hash": "80b87e8118807d6c",
+      "first_seen": "2026-03-09T22:06:05.132688"
+    },
+    "https://partnersgroup.com/en/our-solutions/private-wealth": {
+      "hash": "47cc8b5b532d8bd4",
+      "first_seen": "2026-03-09T22:06:05.132692"
+    },
+    "https://partnersgroup.com/en/our-solutions/investment-options": {
+      "hash": "0d37e41715546025",
+      "first_seen": "2026-03-09T22:06:05.132694"
+    },
+    "https://partnersgroup.com/en/our-solutions/client-access": {
+      "hash": "dc5ed229c17f27e3",
+      "first_seen": "2026-03-09T22:06:05.132697"
+    },
+    "https://partnersgroup.com/en/the-campus/advisor-resources": {
+      "hash": "e1fb6078dedee615",
+      "first_seen": "2026-03-09T22:06:05.132699"
+    },
+    "https://partnersgroup.com/en/the-campus/investment-process": {
+      "hash": "0b5fc4de4be1dcf4",
+      "first_seen": "2026-03-09T22:06:05.132701"
+    },
+    "https://partnersgroup.com/en/the-campus/value-creation": {
+      "hash": "7cb38809937ef4ff",
+      "first_seen": "2026-03-09T22:06:05.132703"
+    },
+    "https://partnersgroup.com/en/the-campus/portfolio-solutions": {
+      "hash": "a97855bff589dad2",
+      "first_seen": "2026-03-09T22:06:05.132705"
+    },
+    "https://partnersgroup.com/en/shareholders": {
+      "hash": "663869de18a50a7e",
+      "first_seen": "2026-03-09T22:06:05.132708"
+    },
+    "https://partnersgroup.com/en/shareholders/share-information": {
+      "hash": "fe0989dbeddf30a6",
+      "first_seen": "2026-03-09T22:06:05.132710"
+    },
+    "https://partnersgroup.com/en/shareholders/reports-and-presentations": {
+      "hash": "fa2737164d76e79f",
+      "first_seen": "2026-03-09T22:06:05.132713"
+    },
+    "https://partnersgroup.com/en/shareholders/annual-general-meeting": {
+      "hash": "ba5e3f87b69dd18b",
+      "first_seen": "2026-03-09T22:06:05.132715"
+    },
+    "https://partnersgroup.com/en/shareholders/financial-calendar": {
+      "hash": "f2e6a3032d22721b",
+      "first_seen": "2026-03-09T22:06:05.132718"
+    },
+    "https://partnersgroup.com/shareholders/share-information#analyst-coverage": {
+      "hash": "0fd0fc9d4e533345",
+      "first_seen": "2026-03-09T22:06:05.132720"
+    },
+    "https://partnersgroup.com/en/shareholders/corporate-governance": {
+      "hash": "44000daacc4f8a73",
+      "first_seen": "2026-03-09T22:06:05.132722"
+    },
+    "https://partnersgroup.com/en/shareholders/contact-us": {
+      "hash": "4ce3ea38a589503b",
+      "first_seen": "2026-03-09T22:06:05.132725"
+    },
+    "https://partnersgroup.com/en/news-and-views": {
+      "hash": "7cbd270c034c3589",
+      "first_seen": "2026-03-09T22:06:05.132728"
+    },
+    "https://partnersgroup.com/en/news-and-views/perspective": {
+      "hash": "2579be2e537f098e",
+      "first_seen": "2026-03-09T22:06:05.132730"
+    },
+    "https://partnersgroup.com/en/news-and-views/press-releases/corporate-news": {
+      "hash": "0613fd00cd64c8c9",
+      "first_seen": "2026-03-09T22:06:05.132732"
+    },
+    "https://partnersgroup.com/en/news-and-views/firm-updates": {
+      "hash": "07603cc277789914",
+      "first_seen": "2026-03-09T22:06:05.132734"
+    },
+    "https://partnersgroup.com/en/news-and-views/in-the-media": {
+      "hash": "62e56eccdfcbf5c5",
+      "first_seen": "2026-03-09T22:06:05.132737"
+    },
+    "https://partnersgroup.com/en/careers/career-opportunities/investment": {
+      "hash": "52a341a7c5798c20",
+      "first_seen": "2026-03-09T22:06:05.132739"
+    },
+    "https://partnersgroup.com/en/careers/career-opportunities/client-solutions": {
+      "hash": "2902137b1415f608",
+      "first_seen": "2026-03-09T22:06:05.132741"
+    },
+    "https://partnersgroup.com/en/careers/career-opportunities/operations-and-corporate": {
+      "hash": "03bb65922da7e9f5",
+      "first_seen": "2026-03-09T22:06:05.132744"
+    },
+    "https://partnersgroup.com/en/careers/financial-analyst-program": {
+      "hash": "52ad4b0850ea38c6",
+      "first_seen": "2026-03-09T22:06:05.132746"
+    },
+    "https://partnersgroup.com/en/careers/open-positions": {
+      "hash": "4153653928e63339",
+      "first_seen": "2026-03-09T22:06:05.132748"
+    },
+    "https://partnersgroup.com#corporate-news": {
+      "hash": "6d64f9eb113af1af",
+      "first_seen": "2026-03-09T22:06:05.132750"
+    },
+    "https://partnersgroup.com#investment-news": {
+      "hash": "3252ed4714c364c1",
+      "first_seen": "2026-03-09T22:06:05.132753"
+    },
+    "https://partnersgroup.com/en/site-services/cookies-notice": {
+      "hash": "88046fd6d3f9a72e",
+      "first_seen": "2026-03-09T22:06:05.132755"
+    },
+    "https://partnersgroup.com/en/our-offices": {
+      "hash": "4692634e7e57431c",
+      "first_seen": "2026-03-09T22:06:05.132757"
+    },
+    "https://partnersgroup.com/en/site-services/privacy-notice": {
+      "hash": "74f744932c2ea57a",
+      "first_seen": "2026-03-09T22:06:05.132760"
+    },
+    "https://partnersgroup.com/en/site-services/disclaimer": {
+      "hash": "8f032b0d75fa5f53",
+      "first_seen": "2026-03-09T22:06:05.132762"
+    },
+    "https://partnersgroup.com/en/site-services/disclosures": {
+      "hash": "7d3ba8f5a327569c",
+      "first_seen": "2026-03-09T22:06:05.132764"
+    },
+    "https://partnersgroup.com/en/site-services/fraud-prevention": {
+      "hash": "42eefb6b50b61a8e",
+      "first_seen": "2026-03-09T22:06:05.132767"
+    },
+    "https://partnersgroup.com#maincontentwrapper": {
+      "hash": "ab18c185a4ce85d7",
+      "first_seen": "2026-03-09T22:06:05.132769"
+    },
+    "https://partnersgroup.com/en": {
+      "hash": "8ee248484addaa49",
+      "first_seen": "2026-03-09T22:06:05.132772"
+    },
+    "https://partnersgroup.com/en/news-and-views/press-releases/investment-news": {
+      "hash": "2aaaf14695c8401c",
+      "first_seen": "2026-03-09T22:06:05.132774"
+    },
+    "https://partnersgroup.com/pdf-viewer.aspx?gid=443092680&src=/~/media/Files/P/Partnersgroup/Corp/20241008-partnersgroup-evergreen-series.pdf": {
+      "hash": "138f2e5594d63881",
+      "first_seen": "2026-03-09T22:06:05.132777"
+    },
+    "https://partnersgroup.com/en/subscribe": {
+      "hash": "4b02724c9ee0242e",
+      "first_seen": "2026-03-09T22:06:05.132779"
+    },
+    "https://partnersgroup.com/en/news-and-views/perspective/market-update-march2026": {
+      "hash": "22be61600c4ab980",
+      "first_seen": "2026-03-09T22:06:05.132782"
+    },
+    "https://partnersgroup.com/pdf-viewer.aspx?gid=443092680&src=/~/media/Files/P/Partnersgroup/Universal/perspectives-document/private-markets-chartbook-Q1-2026-investing-in-high-altitude.pdf": {
+      "hash": "32cbc9ae3975eeda",
+      "first_seen": "2026-03-09T22:06:05.132784"
+    },
+    "https://partnersgroup.com/en/news-and-views/perspective/private-markets-outlook-2026": {
+      "hash": "3a147dfcb386ba1a",
+      "first_seen": "2026-03-09T22:06:05.132786"
+    },
+    "https://partnersgroup.com/pdf-viewer.aspx?gid=443092680&src=/~/media/Files/P/Partnersgroup/Universal/perspectives-document/private-markets-chartbook- q42025- strong-finish-to-a-year-of-wild-cards.pdf": {
+      "hash": "ecf1513e241c834a",
+      "first_seen": "2026-03-09T22:06:05.132789"
+    },
+    "https://partnersgroup.com/en/news-and-views/press-releases": {
+      "hash": "c7f187a148b073ea",
+      "first_seen": "2026-03-09T22:06:05.132792"
+    },
+    "https://partnersgroup.com/": {
+      "hash": "503f10c669595e21",
+      "first_seen": "2026-03-09T22:06:05.132794"
+    },
+    "https://www.adventinternational.com/portfolio-stories/building-a-global-services-champion-for-clean-safe-drinking-water/": {
+      "hash": "dbd01c74c314d2eb",
+      "first_seen": "2026-03-09T22:06:05.132797"
+    },
+    "https://audaxprivateequity.com/citizenship": {
+      "hash": "ffc8b1a1f43b17bd",
+      "first_seen": "2026-03-09T22:06:05.132799"
+    },
+    "https://audaxprivateequity.com/privacy-policy": {
+      "hash": "e87d6ec42bfa34fe",
+      "first_seen": "2026-03-09T22:06:05.132802"
+    },
+    "https://audaxprivateequity.com/terms-of-use": {
+      "hash": "bb737aa97f37cb9a",
+      "first_seen": "2026-03-09T22:06:05.132804"
+    },
+    "https://audaxprivateequity.com/system/uploads/fae/file/asset/275/Audax_PE_Firm-Profile-Website.pdf": {
+      "hash": "5d7e70201ddb98e4",
+      "first_seen": "2026-03-09T22:06:05.132806"
+    },
+    "https://carlyle.com/media-room/news-release-archive/carlyle-announces-strategic-financing-unifi-aviation": {
+      "hash": "df522478f6450712",
+      "first_seen": "2026-03-09T22:06:05.132809"
+    },
+    "https://carlyle.com/media-room/news-release-archive/carlyle-agrees-acquire-sugiko": {
+      "hash": "7808085ea4dc7a95",
+      "first_seen": "2026-03-09T22:06:05.132811"
+    },
+    "http://ir.carlyle.com/": {
+      "hash": "8704fdf4a882434b",
+      "first_seen": "2026-03-09T22:06:05.132813"
+    },
+    "https://carlyle.com/our-people#leadership": {
+      "hash": "196372805b6eb06d",
+      "first_seen": "2026-03-09T22:06:05.132816"
+    },
+    "https://carlyle.com/our-people": {
+      "hash": "35996c2b6b3f5ac1",
+      "first_seen": "2026-03-09T22:06:05.132818"
+    },
+    "https://carlyle.com/diversity": {
+      "hash": "1c91e4e0bc9d1f31",
+      "first_seen": "2026-03-09T22:06:05.132821"
+    },
+    "https://carlyle.com/sustainability": {
+      "hash": "445bdf96d63fb64c",
+      "first_seen": "2026-03-09T22:06:05.132823"
+    },
+    "https://carlyle.com/news-media": {
+      "hash": "150893950c2c18fb",
+      "first_seen": "2026-03-09T22:06:05.132825"
+    },
+    "https://carlyle.com/sponsorships": {
+      "hash": "f48f25287c00c32b",
+      "first_seen": "2026-03-09T22:06:05.132828"
+    },
+    "https://carlyle.com/connect-us": {
+      "hash": "ae9e4be77fbf704a",
+      "first_seen": "2026-03-09T22:06:05.132831"
+    },
+    "https://carlyle.com/institutional-investors": {
+      "hash": "9d6d06b22d805b49",
+      "first_seen": "2026-03-09T22:06:05.132834"
+    },
+    "https://carlyle.com/financial-advisors": {
+      "hash": "45573a6e7bc4d852",
+      "first_seen": "2026-03-09T22:06:05.132837"
+    },
+    "https://carlyle.com/portfolio-companies": {
+      "hash": "58785129623e9510",
+      "first_seen": "2026-03-09T22:06:05.132839"
+    },
+    "https://carlyle.com/our-firm/global-private-equity": {
+      "hash": "f9fe27ecf634430b",
+      "first_seen": "2026-03-09T22:06:05.132843"
+    },
+    "https://carlyle.com/our-firm/global-private-equity/global-portfolio-solutions": {
+      "hash": "f204c213c8627be5",
+      "first_seen": "2026-03-09T22:06:05.132845"
+    },
+    "https://carlyle.com/portfolio": {
+      "hash": "61df58da6ff3ff89",
+      "first_seen": "2026-03-09T22:06:05.132847"
+    },
+    "https://carlyle.com/our-firm/global-credit": {
+      "hash": "b1ff456bc651071c",
+      "first_seen": "2026-03-09T22:06:05.132849"
+    },
+    "https://carlyle.com/our-firm/carlyle-alpinvest": {
+      "hash": "c2661042f7dd5e0c",
+      "first_seen": "2026-03-09T22:06:05.132851"
+    },
+    "https://carlyle.com/cpep-sicav": {
+      "hash": "23a4649b6df545cf",
+      "first_seen": "2026-03-09T22:06:05.132853"
+    },
+    "https://carlyle.com/capm-sicav": {
+      "hash": "1960e0f18c9027cd",
+      "first_seen": "2026-03-09T22:06:05.132855"
+    },
+    "https://carlyle.com/caps-sicav": {
+      "hash": "f194d5280bda9da2",
+      "first_seen": "2026-03-09T22:06:05.132858"
+    },
+    "https://carlyle.com/from-davids-desk": {
+      "hash": "640b6820f3530cad",
+      "first_seen": "2026-03-09T22:06:05.132860"
+    },
+    "https://carlyle.com/insights-from-the-pms-desk": {
+      "hash": "ddf58be89b170195",
+      "first_seen": "2026-03-09T22:06:05.132862"
+    },
+    "https://carlyle.com/navigating-leadership": {
+      "hash": "7f524ace6a2dbb51",
+      "first_seen": "2026-03-09T22:06:05.132864"
+    },
+    "https://carlyle.com/the-carlyle-compass": {
+      "hash": "5d217488f51a67e0",
+      "first_seen": "2026-03-09T22:06:05.132867"
+    },
+    "https://carlyle.com/up-close-with-carlyle": {
+      "hash": "b16418e5b3b1636f",
+      "first_seen": "2026-03-09T22:06:05.132869"
+    },
+    "https://carlyle.com/advisor-education/why-private-markets": {
+      "hash": "e27b616906f92590",
+      "first_seen": "2026-03-09T22:06:05.132871"
+    },
+    "https://carlyle.com/advisor-education/private-equity": {
+      "hash": "db1fffc9e6ff2a46",
+      "first_seen": "2026-03-09T22:06:05.132874"
+    },
+    "https://carlyle.com/advisor-education/private-credit": {
+      "hash": "07dc0b16f3a0ddee",
+      "first_seen": "2026-03-09T22:06:05.132877"
+    },
+    "https://carlyle.com/global-insights": {
+      "hash": "4c99d4dfd371af37",
+      "first_seen": "2026-03-09T22:06:05.132879"
+    },
+    "https://carlyle.com/global-offices": {
+      "hash": "296f5d47b09d477f",
+      "first_seen": "2026-03-09T22:06:05.132881"
+    },
+    "https://lpconnect.carlyle.com/": {
+      "hash": "966b3af6cbde83cd",
+      "first_seen": "2026-03-09T22:06:05.132884"
+    },
+    "https://carlyle.com/notices-and-disclaimers": {
+      "hash": "448c92711c15e9f1",
+      "first_seen": "2026-03-09T22:06:05.132886"
+    },
+    "https://carlyle.com/notices-and-disclaimers#notice-regarding-fake-news-and-fraudulent-activity": {
+      "hash": "f6ea1b9702bcfd15",
+      "first_seen": "2026-03-09T22:06:05.132888"
+    },
+    "https://carlyle.com/notices-and-disclaimers#transparency--reporting": {
+      "hash": "d0028875d0cf8c0d",
+      "first_seen": "2026-03-09T22:06:05.132890"
+    },
+    "https://carlyle.com/notices-and-disclaimers#cookies-policy": {
+      "hash": "2ce3dbe616ab050f",
+      "first_seen": "2026-03-09T22:06:05.132892"
+    },
+    "https://carlyle.com/notices-and-disclaimers#privacy-notice": {
+      "hash": "ef77e70283a986d5",
+      "first_seen": "2026-03-09T22:06:05.132894"
+    },
+    "https://carlyle.com/notices-and-disclaimers#terms-of-use-policy": {
+      "hash": "fdf812afb8234a93",
+      "first_seen": "2026-03-09T22:06:05.132896"
+    },
+    "https://carlyle.com/": {
+      "hash": "d41848e613abd62a",
+      "first_seen": "2026-03-09T22:06:05.132898"
+    },
+    "https://carlyle.com/subscribe-carlyles-newsletters": {
+      "hash": "fb59bd140c9a435a",
+      "first_seen": "2026-03-09T22:06:05.132900"
+    },
+    "https://www.carlyle.com/notices-and-disclaimers#cookies-policy": {
+      "hash": "206ae9529e64a0e4",
+      "first_seen": "2026-03-09T22:06:05.132903"
+    },
+    "https://ardian.com#collapsible-header": {
+      "hash": "5d04c1cfcafe065d",
+      "first_seen": "2026-03-09T22:06:05.132905"
+    },
+    "https://ardian.com#main-content": {
+      "hash": "f1b99784f5d0f427",
+      "first_seen": "2026-03-09T22:06:05.132907"
+    },
+    "https://ardian.com#footer": {
+      "hash": "6523badc00703cad",
+      "first_seen": "2026-03-09T22:06:05.132910"
+    },
+    "https://ardian.com/reportings-fcpi": {
+      "hash": "ce4b6afdc55b4aad",
+      "first_seen": "2026-03-09T22:06:05.132912"
+    },
+    "https://ardian.com/reporting-fcpr-cnp-peps-i-ii": {
+      "hash": "5e21c4bef36c4dd2",
+      "first_seen": "2026-03-09T22:06:05.132914"
+    },
+    "https://www.ardian.com/fr/fcpr-ardian-access-solution": {
+      "hash": "7f47b2d41ca0b372",
+      "first_seen": "2026-03-09T22:06:05.132916"
+    },
+    "https://ardian.com/fcpr-ardian-multi-strategies": {
+      "hash": "af52298eb1bb2382",
+      "first_seen": "2026-03-09T22:06:05.132918"
+    },
+    "https://ardian.com/news-insights": {
+      "hash": "a9e26e6574556626",
+      "first_seen": "2026-03-09T22:06:05.132921"
+    },
+    "https://ardian.com/sustainability": {
+      "hash": "d5f9bebf44077613",
+      "first_seen": "2026-03-09T22:06:05.132923"
+    },
+    "https://ardian.com/firm/governance": {
+      "hash": "a29278020c00544f",
+      "first_seen": "2026-03-09T22:06:05.132925"
+    },
+    "https://ardian.com/firm/Mastering-Change": {
+      "hash": "dbd59616ef12f595",
+      "first_seen": "2026-03-09T22:06:05.132927"
+    },
+    "https://ardian.com/house/technology-innovation": {
+      "hash": "62fcad270f19bce8",
+      "first_seen": "2026-03-09T22:06:05.132929"
+    },
+    "https://ardian.com/contacts-offices": {
+      "hash": "1fd9fd15f0ae7a4d",
+      "first_seen": "2026-03-09T22:06:05.132931"
+    },
+    "https://ardian.com/expertise/private-equity": {
+      "hash": "96c609ee88de762c",
+      "first_seen": "2026-03-09T22:06:05.132934"
+    },
+    "https://ardian.com/expertise/private-equity/secondaries-primaries": {
+      "hash": "04ea0fbcccd77744",
+      "first_seen": "2026-03-09T22:06:05.132936"
+    },
+    "https://ardian.com/expertise/private-equity/co-investment": {
+      "hash": "829b2e0881765fe0",
+      "first_seen": "2026-03-09T22:06:05.132938"
+    },
+    "https://ardian.com/expertise/private-equity/north-america-fund": {
+      "hash": "4ae424c05811a698",
+      "first_seen": "2026-03-09T22:06:05.132941"
+    },
+    "https://ardian.com/expertise/private-equity/ardian-semiconductor": {
+      "hash": "b3b44504cfd32057",
+      "first_seen": "2026-03-09T22:06:05.132943"
+    },
+    "https://ardian.com/expertise/real-assets": {
+      "hash": "8267fccd3c95f2db",
+      "first_seen": "2026-03-09T22:06:05.132945"
+    },
+    "https://ardian.com/expertise/real-assets/infrastructure": {
+      "hash": "5eed98e3dd75da88",
+      "first_seen": "2026-03-09T22:06:05.132948"
+    },
+    "https://ardian.com/expertise/real-assets/real-estate": {
+      "hash": "2bc4b3a72870a49b",
+      "first_seen": "2026-03-09T22:06:05.132949"
+    },
+    "https://ardian.com/expertise/real-assets/real-assets-debt": {
+      "hash": "48466586b418ee95",
+      "first_seen": "2026-03-09T22:06:05.132952"
+    },
+    "https://ardian.com/expertise/real-assets/nature-based-solutions": {
+      "hash": "4ca6287e9b177b6e",
+      "first_seen": "2026-03-09T22:06:05.132954"
+    },
+    "https://ardian.com/expertise/credit/private-credit": {
+      "hash": "0dac87832d7feb05",
+      "first_seen": "2026-03-09T22:06:05.132957"
+    },
+    "https://ardian.com/expertise/credit/nav-financing": {
+      "hash": "221a3492635c7d95",
+      "first_seen": "2026-03-09T22:06:05.132959"
+    },
+    "https://ardian.com/expertise/our-portfolio": {
+      "hash": "b9f63fdb0c0e3afa",
+      "first_seen": "2026-03-09T22:06:05.132962"
+    },
+    "https://ardian.com/investors/investor-relations": {
+      "hash": "d076b83df5604324",
+      "first_seen": "2026-03-09T22:06:05.132964"
+    },
+    "https://ardian.com/investors/customized-solutions": {
+      "hash": "2a17125ae90d0175",
+      "first_seen": "2026-03-09T22:06:05.132966"
+    },
+    "https://ardian.com/investors/private-wealth-solutions": {
+      "hash": "7a2b569047698528",
+      "first_seen": "2026-03-09T22:06:05.132968"
+    },
+    "https://ardian.com/sustainability/ardian-foundation": {
+      "hash": "718495a3c6f5553e",
+      "first_seen": "2026-03-09T22:06:05.132971"
+    },
+    "https://ardian.com/talent/inclusion-diversity": {
+      "hash": "ecec7f5a9e99056a",
+      "first_seen": "2026-03-09T22:06:05.132973"
+    },
+    "https://ardian.com/talent/ardian-women": {
+      "hash": "b48d696fc13b812c",
+      "first_seen": "2026-03-09T22:06:05.132976"
+    },
+    "https://ardian.com/talent/resource-center": {
+      "hash": "d0b0d89b5abc7814",
+      "first_seen": "2026-03-09T22:06:05.132978"
+    },
+    "https://ardian.com/news-insights/case-studies": {
+      "hash": "a3df020dc20e9087",
+      "first_seen": "2026-03-09T22:06:05.132980"
+    },
+    "https://ardian.com/news-insights/publications": {
+      "hash": "bd8c9a09310e2899",
+      "first_seen": "2026-03-09T22:06:05.132982"
+    },
+    "https://ardian.com/news-insights/press-releases": {
+      "hash": "132875f39eb4f415",
+      "first_seen": "2026-03-09T22:06:05.132984"
+    },
+    "https://ardian.com/terms-and-conditions": {
+      "hash": "63efb93d61df2d87",
+      "first_seen": "2026-03-09T22:06:05.132987"
+    },
+    "https://ardian.com/cookies-policy": {
+      "hash": "3c97deabb4561b35",
+      "first_seen": "2026-03-09T22:06:05.132989"
+    },
+    "https://ardian.com/privacy-notices": {
+      "hash": "8c73a4f0e47ba7f9",
+      "first_seen": "2026-03-09T22:06:05.132992"
+    },
+    "https://ardian.com/summary-remuneration-policy": {
+      "hash": "cfd75257fe39e97e",
+      "first_seen": "2026-03-09T22:06:05.132994"
+    },
+    "https://www.ardian.com/sites/default/files/2025-06/MSA-Statement-2024.pdf": {
+      "hash": "6ba2b11e3b9e2e22",
+      "first_seen": "2026-03-09T22:06:05.132997"
+    },
+    "https://ardian.com/japan-disclaimer": {
+      "hash": "13c8f1333bc7a7b4",
+      "first_seen": "2026-03-09T22:06:05.132999"
+    },
+    "https://ardian.com/switzerland-client-information": {
+      "hash": "7858686a272d976d",
+      "first_seen": "2026-03-09T22:06:05.133002"
+    },
+    "https://www.ardian.com/sites/default/files/2025-12/Ardian-Tax-Strategy-December-2025.pdf": {
+      "hash": "e6bad9a5960eae97",
+      "first_seen": "2026-03-09T22:06:05.133005"
+    },
+    "https://ardian.com/": {
+      "hash": "2cfaa54f8027fe2f",
+      "first_seen": "2026-03-09T22:06:05.133007"
+    },
+    "https://ardian.com/firm": {
+      "hash": "2100b358a63a8fa4",
+      "first_seen": "2026-03-09T22:06:05.133009"
+    },
+    "https://trustview.ardian.com/": {
+      "hash": "f197ea0b9a20ca99",
+      "first_seen": "2026-03-09T22:06:05.133012"
+    },
+    "https://ardian.com/privacy-notice-users": {
+      "hash": "ef0bb839ab5b60a7",
+      "first_seen": "2026-03-09T22:06:05.133015"
+    },
+    "https://www.cerberus.com/our-firm/leadership/": {
+      "hash": "8e00abcd99b17939",
+      "first_seen": "2026-03-09T22:06:05.133017"
+    },
+    "https://www.cerberus.com/our-firm/our-principles/": {
+      "hash": "6a62338b6e745016",
+      "first_seen": "2026-03-09T22:06:05.133020"
+    },
+    "https://www.cerberus.com/investment-platforms/": {
+      "hash": "415ed3ba44166e6f",
+      "first_seen": "2026-03-09T22:06:05.133023"
+    },
+    "https://www.cerberus.com/investment-platforms/direct-lending/": {
+      "hash": "5069ec65b9ff8111",
+      "first_seen": "2026-03-09T22:06:05.133025"
+    },
+    "https://www.cerberus.com/investment-platforms/corporate-credit/": {
+      "hash": "489935f8e4896618",
+      "first_seen": "2026-03-09T22:06:05.133028"
+    },
+    "https://www.cerberus.com/investment-platforms/private-equity/": {
+      "hash": "a15680762c03b7da",
+      "first_seen": "2026-03-09T22:06:05.133031"
+    },
+    "https://www.cerberus.com/investment-platforms/real-estate/": {
+      "hash": "009510f4cb0a837b",
+      "first_seen": "2026-03-09T22:06:05.133033"
+    },
+    "https://www.cerberus.com/investment-platforms/non-performing-loans/": {
+      "hash": "bf1b43dc8630135f",
+      "first_seen": "2026-03-09T22:06:05.133035"
+    },
+    "https://www.cerberus.com/investment-platforms/residential-opportunities/": {
+      "hash": "261690f04ebe50a0",
+      "first_seen": "2026-03-09T22:06:05.133038"
+    },
+    "https://www.cerberus.com/investment-platforms/cmbs/": {
+      "hash": "15f70021f739e589",
+      "first_seen": "2026-03-09T22:06:05.133040"
+    },
+    "https://www.cerberus.com/investment-platforms/cerberus-frontier/": {
+      "hash": "b6d71a72c43feb2d",
+      "first_seen": "2026-03-09T22:06:05.133043"
+    },
+    "https://www.cerberus.com/investment-platforms/supply-chain-and-strategic-opportunities/": {
+      "hash": "b54e782b9f6fcada",
+      "first_seen": "2026-03-09T22:06:05.133046"
+    },
+    "https://www.cerberus.com/investment-platforms/cerberus-ventures/": {
+      "hash": "8b9d843ad54c04f1",
+      "first_seen": "2026-03-09T22:06:05.133048"
+    },
+    "https://www.cerberus.com/operating-capabilities/": {
+      "hash": "6e3e7a5192c776c2",
+      "first_seen": "2026-03-09T22:06:05.133051"
+    },
+    "https://www.cerberus.com/operating-capabilities/coac/": {
+      "hash": "dcc014248adba245",
+      "first_seen": "2026-03-09T22:06:05.133053"
+    },
+    "https://www.cerberus.com/operating-capabilities/cerberus-technology-solutions/": {
+      "hash": "fcb7d56d218c478b",
+      "first_seen": "2026-03-09T22:06:05.133055"
+    },
+    "https://www.cerberus.com/operating-capabilities/cerberus-european-servicing/": {
+      "hash": "7c69d6e1e04c0b55",
+      "first_seen": "2026-03-09T22:06:05.133057"
+    },
+    "https://www.cerberus.com/news/": {
+      "hash": "ba57b9827b8baaa8",
+      "first_seen": "2026-03-09T22:06:05.133059"
+    },
+    "https://www.cerberus.com/contact/": {
+      "hash": "53a2ccc4d465e7f3",
+      "first_seen": "2026-03-09T22:06:05.133061"
+    },
+    "https://www.cerberus.com/termsofuse/": {
+      "hash": "5e5029bb84452e1d",
+      "first_seen": "2026-03-09T22:06:05.133064"
+    },
+    "https://www.cerberus.com/privacy-policy/": {
+      "hash": "25d2a32b5a308e6b",
+      "first_seen": "2026-03-09T22:06:05.133066"
+    },
+    "https://www.cerberus.com/ccm-whistleblower-statement/": {
+      "hash": "3d3ea62eea65eb44",
+      "first_seen": "2026-03-09T22:06:05.133068"
+    },
+    "https://www.cerberus.com/accessibility-statement/": {
+      "hash": "2e0fbc4915a14400",
+      "first_seen": "2026-03-09T22:06:05.133070"
+    },
+    "https://portfoliojobs.cerberus.com/jobs": {
+      "hash": "a9876a5fb1c633cd",
+      "first_seen": "2026-03-09T22:06:05.133072"
+    },
+    "https://www.cerberus.com/contact/uk-stewardship-code-disclosure/": {
+      "hash": "bcc86e9a0d3d0bf8",
+      "first_seen": "2026-03-09T22:06:05.133075"
+    },
+    "https://cerberus.com/cdn-cgi/l/email-protection#f59890919c94b59690879790878086db969a98": {
+      "hash": "e0f0a4e86d69c6f4",
+      "first_seen": "2026-03-09T22:06:05.133077"
+    },
+    "https://cerberus.com/cdn-cgi/l/email-protection#58353d3c3139183b3d2a3a3d2a2d2b763b3735": {
+      "hash": "1646f9eb338fa5ff",
+      "first_seen": "2026-03-09T22:06:05.133079"
+    },
+    "https://cerberus.com/cdn-cgi/l/email-protection#711c141518103112140313140304025f121e1c": {
+      "hash": "9da76641841ad8f1",
+      "first_seen": "2026-03-09T22:06:05.133082"
+    },
+    "https://american-securities.com/en/our-firm/investment-philosophy": {
+      "hash": "4a5497e9fc12a6ca",
+      "first_seen": "2026-03-09T22:06:05.133084"
+    },
+    "https://american-securities.com/en/partnering": {
+      "hash": "59fadf24353aa69d",
+      "first_seen": "2026-03-09T22:06:05.133086"
+    },
+    "https://american-securities.com/en/team/extended-network": {
+      "hash": "cf6c868d10a65231",
+      "first_seen": "2026-03-09T22:06:05.133089"
+    },
+    "https://american-securities.com/en/citizenship": {
+      "hash": "e684d9920c5f1a88",
+      "first_seen": "2026-03-09T22:06:05.133091"
+    },
+    "https://american-securities.com/en/news": {
+      "hash": "5b22ceb82675fdc0",
+      "first_seen": "2026-03-09T22:06:05.133094"
+    },
+    "https://american-securities.com/en/terms-of-use": {
+      "hash": "a953152bb3242e9b",
+      "first_seen": "2026-03-09T22:06:05.133096"
+    },
+    "https://aresmgmt.com/news-views": {
+      "hash": "c791a448b9d48a71",
+      "first_seen": "2026-03-09T22:06:05.133098"
+    },
+    "https://aresmgmt.com/about-ares-management-corporation": {
+      "hash": "a20aa04bb930f249",
+      "first_seen": "2026-03-09T22:06:05.133101"
+    },
+    "https://aresmgmt.com/about-ares-management-corporation/our-global-reach": {
+      "hash": "497d45821dc9db47",
+      "first_seen": "2026-03-09T22:06:05.133103"
+    },
+    "https://aresmgmt.com/about-ares-management-corporation/our-history": {
+      "hash": "c12275458a4be2f3",
+      "first_seen": "2026-03-09T22:06:05.133106"
+    },
+    "https://aresmgmt.com/about-ares-management-corporation/impact/philanthropy": {
+      "hash": "f10a626a24247e08",
+      "first_seen": "2026-03-09T22:06:05.133108"
+    },
+    "https://aresmgmt.com/about-ares-management-corporation/values-and-culture": {
+      "hash": "318b2ac1e77939a6",
+      "first_seen": "2026-03-09T22:06:05.133110"
+    },
+    "https://aresmgmt.com/about-ares-management-corporation/careers-at-ares": {
+      "hash": "845882f9157b59b3",
+      "first_seen": "2026-03-09T22:06:05.133113"
+    },
+    "https://aresmgmt.com/our-business": {
+      "hash": "7c9e9c9fb5dcd603",
+      "first_seen": "2026-03-09T22:06:05.133115"
+    },
+    "https://aresmgmt.com/our-business/credit/u.s.direct-lending": {
+      "hash": "1681a4c5d5e80089",
+      "first_seen": "2026-03-09T22:06:05.133118"
+    },
+    "https://aresmgmt.com/our-business/credit/european-direct-lending": {
+      "hash": "03e1634c3e6b71e7",
+      "first_seen": "2026-03-09T22:06:05.133120"
+    },
+    "https://aresmgmt.com/our-business/credit/alternative-credit": {
+      "hash": "60ac4d81d80f6300",
+      "first_seen": "2026-03-09T22:06:05.133122"
+    },
+    "https://aresmgmt.com/our-business/credit/liquid-credit": {
+      "hash": "bad48dc9d58d4b67",
+      "first_seen": "2026-03-09T22:06:05.133124"
+    },
+    "https://aresmgmt.com/our-business/credit/opportunistic-credit": {
+      "hash": "e2868c01c6d10459",
+      "first_seen": "2026-03-09T22:06:05.133126"
+    },
+    "https://aresmgmt.com/our-business/credit/apac-credit": {
+      "hash": "0468d783c7ee2e9b",
+      "first_seen": "2026-03-09T22:06:05.133128"
+    },
+    "https://aresmgmt.com/our-business/real-estate": {
+      "hash": "012ca784267240c1",
+      "first_seen": "2026-03-09T22:06:05.133131"
+    },
+    "https://aresmgmt.com/our-business/real-estate/real-estate-equity": {
+      "hash": "5f80a8871f9e9c83",
+      "first_seen": "2026-03-09T22:06:05.133133"
+    },
+    "https://aresmgmt.com/our-business/real-estate/real-estate-debt": {
+      "hash": "541d1b8d133f8d31",
+      "first_seen": "2026-03-09T22:06:05.133136"
+    },
+    "https://aresmgmt.com/our-business/private-equity": {
+      "hash": "cfa0a0c8efd58da2",
+      "first_seen": "2026-03-09T22:06:05.133138"
+    },
+    "https://aresmgmt.com/our-business/private-equity/corporate-opportunities": {
+      "hash": "a4586ee07de8d88f",
+      "first_seen": "2026-03-09T22:06:05.133140"
+    },
+    "https://aresmgmt.com/our-business/private-equity/apac-private-equity": {
+      "hash": "7f808dc6cf99232a",
+      "first_seen": "2026-03-09T22:06:05.133142"
+    },
+    "https://aresmgmt.com/our-business/private-equity/energy-opportunities": {
+      "hash": "a770846801918575",
+      "first_seen": "2026-03-09T22:06:05.133168"
+    },
+    "https://aresmgmt.com/our-business/infrastructure-opportunities": {
+      "hash": "1dce6dc016dcf122",
+      "first_seen": "2026-03-09T22:06:05.133173"
+    },
+    "https://aresmgmt.com/our-business/infrastructure-debt": {
+      "hash": "0cbaf2120cfad34c",
+      "first_seen": "2026-03-09T22:06:05.133175"
+    },
+    "https://aresmgmt.com/our-business/secondaries": {
+      "hash": "cfb4f071b0807b0f",
+      "first_seen": "2026-03-09T22:06:05.133177"
+    },
+    "https://aresmgmt.com/our-business/secondaries#vbp-68224": {
+      "hash": "ca5e3241b256e5bb",
+      "first_seen": "2026-03-09T22:06:05.133180"
+    },
+    "https://aresmgmt.com/our-business/secondaries#vbp-68213": {
+      "hash": "ab4bcb39aa4a5578",
+      "first_seen": "2026-03-09T22:06:05.133182"
+    },
+    "https://aresmgmt.com/our-business/secondaries#vbp-68216": {
+      "hash": "5c0528c7a352716e",
+      "first_seen": "2026-03-09T22:06:05.133184"
+    },
+    "https://aresmgmt.com/our-business/secondaries#vbp-68221": {
+      "hash": "ffa50bc7afd9f83a",
+      "first_seen": "2026-03-09T22:06:05.133187"
+    },
+    "https://aresmgmt.com/our-business/other-businesses": {
+      "hash": "0ee8fc3e283cd04b",
+      "first_seen": "2026-03-09T22:06:05.133189"
+    },
+    "https://aresmgmt.com/our-business/strategic-initiatives/ares-insurance-solutions": {
+      "hash": "56b5f6215a4246d1",
+      "first_seen": "2026-03-09T22:06:05.133192"
+    },
+    "https://www.aresmgmt.com": {
+      "hash": "ac4e11138abb7682",
+      "first_seen": "2026-03-09T22:06:05.133194"
+    },
+    "https://ir.aresmgmt.com/news-events-presentations/press-releases/": {
+      "hash": "26b8ae674f2360b2",
+      "first_seen": "2026-03-09T22:06:05.133196"
+    },
+    "https://aresmgmt.com/news-views/perspectives": {
+      "hash": "c6788a310f0d15e7",
+      "first_seen": "2026-03-09T22:06:05.133198"
+    },
+    "https://aresmgmt.com/news-views/perspectives/in-teamwork-we-trust": {
+      "hash": "bb74d982e39fef77",
+      "first_seen": "2026-03-09T22:06:05.133201"
+    },
+    "https://aresmgmt.com/news-views/white-papers": {
+      "hash": "ef20483afc437ed1",
+      "first_seen": "2026-03-09T22:06:05.133203"
+    },
+    "https://ir.aresmgmt.com/": {
+      "hash": "1df5f705a81211df",
+      "first_seen": "2026-03-09T22:06:05.133205"
+    },
+    "https://aresmgmt.com/": {
+      "hash": "83a21ad1ab81f563",
+      "first_seen": "2026-03-09T22:06:05.133207"
+    },
+    "https://aresmgmt.com/terms-of-use": {
+      "hash": "0d07d0347f6ab5ad",
+      "first_seen": "2026-03-09T22:06:05.133210"
+    },
+    "https://aresmgmt.com/privacy-policy": {
+      "hash": "ca1524fe79d8236f",
+      "first_seen": "2026-03-09T22:06:05.133212"
+    },
+    "https://aresmgmt.com/legal-disclosures": {
+      "hash": "c6184f0aa743194a",
+      "first_seen": "2026-03-09T22:06:05.133214"
+    },
+    "https://aresmgmt.com/fraud-awareness": {
+      "hash": "ae7a7cc383352c2d",
+      "first_seen": "2026-03-09T22:06:05.133216"
+    },
+    "https://ir.aresmgmt.com/stock-information/annual-letters/": {
+      "hash": "68655ab7a18ac9f3",
+      "first_seen": "2026-03-09T22:06:05.133219"
+    },
+    "https://ir.aresmgmt.com/news/ares-closes-850-million-single-asset-continuation-vehicle-for-convergint-led-by-leonard-green-partners/f34e5f8b-12c4-4f89-b218-f19333525935": {
+      "hash": "72decd69eb46ab8f",
+      "first_seen": "2026-03-09T22:06:05.133222"
+    },
+    "https://ir.aresmgmt.com/news/ares-management-corporation-to-present-at-the-2026-rbc-capital-markets-global-financial-institutions-conference/0a67e430-84ea-41e0-b388-bdd3eb843f8d": {
+      "hash": "2cde4fa92e6a2020",
+      "first_seen": "2026-03-09T22:06:05.133224"
+    },
+    "https://ir.aresmgmt.com/news/ares-management-prices-european-direct-lending-clo-ii-at-over-300-million/a5026798-eb02-4aab-bc06-1a91bb43631a": {
+      "hash": "17234f2bb5c28783",
+      "first_seen": "2026-03-09T22:06:05.133227"
+    },
+    "https://ir.aresmgmt.com/news/ares-arranges-2-4-billion-debt-facility-to-vantage-data-centers/c5a34084-ddb2-48c4-af66-db5c60c5c961": {
+      "hash": "9d7c89beaeb2e0c7",
+      "first_seen": "2026-03-09T22:06:05.133229"
+    },
+    "https://aresmgmt.com/news-views/bloomberg-tv-interview-michael-arougheti-6": {
+      "hash": "64abb4d5aac44fdd",
+      "first_seen": "2026-03-09T22:06:05.133232"
+    },
+    "https://aresmgmt.com/sites/default/files/2025-11/The-Significant-Risk-Transfer-Market.pdf": {
+      "hash": "c5538003b30abe47",
+      "first_seen": "2026-03-09T22:06:05.133234"
+    },
+    "https://aresmgmt.com/sites/default/files/2025-09/Ares-Alternative-Credit-Newsletter_In-the-Gaps_Summer-2025.pdf": {
+      "hash": "c4ced2633cefbcf9",
+      "first_seen": "2026-03-09T22:06:05.133237"
+    },
+    "https://aresmgmt.com/news-views/videos": {
+      "hash": "5a5acbb2ae10aedf",
+      "first_seen": "2026-03-09T22:06:05.133239"
+    },
+    "https://franciscopartners.com/cdn-cgi/l/email-protection#99ebfcfaebecf0edf0f7fed9ffebf8f7faf0eafaf6e9f8ebedf7fcebeab7faf6f4": {
+      "hash": "8713e8a399288814",
+      "first_seen": "2026-03-09T22:06:05.133242"
+    },
+    "https://apax.com/people/our-team/": {
+      "hash": "17fdbdee633a082a",
+      "first_seen": "2026-03-09T22:06:05.133245"
+    },
+    "https://apax.com/people/life-at-apax/": {
+      "hash": "27419c7f1ac48c45",
+      "first_seen": "2026-03-09T22:06:05.133247"
+    },
+    "https://apax.com/people/culture-values/": {
+      "hash": "901eeaadbf2c7ae5",
+      "first_seen": "2026-03-09T22:06:05.133249"
+    },
+    "https://apax.com/people/inclusion-and-diversity/": {
+      "hash": "101ed90356c0dedc",
+      "first_seen": "2026-03-09T22:06:05.133252"
+    },
+    "https://apax.com/people/our-team/?team=apaxglobalbuyout": {
+      "hash": "57e7a8cb117a97fe",
+      "first_seen": "2026-03-09T22:06:05.133254"
+    },
+    "https://apax.com/people/our-team/?team=apaxdigitalgrowth": {
+      "hash": "f60268f517a429d8",
+      "first_seen": "2026-03-09T22:06:05.133257"
+    },
+    "https://apax.com/people/our-team/?team=apaxglobalimpact": {
+      "hash": "c735a16271e8e595",
+      "first_seen": "2026-03-09T22:06:05.133259"
+    },
+    "https://apax.com/people/our-team/?team=apaxmid-marketisrael": {
+      "hash": "71f7a86acdca812b",
+      "first_seen": "2026-03-09T22:06:05.133262"
+    },
+    "https://apax.com/people/our-team/?team=apaxcredit": {
+      "hash": "b0fb21650a3fdd57",
+      "first_seen": "2026-03-09T22:06:05.133264"
+    },
+    "https://apax.com/people/our-team/?team=operationalexcellence": {
+      "hash": "47fd15dec002a15f",
+      "first_seen": "2026-03-09T22:06:05.133266"
+    },
+    "https://apax.com/people/our-team/?team=investorrelations": {
+      "hash": "077f45190a500866",
+      "first_seen": "2026-03-09T22:06:05.133269"
+    },
+    "https://apax.com/people/our-team/?team=capitalmarkets": {
+      "hash": "1496cf36f360c3d6",
+      "first_seen": "2026-03-09T22:06:05.133271"
+    },
+    "https://apax.com/people/our-team/?team=apaxfoundation": {
+      "hash": "92eb464895688f3c",
+      "first_seen": "2026-03-09T22:06:05.133274"
+    },
+    "https://apax.com/people/our-team/?team=operations": {
+      "hash": "80d39486fadb6313",
+      "first_seen": "2026-03-09T22:06:05.133276"
+    },
+    "https://apax.com/people/our-team/?sector=internet/consumer": {
+      "hash": "378942496f783823",
+      "first_seen": "2026-03-09T22:06:05.133278"
+    },
+    "https://apax.com/create/strategies/apax-global-buyout/": {
+      "hash": "8509b8e29c4dab10",
+      "first_seen": "2026-03-09T22:06:05.133281"
+    },
+    "https://apax.com/create/strategies/apax-digital-growth/": {
+      "hash": "4788de8eff26f726",
+      "first_seen": "2026-03-09T22:06:05.133283"
+    },
+    "https://apax.com/global-impact/": {
+      "hash": "b11fcc8fc4bf1cf5",
+      "first_seen": "2026-03-09T22:06:05.133285"
+    },
+    "https://apax.com/create/strategies/apax-mid-market-israel/": {
+      "hash": "25e3416ec3a555a7",
+      "first_seen": "2026-03-09T22:06:05.133287"
+    },
+    "https://apax.com/create/strategies/apax-credit/": {
+      "hash": "2d3a3d19abdef337",
+      "first_seen": "2026-03-09T22:06:05.133290"
+    },
+    "https://apax.com/create/sectors/internetconsumer/": {
+      "hash": "0397902d00b838b5",
+      "first_seen": "2026-03-09T22:06:05.133292"
+    },
+    "https://apax.com/create/operational-excellence/practice-overview/": {
+      "hash": "4c52d02e0fbce572",
+      "first_seen": "2026-03-09T22:06:05.133295"
+    },
+    "https://apax.com/create/operational-excellence/#ProprietaryTechnologyPlatforms": {
+      "hash": "11088fc843c96f98",
+      "first_seen": "2026-03-09T22:06:05.133297"
+    },
+    "https://apax.com/create/operational-excellence/#KnowledgeNow": {
+      "hash": "dab3353cb82bcd4b",
+      "first_seen": "2026-03-09T22:06:05.133299"
+    },
+    "https://apax.com/create/operational-excellence/case-studies/": {
+      "hash": "90cf40fb73efd1a7",
+      "first_seen": "2026-03-09T22:06:05.133302"
+    },
+    "https://apax.com/create/responsibility/sustainability/": {
+      "hash": "50afe5f14434737d",
+      "first_seen": "2026-03-09T22:06:05.133304"
+    },
+    "https://apax.com/create/responsibility/fraud-awareness/": {
+      "hash": "485157915534d029",
+      "first_seen": "2026-03-09T22:06:05.133306"
+    },
+    "https://apax.com/create/responsibility/apax-foundation/": {
+      "hash": "cd06f95e0a19fed8",
+      "first_seen": "2026-03-09T22:06:05.133308"
+    },
+    "https://apax.com/partnerships/": {
+      "hash": "4a3510e782576a38",
+      "first_seen": "2026-03-09T22:06:05.133310"
+    },
+    "https://apax.com/partnerships/?strategy=apaxdigitalgrowth": {
+      "hash": "187618380d42a79f",
+      "first_seen": "2026-03-09T22:06:05.133313"
+    },
+    "https://apax.com/partnerships/?strategy=apaxglobalbuyout": {
+      "hash": "a8ca67a193293865",
+      "first_seen": "2026-03-09T22:06:05.133315"
+    },
+    "https://apax.com/partnerships/?strategy=apaxglobalimpact": {
+      "hash": "69e7d9f16c0ac5e4",
+      "first_seen": "2026-03-09T22:06:05.133317"
+    },
+    "https://apax.com/partnerships/?strategy=apaxmid-marketisrael": {
+      "hash": "77dce656b6cb7fa8",
+      "first_seen": "2026-03-09T22:06:05.133319"
+    },
+    "https://apax.com/partnerships/?sector=internet/consumer": {
+      "hash": "ec2448d541003f24",
+      "first_seen": "2026-03-09T22:06:05.133322"
+    },
+    "https://apax.com/privacy-policy/": {
+      "hash": "8540e40bae2f1b8f",
+      "first_seen": "2026-03-09T22:06:05.133324"
+    },
+    "https://apax.com/cookie-notice/": {
+      "hash": "5a2ae182fbfbef5a",
+      "first_seen": "2026-03-09T22:06:05.133326"
+    },
+    "https://apax.com/terms-conditions/": {
+      "hash": "f0e4161ceecbde13",
+      "first_seen": "2026-03-09T22:06:05.133329"
+    },
+    "https://apax.com/uk-slavery-act/": {
+      "hash": "a9ed3015b46c3dea",
+      "first_seen": "2026-03-09T22:06:05.133331"
+    },
+    "https://apax.com/accessibility/": {
+      "hash": "e8748c50c369bd1e",
+      "first_seen": "2026-03-09T22:06:05.133333"
+    },
+    "https://apax.com/uk-tax-strategy/": {
+      "hash": "baad35bec89e5619",
+      "first_seen": "2026-03-09T22:06:05.133335"
+    },
+    "https://apax.com/regulatory-disclosures/": {
+      "hash": "42c640e37d7ab124",
+      "first_seen": "2026-03-09T22:06:05.133338"
+    },
+    "https://apax.com/": {
+      "hash": "2fdad8097126bea9",
+      "first_seen": "2026-03-09T22:06:05.133340"
+    },
+    "https://apax.com/create/strategies/": {
+      "hash": "971145164c62fd4e",
+      "first_seen": "2026-03-09T22:06:05.133342"
+    },
+    "https://apax.com/create/operational-excellence/": {
+      "hash": "83c313adf39dde5a",
+      "first_seen": "2026-03-09T22:06:05.133345"
+    },
+    "https://apax.com/create/responsibility/": {
+      "hash": "e4228c277645f5fd",
+      "first_seen": "2026-03-09T22:06:05.133347"
+    },
+    "http://extranet.apax.com/": {
+      "hash": "e839a85076a6973a",
+      "first_seen": "2026-03-09T22:06:05.133349"
+    },
+    "https://apax.com/news-views/accenture-to-acquire-faculty-an-apax-digital-fund-i-portfolio-company-to-scale-ai-capabilities/": {
+      "hash": "10d6f5ed07a6d440",
+      "first_seen": "2026-03-09T22:06:05.133352"
+    },
+    "https://apax.com/news-views/rapidsos-secures-100-million-as-it-crosses-one-billion-emergencies-supported/": {
+      "hash": "9386f3309a1b5674",
+      "first_seen": "2026-03-09T22:06:05.133355"
+    },
+    "https://apax.com/news-views/the-apax-digital-funds-to-acquire-athome-group/": {
+      "hash": "b0ccfaba2f5bcb60",
+      "first_seen": "2026-03-09T22:06:05.133357"
+    },
+    "https://apax.com/news-views/apax-global-impact-fund-to-make-strategic-investment-in-foods-connected-accelerating-future-growth/": {
+      "hash": "3f348aa001a6ba86",
+      "first_seen": "2026-03-09T22:06:05.133359"
+    },
+    "https://apax.com/news-views/almaviva-signs-agreement-to-acquire-tivit-from-the-apax-funds-to-accelerate-its-digital-expansion-in-latin-america/": {
+      "hash": "b51473e5576a3f39",
+      "first_seen": "2026-03-09T22:06:05.133362"
+    },
+    "https://apax.com/news-views/oncourse-home-solutions-completes-whole-business-securitization/": {
+      "hash": "5cba1372f88d8b9b",
+      "first_seen": "2026-03-09T22:06:05.133364"
+    },
+    "https://apax.com/news-views/statement-regarding-pinewood-technologies-group-plc-pinewoodai-or-the-company/": {
+      "hash": "32b22bdb6ef59be2",
+      "first_seen": "2026-03-09T22:06:05.133367"
+    },
+    "https://apax.com/create/operational-excellence/case-studies/ai-personal-agents-and-the-future-of-online-marketplaces-a-qa-with-steve-kooyers/": {
+      "hash": "8caa7be8e0655b53",
+      "first_seen": "2026-03-09T22:06:05.133369"
+    },
+    "https://apax.com/news-views/id-fresh-food-secures-strategic-investment-from-apax-funds/": {
+      "hash": "e25d16b94310ac00",
+      "first_seen": "2026-03-09T22:06:05.133371"
+    },
+    "https://apax.com/news-views/apax-digital-named-to-inc-s-founder-friendly-investors-list/": {
+      "hash": "0d036fc065b7bb2c",
+      "first_seen": "2026-03-09T22:06:05.133374"
+    },
+    "https://apax.com/create/operational-excellence/case-studies/backing-a-digital-enabler-for-safer-more-sustainable-food-supply-chains-jp-moncayo-on-the-apax-global-impact-fund-s-investment-in-foods-connected/": {
+      "hash": "0a28d1744c50ec10",
+      "first_seen": "2026-03-09T22:06:05.133376"
+    },
+    "https://apax.com/create/operational-excellence/case-studies/backing-a-market-leader-in-essential-infrastructure-thomas-crewe-on-the-apax-funds-take-private-of-norva24/": {
+      "hash": "236edbbdd34d68d3",
+      "first_seen": "2026-03-09T22:06:05.133379"
+    },
+    "tel:+442078726300": {
+      "hash": "8551bb22a6486733",
+      "first_seen": "2026-03-09T22:06:05.133381"
+    },
+    "https://apax.com#o-header": {
+      "hash": "720afa329906634d",
+      "first_seen": "2026-03-09T22:06:05.133384"
+    },
+    "https://apax.com/contact-us/": {
+      "hash": "d81b08efc559189e",
+      "first_seen": "2026-03-09T22:06:05.133387"
+    },
+    "https://mdcp.com/about": {
+      "hash": "34123479816c5c86",
+      "first_seen": "2026-03-09T22:06:05.133389"
+    },
+    "https://mdcp.com/about/engaged-partners": {
+      "hash": "e633b8a2e3ba2d69",
+      "first_seen": "2026-03-09T22:06:05.133392"
+    },
+    "https://mdcp.com/about/giving-back": {
+      "hash": "466bde21e9471637",
+      "first_seen": "2026-03-09T22:06:05.133395"
+    },
+    "https://mdcp.com/about/responsible-investing": {
+      "hash": "a900bd54c513a8a5",
+      "first_seen": "2026-03-09T22:06:05.133397"
+    },
+    "https://mdcp.com/sectors": {
+      "hash": "1177d97620b2c862",
+      "first_seen": "2026-03-09T22:06:05.133399"
+    },
+    "https://mdcp.com/sectors/financial-transaction-services": {
+      "hash": "978dda77d6e1b283",
+      "first_seen": "2026-03-09T22:06:05.133402"
+    },
+    "https://mdcp.com/sectors/health-care": {
+      "hash": "45b6716582b9a7e2",
+      "first_seen": "2026-03-09T22:06:05.133405"
+    },
+    "https://mdcp.com/sectors/technology-government": {
+      "hash": "5d1d465e393927b5",
+      "first_seen": "2026-03-09T22:06:05.133407"
+    },
+    "https://mdcp.com/portfolio": {
+      "hash": "eb59038ad0e1f54f",
+      "first_seen": "2026-03-09T22:06:05.133410"
+    },
+    "https://mdcp.com/terms-of-use": {
+      "hash": "cf146af9f17dc7e5",
+      "first_seen": "2026-03-09T22:06:05.133412"
+    },
+    "https://mdcp.com/privacy": {
+      "hash": "10ff8f5a8658e2e5",
+      "first_seen": "2026-03-09T22:06:05.133415"
+    },
+    "https://mdcp.com/japan-disclaimer": {
+      "hash": "433581ec5790c005",
+      "first_seen": "2026-03-09T22:06:05.133417"
+    },
+    "tel:3128951000": {
+      "hash": "5a74a35b836f9ecb",
+      "first_seen": "2026-03-09T22:06:05.133419"
+    },
+    "https://www.parthenoncapital.com/about/our-approach/": {
+      "hash": "707473f386b0aaee",
+      "first_seen": "2026-03-09T22:06:05.133422"
+    },
+    "https://www.parthenoncapital.com/representative-investments/": {
+      "hash": "8284de78869b6ce9",
+      "first_seen": "2026-03-09T22:06:05.133424"
+    },
+    "https://www.parthenoncapital.com/testimonials/": {
+      "hash": "0bfb2caadb8e00b2",
+      "first_seen": "2026-03-09T22:06:05.133426"
+    },
+    "https://www.parthenoncapital.com/terms-of-use/": {
+      "hash": "9f3407d2e28dd77d",
+      "first_seen": "2026-03-09T22:06:05.133429"
+    },
+    "https://www.onex.com/privacy-policy": {
+      "hash": "8bcae2a49d0ae2aa",
+      "first_seen": "2026-03-09T22:06:05.133431"
+    },
+    "https://www.onex.com/legal-notice": {
+      "hash": "573a05e85168125e",
+      "first_seen": "2026-03-09T22:06:05.133434"
+    },
+    "https://Portal.onex.com": {
+      "hash": "8919c5979aa6fe02",
+      "first_seen": "2026-03-09T22:06:05.133436"
+    },
+    "https://onex.com/collections/employees": {
+      "hash": "a84147f0c16b0e67",
+      "first_seen": "2026-03-09T22:06:05.133439"
+    },
+    "https://onex.com/convex": {
+      "hash": "19319c89a8441f07",
+      "first_seen": "2026-03-09T22:06:05.133441"
+    },
+    "https://onex.com/credit": {
+      "hash": "d29cc3716f0dbd6e",
+      "first_seen": "2026-03-09T22:06:05.133444"
+    },
+    "https://onex.com/private-equity": {
+      "hash": "27cf1210f6bbebe6",
+      "first_seen": "2026-03-09T22:06:05.133446"
+    },
+    "https://onex.com/onex-partners": {
+      "hash": "90e0432d065e960d",
+      "first_seen": "2026-03-09T22:06:05.133449"
+    },
+    "https://onex.com/onex-private-wealth": {
+      "hash": "04f376a9779e8d68",
+      "first_seen": "2026-03-09T22:06:05.133451"
+    },
+    "https://onex.com/onex-private-wealth-team": {
+      "hash": "d871da8b29a59e50",
+      "first_seen": "2026-03-09T22:06:05.133453"
+    },
+    "https://onex.com/shareholders": {
+      "hash": "f0decb7b00de4fbe",
+      "first_seen": "2026-03-09T22:06:05.133456"
+    },
+    "https://onex.com/financial-reporting": {
+      "hash": "db08f93bfdb62bba",
+      "first_seen": "2026-03-09T22:06:05.133458"
+    },
+    "https://onex.com/sustainability": {
+      "hash": "44dc56f6a10254b5",
+      "first_seen": "2026-03-09T22:06:05.133461"
+    },
+    "https://onex.com/sustainability-related-disclosures": {
+      "hash": "7d06225a903a98f4",
+      "first_seen": "2026-03-09T22:06:05.133463"
+    },
+    "https://onex.com/responsibility": {
+      "hash": "158b29b48ed72163",
+      "first_seen": "2026-03-09T22:06:05.133465"
+    },
+    "https://nordiccapital.com/news-views/views/a-trusted-partner-through-growth-and-change/": {
+      "hash": "ae6e798be4515603",
+      "first_seen": "2026-03-09T22:06:05.133468"
+    },
+    "https://nordiccapital.com/news-views/views/scaling-growth-with-the-right-owner/": {
+      "hash": "6dac800ce9e7f147",
+      "first_seen": "2026-03-09T22:06:05.133471"
+    },
+    "https://nordiccapital.com/news-views/views/internship-insights-at-nordic-capital-advisors-lars-slaake-and-philip-oehmichen/": {
+      "hash": "227ddcd9585789f9",
+      "first_seen": "2026-03-09T22:06:05.133473"
+    },
+    "https://nordiccapital.com/news-views/views/discover-how-modern-waste-management-is-helping-to-build-a-more-circular-society/": {
+      "hash": "f6bdc060a5f6fb42",
+      "first_seen": "2026-03-09T22:06:05.133476"
+    },
+    "https://nordiccapital.com/news-views/views/preparing-companies-for-long-term-success-in-public-markets/": {
+      "hash": "d6ebcdb0553a6c7e",
+      "first_seen": "2026-03-09T22:06:05.133478"
+    },
+    "https://nordiccapital.com/news-views/views/value-creation-in-good-times-and-bad-a-pei-keynote-interview-with-peter-thorninger/": {
+      "hash": "059a2e403bf41583",
+      "first_seen": "2026-03-09T22:06:05.133481"
+    },
+    "https://nordiccapital.com/news-views/views/nordic-capital-introduces-the-eighth-edition-of-the-brain-business-jobs-index/": {
+      "hash": "501ed6fe1174233d",
+      "first_seen": "2026-03-09T22:06:05.133483"
+    },
+    "https://nordiccapital.com/news-views/views/supporting-initiatives-creating-more-resilient-and-prosperous-communities-around-the-world/": {
+      "hash": "77b372934e17b1b7",
+      "first_seen": "2026-03-09T22:06:05.133486"
+    },
+    "https://nordiccapital.com/news-views/views/responsible-investments-integrating-sustainability-from-sourcing-to-exit/": {
+      "hash": "5942900057d4d24b",
+      "first_seen": "2026-03-09T22:06:05.133488"
+    },
+    "https://nordiccapital.com/news-views/views/delivering-aid-nordic-capital-advisors-journey-to-ukraine/": {
+      "hash": "7f8b46a29652a0ae",
+      "first_seen": "2026-03-09T22:06:05.133490"
+    },
+    "https://nordiccapital.com/news-views/views/engaged-and-skilled-people-at-the-core-of-nordic-capital-s-success/": {
+      "hash": "e54b31e4800e9f93",
+      "first_seen": "2026-03-09T22:06:05.133493"
+    },
+    "https://nordiccapital.com/news-views/views/entrepreneurship-that-empowers-women-and-transforms-communities/": {
+      "hash": "5daae87d7ed6cb04",
+      "first_seen": "2026-03-09T22:06:05.133495"
+    },
+    "https://nordiccapital.com/news-views/views/beyond-compliance-active-ownership-and-expertise-driving-transformative-sustainable-growth/": {
+      "hash": "f18982dff693d149",
+      "first_seen": "2026-03-09T22:06:05.133497"
+    },
+    "https://nordiccapital.com/news-views/views/internship-insights-at-nordic-capital-advisors/": {
+      "hash": "4729c44784f5cfac",
+      "first_seen": "2026-03-09T22:06:05.133500"
+    },
+    "https://nordiccapital.com/news-views/views/nordic-capital-hosts-sustainability-summit-to-drive-impact-and-resilience-across-the-portfolio/": {
+      "hash": "a3c4d4b55ec0714e",
+      "first_seen": "2026-03-09T22:06:05.133502"
+    },
+    "https://nordiccapital.com/news-views/views/nordic-capital-publishes-its-annual-and-sustainability-review-2024/": {
+      "hash": "a66a2a463ac149e7",
+      "first_seen": "2026-03-09T22:06:05.133504"
+    },
+    "https://nordiccapital.com/news-views/views/nordic-capital-presents-the-second-edition-of-the-deeptech-index/": {
+      "hash": "167e47f5d72b2438",
+      "first_seen": "2026-03-09T22:06:05.133507"
+    },
+    "https://nordiccapital.com/news-views/views/interning-at-nordic-capital-in-london-a-period-of-significant-personal-and-professional-growth/": {
+      "hash": "6c0ab3d518f2de38",
+      "first_seen": "2026-03-09T22:06:05.133509"
+    },
+    "https://nordiccapital.com/news-views/views/a-year-of-significant-achievements-and-landmark-transactions/": {
+      "hash": "1381d43c87239168",
+      "first_seen": "2026-03-09T22:06:05.133511"
+    },
+    "https://nordiccapital.com/news-views/views/getting-hands-on-for-a-greener-future-a-pei-keynote-interview-with-elin-ljung/": {
+      "hash": "e9a615c0edbf4903",
+      "first_seen": "2026-03-09T22:06:05.133514"
+    },
+    "https://nordiccapital.com/news-views/views/spotlight-on-internship-at-nordic-capital-advisors-stockholm-office/": {
+      "hash": "77ad4b57bfbbcbb7",
+      "first_seen": "2026-03-09T22:06:05.133516"
+    },
+    "https://nordiccapital.com/news-views/views/klas-tikkanen-on-foeretagarpodden-a-podcast-series-from-foeretagarna-the-swedish-federation-of-business-owners/": {
+      "hash": "9bb16bbcd87eb476",
+      "first_seen": "2026-03-09T22:06:05.133519"
+    },
+    "https://nordiccapital.com/news-views/views/spotlight-on-esg-training-at-nordic-capital-driving-sustainable-business-practices/": {
+      "hash": "5a7aaa856d6f9871",
+      "first_seen": "2026-03-09T22:06:05.133521"
+    },
+    "https://nordiccapital.com/news-views/views/tech-innovations-aid-transition-from-legacy-systems-a-pei-keynote-interview-with-fredrik-naeslund-and-mohit-agnihotri/": {
+      "hash": "d8e1fb2c15224ca8",
+      "first_seen": "2026-03-09T22:06:05.133524"
+    },
+    "https://nordiccapital.com/news-views/views/podcast-daniel-berglund-nordic-capital-advisors-on-generative-ai-and-the-economics-of-automation-in-life-sciences-rd/": {
+      "hash": "47413d13b19efd02",
+      "first_seen": "2026-03-09T22:06:05.133526"
+    },
+    "https://nordiccapital.com/news-views/views/spotlight-on-nordic-capital-backed-autocirc-a-dynamic-sustainability-pioneer/": {
+      "hash": "8db5161d1bc37761",
+      "first_seen": "2026-03-09T22:06:05.133528"
+    },
+    "https://nordiccapital.com/news-views/views/nordic-capital-introduces-the-seventh-edition-of-the-brain-business-jobs-index-highlighting-significant-changes-in-europe-s-brain-business-job-landscape/": {
+      "hash": "8317e022701b46ee",
+      "first_seen": "2026-03-09T22:06:05.133531"
+    },
+    "https://nordiccapital.com/news-views/views/driving-sustainable-change-at-nordic-capital/": {
+      "hash": "9a0567da8a8d5b13",
+      "first_seen": "2026-03-09T22:06:05.133533"
+    },
+    "https://nordiccapital.com/news-views/views/five-questions-to-sunrise-medical-nordic-capitals-focus-on-long-term-value-creation-has-resonated-deeply-with-our-mission-and-the-well-being-of-the-end-users-of-our-products/": {
+      "hash": "8dedbc1027b8a402",
+      "first_seen": "2026-03-09T22:06:05.133536"
+    },
+    "https://nordiccapital.com/news-views/views/advancing-global-healthcare-access-for-positive-societal-impact/": {
+      "hash": "7ef871757a8df5e7",
+      "first_seen": "2026-03-09T22:06:05.133538"
+    },
+    "https://nordiccapital.com/news-views/views/nordic-capitals-ownership-approach-partnering-for-growth/": {
+      "hash": "4831b3ce916095d5",
+      "first_seen": "2026-03-09T22:06:05.133541"
+    },
+    "https://nordiccapital.com/news-views/views/organisational-excellence-through-empowered-individuals/": {
+      "hash": "9880a28af5eaf98e",
+      "first_seen": "2026-03-09T22:06:05.133544"
+    },
+    "https://nordiccapital.com/news-views/views/spotlight-on-nordic-capital-backed-duco-a-leading-no-code-data-automation-company/": {
+      "hash": "c6f646e99c71435f",
+      "first_seen": "2026-03-09T22:06:05.133546"
+    },
+    "https://nordiccapital.com/news-views/views/spotlight-on-nordic-capitals-operations-summit-tour-2024/": {
+      "hash": "9f1eff142379400b",
+      "first_seen": "2026-03-09T22:06:05.133548"
+    },
+    "https://nordiccapital.com/news-views/views/driving-financial-inclusion-with-innovation-and-responsibility/": {
+      "hash": "30474a5109e26224",
+      "first_seen": "2026-03-09T22:06:05.133551"
+    },
+    "https://nordiccapital.com/news-views/views/nordic-capital-annual-and-sustainability-review-2023/": {
+      "hash": "ff57004c40a08a5e",
+      "first_seen": "2026-03-09T22:06:05.133553"
+    },
+    "https://nordiccapital.com/news-views/views/launching-of-the-first-edition-of-the-deep-tech-index-by-ecepr/": {
+      "hash": "bd93b72c38eda107",
+      "first_seen": "2026-03-09T22:06:05.133556"
+    },
+    "https://nordiccapital.com/news-views/views/spotlight-on-internship-experience-at-nordic-capital-advisors/": {
+      "hash": "322a668103962db4",
+      "first_seen": "2026-03-09T22:06:05.133558"
+    },
+    "https://nordiccapital.com/news-views/views/consilium-safety-groups-ceo-philip-isell-lind-af-hageby-shares-insights-on-the-swedish-podcast-vaerdeskaparna-the-value-creators/": {
+      "hash": "1d8fcaa660853792",
+      "first_seen": "2026-03-09T22:06:05.133561"
+    },
+    "https://nordiccapital.com/news-views/views/when-evaluating-potential-investments-our-team-places-significant-emphasis-on-two-primary-factors-sustainable-growth-and-differentiation/": {
+      "hash": "237150b1ec21aae0",
+      "first_seen": "2026-03-09T22:06:05.133563"
+    },
+    "https://nordiccapital.com/news-views/views/digitalisation-and-regulatory-requirements-change-the-landscape-for-financial-services-and-drive-investment-activity-at-nordic-capital/": {
+      "hash": "786aefa66c7f9be0",
+      "first_seen": "2026-03-09T22:06:05.133566"
+    },
+    "https://nordiccapital.com/news-views/views/nordic-capital-fosters-a-high-performance-collaborative-environment-with-a-flat-hierarchy-that-encourages-open-communication-and-learning/": {
+      "hash": "4d176dae20ead0b8",
+      "first_seen": "2026-03-09T22:06:05.133568"
+    },
+    "https://nordiccapital.com/news-views/views/looking-ahead-to-2024-we-anticipate-positive-momentum-and-increased-activity-in-the-latter-half-of-the-year/": {
+      "hash": "087d72a283eb411a",
+      "first_seen": "2026-03-09T22:06:05.133571"
+    },
+    "https://nordiccapital.com/news-views/views/nordic-capitals-klas-tikkanen-appointed-chairman-of-newly-formed-reference-group-for-sns/": {
+      "hash": "e46f2af8c5da3420",
+      "first_seen": "2026-03-09T22:06:05.133573"
+    },
+    "https://nordiccapital.com/news-views/views/interning-at-nordic-capital-a-great-way-to-learn-and-discover-what-it-s-really-like-to-work-in-private-equity/": {
+      "hash": "d1bec587850e3bcf",
+      "first_seen": "2026-03-09T22:06:05.133576"
+    },
+    "https://nordiccapital.com/news-views/views/spotlight-on-ai-boostai-transforming-conversational-ai-for-fortune-1000-companies/": {
+      "hash": "047e3643b0b176d1",
+      "first_seen": "2026-03-09T22:06:05.133578"
+    },
+    "https://nordiccapital.com/news-views/views/nordic-capital-evolution-milestones-in-the-mid-market/": {
+      "hash": "74f9103668e45015",
+      "first_seen": "2026-03-09T22:06:05.133581"
+    },
+    "https://nordiccapital.com/news-views/views/two-operations-managers-reflect-on-their-time-at-nordic-capital-and-career-prospects-within-the-portfolio/": {
+      "hash": "0093291aee956730",
+      "first_seen": "2026-03-09T22:06:05.133583"
+    },
+    "https://nordiccapital.com/news-views/views/nordic-markets-inspire-cautious-optimism/": {
+      "hash": "ecadd201bd383af7",
+      "first_seen": "2026-03-09T22:06:05.133586"
+    },
+    "https://nordiccapital.com/news-views/views/five-questions-consilium-safety-group-ceo-impressed-by-nordic-capital-s-long-term-perspective-on-value-creation/": {
+      "hash": "005407f31bec9117",
+      "first_seen": "2026-03-09T22:06:05.133588"
+    },
+    "https://nordiccapital.com/news-views/views/supporting-entrepreneurship-in-africa-blown-away-by-the-entrepreneurs-their-business-acumen-and-commitment/": {
+      "hash": "0fd44ac77a5e4019",
+      "first_seen": "2026-03-09T22:06:05.133591"
+    },
+    "https://nordiccapital.com/news-views/views/subsector-specialism-supports-deal-sourcing-and-improves-operations/": {
+      "hash": "6083c476fb153540",
+      "first_seen": "2026-03-09T22:06:05.133593"
+    },
+    "https://nordiccapital.com/news-views/views/podcast-eric-jensen-operations-director-on-investment-rationales-for-nordic-capital-some-things-are-non-negotiable/": {
+      "hash": "ff36f6eedcef652c",
+      "first_seen": "2026-03-09T22:06:05.133596"
+    },
+    "https://nordiccapital.com/news-views/views/a-fireside-chat-with-david-samuelson-specialism-and-local-expertise-are-key/": {
+      "hash": "4aabb1a26a2fcd94",
+      "first_seen": "2026-03-09T22:06:05.133598"
+    },
+    "https://nordiccapital.com/news-views/views/report-the-esg-status-of-swedish-private-equity-2023/": {
+      "hash": "6d5b27dc1bed3266",
+      "first_seen": "2026-03-09T22:06:05.133600"
+    },
+    "https://nordiccapital.com/news-views/views/qa-lena-ulrich-shares-insights-from-ipem-and-reflects-on-industry-trends/": {
+      "hash": "f8b1f9bc1fb72f30",
+      "first_seen": "2026-03-09T22:06:05.133603"
+    },
+    "https://nordiccapital.com/news-views/views/nordic-capital-ceo-accelerator-program-if-we-can-help-them-become-better-decision-shapers-and-not-just-decision-makers-they-ll-lead-their-companies-to-better-results/": {
+      "hash": "4ae796521e65e2e1",
+      "first_seen": "2026-03-09T22:06:05.133605"
+    },
+    "https://nordiccapital.com/news-views/views/jacob-lundblad-ceo-of-noba-nordic-capital-has-been-instrumental-in-creating-a-leading-niche-bank-in-northern-europe/": {
+      "hash": "4f5a03a0fedb5a06",
+      "first_seen": "2026-03-09T22:06:05.133607"
+    },
+    "https://nordiccapital.com/news-views/views/partnering-with-nordic-capital-asger-hattel-ceo-of-signicat-on-how-to-leverage-resources-to-transform-the-financial-services-sector/": {
+      "hash": "5673170604c874d4",
+      "first_seen": "2026-03-09T22:06:05.133610"
+    },
+    "https://nordiccapital.com/news-views/views/podcast-elin-ljung-head-of-communications-sustainability-reflects-on-the-pe-industry-s-sustainable-transformation-and-the-main-challenges-ahead/": {
+      "hash": "9eadf13b13eb0c8d",
+      "first_seen": "2026-03-09T22:06:05.133613"
+    },
+    "https://nordiccapital.com/news-views/views/sebastian-wessman-ceo-of-sortera-nordic-capital-is-supporting-our-vision-with-their-vast-experience-from-internationalisation-processes/": {
+      "hash": "4c526c563b86e2c7",
+      "first_seen": "2026-03-09T22:06:05.133615"
+    },
+    "https://nordiccapital.com/news-views/views/nordic-capital-introduces-the-sixth-edition-of-the-brain-business-jobs-index-business-friendly-policies-behind-eastern-and-southern-europe-s-outstanding-growth/": {
+      "hash": "f68dc2b6c0e50d88",
+      "first_seen": "2026-03-09T22:06:05.133618"
+    },
+    "https://nordiccapital.com/news-views/views/what-makes-a-good-owner-steffen-wagner-ceo-of-advanz-pharma-reflects-on-the-company-s-growth-journey-together-with-nordic-capital/": {
+      "hash": "60fe028feba79e96",
+      "first_seen": "2026-03-09T22:06:05.133620"
+    },
+    "https://nordiccapital.com/news-views/views/nordic-capital-continues-to-drive-sustainable-change/": {
+      "hash": "df566fa920d3436a",
+      "first_seen": "2026-03-09T22:06:05.133623"
+    },
+    "https://nordiccapital.com/news-views/views/the-importance-of-an-active-ownership-approach/": {
+      "hash": "f6971f51adb36b81",
+      "first_seen": "2026-03-09T22:06:05.133625"
+    },
+    "https://nordiccapital.com/news-views/views/podcast-joakim-lundvall-partner-nordic-capital-advisors-discusses-private-equity-in-sweden-and-the-evolution-fund/": {
+      "hash": "bdedff1688cf7944",
+      "first_seen": "2026-03-09T22:06:05.133627"
+    },
+    "https://nordiccapital.com/news-views/views/the-importance-of-optimising-procurement-a-conversation-with-alejandro-alvarez/": {
+      "hash": "727aaf733dcd5225",
+      "first_seen": "2026-03-09T22:06:05.133630"
+    },
+    "https://nordiccapital.com/news-views/views/knowledge-and-best-practice-sharing-nordic-capital-around-the-world/": {
+      "hash": "609b495bc26d0aa1",
+      "first_seen": "2026-03-09T22:06:05.133633"
+    },
+    "https://nordiccapital.com/news-views/views/community-engagement-both-locally-and-globally/": {
+      "hash": "8cc1bd5077c3ad98",
+      "first_seen": "2026-03-09T22:06:05.133635"
+    },
+    "https://nordiccapital.com/news-views/views/healthcare-trends-a-conversation-with-raj-shah-and-jonas-agnblad/": {
+      "hash": "824ff0e4a8a3a5a1",
+      "first_seen": "2026-03-09T22:06:05.133637"
+    },
+    "https://nordiccapital.com/news-views/views/culture-drives-performance-at-nordic-capital/": {
+      "hash": "433a26223cd788eb",
+      "first_seen": "2026-03-09T22:06:05.133640"
+    },
+    "https://nordiccapital.com/news-views/views/annual-and-sustainability-review-2022/": {
+      "hash": "451275e2aa06be01",
+      "first_seen": "2026-03-09T22:06:05.133642"
+    },
+    "https://nordiccapital.com/news-views/views/driving-productivity-gains-during-uncertain-times/": {
+      "hash": "f08794345c02e3b9",
+      "first_seen": "2026-03-09T22:06:05.133645"
+    },
+    "https://nordiccapital.com/news-views/views/five-esg-trends-for-2023/": {
+      "hash": "18c58d2ebad67036",
+      "first_seen": "2026-03-09T22:06:05.133647"
+    },
+    "https://nordiccapital.com/news-views/views/podcast-klas-tikkanen-coo-nordic-capital-advisors-exchanges-views-on-the-general-development-of-private-equity/": {
+      "hash": "bcf95492e08cfa98",
+      "first_seen": "2026-03-09T22:06:05.133649"
+    },
+    "https://nordiccapital.com/news-views/views/podcast-david-samuelson-explains-private-equity-and-leveraged-buyouts/": {
+      "hash": "30a490e83551c4b2",
+      "first_seen": "2026-03-09T22:06:05.133652"
+    },
+    "https://nordiccapital.com/news-views/views/nordic-capital-and-norrsken-foundation-continue-to-create-a-positive-impact-and-scale-start-up-businesses/": {
+      "hash": "1f7c8a1b3f5e0fe3",
+      "first_seen": "2026-03-09T22:06:05.133654"
+    },
+    "https://nordiccapital.com/news-views/views/nordic-capital-introduces-the-fifth-edition-of-the-brain-business-jobs-index/": {
+      "hash": "402c0d7ee1a0062a",
+      "first_seen": "2026-03-09T22:06:05.133657"
+    },
+    "https://nordiccapital.com/news-views/views/podcast-driving-change-through-sustainable-investments-as-a-private-equity-investor/": {
+      "hash": "24f8a98a3e4b4677",
+      "first_seen": "2026-03-09T22:06:05.133659"
+    },
+    "https://nordiccapital.com/news-views/views/nordic-capital-backing-superentrepreneur-research/": {
+      "hash": "4bb0589b20c907b8",
+      "first_seen": "2026-03-09T22:06:05.133661"
+    },
+    "https://nordiccapital.com/news-views/views/annual-and-sustainability-review-2021/": {
+      "hash": "d2075ca6c3bbbf73",
+      "first_seen": "2026-03-09T22:06:05.133663"
+    },
+    "https://nordiccapital.com/news-views/views/podcast-life-as-an-investment-associate-at-nordic-capital/": {
+      "hash": "4cb6e0b68ea5fbe2",
+      "first_seen": "2026-03-09T22:06:05.133666"
+    },
+    "https://nordiccapital.com/news-views/views/investing-with-impact-a-pei-keynote-interview-with-elin-ljung/": {
+      "hash": "14ef765419d2bd31",
+      "first_seen": "2026-03-09T22:06:05.133668"
+    },
+    "https://nordiccapital.com/news-views/views/identifying-the-ideal-tech-investment/": {
+      "hash": "00c426ac823e2773",
+      "first_seen": "2026-03-09T22:06:05.133670"
+    },
+    "https://nordiccapital.com/news-views/views/klas-tikkanen-coo-discusses-learnings-from-the-pandemic-at-ipem-2021/": {
+      "hash": "ab742728db2a591d",
+      "first_seen": "2026-03-09T22:06:05.133673"
+    },
+    "https://nordiccapital.com/news-views/views/pharmaceuticals-where-home-advantage-counts/": {
+      "hash": "6bf5d9726b5aba2e",
+      "first_seen": "2026-03-09T22:06:05.133675"
+    },
+    "https://nordiccapital.com/news-views/views/nordic-capital-participates-in-pei-german-roundtable/": {
+      "hash": "fed28e8eca14703e",
+      "first_seen": "2026-03-09T22:06:05.133678"
+    },
+    "https://nordiccapital.com/news-views/views/nordic-capital-annual-review-2020/": {
+      "hash": "55093eb7c75fbfb8",
+      "first_seen": "2026-03-09T22:06:05.133680"
+    },
+    "https://nordiccapital.com/news-views/views/nordic-capital-is-supporting-action-against-corona/": {
+      "hash": "cbf0c92d30b65174",
+      "first_seen": "2026-03-09T22:06:05.133682"
+    },
+    "https://nordiccapital.com/news-views/views/innovation-and-sustainability-can-help-build-a-better-post-covid-19-world/": {
+      "hash": "9838053eed005693",
+      "first_seen": "2026-03-09T22:06:05.133685"
+    },
+    "https://nordiccapital.com/news-views/views/putting-tech-at-the-forefront-of-financial-services-a-pei-keynote-interview-with-christian-frick-and-christopher-ekdahl/": {
+      "hash": "9d9c652136892401",
+      "first_seen": "2026-03-09T22:06:05.133687"
+    },
+    "https://nordiccapital.com/news-views/views/strong-partnerships-views-from-the-ceo-of-itiviti/": {
+      "hash": "f0c24eb028902bc0",
+      "first_seen": "2026-03-09T22:06:05.133689"
+    },
+    "https://nordiccapital.com/news-views/views/powering-up-healthtech-a-pei-keynote-interview-with-raj-shah-and-daniel-berglund/": {
+      "hash": "3b6c1204aa5accde",
+      "first_seen": "2026-03-09T22:06:05.133691"
+    },
+    "https://nordiccapital.com/news-views/views/contributing-to-the-fight-against-covid-19-nordic-capital-portfolio/": {
+      "hash": "87478c156eaabecf",
+      "first_seen": "2026-03-09T22:06:05.133694"
+    },
+    "https://nordiccapital.com/news-views/views/strong-partnerships-views-from-the-ceo-of-macrobond/": {
+      "hash": "c4e8bdc6304944c1",
+      "first_seen": "2026-03-09T22:06:05.133696"
+    },
+    "https://nordiccapital.com/news-views/views/nordic-capital-covid-19-update/": {
+      "hash": "1d335e3ba889bc4f",
+      "first_seen": "2026-03-09T22:06:05.133698"
+    },
+    "https://nordiccapital.com/news-views/views/strong-partnerships-views-from-an-operating-chairman/": {
+      "hash": "045655b02f9ada26",
+      "first_seen": "2026-03-09T22:06:05.133701"
+    },
+    "https://nordiccapital.com/news-views/views/strong-partnerships-views-from-a-ceo/": {
+      "hash": "f66ac76be008bca2",
+      "first_seen": "2026-03-09T22:06:05.133703"
+    },
+    "https://nordiccapital.com/news-views/views/nordic-capital-annual-review-2019-30-years-in-private-equity/": {
+      "hash": "aa4d5128bcfe0066",
+      "first_seen": "2026-03-09T22:06:05.133705"
+    },
+    "https://nordiccapital.com/news-views/views/nordic-capital-roundtable-series-achieving-growth-in-a-disruptive-financial-services-sector/": {
+      "hash": "b5d584a878c4a7bd",
+      "first_seen": "2026-03-09T22:06:05.133708"
+    },
+    "https://nordiccapital.com/news-views/views/nordic-capital-wins-award-for-nordic-deal-of-the-year-following-its-sale-of-anicura/": {
+      "hash": "cc829514c5f48144",
+      "first_seen": "2026-03-09T22:06:05.133710"
+    },
+    "https://nordiccapital.com/media/5cwfkf4w/nordic-capital_ipo-report-2025_hr.pdf": {
+      "hash": "05fb9ebdc3514a14",
+      "first_seen": "2026-03-09T22:06:05.133713"
+    },
+    "https://www.nordiccapital.com/media/g5jorldo/nordic-capital-annual-sustainability-review-2024.pdf": {
+      "hash": "eed3d8ef337841e8",
+      "first_seen": "2026-03-09T22:06:05.133715"
+    },
+    "https://www.nordiccapital.com/media/tbrjfywy/nordic_annual_review_final_15052024.pdf": {
+      "hash": "c480ca51ef6ad1ca",
+      "first_seen": "2026-03-09T22:06:05.133717"
+    },
+    "https://www.nordiccapital.com/media/s5mf2e1q/nordic-capital_annual_sustainability_review_2022_v-f.pdf": {
+      "hash": "695c0013b32ca17d",
+      "first_seen": "2026-03-09T22:06:05.133720"
+    },
+    "https://nordiccapital.com/imported-media/2176/germany-roundtable-21_final_pei.pdf": {
+      "hash": "3d2ff75b067895dd",
+      "first_seen": "2026-03-09T22:06:05.133722"
+    },
+    "https://nordiccapital.com/imported-media/2181/pharmaceuticals_pei_hc_a-z-_final.pdf": {
+      "hash": "965120c4de499886",
+      "first_seen": "2026-03-09T22:06:05.133724"
+    },
+    "https://nordiccapital.com/imported-media/2285/identifying-the-ideal-tech-investment_nordic-capital.pdf": {
+      "hash": "d7c8dfbbeb30ed19",
+      "first_seen": "2026-03-09T22:06:05.133726"
+    },
+    "https://nordiccapital.com/imported-media/2369/investing-with-impact_nordic-capital_pei_ri.pdf": {
+      "hash": "f640212df3c25d7b",
+      "first_seen": "2026-03-09T22:06:05.133728"
+    },
+    "https://nordiccapital.com/imported-media/2457/nordic_capital_annual_and_sustainability_review_2021.pdf": {
+      "hash": "6d00230435268583",
+      "first_seen": "2026-03-09T22:06:05.133731"
+    },
+    "https://nordiccapital.com/imported-media/1919/nordic-capital_powering-up-healthtech_pei_may-2020.pdf": {
+      "hash": "62e32df8bc63f4b2",
+      "first_seen": "2026-03-09T22:06:05.133733"
+    },
+    "https://nordiccapital.com/imported-media/1961/nordic-capital_putting-tech-at-the-forefront-of-financial-services_2020-07-01.pdf": {
+      "hash": "08bb9fa260a5311a",
+      "first_seen": "2026-03-09T22:06:05.133735"
+    },
+    "https://nordiccapital.com/imported-media/2143/annual-review_2020_final.pdf": {
+      "hash": "6ae2c0ca4a51ec40",
+      "first_seen": "2026-03-09T22:06:05.133737"
+    },
+    "https://www.nordiccapital.com/flip/annualreview2019/index.html": {
+      "hash": "f6981746a4bbb7d0",
+      "first_seen": "2026-03-09T22:06:05.133740"
+    },
+    "mailto:elin.ljung@nordiccapital.com": {
+      "hash": "055b06e1ca56807f",
+      "first_seen": "2026-03-09T22:06:05.133742"
+    },
+    "tel:+46 709 69 69 99": {
+      "hash": "af7de95e7b410a3a",
+      "first_seen": "2026-03-09T22:06:05.133744"
+    },
+    "https://nordiccapital.com/our-approach/": {
+      "hash": "1ccf4d1cf8406adb",
+      "first_seen": "2026-03-09T22:06:05.133746"
+    },
+    "https://nordiccapital.com/our-impact/": {
+      "hash": "a139a9a5c7833a26",
+      "first_seen": "2026-03-09T22:06:05.133749"
+    },
+    "https://nordiccapital.com/our-people/": {
+      "hash": "ab46ffff21629f8f",
+      "first_seen": "2026-03-09T22:06:05.133751"
+    },
+    "https://nordiccapital.com/news-views/": {
+      "hash": "d25140fadcea4bc8",
+      "first_seen": "2026-03-09T22:06:05.133753"
+    },
+    "https://nordiccapital.com/legal-notice/": {
+      "hash": "1a167d9ee27a37fd",
+      "first_seen": "2026-03-09T22:06:05.133756"
+    },
+    "https://nordiccapital.com/contact/": {
+      "hash": "1870e416d63c47fb",
+      "first_seen": "2026-03-09T22:06:05.133758"
+    },
+    "https://lcatterton.com/Investments.html": {
+      "hash": "93b0af99dcdb971e",
+      "first_seen": "2026-03-09T22:06:05.133760"
+    },
+    "https://lcatterton.com/lvmh-relationship.html": {
+      "hash": "485c964e11a6f17f",
+      "first_seen": "2026-03-09T22:06:05.133763"
+    },
+    "javascript:void(0);": {
+      "hash": "91b1ed43260340ac",
+      "first_seen": "2026-03-09T22:06:05.133765"
+    },
+    "https://lcatterton.com/index.html": {
+      "hash": "09e27fdbcc728abb",
+      "first_seen": "2026-03-09T22:06:05.133768"
+    },
+    "https://bridgepointgroup.com/about-us/our-people": {
+      "hash": "1ca0e0ea741f9356",
+      "first_seen": "2026-03-09T22:06:05.133771"
+    },
+    "https://bridgepointgroup.com/about-us/news-and-insights": {
+      "hash": "c8dde604b4e3ffb7",
+      "first_seen": "2026-03-09T22:06:05.133773"
+    },
+    "https://bridgepointgroup.com/about-us/funds-and-investors": {
+      "hash": "65d8fe7111ba00bf",
+      "first_seen": "2026-03-09T22:06:05.133775"
+    },
+    "https://bridgepointgroup.com/about-us/joining-the-team": {
+      "hash": "d78362e7c46487c4",
+      "first_seen": "2026-03-09T22:06:05.133778"
+    },
+    "https://bridgepointgroup.com/about-us/joining-the-team/international-associate-programme": {
+      "hash": "122244f6fc92ba17",
+      "first_seen": "2026-03-09T22:06:05.133780"
+    },
+    "https://bridgepointgroup.com/about-us/joining-the-team/other-opportunities": {
+      "hash": "173b08fc4f42aa87",
+      "first_seen": "2026-03-09T22:06:05.133783"
+    },
+    "https://bridgepointgroup.com/about-us/joining-the-team/internships": {
+      "hash": "3e34602ce0dddfd1",
+      "first_seen": "2026-03-09T22:06:05.133785"
+    },
+    "https://bridgepointgroup.com/investment-strategies": {
+      "hash": "94d2b6794f27e4f0",
+      "first_seen": "2026-03-09T22:06:05.133788"
+    },
+    "https://bridgepointgroup.com/investment-strategies/private-equity": {
+      "hash": "25cff14c15f9bb00",
+      "first_seen": "2026-03-09T22:06:05.133790"
+    },
+    "https://bridgepointgroup.com/investment-strategies/infrastructure": {
+      "hash": "26a99ded76b4447d",
+      "first_seen": "2026-03-09T22:06:05.133793"
+    },
+    "https://bridgepointgroup.com/investment-strategies/credit/syndicated-debt": {
+      "hash": "d5f0008a991b0a82",
+      "first_seen": "2026-03-09T22:06:05.133795"
+    },
+    "https://bridgepointgroup.com/investment-strategies/credit/direct-lending": {
+      "hash": "bf442eadcbe280b0",
+      "first_seen": "2026-03-09T22:06:05.133798"
+    },
+    "https://bridgepointgroup.com/investment-strategies/credit/credit-opportunities": {
+      "hash": "e69460f6ab2a3957",
+      "first_seen": "2026-03-09T22:06:05.133800"
+    },
+    "https://bridgepointgroup.com/investment-strategies/secondaries": {
+      "hash": "ae69909c7adeec2d",
+      "first_seen": "2026-03-09T22:06:05.133803"
+    },
+    "https://bridgepointgroup.com/private-wealth": {
+      "hash": "6298384683186f3a",
+      "first_seen": "2026-03-09T22:06:05.133805"
+    },
+    "https://bridgepointgroup.com/shareholders": {
+      "hash": "07972e04c2f9c4ae",
+      "first_seen": "2026-03-09T22:06:05.133808"
+    },
+    "https://bridgepointgroup.com/shareholders/investment-case": {
+      "hash": "39277f000ea8295c",
+      "first_seen": "2026-03-09T22:06:05.133810"
+    },
+    "https://bridgepointgroup.com/shareholders/governance": {
+      "hash": "5a62f90b2713ba4f",
+      "first_seen": "2026-03-09T22:06:05.133813"
+    },
+    "https://bridgepointgroup.com/shareholders/governance/legal-regulatory-and-other-disclosures": {
+      "hash": "6b374a92018b7aaf",
+      "first_seen": "2026-03-09T22:06:05.133815"
+    },
+    "https://bridgepointgroup.com/shareholders/governance/business-model": {
+      "hash": "9dbb923142e2b167",
+      "first_seen": "2026-03-09T22:06:05.133818"
+    },
+    "https://bridgepointgroup.com/shareholders/governance/managing-risks": {
+      "hash": "5fa01e9366594a76",
+      "first_seen": "2026-03-09T22:06:05.133820"
+    },
+    "https://bridgepointgroup.com/shareholders/results-reports-and-presentations": {
+      "hash": "b66231627ea2d1a0",
+      "first_seen": "2026-03-09T22:06:05.133823"
+    },
+    "https://bridgepointgroup.com/shareholders/financial-information/IPO-documents": {
+      "hash": "4469d943cec1dac8",
+      "first_seen": "2026-03-09T22:06:05.133825"
+    },
+    "https://bridgepointgroup.com/shareholders/financial-information/annual-report": {
+      "hash": "431589739687920a",
+      "first_seen": "2026-03-09T22:06:05.133828"
+    },
+    "https://bridgepointgroup.com/shareholders/financial-information": {
+      "hash": "f73f2d815b94a437",
+      "first_seen": "2026-03-09T22:06:05.133830"
+    },
+    "https://bridgepointgroup.com/shareholders/financial-information/financial-performance-and-KPIs": {
+      "hash": "528af72a92b698d6",
+      "first_seen": "2026-03-09T22:06:05.133832"
+    },
+    "https://bridgepointgroup.com/shareholders/financial-information/financial-calendar": {
+      "hash": "2843e4e61adc244a",
+      "first_seen": "2026-03-09T22:06:05.133835"
+    },
+    "https://bridgepointgroup.com/shareholders/financial-information/capital-markets-day-2024": {
+      "hash": "7d77118aee775401",
+      "first_seen": "2026-03-09T22:06:05.133837"
+    },
+    "https://www.bridgepointgroup.com/shareholders/results-reports-and-presentations.year2023": {
+      "hash": "dbc496d30e396dd2",
+      "first_seen": "2026-03-09T22:06:05.133839"
+    },
+    "https://bridgepointgroup.com/shareholders/shareholder-centre": {
+      "hash": "f0b766df4935a7a1",
+      "first_seen": "2026-03-09T22:06:05.133842"
+    },
+    "https://bridgepointgroup.com/shareholders/shareholder-centre/regulatory-news": {
+      "hash": "eaf4943d72ae1ff7",
+      "first_seen": "2026-03-09T22:06:05.133844"
+    },
+    "https://bridgepointgroup.com/shareholders/shareholder-centre/share-price-and-tools": {
+      "hash": "4e719ce53e5b39ba",
+      "first_seen": "2026-03-09T22:06:05.133846"
+    },
+    "https://bridgepointgroup.com/shareholders/shareholder-centre/dividend-policy": {
+      "hash": "fd89220502892e69",
+      "first_seen": "2026-03-09T22:06:05.133849"
+    },
+    "https://bridgepointgroup.com/shareholders/shareholder-centre/analyst-coverage": {
+      "hash": "ad6bb2b31cbecf0e",
+      "first_seen": "2026-03-09T22:06:05.133851"
+    },
+    "https://bridgepointgroup.com/site-services/accessibility": {
+      "hash": "35dc3dbf03dea247",
+      "first_seen": "2026-03-09T22:06:05.133854"
+    },
+    "https://bridgepointgroup.com/content/dam/bridgepoint/corporate2022/documents/governance/policies/modern-slavery-statement-for-2024.pdf": {
+      "hash": "cd8df6fb46b4687c",
+      "first_seen": "2026-03-09T22:06:05.133857"
+    },
+    "https://bridgepointgroup.com/site-services/privacy-policy": {
+      "hash": "f31f8a2e3b0ff8f3",
+      "first_seen": "2026-03-09T22:06:05.133859"
+    },
+    "https://bridgepointgroup.com/site-services/cookie-policy": {
+      "hash": "34c4fcfd8dd1e4a1",
+      "first_seen": "2026-03-09T22:06:05.133862"
+    },
+    "https://odysseyinvestment.com/compliance/": {
+      "hash": "3fb349b4ed8b3fb5",
+      "first_seen": "2026-03-09T22:06:05.133865"
+    },
+    "tel:212-351-7900": {
+      "hash": "b8ff0dac7f5e6f67",
+      "first_seen": "2026-03-09T22:06:05.133867"
+    },
+    "https://odysseyinvestment.com/terms/": {
+      "hash": "7be7b6cf4b9aed46",
+      "first_seen": "2026-03-09T22:06:05.133869"
+    },
+    "https://sterling-group.com/private-equity/": {
+      "hash": "b0de543226d4f013",
+      "first_seen": "2026-03-09T22:06:05.133872"
+    },
+    "https://sterling-group.com/credit/": {
+      "hash": "d3b83804b92ade98",
+      "first_seen": "2026-03-09T22:06:05.133874"
+    },
+    "https://sterling-group.com/partnerships/": {
+      "hash": "cf89e6263e1a796e",
+      "first_seen": "2026-03-09T22:06:05.133877"
+    },
+    "https://sterling-group.com/portfolio/#past": {
+      "hash": "c22b743c7ff7e81e",
+      "first_seen": "2026-03-09T22:06:05.133879"
+    },
+    "https://sterling-group.com/portfolio/": {
+      "hash": "a8e716a0486a79c6",
+      "first_seen": "2026-03-09T22:06:05.133881"
+    },
+    "https://sterling-group.com/team/!#mm": {
+      "hash": "6cb3228b03fb3137",
+      "first_seen": "2026-03-09T22:06:05.133883"
+    },
+    "https://sterling-group.com/team/!#lmm": {
+      "hash": "f0850f123cd1f27c",
+      "first_seen": "2026-03-09T22:06:05.133886"
+    },
+    "https://sterling-group.com/team/!#pc": {
+      "hash": "4bc4ff36737f8824",
+      "first_seen": "2026-03-09T22:06:05.133888"
+    },
+    "https://sterling-group.com/team/!#portfolio-resource-group": {
+      "hash": "da4fac76ec524db1",
+      "first_seen": "2026-03-09T22:06:05.133891"
+    },
+    "https://sterling-group.com/team/!#accounting-and-firm-administration": {
+      "hash": "983c95a19d539550",
+      "first_seen": "2026-03-09T22:06:05.133893"
+    },
+    "https://sterling-group.com/team/!#executive-administration": {
+      "hash": "bfbbf314d83db28c",
+      "first_seen": "2026-03-09T22:06:05.133895"
+    },
+    "https://sterling-group.com/category/acquisition/": {
+      "hash": "f350140f0ad4ce70",
+      "first_seen": "2026-03-09T22:06:05.133897"
+    },
+    "https://sterling-group.com/category/team-additions/": {
+      "hash": "3548dbf9bdcff245",
+      "first_seen": "2026-03-09T22:06:05.133900"
+    },
+    "tel:(713) 877-8257": {
+      "hash": "71a6785a6cdb177f",
+      "first_seen": "2026-03-09T22:06:05.133902"
+    },
+    "https://sterling-group.com/team/!#accounting-and-investor-relations": {
+      "hash": "127a1dd9f4bb5ac3",
+      "first_seen": "2026-03-09T22:06:05.133905"
+    },
+    "https://sterling-group.com/news/": {
+      "hash": "a3c59358ad16f0b8",
+      "first_seen": "2026-03-09T22:06:05.133908"
+    },
+    "http://www.sterling-group.com/careers/": {
+      "hash": "b2ed512b4e6716da",
+      "first_seen": "2026-03-09T22:06:05.133910"
+    },
+    "https://sterling-group.com/wp-content/uploads/2026/02/The-Sterling-Group_One-Pager_February-2026.pdf": {
+      "hash": "4646f3447b8289f1",
+      "first_seen": "2026-03-09T22:06:05.133913"
+    },
+    "https://littlejohnllc.com/cdn-cgi/l/email-protection#f19b859e9f96909d829e9fb19d9885859d949b9e999f9d9d92df929e9c": {
+      "hash": "18b25be13eaeb368",
+      "first_seen": "2026-03-09T22:06:05.133915"
+    },
+    "https://riversidecompany.com/business-owners/": {
+      "hash": "fb186f748a2ba970",
+      "first_seen": "2026-03-09T22:06:05.133917"
+    },
+    "https://riversidecompany.com/business-owners/operating-strength/": {
+      "hash": "5e0ea9c50f81d5c9",
+      "first_seen": "2026-03-09T22:06:05.133920"
+    },
+    "https://riversidecompany.com/select-growth-stories/": {
+      "hash": "b101fff3812a72f0",
+      "first_seen": "2026-03-09T22:06:05.133922"
+    },
+    "https://riversidecompany.com/business-owners/global-expansion/": {
+      "hash": "8dcb249f623f1cbc",
+      "first_seen": "2026-03-09T22:06:05.133925"
+    },
+    "https://riversidecompany.com/business-owners/sourcing-add-ons/": {
+      "hash": "e878d87898e98fff",
+      "first_seen": "2026-03-09T22:06:05.133927"
+    },
+    "https://riversidecompany.com/business-owners/riverside-university/": {
+      "hash": "a2635e36f1872cc4",
+      "first_seen": "2026-03-09T22:06:05.133930"
+    },
+    "https://riversidecompany.com/intermediaries/": {
+      "hash": "2db8545b2b51f150",
+      "first_seen": "2026-03-09T22:06:05.133932"
+    },
+    "https://riversidecompany.com/intermediaries/investment-criteria/": {
+      "hash": "d1409cfa4bd82481",
+      "first_seen": "2026-03-09T22:06:05.133935"
+    },
+    "https://riversidecompany.com/investment-portfolio/?status=Add-on Criteria": {
+      "hash": "55311ca536b1ea75",
+      "first_seen": "2026-03-09T22:06:05.133937"
+    },
+    "https://riversidecompany.com/industries/": {
+      "hash": "d736e53fb9424f28",
+      "first_seen": "2026-03-09T22:06:05.133940"
+    },
+    "https://riversidecompany.com/industries/business-services/": {
+      "hash": "26ffd860d0a04ca6",
+      "first_seen": "2026-03-09T22:06:05.133942"
+    },
+    "https://riversidecompany.com/industries/education-training/": {
+      "hash": "4915287ab49ffbd4",
+      "first_seen": "2026-03-09T22:06:05.133945"
+    },
+    "https://riversidecompany.com/industries/franchisors/": {
+      "hash": "c2832c04ae4865e3",
+      "first_seen": "2026-03-09T22:06:05.133948"
+    },
+    "https://riversidecompany.com/industries/healthcare/": {
+      "hash": "9339d9cbb52e0d9f",
+      "first_seen": "2026-03-09T22:06:05.133950"
+    },
+    "https://riversidecompany.com/industries/software-it/": {
+      "hash": "45eeb11b3299c0fa",
+      "first_seen": "2026-03-09T22:06:05.133952"
+    },
+    "https://riversidecompany.com/industries/specialty-manufacturing/": {
+      "hash": "c6f82afb9a3975c4",
+      "first_seen": "2026-03-09T22:06:05.133954"
+    },
+    "https://riversidecompany.com/industries/thematic-investing/": {
+      "hash": "c4aee7e83c5ff786",
+      "first_seen": "2026-03-09T22:06:05.133957"
+    },
+    "https://riversidecompany.com/who-we-are/": {
+      "hash": "bf36c9413586a1c8",
+      "first_seen": "2026-03-09T22:06:05.133959"
+    },
+    "https://riversidecompany.com/who-we-are/responsible-investing/": {
+      "hash": "473255d3d08ca3f1",
+      "first_seen": "2026-03-09T22:06:05.133962"
+    },
+    "https://riversidecompany.com/who-we-are/diversity-and-inclusion/": {
+      "hash": "4564ef470a3e3642",
+      "first_seen": "2026-03-09T22:06:05.133964"
+    },
+    "https://riversidecompany.com/private-equity/": {
+      "hash": "f2e15c8041f1c5d4",
+      "first_seen": "2026-03-09T22:06:05.133966"
+    },
+    "https://riversidecompany.com/flexible-capital/": {
+      "hash": "d770abd1daa37ca0",
+      "first_seen": "2026-03-09T22:06:05.133969"
+    },
+    "https://riversidecompany.com/currents/?category=News+Release": {
+      "hash": "64b24af7b8317c46",
+      "first_seen": "2026-03-09T22:06:05.133971"
+    },
+    "https://riversidecompany.com/currents/?category=Spotlight+Videos": {
+      "hash": "a39098f0cf3728b9",
+      "first_seen": "2026-03-09T22:06:05.133974"
+    },
+    "https://portcoportal.riversidecompany.com/signin.aspx": {
+      "hash": "092794cd30d4066b",
+      "first_seen": "2026-03-09T22:06:05.133976"
+    },
+    "https://riversidecompany.com/contact-us/": {
+      "hash": "af7ea9382794b804",
+      "first_seen": "2026-03-09T22:06:05.133978"
+    },
+    "https://riversidecompany.com/privacy-policy/": {
+      "hash": "c463d80e3f9bd431",
+      "first_seen": "2026-03-09T22:06:05.133981"
+    },
+    "https://riversidecompany.com/cookie-policy/": {
+      "hash": "f3a4e06439cc376f",
+      "first_seen": "2026-03-09T22:06:05.133983"
+    },
+    "https://riversidecompany.com/terms-of-use/": {
+      "hash": "8fb1a4e97d7ca1ed",
+      "first_seen": "2026-03-09T22:06:05.133986"
+    },
+    "https://riversidecompany.com/aifm-information/": {
+      "hash": "39244fc9fca96d72",
+      "first_seen": "2026-03-09T22:06:05.133988"
+    },
+    "https://riversidecompany.com/regulatory-disclosures/": {
+      "hash": "8cb64a6d3662ee8a",
+      "first_seen": "2026-03-09T22:06:05.133991"
+    },
+    "https://riversidecompany.com/currents/city-reporter-addon-to-cloudpermit-news-release/": {
+      "hash": "80f8f1664e696b2b",
+      "first_seen": "2026-03-09T22:06:05.133994"
+    },
+    "https://riversidecompany.com/currents/?page=2": {
+      "hash": "ae69592379d5990b",
+      "first_seen": "2026-03-09T22:06:05.133996"
+    },
+    "https://riversidecompany.com/who-we-are/careers/": {
+      "hash": "86d0b0f8af24769d",
+      "first_seen": "2026-03-09T22:06:05.133999"
+    },
+    "https://riversidecompany.com/sign-up-for-email-alerts/": {
+      "hash": "85cc6ca21a882838",
+      "first_seen": "2026-03-09T22:06:05.134001"
+    },
+    "https://gamutcapital.com#header": {
+      "hash": "2c686006c342980c",
+      "first_seen": "2026-03-09T22:06:05.134003"
+    },
+    "mailto:choudhury@gamutcapital.com": {
+      "hash": "8139c25cca6f2dda",
+      "first_seen": "2026-03-09T22:06:05.134006"
+    },
+    "https://altamontcapital.com/cdn-cgi/l/email-protection#b1cbd0d2d9f1dfd0c3c3d0c5d8c7d4d5d29fd2dedc": {
+      "hash": "da5d98376c738155",
+      "first_seen": "2026-03-09T22:06:05.134008"
+    },
+    "https://crestview.com/investments": {
+      "hash": "6fd555672d9f9910",
+      "first_seen": "2026-03-09T22:06:05.134010"
+    },
+    "https://crestview.com/contact": {
+      "hash": "4050539becde6e46",
+      "first_seen": "2026-03-09T22:06:05.134013"
+    },
+    "https://crestview.com/legal": {
+      "hash": "dcb763aaccd1e702",
+      "first_seen": "2026-03-09T22:06:05.134015"
+    },
+    "https://crestview.com/investment-disclaimers": {
+      "hash": "55f5e2e06e275c3a",
+      "first_seen": "2026-03-09T22:06:05.134017"
+    },
+    "https://freemanspogli.com/": {
+      "hash": "496476a170d7787d",
+      "first_seen": "2026-03-09T22:06:05.134020"
+    },
+    "https://freemanspogli.com/privacy-policy/": {
+      "hash": "a20019d38c1be7f5",
+      "first_seen": "2026-03-09T22:06:05.134022"
+    },
+    "https://freemanspogli.com/corporate-governance/": {
+      "hash": "d8067eba90bf11dc",
+      "first_seen": "2026-03-09T22:06:05.134025"
+    },
+    "https://freemanspogli.com/contact/#los-angeles": {
+      "hash": "6854913cd6b93a3d",
+      "first_seen": "2026-03-09T22:06:05.134027"
+    },
+    "https://novacap.ca/cdn-cgi/l/email-protection#8fe1e9e0cfe1e0f9eeeceeffece0fdffa1ece0e2": {
+      "hash": "683dbe5f51bdd01e",
+      "first_seen": "2026-03-09T22:06:05.134030"
+    },
+    "https://novacap.ca/cdn-cgi/l/email-protection#771e1911183719180116141607141805075914181a": {
+      "hash": "5ca5fc3357497a73",
+      "first_seen": "2026-03-09T22:06:05.134032"
+    },
+    "https://capvest.com/news/sopral": {
+      "hash": "4ae612c05ada52f5",
+      "first_seen": "2026-03-09T22:06:05.134034"
+    },
+    "https://capvest.com/news/sahale": {
+      "hash": "0a2567b87553d220",
+      "first_seen": "2026-03-09T22:06:05.134036"
+    },
+    "https://capvest.com/news/monrol": {
+      "hash": "98079161ff322240",
+      "first_seen": "2026-03-09T22:06:05.134038"
+    },
+    "https://capvest.com/news/gudrun": {
+      "hash": "f2b4f70044b381d9",
+      "first_seen": "2026-03-09T22:06:05.134041"
+    },
+    "https://capvest.com/news/butchers": {
+      "hash": "50821ee1fb900224",
+      "first_seen": "2026-03-09T22:06:05.134043"
+    },
+    "https://capvest.com/news/voortman": {
+      "hash": "28c95122f630a4eb",
+      "first_seen": "2026-03-09T22:06:05.134045"
+    },
+    "https://capvest.com/news/kik": {
+      "hash": "724f46054a0ac5e5",
+      "first_seen": "2026-03-09T22:06:05.134047"
+    },
+    "https://capvest.com/news/sherpany": {
+      "hash": "b78aebbd563e932a",
+      "first_seen": "2026-03-09T22:06:05.134049"
+    },
+    "https://capvest.com/news/recochem": {
+      "hash": "fe97785871bbcb11",
+      "first_seen": "2026-03-09T22:06:05.134052"
+    },
+    "https://capvest.com/news/kerridge": {
+      "hash": "4987564e26a9205e",
+      "first_seen": "2026-03-09T22:06:05.134054"
+    },
+    "https://capvest.com/news/brownie-brittle": {
+      "hash": "92e8fe24bc498f5f",
+      "first_seen": "2026-03-09T22:06:05.134056"
+    },
+    "https://capvest.com/news/natra": {
+      "hash": "95fbb33b1ffb1603",
+      "first_seen": "2026-03-09T22:06:05.134058"
+    },
+    "https://capvest.com/news/url-here-pmmjb-ZcXbv-2lrfy": {
+      "hash": "6e983a1da9ac200e",
+      "first_seen": "2026-03-09T22:06:05.134061"
+    },
+    "https://capvest.com/news/pet-food-uk": {
+      "hash": "79ba896875bb49f6",
+      "first_seen": "2026-03-09T22:06:05.134063"
+    },
+    "https://capvest.com/news/url-here-pmmjb-ZcXbv-ec6jx": {
+      "hash": "becbe6ac8012ae7a",
+      "first_seen": "2026-03-09T22:06:05.134065"
+    },
+    "https://capvest.com/news/url-here-zksmx": {
+      "hash": "117acf81a1e7ad08",
+      "first_seen": "2026-03-09T22:06:05.134068"
+    },
+    "https://capvest.com/news/url-here-pmmjb-ZcXbv-ft6ef": {
+      "hash": "9ea756ceb9638314",
+      "first_seen": "2026-03-09T22:06:05.134070"
+    },
+    "https://capvest.com#page": {
+      "hash": "cd4b3ac5d99b5459",
+      "first_seen": "2026-03-09T22:06:05.134072"
+    },
+    "https://capvest.com/home#investments": {
+      "hash": "cd72d81efe2f9cde",
+      "first_seen": "2026-03-09T22:06:05.134074"
+    },
+    "https://capvest.com/home#sustainability": {
+      "hash": "b14a983de542fd34",
+      "first_seen": "2026-03-09T22:06:05.134077"
+    },
+    "https://capvest.com/news?offset=1603148400572": {
+      "hash": "13bb43cbf727f4b1",
+      "first_seen": "2026-03-09T22:06:05.134079"
+    },
+    "https://capvest.com/terms-of-use": {
+      "hash": "6ad6bda2b8de973c",
+      "first_seen": "2026-03-09T22:06:05.134082"
+    },
+    "https://forbion.com/about-us/impacting-the-future/": {
+      "hash": "6e28bf0c83194932",
+      "first_seen": "2026-03-09T22:06:05.134084"
+    },
+    "https://forbion.com/strategies/": {
+      "hash": "6c33c7fb1ec46c4c",
+      "first_seen": "2026-03-09T22:06:05.134087"
+    },
+    "https://forbion.com/strategies/human-health/": {
+      "hash": "5b0c4f362288fbee",
+      "first_seen": "2026-03-09T22:06:05.134089"
+    },
+    "https://forbion.com/strategies/planetary-health/": {
+      "hash": "d5baa155bb5ffd84",
+      "first_seen": "2026-03-09T22:06:05.134092"
+    },
+    "https://forbion.com/strategies/planetary-health/bioeconomy/": {
+      "hash": "17f6deeb8d5d010f",
+      "first_seen": "2026-03-09T22:06:05.134095"
+    },
+    "https://forbion.com/portfolio/bioeconomy/": {
+      "hash": "14bf564ca27b8e5c",
+      "first_seen": "2026-03-09T22:06:05.134098"
+    },
+    "https://forbion.com/sustainability/": {
+      "hash": "c79d13eaa5295aec",
+      "first_seen": "2026-03-09T22:06:05.134100"
+    },
+    "https://forbion.com/sustainability/human-health/": {
+      "hash": "e46e0f8b9610ef79",
+      "first_seen": "2026-03-09T22:06:05.134102"
+    },
+    "https://forbion.com/sustainability/human-health/responsible-investment/": {
+      "hash": "79e30e2fdc0199ec",
+      "first_seen": "2026-03-09T22:06:05.134105"
+    },
+    "https://forbion.com/sustainability/human-health/impact-on-human-health/": {
+      "hash": "817856f4b8623dc3",
+      "first_seen": "2026-03-09T22:06:05.134107"
+    },
+    "https://forbion.com/sustainability/planetary-health/": {
+      "hash": "ac05a04f8e690345",
+      "first_seen": "2026-03-09T22:06:05.134110"
+    },
+    "https://forbion.com/sustainability/planetary-health/responsible-investment/": {
+      "hash": "7cfd4dc972e39536",
+      "first_seen": "2026-03-09T22:06:05.134112"
+    },
+    "https://forbion.com/sustainability/planetary-health/impact-on-planetary-health/": {
+      "hash": "45d1e24a07c83e45",
+      "first_seen": "2026-03-09T22:06:05.134115"
+    },
+    "https://forbion.com/news-insights/": {
+      "hash": "22236120a36f1fa2",
+      "first_seen": "2026-03-09T22:06:05.134117"
+    },
+    "https://forbion.com/news-insights/media-resources/": {
+      "hash": "0c24652360ab7094",
+      "first_seen": "2026-03-09T22:06:05.134119"
+    },
+    "https://forbion.com/news-insights/news/": {
+      "hash": "172901481a0bf63f",
+      "first_seen": "2026-03-09T22:06:05.134122"
+    },
+    "https://forbion.com/": {
+      "hash": "f29f447ae393549b",
+      "first_seen": "2026-03-09T22:06:05.134124"
+    },
+    "https://forbion.com/privacy-policy/": {
+      "hash": "9f4291e424e56feb",
+      "first_seen": "2026-03-09T22:06:05.134126"
     }
   }
 }

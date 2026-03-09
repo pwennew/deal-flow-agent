@@ -40,9 +40,18 @@ def cmd_scan(args):
 
     # Step 2: Scrape press pages for firms without RSS
     t0 = time.time()
+    # Snapshot which firms had no press_url before scraping (scrape_firm auto-discovers)
+    firms_before = {f.name: f.press_url for f in firms}
     scraped = scrape_articles(firms, lookback_hours=args.hours)
     articles.extend(scraped)
     logger.info("[%.1fs] Scrape: %d additional articles", time.time() - t0, len(scraped))
+
+    # Persist any newly-discovered press URLs to targets.yml
+    new_press = {f.name: f.press_url for f in firms
+                 if f.press_url and not firms_before.get(f.name)}
+    if new_press:
+        logger.info("Persisting %d newly-discovered press URLs to %s", len(new_press), args.targets)
+        _update_targets(args.targets, {}, new_press)
 
     if not articles:
         logger.info("No articles found — nothing to do")

@@ -71,6 +71,7 @@ firms:
   - Science & Health
   - Industrials
   - Financial Services
+  press_url: https://www.carlyle.com/news-media
 - name: Silver Lake
   domain: silverlake.com
   hq: Menlo Park
@@ -103,6 +104,7 @@ firms:
   - TMT
   - Services
   - Science & Health
+  press_url: https://eqtgroup.com/news
 - name: Warburg Pincus
   domain: warburgpincus.com
   feed_url: https://warburgpincus.com/feed
@@ -167,6 +169,7 @@ firms:
   sectors:
   - TMT
   - Services
+  press_url: https://www.veritascapital.com/news
 - name: BDT & MSD Partners
   domain: bdtmsd.com
   hq: Chicago
@@ -250,6 +253,7 @@ firms:
   - Services
   - Science & Health
   - Energy & Materials
+  press_url: https://www.partnersgroup.com/en/news-and-views
 - name: Ares Management
   domain: aresmgmt.com
   hq: Los Angeles
@@ -259,6 +263,7 @@ firms:
   - Industrials
   - Financial Services
   - Consumer
+  press_url: https://www.aresmgmt.com/news-views
 - name: New Mountain Capital
   domain: newmountaincapital.com
   feed_url: https://newmountaincapital.com/feed
@@ -281,6 +286,7 @@ firms:
   - Science & Health
   - Energy & Materials
   - Industrials
+  press_url: https://www.audaxprivateequity.com/news
 - name: GTCR
   domain: gtcr.com
   feed_url: https://gtcr.com/feed
@@ -302,6 +308,7 @@ firms:
   sectors:
   - TMT
   - Services
+  press_url: https://www.ardian.com/news-insights/press-releases
 - name: Harvest Partners
   domain: harvest.com
   hq: New York
@@ -315,13 +322,15 @@ firms:
   sectors:
   - Industrials
   - Consumer
+  press_url: https://www.cerberus.com/news/
 - name: American Securities
-  domain: americansecurities.com
+  domain: american-securities.com
   hq: US
   sectors:
   - Services
   - Energy & Materials
   - Industrials
+  press_url: https://american-securities.com/en/news
 - name: Macquarie
   domain: macquarie.com
   hq: Australia
@@ -355,6 +364,7 @@ firms:
   - Services
   - Science & Health
   - Consumer
+  press_url: https://www.apax.com/news-views/
 - name: Oaktree Capital Management
   domain: oaktreecapital.com
   hq: Los Angeles
@@ -432,12 +442,14 @@ firms:
   sectors:
   - Science & Health
   - Financial Services
+  press_url: https://www.mdcp.com/about/news
 - name: Onex
   domain: onex.com
   hq: Toronto
   sectors:
   - Services
   - Industrials
+  press_url: https://www.onex.com/news-releases
 - name: Webster Equity Partners
   domain: websterequity.com
   hq: US
@@ -549,6 +561,7 @@ firms:
   sectors:
   - TMT
   - Science & Health
+  press_url: https://www.nordiccapital.com/news-views/
 - name: Greenbriar Equity Group
   domain: greenbriarequity.com
   hq: Greenwich
@@ -587,6 +600,7 @@ firms:
   hq: Greenwich
   sectors:
   - Consumer
+  press_url: https://www.lcatterton.com/Press.html
 - name: Linden Capital Partners
   domain: lindencapital.com
   hq: Chicago
@@ -617,8 +631,9 @@ firms:
   domain: oakhcft.com
   hq: Stamford
 - name: Bridgepoint
-  domain: bridgepoint.eu
+  domain: bridgepointgroup.com
   hq: London
+  press_url: https://www.bridgepointgroup.com/about-us/news-and-insights
 - name: Centre Lane Partners
   domain: centrelanepartners.com
   hq: US
@@ -661,10 +676,11 @@ firms:
   sectors:
   - Services
 - name: The Sterling Group
-  domain: sterlinggrp.com
+  domain: sterling-group.com
   hq: Houston
   sectors:
   - Industrials
+  press_url: https://sterling-group.com/news/
 - name: Wynnchurch Capital
   domain: wynnchurch.com
   hq: Rosemont
@@ -678,6 +694,7 @@ firms:
 - name: PSG
   domain: psgequity.com
   hq: Boston
+  press_url: https://psgequity.com/news
 - name: Gryphon Investors
   domain: gryphoninvestors.com
   hq: San Francisco
@@ -696,6 +713,7 @@ firms:
 - name: The Riverside Company
   domain: riversidecompany.com
   hq: New York
+  press_url: https://www.riversidecompany.com/currents/
 - name: Cinven
   domain: cinven.com
   feed_url: https://cinven.com/feed
@@ -843,6 +861,7 @@ firms:
   hq: New York
   sectors:
   - Industrials
+  press_url: https://www.crestview.com/news
 - name: MidOcean Partners
   domain: midoceanpartners.com
   hq: US

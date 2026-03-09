@@ -27,6 +27,11 @@ _PRESS_PATHS = [
     "/about/news", "/about/press", "/about/media",
     "/who-we-are/news", "/our-news",
     "/updates", "/announcements", "/portfolio-news",
+    "/news-views", "/news-releases", "/currents",           # Nordic Capital, Onex, Riverside
+    "/about-us/news-and-insights",                          # Bridgepoint
+    "/en/news-and-views",                                   # Partners Group
+    "/en/news",                                             # American Securities
+    "/news-insights", "/news-insights/press-releases",      # Ardian
 ]
 
 

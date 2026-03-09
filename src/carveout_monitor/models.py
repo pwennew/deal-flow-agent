@@ -1,0 +1,55 @@
+"""Core data models for the carve-out monitor."""
+
+from __future__ import annotations
+
+from datetime import datetime
+from enum import Enum
+from pathlib import Path
+
+import yaml
+from pydantic import BaseModel, Field
+
+
+class DealStage(str, Enum):
+    SIGNING = "signing"
+    CLOSING = "closing"
+
+
+class Firm(BaseModel):
+    """A target PE firm to monitor."""
+
+    name: str
+    domain: str = ""
+    feed_url: str | None = None
+    press_url: str | None = None
+    hq: str = ""
+    sectors: list[str] = Field(default_factory=list)
+
+
+class Article(BaseModel):
+    """A raw article fetched from a PE firm's website."""
+
+    title: str
+    url: str
+    summary: str = ""
+    published: datetime | None = None
+    firm_name: str = ""
+
+
+class DealAlert(BaseModel):
+    """A classified carve-out deal — the pipeline output."""
+
+    article: Article
+    is_carveout: bool = False
+    stage: DealStage | None = None
+    target_company: str = ""
+    seller: str = ""
+    confidence: int = Field(default=0, ge=0, le=100)
+    reasoning: str = ""
+
+
+def load_firms(path: str | Path = "targets.yml") -> list[Firm]:
+    """Load target firms from YAML file."""
+    with open(path) as f:
+        data = yaml.safe_load(f)
+    return [Firm(**firm) for firm in data.get("firms", [])]

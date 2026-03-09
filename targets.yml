@@ -1,0 +1,1160 @@
+firms:
+- name: Blackstone
+  domain: blackstone.com
+  feed_url: https://blackstone.com/feed
+  hq: New York
+  sectors:
+  - TMT
+  - Services
+  - Science & Health
+  - Energy & Materials
+  - Industrials
+  - Financial Services
+  - Consumer
+- name: KKR
+  domain: kkr.com
+  hq: New York
+  sectors:
+  - TMT
+  - Services
+  - Science & Health
+  - Energy & Materials
+  - Industrials
+  - Financial Services
+  - Consumer
+- name: Apollo Global Management
+  domain: apollo.com
+  hq: New York
+  sectors:
+  - TMT
+  - Services
+  - Science & Health
+  - Energy & Materials
+  - Industrials
+  - Financial Services
+  - Consumer
+- name: Thoma Bravo
+  domain: thomabravo.com
+  hq: Chicago
+  sectors:
+  - TMT
+  - Services
+- name: Hellman & Friedman
+  domain: hfriedman.com
+  feed_url: https://hf.com/feed
+  hq: San Francisco
+  sectors:
+  - TMT
+  - Services
+- name: Bain Capital
+  domain: baincapital.com
+  hq: Boston
+  sectors:
+  - TMT
+  - Services
+  - Science & Health
+  - Industrials
+  - Financial Services
+  - Consumer
+- name: Vista Equity Partners
+  domain: vistaequitypartners.com
+  hq: Austin
+  sectors:
+  - TMT
+- name: The Carlyle Group
+  domain: carlyle.com
+  hq: Washington DC
+  sectors:
+  - TMT
+  - Services
+  - Science & Health
+  - Industrials
+  - Financial Services
+- name: Silver Lake
+  domain: silverlake.com
+  hq: Menlo Park
+  sectors:
+  - TMT
+  - Consumer
+- name: Clayton Dubilier & Rice
+  domain: cdr-inc.com
+  hq: New York
+  sectors:
+  - TMT
+  - Services
+  - Science & Health
+  - Industrials
+  - Consumer
+- name: TPG
+  domain: tpg.com
+  hq: Fort Worth
+  sectors:
+  - TMT
+  - Services
+  - Science & Health
+  - Energy & Materials
+  - Consumer
+- name: EQT
+  domain: eqtgroup.com
+  hq: Stockholm
+  sectors:
+  - TMT
+  - Services
+  - Science & Health
+- name: Warburg Pincus
+  domain: warburgpincus.com
+  feed_url: https://warburgpincus.com/feed
+  hq: New York
+  sectors:
+  - TMT
+  - Services
+  - Science & Health
+  - Energy & Materials
+  - Industrials
+  - Financial Services
+- name: Brookfield Asset Management
+  domain: brookfield.com
+  hq: US
+  sectors:
+  - TMT
+  - Services
+  - Energy & Materials
+  - Industrials
+- name: Leonard Green & Partners
+  domain: leonardgreen.com
+  feed_url: https://leonardgreen.com/feed
+  hq: Los Angeles
+  sectors:
+  - TMT
+  - Services
+  - Science & Health
+  - Industrials
+  - Consumer
+- name: Clearlake Capital Group
+  domain: clearlake.com
+  hq: Santa Monica
+  sectors:
+  - TMT
+  - Industrials
+  - Consumer
+- name: Stone Point Capital
+  domain: stonepoint.com
+  hq: Greenwich
+  sectors:
+  - Services
+  - Science & Health
+  - Financial Services
+- name: Roark Capital Group
+  domain: roarkcapital.com
+  hq: Atlanta
+  sectors:
+  - Services
+  - Consumer
+- name: Platinum Equity
+  domain: platinumequity.com
+  feed_url: https://platinumequity.com/feed
+  hq: Beverly Hills
+  sectors:
+  - TMT
+  - Services
+  - Industrials
+  - Consumer
+- name: Veritas Capital
+  domain: veritascapital.com
+  hq: New York
+  sectors:
+  - TMT
+  - Services
+- name: BDT & MSD Partners
+  domain: bdtmsd.com
+  hq: Chicago
+  sectors:
+  - Industrials
+  - Consumer
+- name: Sycamore Partners
+  domain: sycamorepartners.com
+  hq: US
+  sectors:
+  - Science & Health
+  - Consumer
+- name: Insight Partners
+  domain: insightpartners.com
+  hq: New York
+  sectors:
+  - TMT
+- name: Genstar Capital
+  domain: genstarcapital.com
+  feed_url: https://genstarcapital.com/feed
+  hq: San Francisco
+  sectors:
+  - Industrials
+  - Financial Services
+- name: H.I.G. Capital
+  domain: higcapital.com
+  feed_url: https://higcapital.com/feed
+  hq: Miami
+  sectors:
+  - TMT
+  - Services
+  - Science & Health
+  - Energy & Materials
+  - Industrials
+- name: Francisco Partners
+  domain: franciscopartners.com
+  hq: US
+  sectors:
+  - TMT
+  - Services
+- name: TA Associates
+  domain: ta.com
+  hq: Boston
+  sectors:
+  - TMT
+  - Financial Services
+  - Consumer
+- name: Advent International
+  domain: adventinternational.com
+  hq: Boston
+  sectors:
+  - TMT
+  - Science & Health
+  - Industrials
+  - Consumer
+- name: BlackRock
+  domain: blackrock.com
+  hq: New York
+  sectors:
+  - Energy & Materials
+  - Consumer
+- name: Goldman Sachs Asset Management
+  domain: gsam.com
+  hq: New York
+  sectors:
+  - TMT
+  - Science & Health
+  - Industrials
+  - Consumer
+- name: Permira Advisers
+  domain: permira.com
+  hq: London
+  sectors:
+  - TMT
+  - Services
+- name: Partners Group
+  domain: partnersgroup.com
+  hq: Zug
+  sectors:
+  - Services
+  - Science & Health
+  - Energy & Materials
+- name: Ares Management
+  domain: aresmgmt.com
+  hq: Los Angeles
+  sectors:
+  - Services
+  - Science & Health
+  - Industrials
+  - Financial Services
+  - Consumer
+- name: New Mountain Capital
+  domain: newmountaincapital.com
+  feed_url: https://newmountaincapital.com/feed
+  hq: New York
+  sectors:
+  - Services
+  - Science & Health
+- name: CVC Capital Partners
+  domain: cvc.com
+  hq: Luxembourg
+  sectors:
+  - TMT
+  - Services
+  - Consumer
+- name: Audax Private Equity
+  domain: audaxprivateequity.com
+  hq: Boston
+  sectors:
+  - Services
+  - Science & Health
+  - Energy & Materials
+  - Industrials
+- name: GTCR
+  domain: gtcr.com
+  feed_url: https://gtcr.com/feed
+  hq: Chicago
+  sectors:
+  - TMT
+  - Science & Health
+  - Financial Services
+- name: TJC
+  domain: thejonathanclub.com
+  hq: US
+  sectors:
+  - Services
+  - Science & Health
+  - Industrials
+- name: Ardian
+  domain: ardian.com
+  hq: Paris
+  sectors:
+  - TMT
+  - Services
+- name: Harvest Partners
+  domain: harvest.com
+  hq: New York
+  sectors:
+  - Services
+  - Science & Health
+  - Financial Services
+- name: Cerberus Capital Management
+  domain: cerberus.com
+  hq: New York
+  sectors:
+  - Industrials
+  - Consumer
+- name: American Securities
+  domain: americansecurities.com
+  hq: US
+  sectors:
+  - Services
+  - Energy & Materials
+  - Industrials
+- name: Macquarie
+  domain: macquarie.com
+  hq: Australia
+  sectors:
+  - Services
+  - Energy & Materials
+- name: THL Partners
+  domain: thl.com
+  hq: US
+  sectors:
+  - TMT
+  - Science & Health
+- name: GI Partners
+  domain: gipartners.com
+  hq: Scottsdale
+  sectors:
+  - TMT
+  - Services
+- name: Berkshire Partners
+  domain: berkshirepartners.com
+  feed_url: https://berkshirepartners.com/feed
+  hq: Boston
+  sectors:
+  - TMT
+  - Services
+  - Industrials
+- name: Apax Partners
+  domain: apax.com
+  hq: London
+  sectors:
+  - Services
+  - Science & Health
+  - Consumer
+- name: Oaktree Capital Management
+  domain: oaktreecapital.com
+  hq: Los Angeles
+  sectors:
+  - Services
+  - Consumer
+- name: Kohlberg & Company
+  domain: kohlberg.com
+  feed_url: https://kohlberg.com/feed
+  hq: Mount Kisco
+  sectors:
+  - Services
+  - Science & Health
+  - Consumer
+- name: American Industrial Partners
+  domain: americanindustrial.com
+  hq: New York
+  sectors:
+  - Energy & Materials
+  - Industrials
+- name: AEA Investors
+  domain: aeainvestors.com
+  hq: New York
+  sectors:
+  - Industrials
+  - Consumer
+- name: Nautic Partners
+  domain: nauticpartners.com
+  hq: Providence
+  sectors:
+  - Services
+  - Science & Health
+- name: Charlesbank Capital Partners
+  domain: charlesbank.com
+  hq: Boston
+  sectors:
+  - Science & Health
+  - Financial Services
+  - Consumer
+- name: STG
+  domain: stgpartners.com
+  hq: Menlo Park
+  sectors:
+  - TMT
+- name: Patient Square Capital
+  domain: patientsquarecapital.com
+  hq: Menlo Park
+  sectors:
+  - Science & Health
+- name: Centerbridge Partners
+  domain: centerbridge.com
+  hq: New York
+  sectors:
+  - Industrials
+  - Consumer
+- name: ABRY Partners
+  domain: abry.com
+  hq: Boston
+  sectors:
+  - Services
+- name: Parthenon Capital Partners
+  domain: parthenoncapital.com
+  hq: London
+  sectors:
+  - TMT
+  - Financial Services
+- name: BC Partners
+  domain: bcpartners.com
+  hq: London
+- name: Madison Dearborn Partners
+  domain: mdcp.com
+  hq: Chicago
+  sectors:
+  - Science & Health
+  - Financial Services
+- name: Onex
+  domain: onex.com
+  hq: Toronto
+  sectors:
+  - Services
+  - Industrials
+- name: Webster Equity Partners
+  domain: websterequity.com
+  hq: US
+  sectors:
+  - Science & Health
+- name: TowerBrook Capital Partners
+  domain: towerbrook.com
+  hq: New York
+  sectors:
+  - Science & Health
+  - Consumer
+- name: Reverence Capital Partners
+  domain: reverencecapital.com
+  hq: New York
+  sectors:
+  - Financial Services
+- name: Blue Owl Capital
+  domain: blueowl.com
+  hq: US
+  sectors:
+  - Financial Services
+- name: Searchlight Capital Partners
+  domain: searchlightcap.com
+  hq: New York
+  sectors:
+  - TMT
+- name: KPS Capital Partners
+  domain: kpsfund.com
+  hq: New York
+  sectors:
+  - Energy & Materials
+  - Industrials
+- name: Lindsay Goldberg
+  domain: lindsaygoldberg.com
+  feed_url: https://lindsaygoldberg.com/feed
+  hq: New York
+  sectors:
+  - Consumer
+- name: Sixth Street Partners
+  domain: sixthstreet.com
+  hq: US
+  sectors:
+  - Financial Services
+  - Consumer
+- name: Golden Gate Capital
+  domain: goldengatecap.com
+  hq: US
+- name: One Equity Partners
+  domain: oneequity.com
+  hq: New York
+  sectors:
+  - Services
+  - Industrials
+- name: Welsh Carson Anderson & Stowe
+  domain: welshcarson.com
+  hq: New York
+  sectors:
+  - Science & Health
+- name: TSG Consumer Partners
+  domain: tsgconsumer.com
+  hq: Larkspur
+  sectors:
+  - Consumer
+- name: KSL Capital Partners
+  domain: kslcapital.com
+  hq: US
+  sectors:
+  - Consumer
+- name: Altas Partners
+  domain: atlaspartners.com
+  hq: Toronto
+  sectors:
+  - Services
+- name: Vistria Group
+  domain: thevistria.com
+  hq: Chicago
+  sectors:
+  - Services
+  - Science & Health
+- name: Wind Point Partners
+  domain: windpointpartners.com
+  feed_url: https://windpointpartners.com/feed
+  hq: Chicago
+  sectors:
+  - Industrials
+  - Consumer
+- name: Pritzker Group
+  domain: pritzkergroup.com
+  hq: US
+  sectors:
+  - Industrials
+  - Consumer
+- name: Gridiron Capital
+  domain: gridironcapital.com
+  hq: New Canaan
+  sectors:
+  - Services
+- name: Court Square
+  domain: courtsquare.com
+  hq: New York
+  sectors:
+  - Industrials
+- name: Nordic Capital
+  domain: nordiccapital.com
+  hq: Saint Helier
+  sectors:
+  - TMT
+  - Science & Health
+- name: Greenbriar Equity Group
+  domain: greenbriarequity.com
+  hq: Greenwich
+  sectors:
+  - Services
+- name: Olympus Partners
+  domain: olympuspartners.com
+  hq: US
+  sectors:
+  - Industrials
+- name: Hg
+  domain: hgcapital.com
+  hq: London
+  sectors:
+  - TMT
+- name: SK Capital Partners
+  domain: skcapitalpartners.com
+  feed_url: https://skcapitalpartners.com/feed
+  hq: New York
+  sectors:
+  - Energy & Materials
+  - Industrials
+- name: Atlas Holdings
+  domain: atlasholdingsllc.com
+  hq: Greenwich
+  sectors:
+  - Industrials
+- name: HGGC
+  domain: hggc.com
+  hq: Palo Alto
+  sectors:
+  - Financial Services
+- name: L Catterton
+  domain: lcatterton.com
+  hq: Greenwich
+  sectors:
+  - Consumer
+- name: Linden Capital Partners
+  domain: lindencapital.com
+  hq: Chicago
+  sectors:
+  - Science & Health
+- name: Aquiline Capital Partners
+  domain: aquiline.com
+  hq: New York
+  sectors:
+  - TMT
+  - Financial Services
+- name: Mill Point Capital
+  domain: millpoint.com
+  hq: US
+  sectors:
+  - Industrials
+- name: Summit Partners
+  domain: summitpartners.com
+  hq: Boston
+  sectors:
+  - Science & Health
+- name: Oak Hill Capital
+  domain: oakhillcapital.com
+  feed_url: https://oakhillcapital.com/feed
+  hq: New York
+- name: Oak HC/FT
+  domain: oakhcft.com
+  hq: Stamford
+- name: Bridgepoint
+  domain: bridgepoint.eu
+  hq: London
+- name: Centre Lane Partners
+  domain: centrelanepartners.com
+  hq: US
+  sectors:
+  - TMT
+- name: Accel-KKR
+  domain: accel-kkr.com
+  hq: Menlo Park
+  sectors:
+  - TMT
+- name: One Rock Capital Partners
+  domain: onerockcapital.com
+  hq: US
+  sectors:
+  - Energy & Materials
+  - Industrials
+- name: Odyssey Investment Partners
+  domain: odysseyinvestment.com
+  hq: New York
+  sectors:
+  - Industrials
+- name: Warren Equity Partners
+  domain: warrenequity.com
+  hq: Jacksonville
+- name: Alpine Investors
+  domain: alpineinvestors.com
+  feed_url: https://alpineinvestors.com/feed
+  hq: San Francisco
+- name: Alvarez & Marsal Capital Partners
+  domain: amcapitalpartners.com
+  hq: Greenwich
+  sectors:
+  - Science & Health
+- name: Littlejohn & Co
+  domain: littlejohnllc.com
+  hq: US
+  sectors:
+  - Services
+- name: The Sterling Group
+  domain: sterlinggrp.com
+  hq: Houston
+  sectors:
+  - Industrials
+- name: Wynnchurch Capital
+  domain: wynnchurch.com
+  hq: Rosemont
+  sectors:
+  - Industrials
+- name: Water Street Healthcare Partners
+  domain: waterstreet.com
+  hq: US
+  sectors:
+  - Science & Health
+- name: PSG
+  domain: psgequity.com
+  hq: Boston
+- name: Gryphon Investors
+  domain: gryphoninvestors.com
+  hq: San Francisco
+- name: JLL Partners
+  domain: jllpartners.com
+  hq: US
+- name: J.F. Lehman & Company
+  domain: jflpartners.com
+  hq: New York
+  sectors:
+  - Services
+- name: Vector Capital Management
+  domain: vectorcapital.com
+  hq: US
+- name: The Riverside Company
+  domain: riversidecompany.com
+  hq: New York
+- name: Cinven
+  domain: cinven.com
+  feed_url: https://cinven.com/feed
+  hq: London
+  sectors:
+  - Science & Health
+- name: Kelso & Company
+  domain: kelso.com
+  hq: New York
+- name: Fortress Investment Group
+  domain: fortress.com
+  hq: US
+  sectors:
+  - Consumer
+- name: Wellspring Capital Management
+  domain: wellspringcapital.com
+  hq: US
+- name: Monomoy Capital Partners
+  domain: monomoy.com
+  hq: US
+  sectors:
+  - Industrials
+- name: Stellex Capital Management
+  domain: stellexcapital.com
+  hq: US
+  sectors:
+  - Consumer
+- name: Sentinel Capital Partners
+  domain: sentinelpartners.com
+  hq: New York
+  sectors:
+  - Industrials
+- name: Kinderhook Industries
+  domain: kinderhook.com
+  hq: New York
+  sectors:
+  - Industrials
+- name: Sun Capital Partners
+  domain: suncappart.com
+  hq: Boca Raton
+- name: K1 Investment Management
+  domain: k1im.com
+  hq: Manhattan Beach
+  sectors:
+  - TMT
+- name: Frazier Healthcare Partners
+  domain: frazierhealthcare.com
+  hq: Seattle
+  sectors:
+  - Science & Health
+- name: Arcline Investment Management
+  domain: arcline.com
+  hq: San Francisco
+  sectors:
+  - Industrials
+- name: Gamut Capital Management
+  domain: gamutcapital.com
+  hq: US
+- name: Trive Capital
+  domain: trivecapital.com
+  hq: US
+- name: Providence Equity Partners
+  domain: provequity.com
+  hq: Providence
+- name: LLR Partners
+  domain: llrpartners.com
+  feed_url: https://llrpartners.com/rss
+  hq: Philadelphia
+- name: Palladium Equity Partners
+  domain: palladiumequity.com
+  hq: US
+- name: Arsenal Capital Partners
+  domain: arsenalcapital.com
+  hq: New York
+- name: Altamont Capital Partners
+  domain: altamontcapital.com
+  hq: US
+  sectors:
+  - Consumer
+- name: Arlington Capital Partners
+  domain: arlingtoncap.com
+  hq: Chevy Chase
+- name: Trilantic Capital Partners North America
+  domain: trilantic.com
+  hq: New York
+  sectors:
+  - Consumer
+- name: Butterfly Equity
+  domain: butterflyequity.com
+  hq: Beverly Hills
+  sectors:
+  - Consumer
+- name: Brightstar Capital Partners
+  domain: brightstarcapitalpartners.com
+  hq: New York
+- name: Corsair Capital
+  domain: corsair-capital.com
+  hq: US
+- name: Ridgemont Equity Partners
+  domain: ridgemontep.com
+  hq: Charlotte
+- name: Lightyear Capital
+  domain: lightyearcapital.com
+  hq: New York
+- name: Shore Capital Partners
+  domain: shorecp.com
+  hq: US
+  sectors:
+  - Science & Health
+- name: The Halifax Group
+  domain: thehalifaxgroup.com
+  hq: US
+  sectors:
+  - Industrials
+- name: Siris Capital Group
+  domain: siriscapital.com
+  hq: New York
+- name: Trivest Partners
+  domain: trivest.com
+  hq: Coral Gables
+- name: ACON Investments
+  domain: aconinvestments.com
+  hq: Washington DC
+  sectors:
+  - Consumer
+- name: Leeds Equity Partners
+  domain: leedsequity.com
+  hq: US
+- name: Freeman Spogli
+  domain: freemanspogli.com
+  hq: US
+- name: Crestview Partners
+  domain: crestview.com
+  hq: New York
+  sectors:
+  - Industrials
+- name: MidOcean Partners
+  domain: midoceanpartners.com
+  hq: US
+- name: Aterian Investment Partners
+  domain: aterianpartners.com
+  hq: US
+- name: Great Hill Partners
+  domain: greathillpartners.com
+  hq: Boston
+- name: Gemspring Capital
+  domain: gemspring.com
+  hq: Westport
+- name: Koch Investments Group
+  domain: kochig.com
+  hq: US
+- name: Revelstoke Capital Partners
+  domain: revelstokecapital.com
+  hq: Denver
+  sectors:
+  - Science & Health
+- name: OceanSound Partners
+  domain: oceansoundpartners.com
+  hq: US
+- name: Flexpoint Ford
+  domain: flexpointford.com
+  feed_url: https://flexpointford.com/feed
+  hq: Chicago
+- name: Nexus Capital Management
+  domain: nexuscapmgmt.com
+  hq: US
+  sectors:
+  - Consumer
+- name: DFW Capital Partners
+  domain: dfwcapital.com
+  hq: US
+- name: 3i
+  domain: 3i.com
+  hq: UK
+- name: Blue Wolf Capital
+  domain: bluewolfcapital.com
+  hq: US
+- name: Altaris Capital Partners
+  domain: altariscap.com
+  hq: New York
+  sectors:
+  - Science & Health
+- name: Marlin Equity Partners
+  domain: marlinequity.com
+  hq: US
+- name: Quad-C Management
+  domain: quadcmanagement.com
+  hq: US
+- name: Garnett Station Partners
+  domain: garnettstation.com
+  hq: US
+  sectors:
+  - Consumer
+- name: Sverica Capital Management
+  domain: svericacapital.com
+  hq: US
+- name: NexPhase Capital
+  domain: nexphasecapital.com
+  hq: US
+- name: Tailwind Capital
+  domain: tailwindcapital.com
+  hq: US
+- name: JMI Equity
+  domain: jmi.com
+  hq: Baltimore
+- name: M-One Capital
+  domain: m1capital.com
+  hq: US
+- name: WindRose Health Investors
+  domain: windroseinvestors.com
+  hq: New York
+- name: EagleTree Capital
+  domain: eagletreecapital.com
+  hq: US
+- name: Waud Capital Partners
+  domain: waudcapital.com
+  hq: US
+- name: Cressey & Company
+  domain: cressey.com
+  hq: US
+  sectors:
+  - Science & Health
+- name: Trinity Hunt Partners
+  domain: trinityhunt.com
+  hq: US
+- name: Rhône Group
+  domain: rhonegroup.com
+  hq: New York
+- name: Aurora Capital Partners
+  domain: auroracap.com
+  hq: Los Angeles
+- name: Peak Rock Capital
+  domain: peakrockcapital.com
+  hq: Austin
+- name: RedBird Capital Partners
+  domain: redbirdcap.com
+  hq: US
+- name: RoundTable Healthcare Partners
+  domain: roundtablehp.com
+  hq: US
+  sectors:
+  - Science & Health
+- name: Gauge Capital
+  domain: gaugecapital.com
+  hq: US
+- name: Incline Equity Partners
+  domain: inclineequity.com
+  hq: Pittsburgh
+- name: Tenex Capital Management
+  domain: tenexcapital.com
+  hq: US
+- name: Falfurrias Management Partners
+  domain: falfurrias.com
+  hq: US
+- name: AE Industrial Partners
+  domain: aeroequity.com
+  hq: US
+- name: Cornell Capital
+  domain: cornellcapllc.com
+  hq: US
+- name: Seidler Equity Partners
+  domain: seidlerequity.com
+  hq: US
+- name: GHO Capital Partners
+  domain: ghocapital.com
+  hq: London
+- name: Lovell Minnick Partners
+  domain: lovellminnick.com
+  hq: Radnor
+- name: Amulet Capital Partners
+  domain: amuletcapital.com
+  hq: US
+- name: Cortec Group
+  domain: cortecgroup.com
+  hq: New York
+- name: Main Post Partners
+  domain: mainpost.com
+  hq: US
+  sectors:
+  - Consumer
+- name: Crosspoint Capital Partners
+  domain: crosspointcapital.com
+  hq: US
+- name: Lee Equity Partners
+  domain: leeequity.com
+  hq: US
+- name: Investcorp
+  domain: investcorp.com
+  hq: Bahrain
+- name: BV Investment Partners
+  domain: bvlp.com
+  hq: Boston
+- name: Bertram Capital
+  domain: bertramcapital.com
+  hq: US
+- name: Cove Hill Partners
+  domain: covehill.com
+  hq: US
+- name: Bansk Group
+  domain: banskgroup.com
+  hq: US
+  sectors:
+  - Consumer
+- name: ArchiMed
+  domain: archimed.group
+  hq: Lyon
+- name: Novacap
+  domain: novacap.ca
+  hq: Montreal
+- name: MiddleGround Capital
+  domain: middleground.com
+  hq: US
+  sectors:
+  - Industrials
+- name: Brentwood Associates
+  domain: brentwoodassociates.com
+  hq: US
+- name: Assured Healthcare Partners
+  domain: assuredhp.com
+  hq: US
+- name: Frontenac
+  domain: frontenac.com
+  hq: US
+- name: ZMC
+  domain: zmcllc.com
+  hq: US
+- name: Sterling Investment Partners
+  domain: sterlinglp.com
+  hq: US
+- name: Spectrum Equity
+  domain: spectrumequity.com
+  hq: Boston
+- name: Vestar Capital Partners
+  domain: vestarcapital.com
+  hq: New York
+- name: Sunstone Partners
+  domain: sunstonepartners.com
+  hq: US
+- name: FFL Partners
+  domain: fflpartners.com
+  hq: US
+- name: Comvest Partners
+  domain: comvest.com
+  hq: US
+- name: Astorg
+  domain: astorg.com
+  hq: Luxembourg
+- name: The Jordan Company
+  domain: thejordancompany.com
+  hq: New York
+- name: Vitruvian Partners
+  domain: vitruvianpartners.com
+  hq: London
+- name: Eurazeo
+  domain: eurazeo.com
+  hq: Paris
+- name: PAI Partners
+  domain: paipartners.com
+  hq: Paris
+- name: Bregal Investments
+  domain: bregal.com
+  hq: New York
+- name: Patria Investments
+  domain: patria.com
+  hq: Sao Paulo
+- name: Waterland Private Equity Investments
+  domain: waterland.nl
+  hq: Bussum
+- name: Investindustrial
+  domain: investindustrial.com
+  hq: London
+- name: Triton Partners
+  domain: triton-partners.com
+  hq: Luxembourg
+- name: Five Arrows
+  domain: fivearrows.com
+  hq: Paris
+- name: IK Partners
+  domain: ikpartners.com
+  feed_url: https://ikpartners.com/feed
+  hq: London
+- name: Inflexion Private Equity Partners
+  domain: inflexion.com
+  hq: London
+- name: Oakley Capital Private Equity
+  domain: oakleycapital.com
+  hq: London
+- name: TDR Capital
+  domain: tdrcapital.com
+  feed_url: https://tdrcapital.com/feed/
+  hq: London
+- name: Altor Equity Partners
+  domain: altor.com
+  hq: Stockholm
+- name: Montagu Private Equity
+  domain: montagu.com
+  feed_url: https://montagu.com/feed
+  hq: London
+- name: Pacific Equity Partners
+  domain: pep.com.au
+  hq: Sydney
+- name: OrbiMed Advisors
+  domain: orbimed.com
+  hq: New York
+- name: CapVest
+  domain: capvest.com
+  hq: London
+- name: Kayne Anderson Capital Advisors
+  domain: kayneanderson.com
+  hq: Los Angeles
+- name: Keensight Capital
+  domain: keensightcapital.com
+  hq: Paris
+- name: Summa Equity
+  domain: summaequity.com
+  hq: Stockholm
+- name: Motive Partners
+  domain: motivepartners.com
+  hq: New York
+- name: Montefiore Investment
+  domain: montefiore.eu
+  hq: Paris
+- name: Avista Capital Partners
+  domain: avistacap.com
+  hq: New York
+- name: Paine Schwartz Partners
+  domain: paineschwartz.com
+  hq: New York
+- name: Georgian Partners
+  domain: georgian.io
+  hq: Toronto
+- name: Torquest Partners
+  domain: torquest.com
+  hq: Toronto
+- name: Sagard
+  domain: sagard.com
+  hq: Toronto
+- name: RUBICON Technology Partners
+  domain: rubicontp.com
+  hq: Boulder
+- name: Peppertree Capital Management
+  domain: peppertreecap.com
+  hq: Chagrin Falls
+- name: Brighton Park Capital
+  domain: brightonparkcapital.com
+  hq: Greenwich
+- name: Quadrant Private Equity
+  domain: quadrantpe.com.au
+  hq: Sydney
+- name: Levine Leichtman Capital Partners
+  domain: llcp.com
+  hq: Los Angeles
+- name: Norvestor
+  domain: norvestor.no
+  hq: Oslo
+- name: FSN Capital
+  domain: fsncapital.com
+  hq: Oslo
+- name: BGH Capital
+  domain: bghcapital.com
+  hq: Melbourne
+- name: Livingbridge
+  domain: livingbridge.com
+  hq: London
+- name: Ufenau Capital Partners
+  domain: ufenaucapital.com
+  hq: Schwyz
+- name: Forbion
+  domain: forbion.com
+  hq: Naarden
+- name: Rivean Capital
+  domain: riveancapital.com
+  hq: Amsterdam
+- name: SDC Capital Partners
+  domain: sdccapitalpartners.com
+  hq: New York

@@ -1,0 +1,170 @@
+"""RSS feed discovery and fetching for PE firm websites."""
+
+from __future__ import annotations
+
+import logging
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from datetime import datetime, timedelta, timezone
+
+import feedparser
+import requests
+
+from .models import Article, Firm
+
+logger = logging.getLogger(__name__)
+
+_FEED_PATHS = ["/feed", "/rss", "/feed/", "/rss/", "/news/feed", "/press/feed",
+               "/press-releases/feed", "/media/feed", "/blog/feed"]
+
+_TIMEOUT = 15
+_MAX_WORKERS = 10
+_USER_AGENT = "CarveOutMonitor/1.0 (+https://github.com/pwennew/Deal-Flow-Agent)"
+
+
+def discover_feed(firm: Firm) -> str | None:
+    """Try common RSS feed paths on a firm's domain. Returns feed URL or None."""
+    if not firm.domain:
+        return None
+
+    for path in _FEED_PATHS:
+        url = f"https://{firm.domain}{path}"
+        try:
+            resp = requests.get(url, timeout=_TIMEOUT, headers={"User-Agent": _USER_AGENT},
+                                allow_redirects=True)
+            if resp.status_code != 200:
+                continue
+            ct = resp.headers.get("Content-Type", "").lower()
+            if any(t in ct for t in ["xml", "rss", "atom"]):
+                parsed = feedparser.parse(resp.text)
+                if parsed.entries:
+                    logger.info("Discovered feed for %s: %s (%d entries)",
+                                firm.name, url, len(parsed.entries))
+                    return url
+        except requests.RequestException:
+            continue
+    return None
+
+
+def discover_feeds(firms: list[Firm]) -> dict[str, str | None]:
+    """Discover RSS feeds for all firms without a known feed_url.
+
+    Returns mapping of firm name → discovered feed URL (or None).
+    """
+    results: dict[str, str | None] = {}
+    to_discover = [f for f in firms if not f.feed_url and f.domain]
+
+    logger.info("Discovering feeds for %d firms (skipping %d with known feeds)",
+                len(to_discover), len(firms) - len(to_discover))
+
+    with ThreadPoolExecutor(max_workers=_MAX_WORKERS) as executor:
+        futures = {executor.submit(discover_feed, firm): firm for firm in to_discover}
+        for future in as_completed(futures):
+            firm = futures[future]
+            try:
+                url = future.result()
+                results[firm.name] = url
+                if not url:
+                    logger.debug("No feed found for %s", firm.name)
+            except Exception as e:
+                logger.warning("Error discovering feed for %s: %s", firm.name, e)
+                results[firm.name] = None
+
+    found = sum(1 for v in results.values() if v)
+    logger.info("Feed discovery complete: %d found, %d not found", found, len(results) - found)
+    return results
+
+
+def _fetch_single_feed(firm: Firm, lookback_hours: int | None = None) -> list[Article]:
+    """Fetch articles from a single firm's RSS feed."""
+    if not firm.feed_url:
+        return []
+
+    try:
+        resp = requests.get(firm.feed_url, timeout=_TIMEOUT,
+                            headers={"User-Agent": _USER_AGENT})
+        if resp.status_code != 200:
+            logger.warning("Feed fetch failed for %s (status %d)", firm.name, resp.status_code)
+            return []
+    except requests.RequestException as e:
+        logger.warning("Feed fetch error for %s: %s", firm.name, e)
+        return []
+
+    parsed = feedparser.parse(resp.text)
+    cutoff = None
+    if lookback_hours:
+        cutoff = datetime.now(timezone.utc) - timedelta(hours=lookback_hours)
+
+    articles = []
+    for entry in parsed.entries:
+        published = None
+        if hasattr(entry, "published_parsed") and entry.published_parsed:
+            published = datetime(*entry.published_parsed[:6], tzinfo=timezone.utc)
+        elif hasattr(entry, "updated_parsed") and entry.updated_parsed:
+            published = datetime(*entry.updated_parsed[:6], tzinfo=timezone.utc)
+
+        if cutoff and published and published < cutoff:
+            continue
+
+        title = entry.get("title", "").strip()
+        url = entry.get("link", "").strip()
+        summary = entry.get("summary", "").strip()[:500]
+
+        if not title or not url:
+            continue
+
+        articles.append(Article(
+            title=title,
+            url=url,
+            summary=summary,
+            published=published,
+            firm_name=firm.name,
+        ))
+
+    logger.debug("Fetched %d articles from %s feed", len(articles), firm.name)
+    return articles
+
+
+def fetch_articles(firms: list[Firm], lookback_hours: int = 24) -> list[Article]:
+    """Fetch articles from all firms with RSS feeds, filtered by lookback window."""
+    firms_with_feeds = [f for f in firms if f.feed_url]
+    logger.info("Fetching RSS feeds from %d firms (lookback=%dh)", len(firms_with_feeds), lookback_hours)
+
+    all_articles: list[Article] = []
+    with ThreadPoolExecutor(max_workers=_MAX_WORKERS) as executor:
+        futures = {
+            executor.submit(_fetch_single_feed, firm, lookback_hours): firm
+            for firm in firms_with_feeds
+        }
+        for future in as_completed(futures):
+            firm = futures[future]
+            try:
+                articles = future.result()
+                all_articles.extend(articles)
+            except Exception as e:
+                logger.warning("Error fetching feed for %s: %s", firm.name, e)
+
+    logger.info("Fetched %d articles from RSS feeds", len(all_articles))
+    return all_articles
+
+
+def fetch_all_articles(firms: list[Firm]) -> list[Article]:
+    """Fetch ALL available articles from feeds (no date filter). For backtest."""
+    firms_with_feeds = [f for f in firms if f.feed_url]
+    logger.info("Backtest: fetching ALL articles from %d feeds", len(firms_with_feeds))
+
+    all_articles: list[Article] = []
+    with ThreadPoolExecutor(max_workers=_MAX_WORKERS) as executor:
+        futures = {
+            executor.submit(_fetch_single_feed, firm, None): firm
+            for firm in firms_with_feeds
+        }
+        for future in as_completed(futures):
+            firm = futures[future]
+            try:
+                articles = future.result()
+                all_articles.extend(articles)
+            except Exception as e:
+                logger.warning("Error fetching feed for %s: %s", firm.name, e)
+
+    logger.info("Backtest: fetched %d total articles from feeds", len(all_articles))
+    return all_articles

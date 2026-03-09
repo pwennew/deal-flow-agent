@@ -1,38 +1,10 @@
-# Python
 __pycache__/
 *.py[cod]
-*$py.class
-*.so
-.Python
 *.egg-info/
 dist/
 build/
-
-# Virtual environments
-venv/
 .venv/
-env/
-
-# Cache
-.cache/
-
-# IDE
-.idea/
-.vscode/
-*.swp
-*.swo
-
-# Environment variables
+venv/
+*.log
 .env
-.env.local
-
-# OS
 .DS_Store
-Thumbs.db
-
-# Generated test exports
-step1_*.json
-step1_*.txt
-
-# RSS monitor output
-rss_monitor_output.csv

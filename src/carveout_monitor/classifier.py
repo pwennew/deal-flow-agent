@@ -13,7 +13,7 @@ from .models import Article, DealAlert, DealStage
 logger = logging.getLogger(__name__)
 
 _MODEL = "claude-haiku-4-5-20251001"
-_BATCH_SIZE = 10
+_BATCH_SIZE = 20
 _MAX_RETRIES = 3
 
 _SYSTEM_PROMPT = """You classify PE (private equity) deal announcements. For each article, determine if it describes a PE firm **signing or closing a carve-out deal**.
@@ -85,7 +85,7 @@ def classify_batch(articles: list[Article]) -> list[DealAlert]:
         try:
             response = client.messages.create(
                 model=_MODEL,
-                max_tokens=2048,
+                max_tokens=4096,
                 system=_SYSTEM_PROMPT,
                 messages=[
                     {"role": "user", "content": _FEW_SHOT_USER},

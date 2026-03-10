@@ -634,6 +634,7 @@ firms:
   hq: Palo Alto
   sectors:
   - Financial Services
+  press_url: https://hggc.com/news
 - name: L Catterton
   domain: lcatterton.com
   hq: Greenwich
@@ -726,6 +727,7 @@ firms:
   sectors:
   - Industrials
   press_url: https://sterling-group.com/news/
+  feed_url: https://sterling-group.com/feed
 - name: Wynnchurch Capital
   domain: wynnchurch.com
   hq: Rosemont

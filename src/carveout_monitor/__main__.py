@@ -126,14 +126,18 @@ def cmd_discover(args):
     logger.info("=== Discovering RSS feeds ===")
     new_feeds = discover_feeds(firms)
 
-    # Discover press pages for firms without feeds
+    # Discover press pages for firms without feeds (existing or newly-discovered)
     logger.info("=== Discovering press pages ===")
     press_pages: dict[str, str | None] = {}
-    for firm in firms:
-        if not firm.feed_url and firm.name not in new_feeds:
-            url = discover_press_page(firm)
-            if url:
-                press_pages[firm.name] = url
+    firms_needing_press = [
+        f for f in firms
+        if not f.feed_url and not new_feeds.get(f.name) and not f.press_url
+    ]
+    logger.info("Probing press pages for %d firms", len(firms_needing_press))
+    for firm in firms_needing_press:
+        url = discover_press_page(firm)
+        if url:
+            press_pages[firm.name] = url
 
     # Summary
     existing_feeds = sum(1 for f in firms if f.feed_url)

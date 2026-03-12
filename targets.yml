@@ -917,6 +917,7 @@ firms:
 - name: Leeds Equity Partners
   domain: leedsequity.com
   hq: US
+  press_url: https://leedsequity.com/news
 - name: Freeman Spogli
   domain: freemanspogli.com
   hq: US

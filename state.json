@@ -13824,7 +13824,43 @@
     "https://novacap.ca/cdn-cgi/l/email-protection#bad3d4dcd5fad4d5ccdbd9dbcad9d5c8ca94d9d5d7": {
       "hash": "3a96494f5a763f71",
       "first_seen": "2026-03-14T06:59:46.601453"
+    },
+    "https://eqtgroup.com/cdn-cgi/l/email-protection#45353720363605203431352437312b2037366b262a28": {
+      "hash": "13655ec36ed1fa98",
+      "first_seen": "2026-03-15T07:11:30.590304"
+    },
+    "https://cerberus.com/cdn-cgi/l/email-protection#3e535b5a575f7e5d5b4c5c5b4c4b4d105d5153": {
+      "hash": "8472356dd07a9b6d",
+      "first_seen": "2026-03-15T07:11:30.590316"
+    },
+    "https://cerberus.com/cdn-cgi/l/email-protection#ed808889848cad8e889f8f889f989ec38e8280": {
+      "hash": "95ae569e0b874a72",
+      "first_seen": "2026-03-15T07:11:30.590320"
+    },
+    "https://cerberus.com/cdn-cgi/l/email-protection#8de0e8e9e4eccdeee8ffefe8fff8fea3eee2e0": {
+      "hash": "b90f427a139829e7",
+      "first_seen": "2026-03-15T07:11:30.590323"
+    },
+    "https://franciscopartners.com/cdn-cgi/l/email-protection#a7d5c2c4d5d2ced3cec9c0e7c1d5c6c9c4ced4c4c8d7c6d5d3c9c2d5d489c4c8ca": {
+      "hash": "b1a3d7437ea446c8",
+      "first_seen": "2026-03-15T07:11:30.590328"
+    },
+    "https://littlejohnllc.com/cdn-cgi/l/email-protection#68021c07060f09041b07062804011c1c040d0207000604040b460b0705": {
+      "hash": "3fbd753f81856063",
+      "first_seen": "2026-03-15T07:11:30.590332"
+    },
+    "https://altamontcapital.com/cdn-cgi/l/email-protection#9be1faf8f3dbf5fae9e9faeff2edfefff8b5f8f4f6": {
+      "hash": "fa6c81c724779511",
+      "first_seen": "2026-03-15T07:11:30.590335"
+    },
+    "https://novacap.ca/cdn-cgi/l/email-protection#81efe7eec1efeef7e0e2e0f1e2eef3f1afe2eeec": {
+      "hash": "ad63c8b389bc24f3",
+      "first_seen": "2026-03-15T07:11:30.590341"
+    },
+    "https://novacap.ca/cdn-cgi/l/email-protection#5930373f361937362f383a38293a362b29773a3634": {
+      "hash": "77835b9994b011d0",
+      "first_seen": "2026-03-15T07:11:30.590344"
     }
   },
-  "last_run": "2026-03-14T06:59:46.601454"
+  "last_run": "2026-03-15T07:11:30.590347"
 }

@@ -39,11 +39,13 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install -e .
 
-      - name: Run RSS Monitor
+      - name: Run Carve-Out Monitor
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
-          ARGS=""
+          ARGS="scan"
           if [ "${{ github.event.inputs.no_notion }}" == "true" ]; then
             ARGS="$ARGS --skip-notion"
           fi
@@ -51,7 +53,7 @@ jobs:
             ARGS="$ARGS --hours ${{ github.event.inputs.hours }}"
           fi
 
-          python rss_monitor_v2.py $ARGS 2>&1 | tee output.log
+          python -m carveout_monitor $ARGS 2>&1 | tee output.log
 
           # Summary for job
           echo "## RSS Monitor Run Summary" >> $GITHUB_STEP_SUMMARY

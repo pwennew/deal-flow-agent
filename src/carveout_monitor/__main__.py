@@ -13,7 +13,7 @@ from .models import load_firms, DealAlert
 from .feeds import fetch_articles, fetch_all_articles, discover_feeds
 from .scraper import scrape_articles, discover_press_page
 from .classifier import classify_articles
-from .hubspot import HubSpotClient
+from .notion import NotionClient
 from .state import StateManager
 
 logger = logging.getLogger("carveout_monitor")
@@ -28,7 +28,7 @@ def _setup_logging():
 
 
 def cmd_scan(args):
-    """Daily scan: fetch → dedup → classify → HubSpot."""
+    """Daily scan: fetch → dedup → classify → Notion."""
     start = time.time()
     firms = load_firms(args.targets)
     logger.info("Loaded %d target firms", len(firms))
@@ -95,17 +95,17 @@ def cmd_scan(args):
                      stage, alert.article.title[:80],
                      alert.target_company, alert.seller, alert.confidence)
 
-    # Step 7: Write to HubSpot
-    if not args.skip_hubspot and carveouts:
+    # Step 7: Write to Notion
+    if not args.skip_notion and carveouts:
         t0 = time.time()
-        client = HubSpotClient()
+        client = NotionClient()
         if client.configured:
             stats = client.write_alerts(carveouts)
-            logger.info("[%.1fs] HubSpot: %s", time.time() - t0, stats)
+            logger.info("[%.1fs] Notion: %s", time.time() - t0, stats)
         else:
-            logger.warning("HubSpot not configured — skipping")
-    elif args.skip_hubspot:
-        logger.info("HubSpot output skipped (--skip-hubspot flag)")
+            logger.warning("Notion not configured — skipping")
+    elif args.skip_notion:
+        logger.info("Notion output skipped (--skip-notion flag)")
 
     # Step 8: Mark all processed articles as seen
     for a in new_articles:
@@ -250,7 +250,9 @@ def main():
     # scan
     scan_p = sub.add_parser("scan", help="Daily scan for new carve-out announcements")
     scan_p.add_argument("--hours", type=int, default=24, help="Lookback hours (default: 24)")
-    scan_p.add_argument("--skip-hubspot", action="store_true", help="Skip HubSpot output")
+    scan_p.add_argument("--skip-notion", action="store_true", help="Skip Notion output")
+    scan_p.add_argument("--skip-hubspot", action="store_true", dest="skip_notion",
+                        help=argparse.SUPPRESS)  # backwards compat alias
 
     # discover
     disc_p = sub.add_parser("discover", help="Discover RSS feeds and press pages for all firms")
@@ -258,7 +260,7 @@ def main():
                         help="Update targets.yml with discovered URLs")
 
     # backtest
-    sub.add_parser("backtest", help="Backtest: classify all available articles (no HubSpot)")
+    sub.add_parser("backtest", help="Backtest: classify all available articles (no Notion)")
 
     args = parser.parse_args()
     _setup_logging()

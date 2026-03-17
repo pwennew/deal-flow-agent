@@ -6,8 +6,8 @@ on:
     - cron: '0 6 * * *'
   workflow_dispatch:
     inputs:
-      no_hubspot:
-        description: 'Skip HubSpot integration'
+      no_notion:
+        description: 'Skip Notion integration'
         required: false
         type: boolean
         default: false
@@ -18,7 +18,8 @@ on:
         default: 24
 
 env:
-  HUBSPOT_API_KEY: ${{ secrets.HUBSPOT_API_KEY }}
+  NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+  NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
 
 jobs:
   run-rss-monitor:
@@ -43,8 +44,8 @@ jobs:
       - name: Run RSS Monitor
         run: |
           ARGS=""
-          if [ "${{ github.event.inputs.no_hubspot }}" == "true" ]; then
-            ARGS="$ARGS --no-hubspot"
+          if [ "${{ github.event.inputs.no_notion }}" == "true" ]; then
+            ARGS="$ARGS --skip-notion"
           fi
           if [ -n "${{ github.event.inputs.hours }}" ]; then
             ARGS="$ARGS --hours ${{ github.event.inputs.hours }}"
@@ -56,7 +57,7 @@ jobs:
           echo "## RSS Monitor Run Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
-          grep -E "^FINAL:|^HubSpot:" output.log >> $GITHUB_STEP_SUMMARY || echo "Run completed" >> $GITHUB_STEP_SUMMARY
+          grep -E "^FINAL:|Notion:" output.log >> $GITHUB_STEP_SUMMARY || echo "Run completed" >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
 
       - name: Upload logs

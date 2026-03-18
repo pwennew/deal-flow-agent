@@ -80,8 +80,8 @@ class NotionClient:
     """Creates rows in a Notion database for carve-out alerts."""
 
     def __init__(self):
-        self._api_key = os.environ.get("NOTION_API_KEY", "")
-        self._database_id = os.environ.get("NOTION_DATABASE_ID", "")
+        self._api_key = os.environ.get("NOTION_API", "")
+        self._database_id = os.environ.get("NOTION_DB_ID", "")
 
     @property
     def configured(self) -> bool:

@@ -313,11 +313,12 @@ firms:
   - Science & Health
   - Financial Services
 - name: TJC
-  domain: thejonathanclub.com
+  domain: tjclp.com
   hq: US
   sectors:
   - Services
   - Science & Health
+  press_url: https://tjclp.com/media/
   - Industrials
 - name: Ardian
   domain: ardian.com
@@ -327,11 +328,12 @@ firms:
   - Services
   press_url: https://www.ardian.com/news-insights/press-releases
 - name: Harvest Partners
-  domain: harvest.com
+  domain: harvestpartners.com
   hq: New York
   sectors:
   - Services
   - Science & Health
+  press_url: https://harvestpartners.com/news/
   - Financial Services
 - name: Cerberus Capital Management
   domain: cerberus.com
@@ -415,11 +417,12 @@ firms:
   - Consumer
   feed_url: https://aeainvestors.com/feed
 - name: Nautic Partners
-  domain: nauticpartners.com
+  domain: nautic.com
   hq: Providence
   sectors:
   - Services
   - Science & Health
+  press_url: https://nautic.com/news/
 - name: Charlesbank Capital Partners
   domain: charlesbank.com
   hq: Boston
@@ -540,10 +543,11 @@ firms:
   - Industrials
   press_url: https://oneequity.com/news
 - name: Welsh Carson Anderson & Stowe
-  domain: welshcarson.com
+  domain: wcas.com
   hq: New York
   sectors:
   - Science & Health
+  press_url: https://wcas.com/news-perspectives/
 - name: TSG Consumer Partners
   domain: tsgconsumer.com
   hq: Larkspur
@@ -555,6 +559,7 @@ firms:
   hq: US
   sectors:
   - Consumer
+  press_url: https://www.kslcapital.com/news
 - name: Altas Partners
   domain: atlaspartners.com
   hq: Toronto
@@ -787,10 +792,11 @@ firms:
   hq: US
   feed_url: https://wellspringcapital.com/feed
 - name: Monomoy Capital Partners
-  domain: monomoy.com
+  domain: mcpfunds.com
   hq: US
   sectors:
   - Industrials
+  press_url: https://www.mcpfunds.com/media-center/
 - name: Stellex Capital Management
   domain: stellexcapital.com
   hq: US
@@ -974,6 +980,7 @@ firms:
 - name: 3i
   domain: 3i.com
   hq: UK
+  press_url: https://www.3i.com/media/news/
 - name: Blue Wolf Capital
   domain: bluewolfcapital.com
   hq: US
@@ -1189,6 +1196,7 @@ firms:
 - name: Eurazeo
   domain: eurazeo.com
   hq: Paris
+  press_url: https://en.newsroom.eurazeo.com/
 - name: PAI Partners
   domain: paipartners.com
   hq: Paris
@@ -1220,6 +1228,7 @@ firms:
 - name: Inflexion Private Equity Partners
   domain: inflexion.com
   hq: London
+  press_url: https://www.inflexion.com/news-and-insights/
 - name: Oakley Capital Private Equity
   domain: oakleycapital.com
   hq: London

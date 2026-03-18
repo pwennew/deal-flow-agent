@@ -318,8 +318,8 @@ firms:
   sectors:
   - Services
   - Science & Health
-  press_url: https://tjclp.com/media/
   - Industrials
+  press_url: https://tjclp.com/media/
 - name: Ardian
   domain: ardian.com
   hq: Paris
@@ -333,8 +333,8 @@ firms:
   sectors:
   - Services
   - Science & Health
-  press_url: https://harvestpartners.com/news/
   - Financial Services
+  press_url: https://harvestpartners.com/news/
 - name: Cerberus Capital Management
   domain: cerberus.com
   hq: New York

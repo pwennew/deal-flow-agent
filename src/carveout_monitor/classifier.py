@@ -29,9 +29,14 @@ EXCLUDE (these are NOT carve-outs):
 - Secondary buyout: PE firm buys a company from ANOTHER PE firm (PE-to-PE)
 - Take-private: PE firm acquires an entire publicly-listed company
 - Platform acquisition: PE portfolio company acquires another company (bolt-on)
+- Portfolio exit: PE firm SELLS or divests a portfolio company (the PE firm is the seller, not the buyer)
+- Minority investment: PE firm takes a minority stake or makes a growth investment (not acquiring a division)
+- Whole-company acquisition: PE firm acquires an entire standalone company (not a division carved out of a parent)
 - Fund news: PE firm raises a new fund, closes a fund, hires staff
 - IPO: portfolio company goes public
 - Any deal where the seller is another PE/financial sponsor
+
+KEY TEST: There must be a **corporate parent** that continues to exist after selling off a **division or business unit**. If the seller is a PE firm, or if the target is a standalone company (not a division), it is NOT a carve-out.
 
 For each article, respond with a JSON object:
 {
@@ -55,6 +60,9 @@ _FEW_SHOT_USER = """Classify these articles:
 3. "Apollo to buy Shutterfly from Bain Capital in $2.7B deal"
 4. "Thoma Bravo agrees to take Proofpoint private in $12.3B deal"
 5. "Blackstone raises $30.4 billion for largest-ever buyout fund"
+6. "Nautic Partners Announces Sale of Property Management Company AKAM"
+7. "Eurazeo Invests in Groupe Pierre Schmidt Through a Sponsorless Transaction"
+8. "GovCIO, a Welsh Carson portfolio company, to Acquire SoldierPoint Digital Health"
 """
 
 _FEW_SHOT_ASSISTANT = """[
@@ -62,7 +70,10 @@ _FEW_SHOT_ASSISTANT = """[
   {"is_carveout": true, "stage": "closing", "target_company": "tea business", "seller": "Unilever", "confidence": 92, "reasoning": "PE firm completed acquisition of a business unit from a corporate parent — carve-out closing."},
   {"is_carveout": false, "stage": null, "target_company": "", "seller": "", "confidence": 90, "reasoning": "Seller is Bain Capital (another PE firm) — this is a secondary buyout, not a carve-out."},
   {"is_carveout": false, "stage": null, "target_company": "", "seller": "", "confidence": 95, "reasoning": "Taking a whole public company private — this is a take-private, not a carve-out."},
-  {"is_carveout": false, "stage": null, "target_company": "", "seller": "", "confidence": 98, "reasoning": "Fund news / fundraising — not a deal announcement at all."}
+  {"is_carveout": false, "stage": null, "target_company": "", "seller": "", "confidence": 98, "reasoning": "Fund news / fundraising — not a deal announcement at all."},
+  {"is_carveout": false, "stage": null, "target_company": "", "seller": "", "confidence": 92, "reasoning": "Nautic Partners is the SELLER (a PE firm exiting a portfolio company) — this is a portfolio exit, not a carve-out."},
+  {"is_carveout": false, "stage": null, "target_company": "", "seller": "", "confidence": 88, "reasoning": "Eurazeo is making a minority/growth investment, not acquiring a division from a corporate parent — not a carve-out."},
+  {"is_carveout": false, "stage": null, "target_company": "", "seller": "", "confidence": 85, "reasoning": "A PE portfolio company (GovCIO) acquiring a standalone company — this is a bolt-on/platform acquisition, not a carve-out from a corporate parent."}
 ]"""
 
 

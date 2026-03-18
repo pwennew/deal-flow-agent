@@ -2,20 +2,19 @@ name: Deal Flow Agent
 
 on:
   schedule:
-    # Run at 6 AM UTC daily (1 AM EST / 6 AM GMT)
-    - cron: '0 6 * * *'
+    - cron: '0 6 * * *'   # Daily at 06:00 UTC
   workflow_dispatch:
     inputs:
-      no_notion:
+      hours:
+        description: 'Lookback hours'
+        default: '24'
+      skip_notion:
         description: 'Skip Notion integration'
-        required: false
         type: boolean
         default: false
-      hours:
-        description: 'Lookback hours (default: 24)'
-        required: false
-        type: number
-        default: 24
+
+permissions:
+  contents: write
 
 env:
   NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
@@ -24,7 +23,7 @@ env:
 jobs:
   run-rss-monitor:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 60
 
     steps:
       - name: Checkout repository
@@ -39,33 +38,40 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -e .
+          pip install -r requirements.txt
+          pip install playwright && playwright install chromium --with-deps
 
       - name: Run Carve-Out Monitor
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          PYTHONPATH: src
         run: |
-          ARGS="scan"
-          if [ "${{ github.event.inputs.no_notion }}" == "true" ]; then
+          ARGS="scan --hours ${{ inputs.hours || '24' }}"
+          if [ "${{ inputs.skip_notion }}" = "true" ]; then
             ARGS="$ARGS --skip-notion"
           fi
-          if [ -n "${{ github.event.inputs.hours }}" ]; then
-            ARGS="$ARGS --hours ${{ github.event.inputs.hours }}"
-          fi
-
           python -m carveout_monitor $ARGS 2>&1 | tee output.log
 
           # Summary for job
-          echo "## RSS Monitor Run Summary" >> $GITHUB_STEP_SUMMARY
+          echo "## Carve-Out Monitor Run" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
-          grep -E "^FINAL:|Notion:" output.log >> $GITHUB_STEP_SUMMARY || echo "Run completed" >> $GITHUB_STEP_SUMMARY
-          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          grep -E "Pipeline complete|Notion:|Carve-outs found" output.log >> $GITHUB_STEP_SUMMARY || echo "Run completed" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+
+      - name: Commit state
+        run: |
+          git config user.name "carveout-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add -f state.json targets.yml 2>/dev/null || true
+          git diff --cached --quiet || git commit -m "Update state [skip ci]"
+          git pull --rebase
+          git push
 
       - name: Upload logs
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: rss-monitor-logs
+          name: scan-log-${{ github.run_number }}
           path: output.log
-          retention-days: 7
+          retention-days: 30

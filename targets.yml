@@ -149,6 +149,7 @@ firms:
   - Industrials
   - Consumer
   press_url: https://clearlake.com/news
+  feed_url: https://clearlake.com/rss/news-and-announcements
 - name: Stone Point Capital
   domain: stonepoint.com
   hq: Greenwich
@@ -320,6 +321,7 @@ firms:
   - Science & Health
   - Industrials
   press_url: https://tjclp.com/media/
+  feed_url: https://tjclp.com/media/feed
 - name: Ardian
   domain: ardian.com
   hq: Paris
@@ -423,6 +425,7 @@ firms:
   - Services
   - Science & Health
   press_url: https://nautic.com/news/
+  feed_url: https://nautic.com/news/feed/
 - name: Charlesbank Capital Partners
   domain: charlesbank.com
   hq: Boston
@@ -554,6 +557,7 @@ firms:
   sectors:
   - Consumer
   press_url: https://tsgconsumer.com/news
+  feed_url: https://www.tsgconsumer.com/news?format=rss
 - name: KSL Capital Partners
   domain: kslcapital.com
   hq: US
@@ -1027,6 +1031,7 @@ firms:
 - name: EagleTree Capital
   domain: eagletreecapital.com
   hq: US
+  feed_url: https://www.eagletree.com/feed/
 - name: Waud Capital Partners
   domain: waudcapital.com
   hq: US
@@ -1197,6 +1202,7 @@ firms:
   domain: eurazeo.com
   hq: Paris
   press_url: https://en.newsroom.eurazeo.com/
+  feed_url: https://en.newsroom.eurazeo.com/feed
 - name: PAI Partners
   domain: paipartners.com
   hq: Paris
@@ -1218,6 +1224,7 @@ firms:
   domain: triton-partners.com
   hq: Luxembourg
   press_url: https://triton-partners.com/media
+  feed_url: https://www.triton-partners.com/news/rss
 - name: Five Arrows
   domain: fivearrows.com
   hq: Paris
@@ -1256,6 +1263,7 @@ firms:
   domain: capvest.com
   hq: London
   press_url: https://capvest.com/news
+  feed_url: https://www.capvest.com/news?format=rss
 - name: Kayne Anderson Capital Advisors
   domain: kayneanderson.com
   hq: Los Angeles
@@ -1264,6 +1272,7 @@ firms:
   domain: keensightcapital.com
   hq: Paris
   press_url: https://keensightcapital.com/news
+  feed_url: https://keensight.com/feed/
 - name: Summa Equity
   domain: summaequity.com
   hq: Stockholm

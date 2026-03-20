@@ -6,6 +6,9 @@ import logging
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timedelta, timezone
 
+import re
+from urllib.parse import urljoin, urlparse
+
 import feedparser
 import requests
 
@@ -13,35 +16,98 @@ from .models import Article, Firm
 
 logger = logging.getLogger(__name__)
 
-_FEED_PATHS = ["/feed", "/rss", "/feed/", "/rss/", "/news/feed", "/press/feed",
-               "/press-releases/feed", "/media/feed", "/blog/feed"]
+_FEED_PATHS = [
+    "/feed", "/rss", "/feed/", "/rss/",
+    "/news/feed", "/news/rss", "/press/feed", "/press/rss",
+    "/press-releases/feed", "/press-releases/rss",
+    "/media/feed", "/media/rss",
+    "/newsroom/feed", "/insights/feed",
+    "/news-and-insights/feed", "/news-views/feed",
+    "/blog/feed",
+]
 
 _TIMEOUT = 15
 _MAX_WORKERS = 10
 _USER_AGENT = "CarveOutMonitor/1.0 (+https://github.com/pwennew/Deal-Flow-Agent)"
 
+# Regex to find <link rel="alternate" type="application/rss+xml" href="..."> in HTML
+_LINK_RE = re.compile(
+    r'<link[^>]+type=["\']application/(rss|atom)\+xml["\'][^>]+href=["\']([^"\']+)["\']',
+    re.IGNORECASE,
+)
+
+
+def _try_feed_url(url: str) -> tuple[str, int] | None:
+    """Try a URL as an RSS feed. Returns (url, entry_count) or None."""
+    try:
+        resp = requests.get(url, timeout=_TIMEOUT, headers={"User-Agent": _USER_AGENT},
+                            allow_redirects=True)
+        if resp.status_code != 200:
+            return None
+        ct = resp.headers.get("Content-Type", "").lower()
+        if any(t in ct for t in ["xml", "rss", "atom"]):
+            parsed = feedparser.parse(resp.text)
+            if parsed.entries:
+                return (url, len(parsed.entries))
+    except requests.RequestException:
+        pass
+    return None
+
+
+def _discover_from_html(page_url: str) -> str | None:
+    """Fetch a page and look for RSS <link> tags in the HTML."""
+    try:
+        resp = requests.get(page_url, timeout=_TIMEOUT,
+                            headers={"User-Agent": _USER_AGENT}, allow_redirects=True)
+        if resp.status_code != 200:
+            return None
+        for match in _LINK_RE.finditer(resp.text[:50_000]):  # Only scan head area
+            href = match.group(2)
+            feed_url = urljoin(page_url, href)
+            result = _try_feed_url(feed_url)
+            if result:
+                return result[0]
+    except requests.RequestException:
+        pass
+    return None
+
 
 def discover_feed(firm: Firm) -> str | None:
-    """Try common RSS feed paths on a firm's domain. Returns feed URL or None."""
+    """Discover RSS feed for a firm using multiple strategies."""
     if not firm.domain:
         return None
 
+    # Strategy 1: Check HTML <link> tags on homepage
+    homepage = f"https://{firm.domain}"
+    found = _discover_from_html(homepage)
+    if found:
+        logger.info("Discovered feed for %s via HTML link: %s", firm.name, found)
+        return found
+
+    # Strategy 2: Check HTML <link> tags on press page
+    if firm.press_url:
+        found = _discover_from_html(firm.press_url)
+        if found:
+            logger.info("Discovered feed for %s via press page link: %s", firm.name, found)
+            return found
+
+        # Strategy 3: Try press_url + /feed (WordPress convention)
+        press_feed = firm.press_url.rstrip("/") + "/feed"
+        result = _try_feed_url(press_feed)
+        if result:
+            logger.info("Discovered feed for %s via press URL + /feed: %s (%d entries)",
+                        firm.name, result[0], result[1])
+            return result[0]
+
+    # Strategy 4: Brute-force common feed paths on domain
     for path in _FEED_PATHS:
         url = f"https://{firm.domain}{path}"
-        try:
-            resp = requests.get(url, timeout=_TIMEOUT, headers={"User-Agent": _USER_AGENT},
-                                allow_redirects=True)
-            if resp.status_code != 200:
-                continue
-            ct = resp.headers.get("Content-Type", "").lower()
-            if any(t in ct for t in ["xml", "rss", "atom"]):
-                parsed = feedparser.parse(resp.text)
-                if parsed.entries:
-                    logger.info("Discovered feed for %s: %s (%d entries)",
-                                firm.name, url, len(parsed.entries))
-                    return url
-        except requests.RequestException:
-            continue
+        result = _try_feed_url(url)
+        if result:
+            logger.info("Discovered feed for %s via path probe: %s (%d entries)",
+                        firm.name, result[0], result[1])
+            return result[0]
+
     return None
 
 

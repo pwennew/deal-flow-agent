@@ -10,7 +10,7 @@ import yaml
 from pathlib import Path
 
 from .models import load_firms, DealAlert
-from .feeds import fetch_articles, fetch_all_articles, discover_feeds
+from .feeds import fetch_articles, fetch_all_articles, fetch_core_feeds, discover_feeds
 from .scraper import scrape_articles, discover_press_page
 from .classifier import classify_articles
 from .notion import NotionClient
@@ -33,10 +33,16 @@ def cmd_scan(args):
     firms = load_firms(args.targets)
     logger.info("Loaded %d target firms", len(firms))
 
-    # Step 1: Fetch articles from RSS feeds
+    # Step 1a: Fetch articles from firm-specific RSS feeds
     t0 = time.time()
     articles = fetch_articles(firms, lookback_hours=args.hours)
     logger.info("[%.1fs] RSS fetch: %d articles", time.time() - t0, len(articles))
+
+    # Step 1b: Fetch articles from core feeds (Google News, press wires)
+    t0 = time.time()
+    core_articles = fetch_core_feeds(lookback_hours=args.hours)
+    articles.extend(core_articles)
+    logger.info("[%.1fs] Core feeds: %d articles", time.time() - t0, len(core_articles))
 
     # Step 2: Scrape press pages for firms without RSS
     t0 = time.time()

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "last_run": "2026-03-22T06:52:17.111303",
+  "last_run": "2026-03-23T07:12:00.560461",
   "seen": {
     "https://hf.com/blackstone-carlyle-and-hellman-friedman-win-pe-hubs-overall-deal-of-the-year-award-for-medlines-7-2bn-ipo/": {
       "hash": "7637d95da2db2bfc",
@@ -15157,6 +15157,46 @@
     "https://novacap.ca/cdn-cgi/l/email-protection#f990979f96b997968f989a98899a968b89d79a9694": {
       "hash": "94ddfaf7a2ee4f8a",
       "first_seen": "2026-03-22T06:52:17.111301"
+    },
+    "https://eqtgroup.com/cdn-cgi/l/email-protection#91e1e3f4e2e2d1f4e0e5e1f0e3e5fff4e3e2bff2fefc": {
+      "hash": "a7daa0451080d7b6",
+      "first_seen": "2026-03-23T07:12:00.560407"
+    },
+    "https://cerberus.com/cdn-cgi/l/email-protection#254840414c446546405747405750560b464a48": {
+      "hash": "c6c0f07e096e99e7",
+      "first_seen": "2026-03-23T07:12:00.560419"
+    },
+    "https://cerberus.com/cdn-cgi/l/email-protection#bfd2dadbd6deffdcdacddddacdcacc91dcd0d2": {
+      "hash": "dee61bb38444e9c2",
+      "first_seen": "2026-03-23T07:12:00.560425"
+    },
+    "https://cerberus.com/cdn-cgi/l/email-protection#a7cac2c3cec6e7c4c2d5c5c2d5d2d489c4c8ca": {
+      "hash": "2af716e1b9d9b58d",
+      "first_seen": "2026-03-23T07:12:00.560429"
+    },
+    "https://franciscopartners.com/cdn-cgi/l/email-protection#d6a4b3b5a4a3bfa2bfb8b196b0a4b7b8b5bfa5b5b9a6b7a4a2b8b3a4a5f8b5b9bb": {
+      "hash": "2651675fc701a25a",
+      "first_seen": "2026-03-23T07:12:00.560434"
+    },
+    "https://littlejohnllc.com/cdn-cgi/l/email-protection#046e706b6a636568776b6a44686d707068616e6b6c6a6868672a676b69": {
+      "hash": "cb437ef43835760c",
+      "first_seen": "2026-03-23T07:12:00.560438"
+    },
+    "https://altamontcapital.com/cdn-cgi/l/email-protection#5b213a38331b353a29293a2f322d3e3f3875383436": {
+      "hash": "b1e5ffdae50e460f",
+      "first_seen": "2026-03-23T07:12:00.560442"
+    },
+    "https://novacap.ca/cdn-cgi/l/email-protection#7d131b123d13120b1c1e1c0d1e120f0d531e1210": {
+      "hash": "8cee5710181c55af",
+      "first_seen": "2026-03-23T07:12:00.560448"
+    },
+    "https://novacap.ca/cdn-cgi/l/email-protection#ec85828a83ac82839a8d8f8d9c8f839e9cc28f8381": {
+      "hash": "9b065b9e229b4ac0",
+      "first_seen": "2026-03-23T07:12:00.560453"
+    },
+    "https://www.spectrumequity.com/cookie-policy": {
+      "hash": "19f6c5c2b3daafba",
+      "first_seen": "2026-03-23T07:12:00.560457"
     }
   }
 }

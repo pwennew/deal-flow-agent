@@ -297,12 +297,12 @@ def scrape_firm(firm: Firm) -> list[Article]:
 
 
 def scrape_articles(firms: list[Firm], lookback_hours: int = 24) -> list[Article]:
-    """Scrape articles from firms without RSS feeds.
+    """Scrape articles from all firms with a press page or domain.
 
-    Includes firms with known press_url AND firms with just a domain
-    (press page will be auto-discovered during scraping).
+    Runs independently of RSS — both sources are always used. Duplicate URLs
+    between RSS and press page are handled by the URL dedup step in the pipeline.
     """
-    to_scrape = [f for f in firms if not f.feed_url and (f.press_url or f.domain)]
+    to_scrape = [f for f in firms if f.press_url or f.domain]
     if not to_scrape:
         return []
 

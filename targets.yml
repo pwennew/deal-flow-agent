@@ -11,6 +11,7 @@ firms:
   - Industrials
   - Financial Services
   - Consumer
+  press_url: https://blackstone.com/news
 - name: KKR
   domain: kkr.com
   hq: New York
@@ -49,6 +50,7 @@ firms:
   sectors:
   - TMT
   - Services
+  press_url: https://hf.com/news
 - name: Bain Capital
   domain: baincapital.com
   hq: Boston
@@ -66,6 +68,7 @@ firms:
   sectors:
   - TMT
   feed_url: https://vistaequitypartners.com/feed
+  press_url: https://vistaequitypartners.com/news
 - name: The Carlyle Group
   domain: carlyle.com
   hq: Washington DC
@@ -83,6 +86,7 @@ firms:
   - TMT
   - Consumer
   feed_url: https://silverlake.com/feed
+  press_url: https://silverlake.com/news
 - name: Clayton Dubilier & Rice
   domain: cdr-inc.com
   hq: New York
@@ -122,6 +126,7 @@ firms:
   - Energy & Materials
   - Industrials
   - Financial Services
+  press_url: https://warburgpincus.com/news
 - name: Brookfield Asset Management
   domain: brookfield.com
   hq: US
@@ -141,6 +146,7 @@ firms:
   - Science & Health
   - Industrials
   - Consumer
+  press_url: https://leonardgreen.com/news
 - name: Clearlake Capital Group
   domain: clearlake.com
   hq: Santa Monica
@@ -174,6 +180,7 @@ firms:
   - Services
   - Industrials
   - Consumer
+  press_url: https://platinumequity.com/news
 - name: Veritas Capital
   domain: veritascapital.com
   hq: New York
@@ -200,6 +207,7 @@ firms:
   sectors:
   - TMT
   feed_url: https://insightpartners.com/feed
+  press_url: https://insightpartners.com/newsroom
 - name: Genstar Capital
   domain: genstarcapital.com
   feed_url: https://genstarcapital.com/feed
@@ -217,6 +225,7 @@ firms:
   - Science & Health
   - Energy & Materials
   - Industrials
+  press_url: https://higcapital.com/news
 - name: Francisco Partners
   domain: franciscopartners.com
   hq: US
@@ -288,6 +297,7 @@ firms:
   sectors:
   - Services
   - Science & Health
+  press_url: https://newmountaincapital.com/news
 - name: CVC Capital Partners
   domain: cvc.com
   hq: Luxembourg
@@ -381,6 +391,7 @@ firms:
   - TMT
   - Services
   - Industrials
+  press_url: https://berkshirepartners.com/press
 - name: Apax Partners
   domain: apax.com
   hq: London
@@ -404,6 +415,7 @@ firms:
   - Services
   - Science & Health
   - Consumer
+  press_url: https://kohlberg.com/news
 - name: American Industrial Partners
   domain: americanindustrial.com
   hq: New York
@@ -418,6 +430,7 @@ firms:
   - Industrials
   - Consumer
   feed_url: https://aeainvestors.com/feed
+  press_url: https://aeainvestors.com/news
 - name: Nautic Partners
   domain: nautic.com
   hq: Providence
@@ -440,6 +453,7 @@ firms:
   sectors:
   - TMT
   feed_url: https://stgpartners.com/feed
+  press_url: https://stgpartners.com/news
 - name: Patient Square Capital
   domain: patientsquarecapital.com
   hq: Menlo Park
@@ -496,6 +510,7 @@ firms:
   - Science & Health
   - Consumer
   feed_url: https://towerbrook.com/feed
+  press_url: https://towerbrook.com/news
 - name: Reverence Capital Partners
   domain: reverencecapital.com
   hq: New York
@@ -538,6 +553,7 @@ firms:
   domain: goldengatecap.com
   hq: US
   feed_url: https://goldengatecap.com/feed
+  press_url: https://goldengatecap.com/news
 - name: One Equity Partners
   domain: oneequity.com
   hq: New York
@@ -613,6 +629,7 @@ firms:
   sectors:
   - Services
   feed_url: https://greenbriarequity.com/feed
+  press_url: https://greenbriarequity.com/news
 - name: Olympus Partners
   domain: olympuspartners.com
   hq: US
@@ -632,6 +649,7 @@ firms:
   sectors:
   - Energy & Materials
   - Industrials
+  press_url: https://skcapitalpartners.com/news
 - name: Atlas Holdings
   domain: atlasholdingsllc.com
   hq: Greenwich
@@ -668,6 +686,7 @@ firms:
   sectors:
   - Industrials
   feed_url: https://millpoint.com/feed
+  press_url: https://millpoint.com/news
 - name: Summit Partners
   domain: summitpartners.com
   hq: Boston
@@ -698,6 +717,7 @@ firms:
   sectors:
   - TMT
   feed_url: https://accel-kkr.com/feed
+  press_url: https://accel-kkr.com/news
 - name: One Rock Capital Partners
   domain: onerockcapital.com
   hq: US
@@ -715,10 +735,12 @@ firms:
   domain: warrenequity.com
   hq: Jacksonville
   feed_url: https://warrenequity.com/media/feed
+  press_url: https://warrenequity.com/news
 - name: Alpine Investors
   domain: alpineinvestors.com
   feed_url: https://alpineinvestors.com/feed
   hq: San Francisco
+  press_url: https://alpineinvestors.com/news
 - name: Alvarez & Marsal Capital Partners
   domain: amcapitalpartners.com
   hq: Greenwich
@@ -761,6 +783,7 @@ firms:
   domain: jllpartners.com
   hq: US
   feed_url: https://jllpartners.com/news/feed
+  press_url: https://jllpartners.com/news
 - name: J.F. Lehman & Company
   domain: jflpartners.com
   hq: New York
@@ -781,6 +804,7 @@ firms:
   hq: London
   sectors:
   - Science & Health
+  press_url: https://cinven.com/news-insights
 - name: Kelso & Company
   domain: kelso.com
   hq: New York
@@ -812,28 +836,33 @@ firms:
   sectors:
   - Industrials
   feed_url: https://sentinelpartners.com/feed
+  press_url: https://sentinelpartners.com/news
 - name: Kinderhook Industries
   domain: kinderhook.com
   hq: New York
   sectors:
   - Industrials
   feed_url: https://kinderhook.com/feed
+  press_url: https://kinderhook.com/press
 - name: Sun Capital Partners
   domain: suncappart.com
   hq: Boca Raton
   feed_url: https://suncappart.com/feed
+  press_url: https://suncappart.com/news
 - name: K1 Investment Management
   domain: k1im.com
   hq: Manhattan Beach
   sectors:
   - TMT
   feed_url: https://k1im.com/feed
+  press_url: https://k1im.com/news
 - name: Frazier Healthcare Partners
   domain: frazierhealthcare.com
   hq: Seattle
   sectors:
   - Science & Health
   feed_url: https://frazierhealthcare.com/feed
+  press_url: https://frazierhealthcare.com/news
 - name: Arcline Investment Management
   domain: arcline.com
   hq: San Francisco
@@ -859,6 +888,7 @@ firms:
   domain: palladiumequity.com
   hq: US
   feed_url: https://palladiumequity.com/feed
+  press_url: https://palladiumequity.com/media
 - name: Arsenal Capital Partners
   domain: arsenalcapital.com
   hq: New York
@@ -910,6 +940,7 @@ firms:
   sectors:
   - Industrials
   feed_url: https://thehalifaxgroup.com/feed
+  press_url: https://thehalifaxgroup.com/news
 - name: Siris Capital Group
   domain: siriscapital.com
   hq: New York
@@ -946,6 +977,7 @@ firms:
   domain: aterianpartners.com
   hq: US
   feed_url: https://aterianpartners.com/feed
+  press_url: https://aterianpartners.com/news
 - name: Great Hill Partners
   domain: greathillpartners.com
   hq: Boston
@@ -964,14 +996,17 @@ firms:
   sectors:
   - Science & Health
   feed_url: https://revelstokecapital.com/feed
+  press_url: https://revelstokecapital.com/news
 - name: OceanSound Partners
   domain: oceansoundpartners.com
   hq: US
   feed_url: https://oceansoundpartners.com/feed
+  press_url: https://oceansoundpartners.com/news
 - name: Flexpoint Ford
   domain: flexpointford.com
   feed_url: https://flexpointford.com/feed
   hq: Chicago
+  press_url: https://flexpointford.com/news
 - name: Nexus Capital Management
   domain: nexuscapmgmt.com
   hq: US
@@ -981,6 +1016,7 @@ firms:
   domain: dfwcapital.com
   hq: US
   feed_url: https://dfwcapital.com/feed
+  press_url: https://dfwcapital.com/news
 - name: 3i
   domain: 3i.com
   hq: UK
@@ -989,6 +1025,7 @@ firms:
   domain: bluewolfcapital.com
   hq: US
   feed_url: https://bluewolfcapital.com/feed
+  press_url: https://bluewolfcapital.com/news
 - name: Altaris Capital Partners
   domain: altariscap.com
   hq: New York
@@ -1003,12 +1040,14 @@ firms:
   domain: quadcmanagement.com
   hq: US
   feed_url: https://quadcmanagement.com/feed
+  press_url: https://quadcmanagement.com/news
 - name: Garnett Station Partners
   domain: garnettstation.com
   hq: US
   sectors:
   - Consumer
   feed_url: https://garnettstation.com/feed
+  press_url: https://garnettstation.com/news
 - name: Sverica Capital Management
   domain: svericacapital.com
   hq: US
@@ -1022,6 +1061,7 @@ firms:
   domain: jmi.com
   hq: Baltimore
   feed_url: https://jmi.com/feed
+  press_url: https://jmi.com/news
 - name: M-One Capital
   domain: m1capital.com
   hq: US
@@ -1059,6 +1099,7 @@ firms:
   domain: redbirdcap.com
   hq: US
   feed_url: https://redbirdcap.com/feed
+  press_url: https://redbirdcap.com/news
 - name: RoundTable Healthcare Partners
   domain: roundtablehp.com
   hq: US
@@ -1073,6 +1114,7 @@ firms:
   domain: inclineequity.com
   hq: Pittsburgh
   feed_url: https://inclineequity.com/feed
+  press_url: https://inclineequity.com/news
 - name: Tenex Capital Management
   domain: tenexcapital.com
   hq: US
@@ -1080,14 +1122,17 @@ firms:
   domain: falfurrias.com
   hq: US
   feed_url: https://falfurrias.com/feed
+  press_url: https://falfurrias.com/news
 - name: AE Industrial Partners
   domain: aeroequity.com
   hq: US
   feed_url: https://aeroequity.com/feed
+  press_url: https://aeroequity.com/news
 - name: Cornell Capital
   domain: cornellcapllc.com
   hq: US
   feed_url: https://cornellcapllc.com/feed
+  press_url: https://cornellcapllc.com/news
 - name: Seidler Equity Partners
   domain: seidlerequity.com
   hq: US
@@ -1095,6 +1140,7 @@ firms:
   domain: ghocapital.com
   hq: London
   feed_url: https://ghocapital.com/feed
+  press_url: https://ghocapital.com/insights
 - name: Lovell Minnick Partners
   domain: lovellminnick.com
   hq: Radnor
@@ -1102,6 +1148,7 @@ firms:
   domain: amuletcapital.com
   hq: US
   feed_url: https://amuletcapital.com/feed
+  press_url: https://amuletcapital.com/news
 - name: Cortec Group
   domain: cortecgroup.com
   hq: New York
@@ -1121,6 +1168,7 @@ firms:
   domain: investcorp.com
   hq: Bahrain
   feed_url: https://investcorp.com/feed
+  press_url: https://investcorp.com/news
 - name: BV Investment Partners
   domain: bvlp.com
   hq: Boston
@@ -1151,6 +1199,7 @@ firms:
   sectors:
   - Industrials
   feed_url: https://middleground.com/feed
+  press_url: https://middleground.com/news
 - name: Brentwood Associates
   domain: brentwoodassociates.com
   hq: US
@@ -1180,6 +1229,7 @@ firms:
   domain: sunstonepartners.com
   hq: US
   feed_url: https://sunstonepartners.com/feed/
+  press_url: https://sunstonepartners.com/news
 - name: FFL Partners
   domain: fflpartners.com
   hq: US
@@ -1187,6 +1237,7 @@ firms:
   domain: comvest.com
   hq: US
   feed_url: https://comvest.com/feed
+  press_url: https://comvest.com/news
 - name: Astorg
   domain: astorg.com
   hq: Luxembourg
@@ -1195,6 +1246,7 @@ firms:
   domain: thejordancompany.com
   hq: New York
   feed_url: https://thejordancompany.com/feed
+  press_url: https://thejordancompany.com/media
 - name: Vitruvian Partners
   domain: vitruvianpartners.com
   hq: London
@@ -1232,6 +1284,7 @@ firms:
   domain: ikpartners.com
   feed_url: https://ikpartners.com/feed
   hq: London
+  press_url: https://ikpartners.com/news
 - name: Inflexion Private Equity Partners
   domain: inflexion.com
   hq: London
@@ -1247,14 +1300,17 @@ firms:
   domain: altor.com
   hq: Stockholm
   feed_url: https://altor.com/feed
+  press_url: https://altor.com/news
 - name: Montagu Private Equity
   domain: montagu.com
   feed_url: https://montagu.com/feed
   hq: London
+  press_url: https://montagu.com/news
 - name: Pacific Equity Partners
   domain: pep.com.au
   hq: Sydney
   feed_url: https://pep.com.au/feed
+  press_url: https://pep.com.au/news
 - name: OrbiMed Advisors
   domain: orbimed.com
   hq: New York
@@ -1277,6 +1333,7 @@ firms:
   domain: summaequity.com
   hq: Stockholm
   feed_url: https://summaequity.com/feed
+  press_url: https://summaequity.com/insights
 - name: Motive Partners
   domain: motivepartners.com
   hq: New York
@@ -1285,6 +1342,7 @@ firms:
   domain: montefiore.eu
   hq: Paris
   feed_url: https://montefiore.eu/feed
+  press_url: https://montefiore.eu/media
 - name: Avista Capital Partners
   domain: avistacap.com
   hq: New York
@@ -1303,6 +1361,7 @@ firms:
   domain: sagard.com
   hq: Toronto
   feed_url: https://sagard.com/feed
+  press_url: https://sagard.com/news
 - name: RUBICON Technology Partners
   domain: rubicontp.com
   hq: Boulder
@@ -1320,6 +1379,7 @@ firms:
   domain: llcp.com
   hq: Los Angeles
   feed_url: https://llcp.com/feed
+  press_url: https://llcp.com/news
 - name: Norvestor
   domain: norvestor.no
   hq: Oslo
@@ -1344,6 +1404,7 @@ firms:
   domain: riveancapital.com
   hq: Amsterdam
   feed_url: https://riveancapital.com/feed
+  press_url: https://riveancapital.com/news
 - name: SDC Capital Partners
   domain: sdccapitalpartners.com
   hq: New York

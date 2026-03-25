@@ -9,12 +9,12 @@ import time
 import yaml
 from pathlib import Path
 
-from .models import load_firms, DealAlert
+from .models import load_firms, DealAlert, DealStage
 from .feeds import fetch_articles, fetch_all_articles, fetch_core_feeds, discover_feeds
 from .scraper import scrape_articles, discover_press_page
 from .classifier import classify_articles
 from .notion import NotionClient
-from .state import StateManager
+from .state import StateManager, _deal_key
 
 logger = logging.getLogger("carveout_monitor")
 
@@ -101,6 +101,41 @@ def cmd_scan(args):
                      stage, alert.article.title[:80],
                      alert.target_company, alert.seller, alert.confidence)
 
+    # Step 6b: Within-run deal dedup — same (target, seller, stage) from multiple articles
+    # Signing and closing of the same deal have different stages so both pass through.
+    # Multilingual duplicates (EN + FR same announcement, same stage) are collapsed.
+    seen_this_run: dict[str, DealAlert] = {}
+    for alert in carveouts:
+        stage_val = alert.stage.value if alert.stage else "unknown"
+        key = _deal_key(alert.target_company, alert.seller, stage_val)
+        if key in seen_this_run:
+            existing = seen_this_run[key]
+            if alert.confidence > existing.confidence:
+                logger.info("  Within-run dedup: replacing lower-confidence duplicate for %s / %s [%s]",
+                            alert.target_company, alert.seller, stage_val)
+                seen_this_run[key] = alert
+            else:
+                logger.info("  Within-run dedup: dropping duplicate for %s / %s [%s]",
+                            alert.target_company, alert.seller, stage_val)
+        else:
+            seen_this_run[key] = alert
+    deduped = list(seen_this_run.values())
+    if len(deduped) < len(carveouts):
+        logger.info("After within-run dedup: %d carve-outs remain (dropped %d)",
+                    len(deduped), len(carveouts) - len(deduped))
+    carveouts = deduped
+
+    # Step 6c: Cross-run deal dedup — skip deals already written to Notion
+    new_carveouts = [a for a in carveouts
+                     if not state.is_deal_seen(
+                         a.target_company, a.seller,
+                         a.stage.value if a.stage else "unknown"
+                     )]
+    skipped = len(carveouts) - len(new_carveouts)
+    if skipped:
+        logger.info("Cross-run dedup: skipped %d deal(s) already in Notion", skipped)
+    carveouts = new_carveouts
+
     # Step 7: Write to Notion
     if not args.skip_notion and carveouts:
         t0 = time.time()
@@ -108,6 +143,12 @@ def cmd_scan(args):
         if client.configured:
             stats = client.write_alerts(carveouts)
             logger.info("[%.1fs] Notion: %s", time.time() - t0, stats)
+            # Mark written deals as seen
+            for alert in carveouts:
+                state.mark_deal_seen(
+                    alert.target_company, alert.seller,
+                    alert.stage.value if alert.stage else "unknown"
+                )
         else:
             logger.warning("Notion not configured — skipping")
     elif args.skip_notion:

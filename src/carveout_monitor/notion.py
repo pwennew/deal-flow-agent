@@ -42,7 +42,7 @@ def _create_page(api_key: str, database_id: str, alert: DealAlert) -> bool:
         "Seller": {
             "rich_text": [{"text": {"content": (alert.seller or "N/A")[:2000]}}],
         },
-        "Confidence": {
+        "%": {
             "number": alert.confidence,
         },
         "URL": {

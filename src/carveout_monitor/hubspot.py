@@ -132,6 +132,7 @@ def _create_note(api_key: str, company_id: str, alert: DealAlert) -> bool:
 
 _PIPELINE_ID = "751392308"
 _LEAD_STAGE_ID = "1274330656"
+_DEFAULT_OWNER_ID = "77858346"  # Paul Ennew
 
 
 def _create_deal(api_key: str, alert: QualifiedAlert, company_id: str | None = None,
@@ -155,6 +156,7 @@ def _create_deal(api_key: str, alert: QualifiedAlert, company_id: str | None = N
         "dealname": deal_name,
         "pipeline": _PIPELINE_ID,
         "dealstage": _LEAD_STAGE_ID,
+        "hubspot_owner_id": _DEFAULT_OWNER_ID,
         "description": (
             f"Source: {alert.article.url}\n"
             f"Larkhill Fit: {alert.larkhill_fit}/100\n"

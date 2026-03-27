@@ -12,6 +12,14 @@ on:
         description: 'Skip Notion integration'
         type: boolean
         default: false
+      skip_hubspot:
+        description: 'Skip HubSpot deal creation and deal briefs'
+        type: boolean
+        default: false
+      skip_scraper:
+        description: 'Skip press page scraping (faster, avoids SSL hangs)'
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -19,6 +27,7 @@ permissions:
 env:
   NOTION_API: ${{ secrets.NOTION_API }}
   NOTION_DB_ID: ${{ secrets.NOTION_DB_ID }}
+  HUBSPOT_API_KEY: ${{ secrets.HUBSPOT_API_KEY }}
 
 jobs:
   run-rss-monitor:
@@ -49,6 +58,12 @@ jobs:
           ARGS="scan --hours ${{ inputs.hours || '24' }}"
           if [ "${{ inputs.skip_notion }}" = "true" ]; then
             ARGS="$ARGS --skip-notion"
+          fi
+          if [ "${{ inputs.skip_hubspot }}" = "true" ]; then
+            ARGS="$ARGS --skip-hubspot"
+          fi
+          if [ "${{ inputs.skip_scraper }}" = "true" ]; then
+            ARGS="$ARGS --skip-scraper"
           fi
           python -m carveout_monitor $ARGS 2>&1 | tee output.log
 

@@ -12,6 +12,21 @@ from pathlib import Path
 logger = logging.getLogger(__name__)
 
 
+_STOP_WORDS = frozenset({
+    "the", "a", "an", "of", "in", "for", "and", "to", "from", "its", "s",
+    "division", "unit", "business", "arm", "segment", "operations", "group",
+    "industrial", "services", "company", "corp", "inc", "ltd", "plc", "ag",
+    "se", "sa", "nv", "gmbh", "co",
+})
+
+
+def _norm(s: str) -> str:
+    s = s.lower().strip()
+    s = re.sub(r"[^\w\s]", "", s)   # strip punctuation
+    s = re.sub(r"\s+", " ", s)       # collapse whitespace
+    return s
+
+
 def _deal_key(target: str, seller: str, stage: str) -> str:
     """Normalised dedup key for a (target, seller, stage) triple.
 
@@ -19,12 +34,109 @@ def _deal_key(target: str, seller: str, stage: str) -> str:
     distinct entries — only multilingual/identical duplicates (same stage) are
     collapsed.
     """
-    def norm(s: str) -> str:
-        s = s.lower().strip()
-        s = re.sub(r"[^\w\s]", "", s)   # strip punctuation
-        s = re.sub(r"\s+", " ", s)       # collapse whitespace
-        return s
-    return f"{norm(target)}|{norm(seller)}|{stage.lower()}"
+    return f"{_norm(target)}|{_norm(seller)}|{stage.lower()}"
+
+
+def _deal_tokens(s: str) -> set[str]:
+    """Extract meaningful tokens from a company/target name for fuzzy matching."""
+    return {t for t in _norm(s).split() if t not in _STOP_WORDS and len(t) > 1}
+
+
+def _acronym(s: str) -> str:
+    """Build acronym from a string: 'Smart World Communication' -> 'swc'."""
+    tokens = [t for t in _norm(s).split() if t not in _STOP_WORDS and len(t) > 1]
+    return "".join(t[0] for t in tokens) if len(tokens) >= 2 else ""
+
+
+def _targets_match(target_a: str, target_b: str, seller_a: str = "", seller_b: str = "") -> bool:
+    """Check if two target names likely refer to the same entity.
+
+    This is the core matching logic, separated from seller checking so it
+    can be reused when one seller is missing.
+    """
+    na, nb = _norm(target_a), _norm(target_b)
+
+    # Exact match (normalised)
+    if na == nb:
+        return True
+
+    seller_tokens = _deal_tokens(seller_a) | _deal_tokens(seller_b)
+    target_tokens_a = _deal_tokens(target_a) - seller_tokens
+    target_tokens_b = _deal_tokens(target_b) - seller_tokens
+
+    # 1. Token overlap (after removing seller name tokens)
+    if target_tokens_a and target_tokens_b and (target_tokens_a & target_tokens_b):
+        return True
+
+    # 2. Substring containment — strip both seller names
+    na_clean = na
+    nb_clean = nb
+    for s in (seller_a, seller_b):
+        sn = _norm(s)
+        if sn:
+            na_clean = na_clean.replace(sn, "").strip()
+            nb_clean = nb_clean.replace(sn, "").strip()
+    if na_clean and nb_clean and (na_clean in nb_clean or nb_clean in na_clean):
+        return True
+
+    # 3. Seller prefix matching — both targets start with seller's first 4 chars
+    # e.g. "ContiTech" and "Continental Industrial Unit" both start with "conti"
+    for s in (seller_a, seller_b):
+        sn = _norm(s)
+        if len(sn) >= 5:
+            prefix = sn[:4]
+            if na.startswith(prefix) and nb.startswith(prefix):
+                return True
+
+    # 4. Generic target fallback — if one or both targets reduce to empty tokens
+    # after stop word removal (e.g. "industrial division", "business unit"),
+    # treat as same deal if sellers share tokens. This prevents generic
+    # descriptions from creating duplicate deals for the same seller.
+    # Both sellers must be present and share tokens — otherwise an empty seller
+    # would match anything generic (e.g. "contact centre business" ≠ "industrial division").
+    seller_tokens_a = _deal_tokens(seller_a)
+    seller_tokens_b = _deal_tokens(seller_b)
+    if (seller_tokens_a and seller_tokens_b
+            and (seller_tokens_a & seller_tokens_b)
+            and (not target_tokens_a or not target_tokens_b)):
+        return True
+
+    # 4. Acronym matching: "SWC" matches "Smart World Communication"
+    acro_a = _acronym(target_a)
+    acro_b = _acronym(target_b)
+    if acro_a and acro_b and acro_a == acro_b:
+        return True
+    na_stripped = re.sub(r"[^\w]", "", na)
+    nb_stripped = re.sub(r"[^\w]", "", nb)
+    if acro_a and (nb_stripped.startswith(acro_a) or acro_a in _deal_tokens(target_b)):
+        return True
+    if acro_b and (na_stripped.startswith(acro_b) or acro_b in _deal_tokens(target_a)):
+        return True
+
+    return False
+
+
+def deals_match(target_a: str, seller_a: str, target_b: str, seller_b: str) -> bool:
+    """Check if two deals are likely the same based on fuzzy seller + target matching.
+
+    Returns True if sellers overlap AND targets are likely the same entity.
+    Also matches when one seller is empty/unknown if targets are strong matches.
+    Handles brand names (ContiTech = Continental's tech division),
+    acronyms (SWC = Smart World & Communication), and descriptive variants.
+    """
+    seller_tokens_a = _deal_tokens(seller_a)
+    seller_tokens_b = _deal_tokens(seller_b)
+
+    # If both sellers are present, they must share at least one token
+    if seller_tokens_a and seller_tokens_b:
+        if not seller_tokens_a & seller_tokens_b:
+            return False
+        return _targets_match(target_a, target_b, seller_a, seller_b)
+
+    # If one or both sellers are empty/unknown, match on targets alone
+    # (more permissive — avoids missing duplicates when Haiku extracts
+    # different seller names or fails to extract one)
+    return _targets_match(target_a, target_b, seller_a, seller_b)
 
 
 class StateManager:
@@ -65,11 +177,28 @@ class StateManager:
         }
 
     def is_deal_seen(self, target: str, seller: str, stage: str) -> bool:
-        """True if this (target, seller, stage) deal has been written to Notion before."""
+        """True if this (target, seller, stage) deal has been written to Notion before.
+
+        Uses fuzzy matching so 'ContiTech / Continental' matches
+        'Continental Industrial Unit / Continental'.
+        """
         if not target or not seller or seller.upper() in ("N/A", "UNKNOWN", ""):
             return False  # don't dedup on empty/unknown sellers
+        # Exact match first (fast path)
         key = _deal_key(target, seller, stage)
-        return key in self._data.get("seen_deals", {})
+        if key in self._data.get("seen_deals", {}):
+            return True
+        # Fuzzy match against all seen deals with same stage
+        for seen_key in self._data.get("seen_deals", {}):
+            parts = seen_key.split("|")
+            if len(parts) != 3:
+                continue
+            seen_target, seen_seller, seen_stage = parts
+            if seen_stage != stage.lower():
+                continue
+            if deals_match(target, seller, seen_target, seen_seller):
+                return True
+        return False
 
     def mark_deal_seen(self, target: str, seller: str, stage: str) -> None:
         """Record that this (target, seller, stage) deal has been written to Notion."""

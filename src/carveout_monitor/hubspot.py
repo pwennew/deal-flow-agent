@@ -9,7 +9,7 @@ from datetime import datetime
 
 import requests
 
-from .models import DealAlert
+from .models import DealAlert, QualifiedAlert
 
 logger = logging.getLogger(__name__)
 
@@ -130,6 +130,67 @@ def _create_note(api_key: str, company_id: str, alert: DealAlert) -> bool:
         return False
 
 
+_PIPELINE_ID = "751392308"
+_LEAD_STAGE_ID = "1274330656"
+
+
+def _create_deal(api_key: str, alert: QualifiedAlert, company_id: str | None = None,
+                  pe_firm_override: str = "") -> str | None:
+    """Create a Deal in HubSpot for a qualified carve-out alert.
+
+    Returns deal ID on success, None on failure.
+    """
+    url = f"{_BASE_URL}/deals"
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json",
+    }
+
+    target = alert.target_company or "Unknown target"
+    seller = alert.seller or "Unknown seller"
+    pe_label = pe_firm_override or alert.pe_firm or ""
+    deal_name = f"{target} — {seller} carve-out"
+    if pe_label:
+        deal_name = f"{target} — {seller} carve-out ({pe_label})"
+
+    properties = {
+        "dealname": deal_name,
+        "pipeline": _PIPELINE_ID,
+        "dealstage": _LEAD_STAGE_ID,
+        "description": (
+            f"Source: {alert.article.url}\n"
+            f"Larkhill Fit: {alert.larkhill_fit}/100\n"
+            f"PE Firm: {pe_label or 'Unknown'}\n"
+            f"Reasoning: {alert.reasoning}"
+        ),
+    }
+
+    payload: dict = {"properties": properties}
+
+    # Associate with PE firm company record if available
+    if company_id:
+        payload["associations"] = [{
+            "to": {"id": company_id},
+            "types": [{
+                "associationCategory": "HUBSPOT_DEFINED",
+                "associationTypeId": 341,  # Deal to Company
+            }],
+        }]
+
+    try:
+        resp = requests.post(url, headers=headers, json=payload, timeout=10)
+        if resp.status_code == 201:
+            deal_id = resp.json().get("id")
+            logger.info("Created HubSpot deal: %s (ID: %s)", deal_name, deal_id)
+            return deal_id
+        logger.warning("HubSpot deal creation failed (status %d): %s",
+                       resp.status_code, resp.text[:200])
+        return None
+    except requests.RequestException as e:
+        logger.error("HubSpot deal creation error: %s", e)
+        return None
+
+
 class HubSpotClient:
     """Creates Notes on HubSpot Company records for carve-out alerts."""
 
@@ -142,7 +203,11 @@ class HubSpotClient:
         return bool(self._api_key)
 
     def _resolve_company_id(self, name: str) -> str | None:
-        """Resolve a firm name to a HubSpot Company ID (cache → search → create)."""
+        """Resolve a firm name to an existing HubSpot Company ID (cache → search).
+
+        Never creates new companies — if no match found, returns None and the
+        deal will be unassociated. Paul can associate manually in HubSpot.
+        """
         if name in self._company_cache:
             return self._company_cache[name]
 
@@ -152,8 +217,7 @@ class HubSpotClient:
         if company_id:
             logger.info("Found HubSpot company: %s (ID: %s)", name, company_id)
         else:
-            company_id = _create_company(self._api_key, name)
-            time.sleep(0.2)
+            logger.info("No HubSpot company match for '%s' — deal will be unassociated", name)
 
         self._company_cache[name] = company_id
         return company_id
@@ -188,3 +252,29 @@ class HubSpotClient:
         logger.info("HubSpot: %d notes created, %d skipped, %d errors",
                     stats["written"], stats["skipped"], stats["errors"])
         return stats
+
+    def create_deal(self, alert: QualifiedAlert) -> list[str]:
+        """Create HubSpot deal(s) for a qualified carve-out alert.
+
+        If multiple PE firms are identified (comma-separated), creates one deal
+        per PE firm, each associated with that firm's company record.
+        Returns list of deal IDs created.
+        """
+        if not self._api_key:
+            logger.warning("HUBSPOT_API_KEY not set — skipping deal creation")
+            return []
+
+        # Split multi-PE firms (e.g. "Apollo, Bain Capital" → ["Apollo", "Bain Capital"])
+        pe_firms_raw = alert.pe_firm or alert.article.firm_name or ""
+        pe_firms = [f.strip() for f in pe_firms_raw.split(",") if f.strip()]
+        if not pe_firms:
+            pe_firms = [""]  # still create one deal with no company association
+
+        deal_ids: list[str] = []
+        for firm in pe_firms:
+            company_id = self._resolve_company_id(firm) if firm else None
+            deal_id = _create_deal(self._api_key, alert, company_id, pe_firm_override=firm)
+            if deal_id:
+                deal_ids.append(deal_id)
+            time.sleep(0.2)
+        return deal_ids

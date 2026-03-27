@@ -364,3 +364,37 @@ def fetch_core_feeds(lookback_hours: int = 168) -> list[Article]:
 
     logger.info("Fetched %d articles from %d core feeds", len(all_articles), len(CORE_FEEDS))
     return all_articles
+
+
+def fetch_core_feeds_lookback(days: int = 30) -> list[Article]:
+    """Fetch core feeds with an extended Google News lookback window.
+
+    Replaces 'when:7d' in Google News URLs with 'when:{days}d' and
+    removes the lookback_hours date filter so all articles are returned.
+    """
+    extended_feeds = []
+    for feed in CORE_FEEDS:
+        url = feed["url"]
+        if "when:7d" in url:
+            url = url.replace("when:7d", f"when:{days}d")
+        extended_feeds.append({"url": url, "source": feed["source"]})
+
+    logger.info("Fetching %d core feeds with %d-day lookback", len(extended_feeds), days)
+
+    all_articles: list[Article] = []
+    with ThreadPoolExecutor(max_workers=_MAX_WORKERS) as executor:
+        futures = {
+            executor.submit(_fetch_single_core_feed, feed, None): feed
+            for feed in extended_feeds
+        }
+        for future in as_completed(futures):
+            feed = futures[future]
+            try:
+                articles = future.result()
+                all_articles.extend(articles)
+            except Exception as e:
+                logger.warning("Error fetching core feed %s: %s", feed["source"], e)
+
+    logger.info("Fetched %d articles from %d core feeds (lookback %dd)",
+                len(all_articles), len(extended_feeds), days)
+    return all_articles

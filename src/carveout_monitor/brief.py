@@ -124,7 +124,7 @@ RULES:
 2. buyer_track_record: A short, natural line naming the buyer's prior carve-out targets. Use target names only, not sellers or deal values. Must read like a human wrote it. This goes into: "I know {{company}} has deep carve-out experience from {{buyer_track_record}}."
    - GOOD: "Nouryon, Atotech, and now this"
    - GOOD: "Kidde, ERIKS, Milacron"
-   - GOOD: "Virgin Australia, Lonza Specialty Ingredients"
+   - GOOD: "Virgin Australia, Lonza Specialty Ingredients, and others"
    - BAD: "Nouryon from AkzoNobel (€10.1B), Atotech from Total ($3.2B)" (too much detail, reads like a database)
    - BAD: "Experienced in carve-outs" (no specific deal)
    - If the buyer is unknown or it's an auction, return "Auction, buyer TBC"

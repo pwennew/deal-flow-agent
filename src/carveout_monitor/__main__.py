@@ -1,20 +1,26 @@
-"""CLI entry point: python -m carveout_monitor [scan|discover|backtest]"""
+"""CLI entry point: python -m carveout_monitor [scan|discover|backtest|reset-state|lookback]"""
 
 from __future__ import annotations
 
 import argparse
+import csv
+import json
 import logging
+import shutil
 import sys
 import time
 import yaml
 from pathlib import Path
 
-from .models import load_firms, DealAlert, DealStage
-from .feeds import fetch_articles, fetch_all_articles, fetch_core_feeds, discover_feeds
+from .models import load_firms, DealAlert, DealStage, QualifiedAlert
+from .feeds import fetch_articles, fetch_all_articles, fetch_core_feeds, fetch_core_feeds_lookback, discover_feeds
 from .scraper import scrape_articles, discover_press_page
-from .classifier import classify_articles
-from .notion import NotionClient
-from .state import StateManager, _deal_key
+from .classifier import classify_articles, token_usage as haiku_tokens
+from .qualifier import qualify_alerts, token_usage as opus_tokens
+from .brief import generate_deal_brief
+from .notion import NotionClient, _append_page_content
+from .hubspot import HubSpotClient
+from .state import StateManager, _deal_key, deals_match
 
 logger = logging.getLogger("carveout_monitor")
 
@@ -45,19 +51,22 @@ def cmd_scan(args):
     logger.info("[%.1fs] Core feeds: %d articles", time.time() - t0, len(core_articles))
 
     # Step 2: Scrape press pages for firms without RSS
-    t0 = time.time()
-    # Snapshot which firms had no press_url before scraping (scrape_firm auto-discovers)
-    firms_before = {f.name: f.press_url for f in firms}
-    scraped = scrape_articles(firms, lookback_hours=args.hours)
-    articles.extend(scraped)
-    logger.info("[%.1fs] Scrape: %d additional articles", time.time() - t0, len(scraped))
+    if getattr(args, "skip_scraper", False):
+        logger.info("Skipping press page scraper (--skip-scraper)")
+    else:
+        t0 = time.time()
+        # Snapshot which firms had no press_url before scraping (scrape_firm auto-discovers)
+        firms_before = {f.name: f.press_url for f in firms}
+        scraped = scrape_articles(firms, lookback_hours=args.hours)
+        articles.extend(scraped)
+        logger.info("[%.1fs] Scrape: %d additional articles", time.time() - t0, len(scraped))
 
-    # Persist any newly-discovered press URLs to targets.yml
-    new_press = {f.name: f.press_url for f in firms
-                 if f.press_url and not firms_before.get(f.name)}
-    if new_press:
-        logger.info("Persisting %d newly-discovered press URLs to %s", len(new_press), args.targets)
-        _update_targets(args.targets, {}, new_press)
+        # Persist any newly-discovered press URLs to targets.yml
+        new_press = {f.name: f.press_url for f in firms
+                     if f.press_url and not firms_before.get(f.name)}
+        if new_press:
+            logger.info("Persisting %d newly-discovered press URLs to %s", len(new_press), args.targets)
+            _update_targets(args.targets, {}, new_press)
 
     if not articles:
         logger.info("No articles found — nothing to do")
@@ -92,8 +101,8 @@ def cmd_scan(args):
     logger.info("[%.1fs] Classification complete", time.time() - t0)
 
     # Step 6: Filter to carve-outs
-    carveouts = [a for a in all_alerts if a.is_carveout and a.confidence >= 70]
-    logger.info("Carve-outs found: %d (confidence >= 70)", len(carveouts))
+    carveouts = [a for a in all_alerts if a.is_carveout and a.confidence >= 50]
+    logger.info("Haiku positives: %d (confidence >= 50)", len(carveouts))
 
     for alert in carveouts:
         stage = alert.stage.value if alert.stage else "unknown"
@@ -101,25 +110,37 @@ def cmd_scan(args):
                      stage, alert.article.title[:80],
                      alert.target_company, alert.seller, alert.confidence)
 
-    # Step 6b: Within-run deal dedup — same (target, seller, stage) from multiple articles
-    # Signing and closing of the same deal have different stages so both pass through.
-    # Multilingual duplicates (EN + FR same announcement, same stage) are collapsed.
-    seen_this_run: dict[str, DealAlert] = {}
+    # Step 6b: Within-run deal dedup — fuzzy match on (target, seller, stage).
+    # Signing and closing of the same deal have different stages so both pass.
+    # Articles about the same deal with different wording (e.g. "ContiTech" vs
+    # "Continental Industrial Unit") are collapsed via token overlap matching.
+    deduped: list[DealAlert] = []
     for alert in carveouts:
         stage_val = alert.stage.value if alert.stage else "unknown"
-        key = _deal_key(alert.target_company, alert.seller, stage_val)
-        if key in seen_this_run:
-            existing = seen_this_run[key]
-            if alert.confidence > existing.confidence:
-                logger.info("  Within-run dedup: replacing lower-confidence duplicate for %s / %s [%s]",
-                            alert.target_company, alert.seller, stage_val)
-                seen_this_run[key] = alert
-            else:
-                logger.info("  Within-run dedup: dropping duplicate for %s / %s [%s]",
-                            alert.target_company, alert.seller, stage_val)
-        else:
-            seen_this_run[key] = alert
-    deduped = list(seen_this_run.values())
+        merged = False
+        for i, existing in enumerate(deduped):
+            existing_stage = existing.stage.value if existing.stage else "unknown"
+            if existing_stage != stage_val:
+                continue
+            if deals_match(alert.target_company, alert.seller,
+                           existing.target_company, existing.seller):
+                # Merge context: append loser's title to winner's reasoning
+                # so Opus qualifier sees all article headlines for PE firm extraction
+                if alert.confidence > existing.confidence:
+                    logger.info("  Within-run dedup: replacing '%s / %s' with higher-confidence '%s / %s' [%s]",
+                                existing.target_company, existing.seller,
+                                alert.target_company, alert.seller, stage_val)
+                    alert.reasoning = (alert.reasoning or "") + f"\n[Also: {existing.article.title}]"
+                    deduped[i] = alert
+                else:
+                    logger.info("  Within-run dedup: dropping '%s / %s' (duplicate of '%s / %s') [%s]",
+                                alert.target_company, alert.seller,
+                                existing.target_company, existing.seller, stage_val)
+                    existing.reasoning = (existing.reasoning or "") + f"\n[Also: {alert.article.title}]"
+                merged = True
+                break
+        if not merged:
+            deduped.append(alert)
     if len(deduped) < len(carveouts):
         logger.info("After within-run dedup: %d carve-outs remain (dropped %d)",
                     len(deduped), len(carveouts) - len(deduped))
@@ -136,15 +157,33 @@ def cmd_scan(args):
         logger.info("Cross-run dedup: skipped %d deal(s) already in Notion", skipped)
     carveouts = new_carveouts
 
-    # Step 7: Write to Notion
-    if not args.skip_notion and carveouts:
+    # Step 7: Qualify with Opus
+    t0 = time.time()
+    qualified = qualify_alerts(carveouts)
+    pursue = [a for a in qualified if a.recommended_action == "pursue"]
+    monitor = [a for a in qualified if a.recommended_action == "monitor"]
+    discard_count = len(qualified) - len(pursue) - len(monitor)
+    logger.info("[%.1fs] Qualification: %d pursue, %d monitor, %d discard",
+                time.time() - t0, len(pursue), len(monitor), discard_count)
+
+    for alert in pursue:
+        logger.info("  PURSUE [%d%%] %s — PE: %s, target: %s",
+                     alert.larkhill_fit, alert.article.title[:60],
+                     alert.pe_firm, alert.target_company)
+
+    # Step 8: Write pursue + monitor to Notion
+    actionable = pursue + monitor
+    notion_page_ids: dict[int, str] = {}
+    if not args.skip_notion and actionable:
         t0 = time.time()
-        client = NotionClient()
-        if client.configured:
-            stats = client.write_alerts(carveouts)
-            logger.info("[%.1fs] Notion: %s", time.time() - t0, stats)
+        notion_client = NotionClient()
+        if notion_client.configured:
+            stats = notion_client.write_alerts(actionable)
+            notion_page_ids = stats.get("page_ids", {})
+            logger.info("[%.1fs] Notion: %d written, %d skipped, %d errors",
+                        time.time() - t0, stats["written"], stats["skipped"], stats["errors"])
             # Mark written deals as seen
-            for alert in carveouts:
+            for alert in actionable:
                 state.mark_deal_seen(
                     alert.target_company, alert.seller,
                     alert.stage.value if alert.stage else "unknown"
@@ -154,14 +193,55 @@ def cmd_scan(args):
     elif args.skip_notion:
         logger.info("Notion output skipped (--skip-notion flag)")
 
-    # Step 8: Mark all processed articles as seen
+    # Step 9: For pursue only — HubSpot deal + deal brief
+    if not args.skip_hubspot and pursue:
+        t0 = time.time()
+        hubspot_client = HubSpotClient()
+        notion_client_for_briefs = NotionClient()
+
+        if hubspot_client.configured:
+            for alert in pursue:
+                hubspot_client.create_deal(alert)
+        else:
+            logger.warning("HubSpot not configured — skipping deal creation")
+
+        # Generate deal briefs and write to Notion page content
+        if notion_client_for_briefs.configured:
+            for idx, alert in enumerate(pursue):
+                page_id = notion_page_ids.get(idx)
+                if not page_id:
+                    continue
+                brief_text = generate_deal_brief(alert)
+                if brief_text:
+                    _append_page_content(
+                        notion_client_for_briefs._api_key, page_id, brief_text
+                    )
+                    logger.info("Appended deal brief to Notion page for %s",
+                                alert.target_company)
+
+        logger.info("[%.1fs] Pursue actions complete: %d deals", time.time() - t0, len(pursue))
+    elif args.skip_hubspot:
+        logger.info("HubSpot + deal briefs skipped (--skip-hubspot flag)")
+
+    # Step 10: Mark all processed articles as seen
     for a in new_articles:
         state.mark_seen(a.url)
     state.save()
 
     elapsed = time.time() - start
-    logger.info("Pipeline complete in %.1fs: %d articles processed, %d carve-outs found",
-                elapsed, len(new_articles), len(carveouts))
+    logger.info("Pipeline complete in %.1fs: %d articles processed, %d qualified (%d pursue, %d monitor)",
+                elapsed, len(new_articles), len(qualified), len(pursue), len(monitor))
+
+    # Cost reporting
+    # Haiku: $0.80/M input, $4.00/M output
+    # Opus: $15.00/M input, $75.00/M output
+    haiku_cost = (haiku_tokens["input"] * 0.80 + haiku_tokens["output"] * 4.00) / 1_000_000
+    opus_cost = (opus_tokens["input"] * 15.00 + opus_tokens["output"] * 75.00) / 1_000_000
+    total_cost = haiku_cost + opus_cost
+    logger.info("API cost estimate: Haiku $%.4f (%dk in, %dk out) + Opus $%.4f (%dk in, %dk out) = $%.4f total",
+                haiku_cost, haiku_tokens["input"] // 1000, haiku_tokens["output"] // 1000,
+                opus_cost, opus_tokens["input"] // 1000, opus_tokens["output"] // 1000,
+                total_cost)
 
 
 def cmd_discover(args):
@@ -284,6 +364,97 @@ def cmd_backtest(args):
         logger.info("No carve-outs found in backtest data")
 
 
+def cmd_reset_state(args):
+    """Back up and reset state.json to a fresh empty state."""
+    state_path = Path(args.state)
+    if state_path.exists():
+        backup_path = state_path.with_suffix(".json.bak")
+        shutil.copy2(state_path, backup_path)
+        logger.info("Backed up %s → %s", state_path, backup_path)
+    else:
+        logger.info("No existing state file at %s — nothing to back up", state_path)
+
+    fresh_state = {"version": 1, "last_run": None, "seen": {}, "seen_deals": {}}
+    with open(state_path, "w") as f:
+        json.dump(fresh_state, f, indent=2)
+    logger.info("Wrote fresh empty state to %s", state_path)
+
+
+def cmd_lookback(args):
+    """Lookback exercise: fetch extended window, classify all, export CSV."""
+    start = time.time()
+    firms = load_firms(args.targets)
+    logger.info("Loaded %d target firms", len(firms))
+    logger.info("Lookback: %d days, output → %s", args.days, args.output)
+
+    # Step 1: Fetch all articles from firm RSS feeds (no date filter)
+    t0 = time.time()
+    articles = fetch_all_articles(firms)
+    logger.info("[%.1fs] RSS fetch (no date filter): %d articles", time.time() - t0, len(articles))
+
+    # Step 2: Fetch core feeds with extended Google News window
+    t0 = time.time()
+    core_articles = fetch_core_feeds_lookback(days=args.days)
+    articles.extend(core_articles)
+    logger.info("[%.1fs] Core feeds (lookback %dd): %d articles",
+                time.time() - t0, args.days, len(core_articles))
+
+    # Step 3: Scrape press pages (no date filter)
+    t0 = time.time()
+    scraped = scrape_articles(firms, lookback_hours=args.days * 24)
+    articles.extend(scraped)
+    logger.info("[%.1fs] Scrape: %d additional articles", time.time() - t0, len(scraped))
+
+    if not articles:
+        logger.info("No articles found — nothing to classify")
+        return
+
+    # Step 4: URL dedup
+    seen_urls: set[str] = set()
+    unique = []
+    for a in articles:
+        if a.url not in seen_urls:
+            seen_urls.add(a.url)
+            unique.append(a)
+    logger.info("After URL dedup: %d articles (removed %d duplicates)",
+                len(unique), len(articles) - len(unique))
+    articles = unique
+
+    # Step 5: Classify ALL articles
+    t0 = time.time()
+    all_alerts = classify_articles(articles)
+    logger.info("[%.1fs] Classification complete: %d articles", time.time() - t0, len(all_alerts))
+
+    # Step 6: Write ALL results to CSV (positives AND negatives)
+    output_path = Path(args.output)
+    with open(output_path, "w", newline="", encoding="utf-8") as f:
+        writer = csv.writer(f)
+        writer.writerow([
+            "title", "url", "source", "published",
+            "is_carveout", "stage", "target_company", "seller",
+            "confidence", "reasoning",
+        ])
+        for alert in all_alerts:
+            a = alert.article
+            writer.writerow([
+                a.title,
+                a.url,
+                a.firm_name,
+                a.published.strftime("%Y-%m-%d %H:%M") if a.published else "",
+                alert.is_carveout,
+                alert.stage.value if alert.stage else "",
+                alert.target_company,
+                alert.seller,
+                alert.confidence,
+                alert.reasoning,
+            ])
+
+    carveouts = [a for a in all_alerts if a.is_carveout]
+    elapsed = time.time() - start
+    logger.info("Lookback complete in %.1fs: %d articles classified, %d carve-outs, CSV → %s",
+                elapsed, len(all_alerts), len(carveouts), output_path)
+
+
 def main():
     parser = argparse.ArgumentParser(
         prog="carveout_monitor",
@@ -298,8 +469,8 @@ def main():
     scan_p = sub.add_parser("scan", help="Daily scan for new carve-out announcements")
     scan_p.add_argument("--hours", type=int, default=24, help="Lookback hours (default: 24)")
     scan_p.add_argument("--skip-notion", action="store_true", help="Skip Notion output")
-    scan_p.add_argument("--skip-hubspot", action="store_true", dest="skip_notion",
-                        help=argparse.SUPPRESS)  # backwards compat alias
+    scan_p.add_argument("--skip-hubspot", action="store_true", help="Skip HubSpot deal creation and deal briefs")
+    scan_p.add_argument("--skip-scraper", action="store_true", help="Skip press page scraping")
 
     # discover
     disc_p = sub.add_parser("discover", help="Discover RSS feeds and press pages for all firms")
@@ -308,6 +479,14 @@ def main():
 
     # backtest
     sub.add_parser("backtest", help="Backtest: classify all available articles (no Notion)")
+
+    # reset-state
+    sub.add_parser("reset-state", help="Back up and reset state.json to fresh empty state")
+
+    # lookback
+    lookback_p = sub.add_parser("lookback", help="Lookback exercise: extended fetch + classify all to CSV")
+    lookback_p.add_argument("--days", type=int, default=30, help="Lookback window in days (default: 30)")
+    lookback_p.add_argument("--output", default="lookback_results.csv", help="Output CSV path (default: lookback_results.csv)")
 
     args = parser.parse_args()
     _setup_logging()
@@ -318,6 +497,10 @@ def main():
         cmd_discover(args)
     elif args.command == "backtest":
         cmd_backtest(args)
+    elif args.command == "reset-state":
+        cmd_reset_state(args)
+    elif args.command == "lookback":
+        cmd_lookback(args)
     else:
         parser.print_help()
         sys.exit(1)

@@ -16,6 +16,9 @@ _MODEL = "claude-haiku-4-5-20251001"
 _BATCH_SIZE = 20
 _MAX_RETRIES = 3
 
+# Module-level token counters for cost reporting
+token_usage = {"input": 0, "output": 0}
+
 _SYSTEM_PROMPT = """You classify PE (private equity) deal announcements. For each article, determine if it describes a PE firm **signing or closing a carve-out deal**.
 
 A CARVE-OUT is when a PE firm buys a **division, subsidiary, or business unit** from a **parent company** (corporate or conglomerate). The parent company continues to exist after selling off the unit.
@@ -35,6 +38,10 @@ EXCLUDE (these are NOT carve-outs):
 - Fund news: PE firm raises a new fund, closes a fund, hires staff
 - IPO: portfolio company goes public
 - Any deal where the seller is another PE/financial sponsor
+- Asset/claim transfer: Company acquires exploration rights, mineral claims, patent portfolios, or other assets that do not constitute an operating business with employees, systems, and infrastructure. No separation complexity = not a carve-out.
+- Standalone public company acquisition: PE firm or corporate acquires an entire company that already operates independently (has its own public listing, management team, IT, finance, HR). Even if the seller is a PE firm. The key test is: does the target need to be SEPARATED from a parent's shared infrastructure? If the target already operates independently, it is not a carve-out.
+- Self-contained subsidiary with no separation complexity: Parent sells a subsidiary that operates entirely independently (e.g., a sports franchise, a standalone brand, a self-contained business) with no shared IT systems, finance functions, HR, or operational infrastructure to untangle. If there are no TSAs (Transition Service Agreements) needed, it is unlikely to be a carve-out requiring separation execution.
+- PE firm selling a portfolio company: If the seller is a PE/financial sponsor and the target is a standalone portfolio company, this is a secondary buyout or PE exit, not a carve-out.
 
 KEY TEST: There must be a **corporate parent** that continues to exist after selling off a **division or business unit**. If the seller is a PE firm, or if the target is a standalone company (not a division), it is NOT a carve-out.
 
@@ -63,6 +70,10 @@ _FEW_SHOT_USER = """Classify these articles:
 6. "Nautic Partners Announces Sale of Property Management Company AKAM"
 7. "Eurazeo Invests in Groupe Pierre Schmidt Through a Sponsorless Transaction"
 8. "GovCIO, a Welsh Carson portfolio company, to Acquire SoldierPoint Digital Health"
+9. "SAGA Metals Acquires Strategic Titanium Assets from Rio Tinto in Quebec"
+10. "Germany's Henkel in $1.4 billion deal to acquire hair care brand Olaplex"
+11. "Diageo Sells Cricket Team to Blackstone-Backed Consortium for $1.8 Billion"
+12. "Bidders circle as EDF's renewable assets in the US go on sale"
 """
 
 _FEW_SHOT_ASSISTANT = """[
@@ -73,7 +84,11 @@ _FEW_SHOT_ASSISTANT = """[
   {"is_carveout": false, "stage": null, "target_company": "", "seller": "", "confidence": 98, "reasoning": "Fund news / fundraising — not a deal announcement at all."},
   {"is_carveout": false, "stage": null, "target_company": "", "seller": "", "confidence": 92, "reasoning": "Nautic Partners is the SELLER (a PE firm exiting a portfolio company) — this is a portfolio exit, not a carve-out."},
   {"is_carveout": false, "stage": null, "target_company": "", "seller": "", "confidence": 88, "reasoning": "Eurazeo is making a minority/growth investment, not acquiring a division from a corporate parent — not a carve-out."},
-  {"is_carveout": false, "stage": null, "target_company": "", "seller": "", "confidence": 85, "reasoning": "A PE portfolio company (GovCIO) acquiring a standalone company — this is a bolt-on/platform acquisition, not a carve-out from a corporate parent."}
+  {"is_carveout": false, "stage": null, "target_company": "", "seller": "", "confidence": 85, "reasoning": "A PE portfolio company (GovCIO) acquiring a standalone company — this is a bolt-on/platform acquisition, not a carve-out from a corporate parent."},
+  {"is_carveout": false, "stage": null, "target_company": "", "seller": "", "confidence": 90, "reasoning": "Asset/claim transfer — mineral exploration claims, not an operating business. No employees, systems, or infrastructure to separate."},
+  {"is_carveout": false, "stage": null, "target_company": "", "seller": "", "confidence": 92, "reasoning": "Olaplex is a standalone Nasdaq-listed company acquired from PE sponsor Advent International. It already operates independently — no separation from a corporate parent required."},
+  {"is_carveout": false, "stage": null, "target_company": "", "seller": "", "confidence": 88, "reasoning": "Self-contained sports franchise — operates independently with no shared IT, finance, HR, or operational infrastructure requiring separation."},
+  {"is_carveout": true, "stage": "signing", "target_company": "EDF Power Solutions North America", "seller": "EDF", "confidence": 82, "reasoning": "EDF Power Solutions North America is an integrated operating platform within state-owned EDF. Separation from EDF's corporate structure would require IT, finance, HR, legal, commercial, and operational separation — a genuine carve-out."}
 ]"""
 
 
@@ -113,6 +128,8 @@ def classify_batch(articles: list[Article]) -> list[DealAlert]:
 
             input_tokens = response.usage.input_tokens
             output_tokens = response.usage.output_tokens
+            token_usage["input"] += input_tokens
+            token_usage["output"] += output_tokens
             logger.debug("LLM call: %d input tokens, %d output tokens", input_tokens, output_tokens)
 
             alerts = []

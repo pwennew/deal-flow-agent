@@ -48,6 +48,19 @@ class DealAlert(BaseModel):
     reasoning: str = ""
 
 
+class QualifiedAlert(DealAlert):
+    """A carve-out deal scored against Larkhill's buyer profile."""
+
+    larkhill_fit: int = Field(default=0, ge=0, le=100)
+    pe_buyer_score: int = 0
+    separation_complexity_score: int = 0
+    deal_size_score: int = 0
+    geography_score: int = 0
+    timing_score: int = 0
+    pe_firm: str = ""
+    recommended_action: str = "discard"  # pursue | monitor | discard
+
+
 def load_firms(path: str | Path = "targets.yml") -> list[Firm]:
     """Load target firms from YAML file."""
     with open(path) as f:

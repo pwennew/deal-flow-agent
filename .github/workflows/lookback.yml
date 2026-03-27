@@ -1,0 +1,58 @@
+name: Lookback Exercise
+
+on:
+  workflow_dispatch:
+    inputs:
+      days:
+        description: 'Lookback window in days'
+        default: '30'
+
+permissions:
+  contents: read
+
+jobs:
+  lookback:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install playwright && playwright install chromium --with-deps
+
+      - name: Run lookback
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          PYTHONPATH: src
+        run: |
+          python -m carveout_monitor lookback \
+            --days ${{ inputs.days || '30' }} \
+            --output lookback_results.csv \
+            2>&1 | tee output.log
+
+          echo "## Lookback Exercise" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          grep -E "Lookback complete|Classification complete|articles" output.log >> $GITHUB_STEP_SUMMARY || echo "Run completed" >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+
+      - name: Upload results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lookback-results-${{ github.run_number }}
+          path: |
+            lookback_results.csv
+            output.log
+          retention-days: 30

@@ -124,7 +124,9 @@ RULES:
 2. buyer_track_record: One natural line naming the buyer's specific prior carve-out deals. This goes into: "I know {{company}} has deep carve-out experience from {{buyer_track_record}}."
    - GOOD: "Kidde from Carrier ($3B), ERIKS, Milacron ($3.8B)"
    - BAD: "Experienced in carve-outs" (no specific deal)
-   - If the buyer is unknown or it's an auction, return "Auction — buyer TBC"
+   - If the buyer is unknown or it's an auction, return "Auction, buyer TBC"
+
+IMPORTANT: Never use em dashes (—) in either field. Use commas instead.
 
 Return ONLY valid JSON with these two keys: pain_line, buyer_track_record"""
 

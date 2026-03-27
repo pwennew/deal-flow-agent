@@ -149,9 +149,7 @@ def _create_deal(api_key: str, alert: QualifiedAlert, company_id: str | None = N
     target = alert.target_company or "Unknown target"
     seller = alert.seller or "Unknown seller"
     pe_label = pe_firm_override or alert.pe_firm or ""
-    deal_name = f"{target} — {seller} carve-out"
-    if pe_label:
-        deal_name = f"{target} — {seller} carve-out ({pe_label})"
+    deal_name = target  # Just the target business name — used in email subjects/body
 
     properties = {
         "dealname": deal_name,

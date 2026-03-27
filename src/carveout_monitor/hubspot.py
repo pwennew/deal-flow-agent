@@ -189,6 +189,32 @@ def _create_deal(api_key: str, alert: QualifiedAlert, company_id: str | None = N
         return None
 
 
+def _update_deal(api_key: str, deal_id: str, properties: dict[str, str]) -> bool:
+    """Update properties on an existing HubSpot deal.
+
+    Returns True on success, False on failure.
+    """
+    url = f"{_BASE_URL}/deals/{deal_id}"
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json",
+    }
+    payload = {"properties": properties}
+
+    try:
+        resp = requests.patch(url, headers=headers, json=payload, timeout=10)
+        if resp.status_code == 200:
+            logger.info("Updated HubSpot deal %s with %d properties",
+                        deal_id, len(properties))
+            return True
+        logger.warning("HubSpot deal update failed (status %d): %s",
+                       resp.status_code, resp.text[:200])
+        return False
+    except requests.RequestException as e:
+        logger.error("HubSpot deal update error: %s", e)
+        return False
+
+
 class HubSpotClient:
     """Creates Notes on HubSpot Company records for carve-out alerts."""
 
@@ -276,3 +302,10 @@ class HubSpotClient:
                 deal_ids.append(deal_id)
             time.sleep(0.2)
         return deal_ids
+
+    def update_deal_properties(self, deal_id: str, properties: dict[str, str]) -> bool:
+        """Update properties on an existing deal. Used to populate email sequence fields."""
+        if not self._api_key:
+            logger.warning("HUBSPOT_API_KEY not set — skipping deal update")
+            return False
+        return _update_deal(self._api_key, deal_id, properties)

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import logging
 import os
 
@@ -12,6 +13,7 @@ from .models import QualifiedAlert
 logger = logging.getLogger(__name__)
 
 _MODEL = "claude-opus-4-6"
+_EXTRACTION_MODEL = "claude-opus-4-6"  # Tier 1 fields — go into PE Partner emails
 _MAX_RETRIES = 2
 
 _SYSTEM_PROMPT = """You are a senior business development analyst at Larkhill & Company, a separation execution firm that runs Separation Management Offices (SMOs) for PE-backed carve-outs.
@@ -106,3 +108,76 @@ def generate_deal_brief(alert: QualifiedAlert) -> str:
     logger.error("Failed to generate deal brief for %s after %d attempts",
                  alert.target_company, _MAX_RETRIES)
     return ""
+
+
+_EXTRACTION_PROMPT = """Extract two fields from this deal brief for use in an automated email sequence. These go directly into a PE Partner's inbox — they must be 100% factually accurate and conversational.
+
+DEAL BRIEF:
+{brief_text}
+
+RULES:
+1. pain_line: One conversational sentence about the #1 separation complexity. Max 120 characters. Must read like something you'd say on a call, not a database label. Name the specific operational fact that makes separation hard.
+   - GOOD: "9 years inside Lonza, 15 sites across 12 countries — deep systems entanglement"
+   - GOOD: "5 years on IAC's platform stack — the tech separation is the deal"
+   - BAD: "Complex IT separation expected" (generic)
+
+2. buyer_track_record: One natural line naming the buyer's specific prior carve-out deals. This goes into: "I know {{company}} has deep carve-out experience from {{buyer_track_record}}."
+   - GOOD: "Kidde from Carrier ($3B), ERIKS, Milacron ($3.8B)"
+   - BAD: "Experienced in carve-outs" (no specific deal)
+   - If the buyer is unknown or it's an auction, return "Auction — buyer TBC"
+
+Return ONLY valid JSON with these two keys: pain_line, buyer_track_record"""
+
+
+def extract_hubspot_fields(
+    brief_text: str, alert: QualifiedAlert
+) -> dict[str, str]:
+    """Extract HubSpot email sequence fields from a generated deal brief.
+
+    Returns dict with keys: pain_line, buyer_track_record, outbound_trigger,
+    seller, enterprise_value_m. Returns empty dict on failure.
+    """
+    api_key = os.environ.get("ANTHROPIC_API_KEY", "")
+    if not api_key or not brief_text:
+        return {}
+
+    client = anthropic.Anthropic(api_key=api_key)
+
+    # LLM extraction for pain_line and buyer_track_record
+    try:
+        response = client.messages.create(
+            model=_EXTRACTION_MODEL,
+            max_tokens=512,
+            messages=[{
+                "role": "user",
+                "content": _EXTRACTION_PROMPT.format(brief_text=brief_text),
+            }],
+        )
+        raw = response.content[0].text.strip()
+        # Strip markdown code fences if present
+        if raw.startswith("```"):
+            raw = raw.split("\n", 1)[1].rsplit("```", 1)[0].strip()
+        fields = json.loads(raw)
+    except (anthropic.APIError, json.JSONDecodeError, IndexError) as e:
+        logger.warning("HubSpot field extraction failed: %s", e)
+        fields = {}
+
+    # Map deal stage to outbound_trigger and sequence enum values
+    trigger_map = {"signing": "Signing", "closing": "Closing"}
+    sequence_map = {
+        "signing": "Signing-Triggered Outbound",
+        "closing": "Close-Triggered Outbound",
+    }
+    stage_val = alert.stage.value if alert.stage else ""
+
+    result = {
+        "pain_line": fields.get("pain_line", ""),
+        "buyer_track_record": fields.get("buyer_track_record", ""),
+    }
+    if stage_val in trigger_map:
+        result["outbound_trigger"] = trigger_map[stage_val]
+        result["sequence"] = sequence_map[stage_val]
+
+    logger.info("Extracted HubSpot fields for %s: pain_line=%r",
+                alert.target_company, result.get("pain_line", "")[:60])
+    return result

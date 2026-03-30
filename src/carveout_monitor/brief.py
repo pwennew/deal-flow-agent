@@ -2,16 +2,11 @@
 
 from __future__ import annotations
 
-import io
 import json
 import logging
 import os
-import re
 
 import anthropic
-from docx import Document
-from docx.shared import Pt, RGBColor
-from docx.enum.text import WD_ALIGN_PARAGRAPH
 
 from .models import QualifiedAlert
 
@@ -113,169 +108,6 @@ def generate_deal_brief(alert: QualifiedAlert) -> str:
     logger.error("Failed to generate deal brief for %s after %d attempts",
                  alert.target_company, _MAX_RETRIES)
     return ""
-
-
-def generate_deal_brief_docx(brief_text: str, alert: QualifiedAlert) -> bytes:
-    """Convert a deal brief (markdown text) into a .docx file.
-
-    Returns the .docx as bytes (in-memory), suitable for uploading to HubSpot.
-    Returns empty bytes on failure.
-    """
-    if not brief_text:
-        return b""
-
-    try:
-        doc = Document()
-
-        # Set default font
-        style = doc.styles["Normal"]
-        font = style.font
-        font.name = "Arial"
-        font.size = Pt(11)
-
-        # Title
-        target = alert.target_company or "Unknown"
-        pe = alert.pe_firm or "Unknown buyer"
-        title = doc.add_heading(f"{target} — {pe} Deal Brief", level=0)
-        title.alignment = WD_ALIGN_PARAGRAPH.LEFT
-        for run in title.runs:
-            run.font.name = "Arial"
-            run.font.size = Pt(24)
-
-        # Evidence key
-        ev = doc.add_paragraph()
-        ev_run = ev.add_run(
-            "Evidence key: Unmarked = verified fact (press releases, SEC filings, "
-            "company websites, confirmed reporting). ⚑ = reasonable inference — "
-            "the underlying verified fact and reasoning are both stated. "
-            "No conjecture is included in outbound-facing content."
-        )
-        ev_run.font.size = Pt(9)
-        ev_run.font.italic = True
-        ev_run.font.color.rgb = RGBColor(0x66, 0x66, 0x66)
-
-        # Parse markdown sections and render
-        lines = brief_text.split("\n")
-        i = 0
-        while i < len(lines):
-            line = lines[i]
-
-            # Heading levels
-            if line.startswith("## "):
-                h = doc.add_heading(line[3:].strip(), level=2)
-                for run in h.runs:
-                    run.font.name = "Arial"
-                    run.font.size = Pt(14)
-            elif line.startswith("### "):
-                h = doc.add_heading(line[4:].strip(), level=3)
-                for run in h.runs:
-                    run.font.name = "Arial"
-                    run.font.size = Pt(12)
-            elif line.startswith("# "):
-                # Skip top-level headings — we already have the title
-                pass
-
-            # Markdown table
-            elif line.strip().startswith("|") and i + 1 < len(lines):
-                table_lines = []
-                while i < len(lines) and lines[i].strip().startswith("|"):
-                    table_lines.append(lines[i])
-                    i += 1
-                i -= 1  # will be incremented at bottom of loop
-
-                # Filter out separator rows (|---|---|)
-                data_rows = [
-                    r for r in table_lines
-                    if not re.match(r"^\s*\|[\s\-:|]+\|\s*$", r)
-                ]
-                if data_rows:
-                    cells = [
-                        [c.strip() for c in row.strip().strip("|").split("|")]
-                        for row in data_rows
-                    ]
-                    if cells:
-                        n_cols = len(cells[0])
-                        table = doc.add_table(
-                            rows=len(cells), cols=n_cols, style="Light Grid Accent 1"
-                        )
-                        for r_idx, row_cells in enumerate(cells):
-                            for c_idx, val in enumerate(row_cells):
-                                if c_idx < n_cols:
-                                    cell = table.cell(r_idx, c_idx)
-                                    cell.text = val
-                                    for paragraph in cell.paragraphs:
-                                        for run in paragraph.runs:
-                                            run.font.name = "Arial"
-                                            run.font.size = Pt(10)
-
-            # Bullet points
-            elif line.strip().startswith("- ") or line.strip().startswith("* "):
-                text = line.strip().lstrip("-* ").strip()
-                p = doc.add_paragraph(style="List Bullet")
-                _add_markdown_runs(p, text)
-
-            # Numbered list
-            elif re.match(r"^\s*\d+\.\s", line):
-                text = re.sub(r"^\s*\d+\.\s*", "", line)
-                p = doc.add_paragraph(style="List Number")
-                _add_markdown_runs(p, text)
-
-            # HubSpot output code block — render as a simple table
-            elif line.strip() == "```" or line.strip().startswith("```"):
-                code_lines = []
-                i += 1
-                while i < len(lines) and not lines[i].strip().startswith("```"):
-                    code_lines.append(lines[i])
-                    i += 1
-                if code_lines:
-                    for cl in code_lines:
-                        p = doc.add_paragraph()
-                        run = p.add_run(cl)
-                        run.font.name = "Courier New"
-                        run.font.size = Pt(9)
-
-            # Regular paragraph
-            elif line.strip():
-                p = doc.add_paragraph()
-                _add_markdown_runs(p, line.strip())
-
-            i += 1
-
-        # Footer
-        doc.add_paragraph()
-        footer = doc.add_paragraph()
-        from datetime import datetime
-        footer_run = footer.add_run(
-            f"Prepared by Larkhill & Company | {datetime.now().strftime('%B %Y')}"
-        )
-        footer_run.font.size = Pt(9)
-        footer_run.font.italic = True
-        footer_run.font.color.rgb = RGBColor(0x99, 0x99, 0x99)
-
-        # Write to bytes
-        buf = io.BytesIO()
-        doc.save(buf)
-        buf.seek(0)
-        logger.info("Generated .docx for %s (%d bytes)", target, buf.getbuffer().nbytes)
-        return buf.read()
-
-    except Exception as e:
-        logger.error("Failed to generate .docx for %s: %s", alert.target_company, e)
-        return b""
-
-
-def _add_markdown_runs(paragraph, text: str):
-    """Parse inline markdown (**bold**) and add styled runs to a paragraph."""
-    parts = re.split(r"(\*\*.*?\*\*)", text)
-    for part in parts:
-        if part.startswith("**") and part.endswith("**"):
-            run = paragraph.add_run(part[2:-2])
-            run.bold = True
-        else:
-            paragraph.add_run(part)
-    for run in paragraph.runs:
-        run.font.name = "Arial"
-        run.font.size = Pt(11)
 
 
 _EXTRACTION_PROMPT = """Extract two fields from this deal brief for use in an automated email sequence. These go directly into a PE Partner's inbox — they must be 100% factually accurate and conversational.

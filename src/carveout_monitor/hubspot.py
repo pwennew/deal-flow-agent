@@ -217,79 +217,6 @@ def _update_deal(api_key: str, deal_id: str, properties: dict[str, str]) -> bool
         return False
 
 
-def _upload_file(api_key: str, file_bytes: bytes, filename: str,
-                  folder_path: str = "/deal-briefs") -> str | None:
-    """Upload a file to HubSpot's file manager.
-
-    Returns the file ID on success, None on failure.
-    """
-    url = "https://api.hubapi.com/files/v3/files"
-    headers = {"Authorization": f"Bearer {api_key}"}
-
-    # HubSpot Files API expects multipart form data
-    files = {
-        "file": (filename, file_bytes,
-                 "application/vnd.openxmlformats-officedocument.wordprocessingml.document"),
-    }
-    data = {
-        "options": '{"access": "PRIVATE", "overwrite": true}',
-        "folderPath": folder_path,
-    }
-
-    try:
-        resp = requests.post(url, headers=headers, files=files, data=data, timeout=30)
-        if resp.status_code in (200, 201):
-            file_id = resp.json().get("id")
-            logger.info("Uploaded file to HubSpot: %s (ID: %s)", filename, file_id)
-            return file_id
-        logger.warning("HubSpot file upload failed (status %d): %s",
-                       resp.status_code, resp.text[:300])
-        return None
-    except requests.RequestException as e:
-        logger.error("HubSpot file upload error: %s", e)
-        return None
-
-
-def _create_note_with_attachment(api_key: str, deal_id: str, file_id: str,
-                                  note_body: str) -> bool:
-    """Create a Note on a HubSpot Deal with a file attachment.
-
-    Returns True on success.
-    """
-    url = f"{_BASE_URL}/notes"
-    headers = {
-        "Authorization": f"Bearer {api_key}",
-        "Content-Type": "application/json",
-    }
-
-    payload = {
-        "properties": {
-            "hs_timestamp": datetime.now().isoformat() + "Z",
-            "hs_note_body": note_body,
-            "hs_attachment_ids": file_id,
-        },
-        "associations": [{
-            "to": {"id": deal_id},
-            "types": [{
-                "associationCategory": "HUBSPOT_DEFINED",
-                "associationTypeId": 214,  # Note to Deal
-            }],
-        }],
-    }
-
-    try:
-        resp = requests.post(url, headers=headers, json=payload, timeout=10)
-        if resp.status_code == 201:
-            logger.info("Created note with attachment on deal %s", deal_id)
-            return True
-        logger.warning("HubSpot note+attachment failed (status %d): %s",
-                       resp.status_code, resp.text[:300])
-        return False
-    except requests.RequestException as e:
-        logger.error("HubSpot note+attachment error: %s", e)
-        return False
-
-
 class HubSpotClient:
     """Creates Notes on HubSpot Company records for carve-out alerts."""
 
@@ -384,28 +311,3 @@ class HubSpotClient:
             logger.warning("HUBSPOT_API_KEY not set — skipping deal update")
             return False
         return _update_deal(self._api_key, deal_id, properties)
-
-    def attach_brief_to_deal(self, deal_id: str, docx_bytes: bytes,
-                              filename: str, target_name: str) -> bool:
-        """Upload a .docx deal brief and attach it as a note on a HubSpot deal.
-
-        Returns True on success.
-        """
-        if not self._api_key:
-            logger.warning("HUBSPOT_API_KEY not set — skipping brief attachment")
-            return False
-        if not docx_bytes:
-            logger.warning("Empty .docx — skipping attachment for deal %s", deal_id)
-            return False
-
-        file_id = _upload_file(self._api_key, docx_bytes, filename)
-        if not file_id:
-            return False
-
-        note_body = (
-            f"<strong>Deal Brief: {target_name}</strong><br>"
-            f"See attached .docx for full deal brief."
-        )
-        return _create_note_with_attachment(
-            self._api_key, deal_id, file_id, note_body
-        )

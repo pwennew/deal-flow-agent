@@ -17,7 +17,7 @@ from .feeds import fetch_articles, fetch_all_articles, fetch_core_feeds, fetch_c
 from .scraper import scrape_articles, discover_press_page
 from .classifier import classify_articles, token_usage as haiku_tokens
 from .qualifier import qualify_alerts, token_usage as opus_tokens
-from .brief import generate_deal_brief, extract_hubspot_fields
+from .brief import generate_deal_brief, generate_deal_brief_docx, extract_hubspot_fields
 from .notion import NotionClient, _append_page_content
 from .hubspot import HubSpotClient
 from .state import StateManager, _deal_key, deals_match
@@ -224,8 +224,19 @@ def cmd_scan(args):
                     logger.info("Appended deal brief to Notion page for %s",
                                 alert.target_company)
 
-            # Extract and push HubSpot email sequence fields
+            # Generate .docx and attach to HubSpot deals
             if brief_text and hubspot_client.configured and idx in deal_ids_by_alert:
+                docx_bytes = generate_deal_brief_docx(brief_text, alert)
+                if docx_bytes:
+                    target = alert.target_company or "Unknown"
+                    pe = alert.pe_firm or "Unknown"
+                    filename = f"{target.replace(' ', '_')}_{pe.replace(' ', '_')}_Briefing.docx"
+                    for deal_id in deal_ids_by_alert[idx]:
+                        hubspot_client.attach_brief_to_deal(
+                            deal_id, docx_bytes, filename, target
+                        )
+
+                # Extract and push HubSpot email sequence fields
                 hs_fields = extract_hubspot_fields(brief_text, alert)
                 if hs_fields:
                     for deal_id in deal_ids_by_alert[idx]:

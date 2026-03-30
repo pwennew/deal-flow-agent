@@ -17,7 +17,6 @@ from .feeds import fetch_articles, fetch_all_articles, fetch_core_feeds, fetch_c
 from .scraper import scrape_articles, discover_press_page
 from .classifier import classify_articles, token_usage as haiku_tokens
 from .qualifier import qualify_alerts, token_usage as opus_tokens
-from .brief import generate_deal_brief, extract_hubspot_fields
 from .notion import NotionClient, _append_page_content
 from .hubspot import HubSpotClient
 from .state import StateManager, _deal_key, deals_match
@@ -193,45 +192,20 @@ def cmd_scan(args):
     elif args.skip_notion:
         logger.info("Notion output skipped (--skip-notion flag)")
 
-    # Step 9: For pursue only — HubSpot deal + deal brief + sequence fields
+    # Step 9: For pursue only — create HubSpot deals
+    # Brief generation, .docx creation, and field population are handled by
+    # the deal-brief-generator scheduled task (runs 8am local via Claude Code)
     if not args.skip_hubspot and pursue:
         t0 = time.time()
         hubspot_client = HubSpotClient()
-        notion_client_for_briefs = NotionClient()
 
-        # Create HubSpot deals and capture deal IDs per alert
-        deal_ids_by_alert: dict[int, list[str]] = {}
         if hubspot_client.configured:
-            for idx, alert in enumerate(pursue):
-                deal_ids = hubspot_client.create_deal(alert)
-                if deal_ids:
-                    deal_ids_by_alert[idx] = deal_ids
+            for alert in pursue:
+                hubspot_client.create_deal(alert)
         else:
             logger.warning("HubSpot not configured — skipping deal creation")
 
-        # Generate deal briefs, write to Notion, and populate HubSpot sequence fields
-        for idx, alert in enumerate(pursue):
-            # Generate brief
-            brief_text = generate_deal_brief(alert)
-
-            # Append to Notion
-            if brief_text and notion_client_for_briefs.configured:
-                page_id = notion_page_ids.get(idx)
-                if page_id:
-                    _append_page_content(
-                        notion_client_for_briefs._api_key, page_id, brief_text
-                    )
-                    logger.info("Appended deal brief to Notion page for %s",
-                                alert.target_company)
-
-            # Extract and push HubSpot email sequence fields
-            if brief_text and hubspot_client.configured and idx in deal_ids_by_alert:
-                hs_fields = extract_hubspot_fields(brief_text, alert)
-                if hs_fields:
-                    for deal_id in deal_ids_by_alert[idx]:
-                        hubspot_client.update_deal_properties(deal_id, hs_fields)
-
-        logger.info("[%.1fs] Pursue actions complete: %d deals", time.time() - t0, len(pursue))
+        logger.info("[%.1fs] Pursue deals created: %d", time.time() - t0, len(pursue))
     elif args.skip_hubspot:
         logger.info("HubSpot + deal briefs skipped (--skip-hubspot flag)")
 

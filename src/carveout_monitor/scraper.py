@@ -315,18 +315,27 @@ def scrape_articles(firms: list[Firm], lookback_hours: int = 24) -> list[Article
 
     with ThreadPoolExecutor(max_workers=_MAX_WORKERS) as executor:
         futures = {executor.submit(scrape_firm, firm): firm for firm in to_scrape}
-        for future in as_completed(futures, timeout=300):
-            firm = futures[future]
-            try:
-                articles = future.result(timeout=60)
-                # Date filter
-                filtered = [a for a in articles
-                            if not a.published or a.published >= cutoff]
-                all_articles.extend(filtered)
-            except TimeoutError:
-                logger.warning("Scrape timed out for %s — skipping", firm.name)
-            except Exception as e:
-                logger.warning("Error scraping %s: %s", firm.name, e)
+        try:
+            for future in as_completed(futures, timeout=300):
+                firm = futures[future]
+                try:
+                    articles = future.result(timeout=60)
+                    # Date filter
+                    filtered = [a for a in articles
+                                if not a.published or a.published >= cutoff]
+                    all_articles.extend(filtered)
+                except TimeoutError:
+                    logger.warning("Scrape timed out for %s — skipping", firm.name)
+                except Exception as e:
+                    logger.warning("Error scraping %s: %s", firm.name, e)
+        except TimeoutError:
+            unfinished = [f for f in futures if not f.done()]
+            logger.warning(
+                "Global scrape timeout — %d of %d firms unfinished, continuing with %d articles",
+                len(unfinished), len(futures), len(all_articles),
+            )
+            for f in unfinished:
+                f.cancel()
 
     logger.info("Scraped %d articles from press pages", len(all_articles))
     return all_articles

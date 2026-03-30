@@ -116,10 +116,12 @@ DEAL BRIEF:
 {brief_text}
 
 RULES:
-1. pain_line: One conversational sentence about the #1 separation complexity. Max 120 characters. Must read like something you'd say on a call, not a database label. Name the specific operational fact that makes separation hard.
-   - GOOD: "9 years inside Lonza, 15 sites across 12 countries — deep systems entanglement"
-   - GOOD: "5 years on IAC's platform stack — the tech separation is the deal"
+1. pain_line: A question or soft observation about the #1 separation complexity. Max 120 characters. Must sound humble and curious, not preachy or declarative. We're outside the deal, so ask rather than tell. Structure: specific fact + question about the implication.
+   - GOOD: "9 years inside Lonza across 15 sites, how deep does the systems entanglement go?"
+   - GOOD: "5 years on IAC's platform stack, have you scoped the tech separation yet?"
+   - GOOD: "138 years of history, have you scoped the FIRB and AFSL licence transfers yet?"
    - BAD: "Complex IT separation expected" (generic)
+   - BAD: "9 years inside Lonza, 15 sites across 12 countries, deep systems entanglement" (list + label, not a sentence)
 
 2. buyer_track_record: A short, natural line naming the buyer's prior carve-out targets. Use target names only, not sellers or deal values. Must read like a human wrote it. This goes into: "I know {{company}} has deep carve-out experience from {{buyer_track_record}}."
    - GOOD: "Nouryon, Atotech, and now this"

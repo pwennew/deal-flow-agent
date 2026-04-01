@@ -8,7 +8,7 @@ import os
 
 import anthropic
 
-from .models import DealAlert, QualifiedAlert
+from .models import DealAlert, DealType, QualifiedAlert
 
 logger = logging.getLogger(__name__)
 
@@ -19,14 +19,21 @@ _MAX_RETRIES = 3
 # Module-level token counters for cost reporting
 token_usage = {"input": 0, "output": 0}
 
-_SYSTEM_PROMPT = """You are qualifying PE carve-out deals for Larkhill & Company, a separation execution firm. Larkhill runs the Separation Management Office (SMO) for PE-backed carve-outs.
+_SYSTEM_PROMPT = """You are qualifying separation deals for Larkhill & Company, a separation execution firm. Larkhill runs the Separation Management Office (SMO) for carve-outs and divestitures.
+
+Each deal has a deal_type:
+- "corporate_carveout" — PE firm buys a division from a corporate parent
+- "portco_carveout" — PE firm buys a division from another PE firm's portfolio company
+- "corporate_divestiture" — Non-PE buyer (corporate/trade) buys a division from a corporate parent
 
 For each deal, score against these criteria (0-100 each):
 
-1. PE_BUYER: Is a PE firm on the BUY side? (Larkhill sells to PE deal teams)
-   - 100 = Named PE firm acquiring a division/unit from a corporate parent
-   - 50 = PE involvement likely but not confirmed
-   - 0 = No PE buyer. IMPORTANT: If the SELLER is a PE firm (e.g. "New Mountain Capital sells Qualus"), the PE firm is EXITING, not buying — score 0. Larkhill needs a PE BUYER, not a PE seller. Also score 0 for corporate-to-corporate deals with no PE involvement on the buy side.
+1. PE_BUYER: Is a PE firm on the BUY side?
+   - For corporate_carveout and portco_carveout:
+     - 100 = Named PE firm acquiring the division
+     - 50 = PE involvement likely but not confirmed
+     - 0 = No PE buyer identified
+   - For corporate_divestiture: SKIP this criterion. The buyer is a corporate/trade entity. Larkhill targets BOTH sides (buyer needs integration help, seller needs separation help). Score 60 as a baseline — separation opportunity exists regardless of PE involvement.
 
 2. SEPARATION_COMPLEXITY: Does this require functional separation?
    - 100 = Integrated operating business embedded in parent (shared IT, finance, HR, legal, operations, supply chain)
@@ -59,12 +66,12 @@ Respond with a JSON array of objects, one per deal, in the same order as the inp
   "deal_size_score": 0-100,
   "geography_score": 0-100,
   "timing_score": 0-100,
-  "pe_firm": "ALL PE firms on the buy side, comma-separated (e.g. 'Apollo, Bain Capital'). If multiple firms are bidding or co-investing, list every one. If the article says 'private equity' or 'PE firms' without naming them, write 'Unnamed PE' so we know PE involvement exists. Empty string ONLY if there is genuinely no PE buyer involvement at all.",
+  "pe_firm": "For carve-outs: ALL PE firms on the buy side, comma-separated. If multiple firms are bidding or co-investing, list every one. If 'private equity' or 'PE firms' mentioned without names, write 'Unnamed PE'. For corporate_divestiture: name of the BUYER (even though not PE). Empty string ONLY if buyer is completely unknown.",
   "reasoning": "brief explanation",
   "recommended_action": "pursue" or "monitor" or "discard"
 }
 
-"pursue" = larkhill_fit >= 65 — high-quality carve-out opportunity for Larkhill
+"pursue" = larkhill_fit >= 65 — high-quality separation opportunity for Larkhill
 "monitor" = larkhill_fit 40-64 — worth tracking but not actionable yet
 "discard" = larkhill_fit < 40 — not relevant to Larkhill"""
 
@@ -81,13 +88,15 @@ def _qualify_batch(alerts: list[DealAlert]) -> list[QualifiedAlert]:
     numbered = "\n".join(
         f'{i+1}. "{a.article.title}"'
         + (f" — {a.article.summary[:200]}" if a.article.summary else "")
-        + f"\n   Target: {a.target_company}, Seller: {a.seller}"
+        + f"\n   Deal type: {a.deal_type.value if a.deal_type else 'unknown'}"
+        + f", Target: {a.target_company}, Seller: {a.seller}"
+        + (f", Buyer: {a.buyer}" if a.buyer else "")
         + f", Stage: {a.stage.value if a.stage else 'unknown'}"
         + f", Haiku confidence: {a.confidence}"
         + (f"\n   {a.reasoning}" if a.reasoning and "[Also:" in a.reasoning else "")
         for i, a in enumerate(alerts)
     )
-    user_msg = f"Qualify these carve-out deals for Larkhill:\n\n{numbered}"
+    user_msg = f"Qualify these separation deals for Larkhill:\n\n{numbered}"
 
     for attempt in range(1, _MAX_RETRIES + 1):
         try:
@@ -119,10 +128,15 @@ def _qualify_batch(alerts: list[DealAlert]) -> list[QualifiedAlert]:
                     sep_score = r.get("separation_complexity_score", 0)
                     recommended = r.get("recommended_action", "discard")
 
-                    # Hard cap: if PE_BUYER = 0 (no PE buyer, or PE is
-                    # the seller), this is not a Larkhill opportunity
-                    # regardless of other scores.
-                    if pe_buyer_score == 0:
+                    # Hard cap: if PE_BUYER = 0 and this is a carve-out
+                    # (not a corporate divestiture), there's no PE buyer
+                    # to sell to — discard.
+                    # Corporate divestitures skip this cap: Larkhill targets
+                    # both buyer (integration) and seller (separation).
+                    is_corporate_divestiture = (
+                        alert.deal_type == DealType.CORPORATE_DIVESTITURE
+                    )
+                    if pe_buyer_score == 0 and not is_corporate_divestiture:
                         larkhill_fit = min(larkhill_fit, 30)
                         recommended = "discard"
                         logger.info("  PE_BUYER=0 cap: %s → larkhill_fit=%d, discard",

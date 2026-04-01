@@ -12,7 +12,7 @@ import time
 import yaml
 from pathlib import Path
 
-from .models import load_firms, DealAlert, DealStage, QualifiedAlert
+from .models import load_firms, DealAlert, DealStage, DealType, QualifiedAlert
 from .feeds import fetch_articles, fetch_all_articles, fetch_core_feeds, fetch_core_feeds_lookback, discover_feeds
 from .scraper import scrape_articles, discover_press_page
 from .classifier import classify_articles, token_usage as haiku_tokens
@@ -99,15 +99,16 @@ def cmd_scan(args):
     all_alerts = classify_articles(new_articles)
     logger.info("[%.1fs] Classification complete", time.time() - t0)
 
-    # Step 6: Filter to carve-outs
-    carveouts = [a for a in all_alerts if a.is_carveout and a.confidence >= 50]
+    # Step 6: Filter to separation deals (all three deal types)
+    carveouts = [a for a in all_alerts if a.deal_type is not None and a.confidence >= 50]
     logger.info("Haiku positives: %d (confidence >= 50)", len(carveouts))
 
     for alert in carveouts:
         stage = alert.stage.value if alert.stage else "unknown"
-        logger.info("  [%s] %s — target: %s, seller: %s (confidence: %d)",
-                     stage, alert.article.title[:80],
-                     alert.target_company, alert.seller, alert.confidence)
+        dtype = alert.deal_type.value if alert.deal_type else "unknown"
+        logger.info("  [%s][%s] %s — target: %s, seller: %s, buyer: %s (confidence: %d)",
+                     stage, dtype, alert.article.title[:70],
+                     alert.target_company, alert.seller, alert.buyer, alert.confidence)
 
     # Step 6b: Within-run deal dedup — fuzzy match on (target, seller, stage).
     # Signing and closing of the same deal have different stages so both pass.
@@ -327,27 +328,28 @@ def cmd_backtest(args):
     logger.info("[%.1fs] Classification complete", time.time() - t0)
 
     # Report
-    carveouts = [a for a in all_alerts if a.is_carveout]
+    deals = [a for a in all_alerts if a.deal_type is not None]
     logger.info("\n=== BACKTEST RESULTS ===")
     logger.info("Total articles: %d", len(articles))
-    logger.info("Carve-outs found: %d", len(carveouts))
+    logger.info("Separation deals found: %d", len(deals))
 
-    if carveouts:
-        # Group by firm
-        by_firm: dict[str, list[DealAlert]] = {}
-        for alert in carveouts:
-            firm = alert.article.firm_name
-            by_firm.setdefault(firm, []).append(alert)
+    if deals:
+        # Group by deal type
+        by_type: dict[str, list[DealAlert]] = {}
+        for alert in deals:
+            dtype = alert.deal_type.value if alert.deal_type else "unknown"
+            by_type.setdefault(dtype, []).append(alert)
 
-        for firm_name, alerts in sorted(by_firm.items()):
-            logger.info("\n  %s (%d alerts):", firm_name, len(alerts))
-            for alert in alerts:
+        for dtype, type_alerts in sorted(by_type.items()):
+            logger.info("\n  %s (%d alerts):", dtype, len(type_alerts))
+            for alert in type_alerts:
                 stage = alert.stage.value if alert.stage else "?"
                 date = alert.article.published.strftime("%Y-%m-%d") if alert.article.published else "no date"
-                logger.info("    [%s] %s — %s (confidence: %d)",
-                            stage, date, alert.article.title[:70], alert.confidence)
+                logger.info("    [%s] %s — %s → %s (confidence: %d)",
+                            stage, date, alert.article.title[:60],
+                            alert.buyer or "unknown buyer", alert.confidence)
     else:
-        logger.info("No carve-outs found in backtest data")
+        logger.info("No separation deals found in backtest data")
 
 
 def cmd_reset_state(args):
@@ -417,7 +419,7 @@ def cmd_lookback(args):
         writer = csv.writer(f)
         writer.writerow([
             "title", "url", "source", "published",
-            "is_carveout", "stage", "target_company", "seller",
+            "deal_type", "stage", "target_company", "seller", "buyer",
             "confidence", "reasoning",
         ])
         for alert in all_alerts:
@@ -427,15 +429,16 @@ def cmd_lookback(args):
                 a.url,
                 a.firm_name,
                 a.published.strftime("%Y-%m-%d %H:%M") if a.published else "",
-                alert.is_carveout,
+                alert.deal_type.value if alert.deal_type else "none",
                 alert.stage.value if alert.stage else "",
                 alert.target_company,
                 alert.seller,
+                alert.buyer,
                 alert.confidence,
                 alert.reasoning,
             ])
 
-    carveouts = [a for a in all_alerts if a.is_carveout]
+    carveouts = [a for a in all_alerts if a.deal_type is not None]
     elapsed = time.time() - start
     logger.info("Lookback complete in %.1fs: %d articles classified, %d carve-outs, CSV → %s",
                 elapsed, len(all_alerts), len(carveouts), output_path)

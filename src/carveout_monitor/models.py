@@ -15,6 +15,12 @@ class DealStage(str, Enum):
     CLOSING = "closing"
 
 
+class DealType(str, Enum):
+    CORPORATE_CARVEOUT = "corporate_carveout"       # PE buys division from corporate
+    PORTCO_CARVEOUT = "portco_carveout"              # PE buys division from PE portco
+    CORPORATE_DIVESTITURE = "corporate_divestiture"  # Non-PE buys division from corporate
+
+
 class Firm(BaseModel):
     """A target PE firm to monitor."""
 
@@ -37,13 +43,15 @@ class Article(BaseModel):
 
 
 class DealAlert(BaseModel):
-    """A classified carve-out deal — the pipeline output."""
+    """A classified separation deal — the pipeline output."""
 
     article: Article
     is_carveout: bool = False
+    deal_type: DealType | None = None
     stage: DealStage | None = None
     target_company: str = ""
     seller: str = ""
+    buyer: str = ""  # Acquiring entity (PE firm or corporate)
     confidence: int = Field(default=0, ge=0, le=100)
     reasoning: str = ""
 

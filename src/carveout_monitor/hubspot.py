@@ -152,6 +152,8 @@ def _create_deal(api_key: str, alert: QualifiedAlert, company_id: str | None = N
     pe_label = pe_firm_override or alert.pe_firm or ""
     deal_name = target  # Just the target business name — used in email subjects/body
 
+    deal_type_val = alert.deal_type.value if alert.deal_type else ""
+
     properties = {
         "dealname": deal_name,
         "pipeline": _PIPELINE_ID,
@@ -159,11 +161,16 @@ def _create_deal(api_key: str, alert: QualifiedAlert, company_id: str | None = N
         "hubspot_owner_id": _DEFAULT_OWNER_ID,
         "description": (
             f"Source: {alert.article.url}\n"
+            f"Deal Type: {deal_type_val or 'Unknown'}\n"
             f"Larkhill Fit: {alert.larkhill_fit}/100\n"
-            f"PE Firm: {pe_label or 'Unknown'}\n"
+            f"PE Firm / Buyer: {pe_label or 'Unknown'}\n"
             f"Reasoning: {alert.reasoning}"
         ),
     }
+
+    # Set dealtype (built-in HubSpot property, options updated to separation types)
+    if deal_type_val:
+        properties["dealtype"] = deal_type_val
 
     payload: dict = {"properties": properties}
 

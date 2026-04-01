@@ -8,7 +8,7 @@ import os
 
 import anthropic
 
-from .models import Article, DealAlert, DealStage
+from .models import Article, DealAlert, DealStage, DealType
 
 logger = logging.getLogger(__name__)
 
@@ -19,39 +19,52 @@ _MAX_RETRIES = 3
 # Module-level token counters for cost reporting
 token_usage = {"input": 0, "output": 0}
 
-_SYSTEM_PROMPT = """You classify PE (private equity) deal announcements. For each article, determine if it describes a PE firm **signing or closing a carve-out deal**.
+_SYSTEM_PROMPT = """You classify deal announcements. For each article, determine if it describes a deal involving the **separation of a division, subsidiary, or business unit** from a parent company.
 
-A CARVE-OUT is when a PE firm buys a **division, subsidiary, or business unit** from a **parent company** (corporate or conglomerate). The parent company continues to exist after selling off the unit.
+DEAL TYPES (classify as one of these, or "none"):
 
-INCLUDE (these ARE carve-outs):
-- PE firm agrees to acquire [division/unit/business] from [parent company]
-- PE firm completes purchase of [subsidiary] from [corporate parent]
-- PE firm to buy [brand/segment] being divested by [parent]
-- PE firm acquires a division/unit being carved out of another PE firm's portfolio company. If the target is a subdivision being separated from a larger portco (not the whole portco itself), this IS a carve-out — the portco is the corporate parent. Look for language like "carve-out from [PE firm]'s portco" or "divesting [unit] from [portfolio company]".
+1. "corporate_carveout" — A PE firm acquires a division/unit from a CORPORATE parent. The parent continues to exist. The PE firm is the buyer.
+   Example: "Apollo acquires Safety Products division from 3M"
 
-EXCLUDE (these are NOT carve-outs):
-- Secondary buyout: PE firm buys a company from ANOTHER PE firm (PE-to-PE)
+2. "portco_carveout" — A PE firm acquires a division/unit from another PE firm's PORTFOLIO COMPANY (not the whole portco). The portco is the corporate parent. Look for "carve-out from [PE]'s portco" or "divesting [unit] from [portfolio company]" language.
+   Example: "Inflexion acquires Marioff in carve-out from Sentinel Capital Partners' portco"
+
+3. "corporate_divestiture" — A NON-PE buyer (corporate, trade buyer, consortium, sovereign wealth fund) acquires a division/unit from a corporate parent. Same separation complexity as a carve-out, but the buyer is not a PE firm.
+   Example: "Henkel acquires industrial adhesives division from BASF"
+
+"none" — Not a separation deal. See EXCLUDE rules below.
+
+INCLUDE (these ARE separation deals — classify by buyer type):
+- Any entity acquires a [division/unit/business/subsidiary/segment] from a [parent company]
+- Any entity completes purchase of a [business unit] from a [corporate parent]
+- Any entity buys a [brand/segment] being divested by a [parent]
+- PE firm acquires a division/unit being carved out of another PE firm's portfolio company (portco_carveout)
+- Corporate/trade buyer acquires a division from another corporate (corporate_divestiture)
+- Division being sold as part of a corporate restructuring or strategic review
+
+EXCLUDE (these are NOT separation deals — classify as "none"):
+- Secondary buyout: PE firm buys an entire company from ANOTHER PE firm (PE-to-PE, whole company)
 - Take-private: PE firm acquires an entire publicly-listed company
 - Platform acquisition: PE portfolio company acquires another company (bolt-on)
-- Portfolio exit: PE firm SELLS or divests a portfolio company (the PE firm is the seller, not the buyer)
-- Minority investment: PE firm takes a minority stake or makes a growth investment (not acquiring a division)
-- Whole-company acquisition: PE firm acquires an entire standalone company (not a division carved out of a parent)
+- Portfolio exit: PE firm SELLS or divests an entire portfolio company (the PE firm is the seller)
+- Minority investment: Any entity takes a minority stake or makes a growth investment
+- Whole-company acquisition: Any entity acquires an entire standalone company (not a division carved out of a parent)
 - Fund news: PE firm raises a new fund, closes a fund, hires staff
 - IPO: portfolio company goes public
-- Any deal where the seller is another PE/financial sponsor (EXCEPTION: if the target is a division being carved out of a PE firm's portfolio company, not the whole portco, it IS a carve-out — see INCLUDE rules)
-- Asset/claim transfer: Company acquires exploration rights, mineral claims, patent portfolios, or other assets that do not constitute an operating business with employees, systems, and infrastructure. No separation complexity = not a carve-out.
-- Standalone public company acquisition: PE firm or corporate acquires an entire company that already operates independently (has its own public listing, management team, IT, finance, HR). Even if the seller is a PE firm. The key test is: does the target need to be SEPARATED from a parent's shared infrastructure? If the target already operates independently, it is not a carve-out.
-- Self-contained subsidiary with no separation complexity: Parent sells a subsidiary that operates entirely independently (e.g., a sports franchise, a standalone brand, a self-contained business) with no shared IT systems, finance functions, HR, or operational infrastructure to untangle. If there are no TSAs (Transition Service Agreements) needed, it is unlikely to be a carve-out requiring separation execution.
-- PE firm selling a whole portfolio company: If the seller is a PE/financial sponsor and the target is the entire standalone portfolio company, this is a secondary buyout or PE exit, not a carve-out. BUT if the target is a division/unit being carved out FROM a PE portco (not the whole portco), it IS a carve-out.
+- Asset/claim transfer: Company acquires exploration rights, mineral claims, patent portfolios, or other assets that do not constitute an operating business with employees, systems, and infrastructure
+- Standalone public company acquisition: Any entity acquires an entire company that already operates independently (has its own public listing, management team, IT, finance, HR). The key test: does the target need to be SEPARATED from a parent's shared infrastructure? If it already operates independently, it is not a separation deal.
+- Self-contained subsidiary with no separation complexity: Parent sells a subsidiary that operates entirely independently (e.g., a sports franchise, a standalone brand) with no shared IT, finance, HR, or operational infrastructure to untangle
+- PE firm selling a whole portfolio company: If the target is the entire standalone portco, this is a secondary buyout or PE exit. BUT if the target is a division/unit being carved out FROM the portco (not the whole portco), it IS a separation deal.
 
-KEY TEST: There must be a **corporate parent** that continues to exist after selling off a **division or business unit**. If the target is a standalone company (not a division), it is NOT a carve-out. The corporate parent can be a PE firm's portfolio company — what matters is whether the target needs to be SEPARATED from a larger entity's shared infrastructure.
+KEY TEST: Does the target need to be **SEPARATED** from a larger entity's shared infrastructure (IT, finance, HR, legal, operations)? If yes → classify by buyer type. If the target already operates independently → "none".
 
 For each article, respond with a JSON object:
 {
-  "is_carveout": true/false,
+  "deal_type": "corporate_carveout" or "portco_carveout" or "corporate_divestiture" or "none",
   "stage": "signing" or "closing" or null,
   "target_company": "name of the division/unit being acquired" or "",
   "seller": "name of the parent company selling" or "",
+  "buyer": "name of the acquiring entity (PE firm or corporate)" or "",
   "confidence": 0-100,
   "reasoning": "brief explanation"
 }
@@ -76,22 +89,28 @@ _FEW_SHOT_USER = """Classify these articles:
 11. "Diageo Sells Cricket Team to Blackstone-Backed Consortium for $1.8 Billion"
 12. "Bidders circle as EDF's renewable assets in the US go on sale"
 13. "Inflexion acquires Marioff in carve-out from Sentinel Capital Partners' portco"
+14. "Henkel to acquire BASF's industrial adhesives division for €1.2 billion"
+15. "Johnson Controls completes sale of Global Products business to Bosch"
+16. "Siemens sells logistics unit to DSV in €1.15 billion deal"
 """
 
 _FEW_SHOT_ASSISTANT = """[
-  {"is_carveout": true, "stage": "signing", "target_company": "Safety Products division", "seller": "3M", "confidence": 95, "reasoning": "PE firm acquiring a division from a corporate parent — classic carve-out signing."},
-  {"is_carveout": true, "stage": "closing", "target_company": "tea business", "seller": "Unilever", "confidence": 92, "reasoning": "PE firm completed acquisition of a business unit from a corporate parent — carve-out closing."},
-  {"is_carveout": false, "stage": null, "target_company": "", "seller": "", "confidence": 90, "reasoning": "Seller is Bain Capital (another PE firm) — this is a secondary buyout, not a carve-out."},
-  {"is_carveout": false, "stage": null, "target_company": "", "seller": "", "confidence": 95, "reasoning": "Taking a whole public company private — this is a take-private, not a carve-out."},
-  {"is_carveout": false, "stage": null, "target_company": "", "seller": "", "confidence": 98, "reasoning": "Fund news / fundraising — not a deal announcement at all."},
-  {"is_carveout": false, "stage": null, "target_company": "", "seller": "", "confidence": 92, "reasoning": "Nautic Partners is the SELLER (a PE firm exiting a portfolio company) — this is a portfolio exit, not a carve-out."},
-  {"is_carveout": false, "stage": null, "target_company": "", "seller": "", "confidence": 88, "reasoning": "Eurazeo is making a minority/growth investment, not acquiring a division from a corporate parent — not a carve-out."},
-  {"is_carveout": false, "stage": null, "target_company": "", "seller": "", "confidence": 85, "reasoning": "A PE portfolio company (GovCIO) acquiring a standalone company — this is a bolt-on/platform acquisition, not a carve-out from a corporate parent."},
-  {"is_carveout": false, "stage": null, "target_company": "", "seller": "", "confidence": 90, "reasoning": "Asset/claim transfer — mineral exploration claims, not an operating business. No employees, systems, or infrastructure to separate."},
-  {"is_carveout": false, "stage": null, "target_company": "", "seller": "", "confidence": 92, "reasoning": "Olaplex is a standalone Nasdaq-listed company acquired from PE sponsor Advent International. It already operates independently — no separation from a corporate parent required."},
-  {"is_carveout": false, "stage": null, "target_company": "", "seller": "", "confidence": 88, "reasoning": "Self-contained sports franchise — operates independently with no shared IT, finance, HR, or operational infrastructure requiring separation."},
-  {"is_carveout": true, "stage": "signing", "target_company": "EDF Power Solutions North America", "seller": "EDF", "confidence": 82, "reasoning": "EDF Power Solutions North America is an integrated operating platform within state-owned EDF. Separation from EDF's corporate structure would require IT, finance, HR, legal, commercial, and operational separation — a genuine carve-out."},
-  {"is_carveout": true, "stage": "closing", "target_company": "Marioff", "seller": "Sentinel Capital Partners' portfolio company", "confidence": 85, "reasoning": "Marioff is a division being carved out of a Sentinel Capital Partners portfolio company — not the whole portco. The portco is the corporate parent. Even though a PE firm ultimately owns the parent, the target needs to be separated from the portco's shared infrastructure, making this a genuine carve-out."}
+  {"deal_type": "corporate_carveout", "stage": "signing", "target_company": "Safety Products division", "seller": "3M", "buyer": "Blackstone", "confidence": 95, "reasoning": "PE firm acquiring a division from a corporate parent — classic corporate carve-out signing."},
+  {"deal_type": "corporate_carveout", "stage": "closing", "target_company": "tea business", "seller": "Unilever", "buyer": "KKR", "confidence": 92, "reasoning": "PE firm completed acquisition of a business unit from a corporate parent — corporate carve-out closing."},
+  {"deal_type": "none", "stage": null, "target_company": "", "seller": "", "buyer": "", "confidence": 90, "reasoning": "Seller is Bain Capital (another PE firm) and Shutterfly is the whole company — this is a secondary buyout, not a separation deal."},
+  {"deal_type": "none", "stage": null, "target_company": "", "seller": "", "buyer": "", "confidence": 95, "reasoning": "Taking a whole public company private — not a separation deal."},
+  {"deal_type": "none", "stage": null, "target_company": "", "seller": "", "buyer": "", "confidence": 98, "reasoning": "Fund news / fundraising — not a deal announcement at all."},
+  {"deal_type": "none", "stage": null, "target_company": "", "seller": "", "buyer": "", "confidence": 92, "reasoning": "Nautic Partners is the SELLER (a PE firm exiting a portfolio company) — this is a portfolio exit, not a separation deal."},
+  {"deal_type": "none", "stage": null, "target_company": "", "seller": "", "buyer": "", "confidence": 88, "reasoning": "Eurazeo is making a minority/growth investment, not acquiring a division — not a separation deal."},
+  {"deal_type": "none", "stage": null, "target_company": "", "seller": "", "buyer": "", "confidence": 85, "reasoning": "A PE portfolio company (GovCIO) acquiring a standalone company — bolt-on acquisition, not a separation from a parent."},
+  {"deal_type": "none", "stage": null, "target_company": "", "seller": "", "buyer": "", "confidence": 90, "reasoning": "Asset/claim transfer — mineral exploration claims, not an operating business. No separation complexity."},
+  {"deal_type": "none", "stage": null, "target_company": "", "seller": "", "buyer": "", "confidence": 92, "reasoning": "Olaplex is a standalone Nasdaq-listed company. Already operates independently — no separation from a corporate parent required."},
+  {"deal_type": "none", "stage": null, "target_company": "", "seller": "", "buyer": "", "confidence": 88, "reasoning": "Self-contained sports franchise — operates independently with no shared infrastructure requiring separation."},
+  {"deal_type": "corporate_carveout", "stage": "signing", "target_company": "EDF Power Solutions North America", "seller": "EDF", "buyer": "Unknown (bidders circling)", "confidence": 82, "reasoning": "EDF Power Solutions North America is an integrated operating platform within state-owned EDF. Separation from EDF's corporate structure would require IT, finance, HR, legal, commercial, and operational separation."},
+  {"deal_type": "portco_carveout", "stage": "closing", "target_company": "Marioff", "seller": "Sentinel Capital Partners' portfolio company", "buyer": "Inflexion", "confidence": 85, "reasoning": "Marioff is a division being carved out of a Sentinel Capital Partners portfolio company — not the whole portco. The portco is the corporate parent. Target needs to be separated from the portco's shared infrastructure."},
+  {"deal_type": "corporate_divestiture", "stage": "signing", "target_company": "industrial adhesives division", "seller": "BASF", "buyer": "Henkel", "confidence": 93, "reasoning": "Corporate buyer (Henkel) acquiring a division from a corporate parent (BASF). Division embedded in BASF's operations needs separation — corporate divestiture."},
+  {"deal_type": "corporate_divestiture", "stage": "closing", "target_company": "Global Products business", "seller": "Johnson Controls", "buyer": "Bosch", "confidence": 91, "reasoning": "Corporate buyer (Bosch) completed acquisition of a business unit from Johnson Controls. Division requires separation from parent's shared infrastructure — corporate divestiture."},
+  {"deal_type": "corporate_divestiture", "stage": "signing", "target_company": "logistics unit", "seller": "Siemens", "buyer": "DSV", "confidence": 90, "reasoning": "Corporate buyer (DSV) acquiring a division from a corporate parent (Siemens). Logistics unit embedded in Siemens infrastructure needs separation — corporate divestiture."}
 ]"""
 
 
@@ -145,12 +164,25 @@ def classify_batch(articles: list[Article]) -> list[DealAlert]:
                     elif r.get("stage") == "closing":
                         stage = DealStage.CLOSING
 
+                    # Map deal_type string to DealType enum
+                    deal_type_str = r.get("deal_type", "none")
+                    is_carveout = deal_type_str != "none"
+                    deal_type = None
+                    if is_carveout:
+                        try:
+                            deal_type = DealType(deal_type_str)
+                        except ValueError:
+                            logger.warning("Unknown deal_type '%s' — treating as none", deal_type_str)
+                            is_carveout = False
+
                     alerts.append(DealAlert(
                         article=article,
-                        is_carveout=r.get("is_carveout", False),
+                        is_carveout=is_carveout,
+                        deal_type=deal_type,
                         stage=stage,
                         target_company=r.get("target_company", ""),
                         seller=r.get("seller", ""),
+                        buyer=r.get("buyer", ""),
                         confidence=r.get("confidence", 0),
                         reasoning=r.get("reasoning", ""),
                     ))
@@ -185,7 +217,7 @@ def classify_articles(articles: list[Article]) -> list[DealAlert]:
         alerts = classify_batch(batch)
         all_alerts.extend(alerts)
 
-    carveouts = [a for a in all_alerts if a.is_carveout]
-    logger.info("Classification complete: %d carve-outs found out of %d articles",
-                len(carveouts), len(articles))
+    deals = [a for a in all_alerts if a.deal_type is not None]
+    logger.info("Classification complete: %d separation deals found out of %d articles",
+                len(deals), len(articles))
     return all_alerts

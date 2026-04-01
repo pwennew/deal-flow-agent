@@ -67,6 +67,18 @@ def _create_page(api_key: str, database_id: str, alert: DealAlert) -> str | None
         },
     }
 
+    # Add deal type if available
+    deal_type_label = alert.deal_type.value if alert.deal_type else ""
+    if deal_type_label:
+        properties["Deal Type"] = {"select": {"name": deal_type_label}}
+
+    # Add buyer if available
+    buyer_value = alert.buyer if hasattr(alert, "buyer") and alert.buyer else ""
+    if buyer_value:
+        properties["Buyer"] = {
+            "rich_text": [{"text": {"content": buyer_value[:2000]}}],
+        }
+
     if stage_label:
         properties["Stage"] = {"select": {"name": stage_label}}
 

@@ -60,6 +60,14 @@ CORE_FEEDS: list[dict[str, str]] = [
     {"url": "https://news.google.com/rss/search?q=%22spin-off%22+OR+%22spinoff%22+private+equity+when:7d&hl=en-US&gl=US&ceid=US:en",
      "source": "Google News: spin-off (US)"},
 
+    # --- Google News: Broad separation deals (no PE filter — catches corporate divestitures) ---
+    {"url": "https://news.google.com/rss/search?q=%22carve-out%22+OR+%22carveout%22+when:7d&hl=en-US&gl=US&ceid=US:en",
+     "source": "Google News: carve-out broad (US)"},
+    {"url": "https://news.google.com/rss/search?q=%22spin-off%22+OR+%22spinoff%22+when:7d&hl=en-US&gl=US&ceid=US:en",
+     "source": "Google News: spin-off broad (US)"},
+    {"url": "https://news.google.com/rss/search?q=%22business+unit+sale%22+OR+%22corporate+separation%22+when:7d&hl=en-US&gl=US&ceid=US:en",
+     "source": "Google News: business unit sale (US)"},
+
     # --- Google News: UK / Europe ---
     {"url": "https://news.google.com/rss/search?q=private+equity+when:7d&hl=en-GB&gl=GB&ceid=GB:en",
      "source": "Google News: PE (UK)"},

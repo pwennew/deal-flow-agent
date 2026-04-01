@@ -27,6 +27,7 @@ INCLUDE (these ARE carve-outs):
 - PE firm agrees to acquire [division/unit/business] from [parent company]
 - PE firm completes purchase of [subsidiary] from [corporate parent]
 - PE firm to buy [brand/segment] being divested by [parent]
+- PE firm acquires a division/unit being carved out of another PE firm's portfolio company. If the target is a subdivision being separated from a larger portco (not the whole portco itself), this IS a carve-out — the portco is the corporate parent. Look for language like "carve-out from [PE firm]'s portco" or "divesting [unit] from [portfolio company]".
 
 EXCLUDE (these are NOT carve-outs):
 - Secondary buyout: PE firm buys a company from ANOTHER PE firm (PE-to-PE)
@@ -37,13 +38,13 @@ EXCLUDE (these are NOT carve-outs):
 - Whole-company acquisition: PE firm acquires an entire standalone company (not a division carved out of a parent)
 - Fund news: PE firm raises a new fund, closes a fund, hires staff
 - IPO: portfolio company goes public
-- Any deal where the seller is another PE/financial sponsor
+- Any deal where the seller is another PE/financial sponsor (EXCEPTION: if the target is a division being carved out of a PE firm's portfolio company, not the whole portco, it IS a carve-out — see INCLUDE rules)
 - Asset/claim transfer: Company acquires exploration rights, mineral claims, patent portfolios, or other assets that do not constitute an operating business with employees, systems, and infrastructure. No separation complexity = not a carve-out.
 - Standalone public company acquisition: PE firm or corporate acquires an entire company that already operates independently (has its own public listing, management team, IT, finance, HR). Even if the seller is a PE firm. The key test is: does the target need to be SEPARATED from a parent's shared infrastructure? If the target already operates independently, it is not a carve-out.
 - Self-contained subsidiary with no separation complexity: Parent sells a subsidiary that operates entirely independently (e.g., a sports franchise, a standalone brand, a self-contained business) with no shared IT systems, finance functions, HR, or operational infrastructure to untangle. If there are no TSAs (Transition Service Agreements) needed, it is unlikely to be a carve-out requiring separation execution.
-- PE firm selling a portfolio company: If the seller is a PE/financial sponsor and the target is a standalone portfolio company, this is a secondary buyout or PE exit, not a carve-out.
+- PE firm selling a whole portfolio company: If the seller is a PE/financial sponsor and the target is the entire standalone portfolio company, this is a secondary buyout or PE exit, not a carve-out. BUT if the target is a division/unit being carved out FROM a PE portco (not the whole portco), it IS a carve-out.
 
-KEY TEST: There must be a **corporate parent** that continues to exist after selling off a **division or business unit**. If the seller is a PE firm, or if the target is a standalone company (not a division), it is NOT a carve-out.
+KEY TEST: There must be a **corporate parent** that continues to exist after selling off a **division or business unit**. If the target is a standalone company (not a division), it is NOT a carve-out. The corporate parent can be a PE firm's portfolio company — what matters is whether the target needs to be SEPARATED from a larger entity's shared infrastructure.
 
 For each article, respond with a JSON object:
 {
@@ -74,6 +75,7 @@ _FEW_SHOT_USER = """Classify these articles:
 10. "Germany's Henkel in $1.4 billion deal to acquire hair care brand Olaplex"
 11. "Diageo Sells Cricket Team to Blackstone-Backed Consortium for $1.8 Billion"
 12. "Bidders circle as EDF's renewable assets in the US go on sale"
+13. "Inflexion acquires Marioff in carve-out from Sentinel Capital Partners' portco"
 """
 
 _FEW_SHOT_ASSISTANT = """[
@@ -88,7 +90,8 @@ _FEW_SHOT_ASSISTANT = """[
   {"is_carveout": false, "stage": null, "target_company": "", "seller": "", "confidence": 90, "reasoning": "Asset/claim transfer — mineral exploration claims, not an operating business. No employees, systems, or infrastructure to separate."},
   {"is_carveout": false, "stage": null, "target_company": "", "seller": "", "confidence": 92, "reasoning": "Olaplex is a standalone Nasdaq-listed company acquired from PE sponsor Advent International. It already operates independently — no separation from a corporate parent required."},
   {"is_carveout": false, "stage": null, "target_company": "", "seller": "", "confidence": 88, "reasoning": "Self-contained sports franchise — operates independently with no shared IT, finance, HR, or operational infrastructure requiring separation."},
-  {"is_carveout": true, "stage": "signing", "target_company": "EDF Power Solutions North America", "seller": "EDF", "confidence": 82, "reasoning": "EDF Power Solutions North America is an integrated operating platform within state-owned EDF. Separation from EDF's corporate structure would require IT, finance, HR, legal, commercial, and operational separation — a genuine carve-out."}
+  {"is_carveout": true, "stage": "signing", "target_company": "EDF Power Solutions North America", "seller": "EDF", "confidence": 82, "reasoning": "EDF Power Solutions North America is an integrated operating platform within state-owned EDF. Separation from EDF's corporate structure would require IT, finance, HR, legal, commercial, and operational separation — a genuine carve-out."},
+  {"is_carveout": true, "stage": "closing", "target_company": "Marioff", "seller": "Sentinel Capital Partners' portfolio company", "confidence": 85, "reasoning": "Marioff is a division being carved out of a Sentinel Capital Partners portfolio company — not the whole portco. The portco is the corporate parent. Even though a PE firm ultimately owns the parent, the target needs to be separated from the portco's shared infrastructure, making this a genuine carve-out."}
 ]"""
 
 

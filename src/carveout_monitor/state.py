@@ -13,10 +13,27 @@ logger = logging.getLogger(__name__)
 
 
 _STOP_WORDS = frozenset({
+    # Articles / prepositions
     "the", "a", "an", "of", "in", "for", "and", "to", "from", "its", "s",
+    # Corporate structure words
     "division", "unit", "business", "arm", "segment", "operations", "group",
     "industrial", "services", "company", "corp", "inc", "ltd", "plc", "ag",
-    "se", "sa", "nv", "gmbh", "co",
+    "se", "sa", "nv", "gmbh", "co", "llc", "lp", "holdings", "holding",
+    # Generic business descriptors — too common to be meaningful in isolation
+    "solutions", "products", "systems", "technologies", "technology", "tech",
+    "global", "international", "worldwide", "americas", "europe", "asia",
+    "capital", "partners", "advisors", "advisory", "management", "investments",
+    "portfolio", "enterprises", "resources", "consulting", "associates",
+    "financial", "ventures", "fund", "funds", "equity",
+    # Industry verticals (too broad as single tokens)
+    "energy", "health", "healthcare", "medical", "pharma", "pharmaceutical",
+    "bio", "life", "sciences", "materials", "chemicals", "digital", "data",
+    "analytics", "media", "communications", "network", "networks", "logistics",
+    "supply", "manufacturing", "engineering", "automotive", "aerospace",
+    "defense", "food", "beverage",
+    # Common descriptors
+    "north", "south", "east", "west", "new", "advanced", "specialty",
+    "premium", "strategic", "integrated", "national",
 })
 
 
@@ -43,8 +60,12 @@ def _deal_tokens(s: str) -> set[str]:
 
 
 def _acronym(s: str) -> str:
-    """Build acronym from a string: 'Smart World Communication' -> 'swc'."""
-    tokens = [t for t in _norm(s).split() if t not in _STOP_WORDS and len(t) > 1]
+    """Build acronym from a string: 'Global Elite Group' -> 'geg'.
+
+    Does NOT strip stop words — acronyms include all initials
+    (GEG = Global Elite Group, IBM = International Business Machines).
+    """
+    tokens = [t for t in _norm(s).split() if len(t) > 1]
     return "".join(t[0] for t in tokens) if len(tokens) >= 2 else ""
 
 
@@ -65,8 +86,14 @@ def _targets_match(target_a: str, target_b: str, seller_a: str = "", seller_b: s
     target_tokens_b = _deal_tokens(target_b) - seller_tokens
 
     # 1. Token overlap (after removing seller name tokens)
-    if target_tokens_a and target_tokens_b and (target_tokens_a & target_tokens_b):
-        return True
+    # Require either 2+ shared tokens OR high Jaccard similarity (>= 0.5)
+    # to avoid false matches on single generic words like "color" or "solutions"
+    overlap = target_tokens_a & target_tokens_b
+    if target_tokens_a and target_tokens_b and overlap:
+        union = target_tokens_a | target_tokens_b
+        jaccard = len(overlap) / len(union) if union else 0
+        if len(overlap) >= 2 or jaccard >= 0.5:
+            return True
 
     # 2. Substring containment — strip both seller names
     na_clean = na

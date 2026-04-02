@@ -85,6 +85,14 @@ def _create_page(api_key: str, database_id: str, alert: DealAlert) -> str | None
     if a.published:
         properties["Date"] = {"date": {"start": a.published.strftime("%Y-%m-%d")}}
 
+    # Queue pursue deals for the Brief Generator
+    if is_qualified:
+        action = alert.recommended_action
+        if action in ("pursue", "monitor"):
+            properties["Action"] = {"select": {"name": action}}
+        if action == "pursue":
+            properties["Brief Status"] = {"select": {"name": "Queued"}}
+
     payload = {
         "parent": {"database_id": database_id},
         "properties": properties,

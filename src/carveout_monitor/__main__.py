@@ -18,7 +18,6 @@ from .scraper import scrape_articles, discover_press_page
 from .classifier import classify_articles, token_usage as haiku_tokens
 from .qualifier import qualify_alerts, token_usage as opus_tokens
 from .notion import NotionClient, _append_page_content
-from .hubspot import HubSpotClient
 from .state import StateManager, _deal_key, deals_match
 
 logger = logging.getLogger("carveout_monitor")
@@ -193,24 +192,11 @@ def cmd_scan(args):
     elif args.skip_notion:
         logger.info("Notion output skipped (--skip-notion flag)")
 
-    # Step 9: For pursue only — create HubSpot deals
-    # Brief generation, .docx creation, and field population are handled by
-    # the deal-brief-generator scheduled task (runs 8am local via Claude Code)
-    if not args.skip_hubspot and pursue:
-        t0 = time.time()
-        hubspot_client = HubSpotClient()
+    # HubSpot deal creation is handled by the deal-brief-generator
+    # scheduled task (8am local via Claude Code). It reads Queued rows
+    # from Notion and creates fully-populated deals with .docx briefs.
 
-        if hubspot_client.configured:
-            for alert in pursue:
-                hubspot_client.create_deal(alert)
-        else:
-            logger.warning("HubSpot not configured — skipping deal creation")
-
-        logger.info("[%.1fs] Pursue deals created: %d", time.time() - t0, len(pursue))
-    elif args.skip_hubspot:
-        logger.info("HubSpot + deal briefs skipped (--skip-hubspot flag)")
-
-    # Step 10: Mark all processed articles as seen
+    # Step 9: Mark all processed articles as seen
     for a in new_articles:
         state.mark_seen(a.url)
     state.save()
@@ -458,7 +444,7 @@ def main():
     scan_p = sub.add_parser("scan", help="Daily scan for new carve-out announcements")
     scan_p.add_argument("--hours", type=int, default=24, help="Lookback hours (default: 24)")
     scan_p.add_argument("--skip-notion", action="store_true", help="Skip Notion output")
-    scan_p.add_argument("--skip-hubspot", action="store_true", help="Skip HubSpot deal creation and deal briefs")
+    # HubSpot deal creation moved to deal-brief-generator scheduled task
     scan_p.add_argument("--skip-scraper", action="store_true", help="Skip press page scraping")
 
     # discover

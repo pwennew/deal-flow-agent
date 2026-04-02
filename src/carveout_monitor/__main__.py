@@ -100,7 +100,19 @@ def cmd_scan(args):
 
     # Step 6: Filter to separation deals (all three deal types)
     carveouts = [a for a in all_alerts if a.deal_type is not None and a.confidence >= 50]
-    logger.info("Haiku positives: %d (confidence >= 50)", len(carveouts))
+    logger.info("Haiku positives (raw): %d (confidence >= 50)", len(carveouts))
+
+    # Step 6a: Reject deals where seller is unknown/unidentifiable — these are almost
+    # always regular PE acquisitions that Haiku misclassified as carve-outs.
+    pre_filter = len(carveouts)
+    carveouts = [a for a in carveouts
+                 if a.seller.strip()
+                 and not a.seller.strip().lower().startswith("unknown")
+                 and a.seller.strip().upper() != "N/A"]
+    unknown_dropped = pre_filter - len(carveouts)
+    if unknown_dropped:
+        logger.info("Dropped %d alerts with unknown/unidentifiable sellers", unknown_dropped)
+    logger.info("Haiku positives: %d (after seller filter)", len(carveouts))
 
     for alert in carveouts:
         stage = alert.stage.value if alert.stage else "unknown"

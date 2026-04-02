@@ -320,9 +320,14 @@ def scrape_articles(firms: list[Firm], lookback_hours: int = 24) -> list[Article
                 firm = futures[future]
                 try:
                     articles = future.result(timeout=60)
-                    # Date filter
-                    filtered = [a for a in articles
-                                if not a.published or a.published >= cutoff]
+                    # Date filter — require a parseable date within the lookback window.
+                    # Articles without dates are dropped because press page archives
+                    # go back years/decades and we can't tell if they're recent.
+                    dated = [a for a in articles if a.published]
+                    undated = len(articles) - len(dated)
+                    if undated:
+                        logger.debug("Dropped %d undated articles from %s", undated, firm.name)
+                    filtered = [a for a in dated if a.published >= cutoff]
                     all_articles.extend(filtered)
                 except TimeoutError:
                     logger.warning("Scrape timed out for %s — skipping", firm.name)

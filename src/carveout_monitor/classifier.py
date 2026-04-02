@@ -58,6 +58,8 @@ EXCLUDE (these are NOT separation deals — classify as "none"):
 
 KEY TEST: Does the target need to be **SEPARATED** from a larger entity's shared infrastructure (IT, finance, HR, legal, operations)? If yes → classify by buyer type. If the target already operates independently → "none".
 
+CRITICAL: You must be able to identify a SPECIFIC, NAMED seller/parent company from the article text. If you cannot determine who is divesting — if you would need to write "Unknown", "Unknown corporate parent", "Unknown (divesting parent)", or similar — classify as "none". A PE firm acquiring a standalone company where you can't identify the divesting parent is almost certainly a regular buyout, not a carve-out.
+
 For each article, respond with a JSON object:
 {
   "deal_type": "corporate_carveout" or "portco_carveout" or "corporate_divestiture" or "none",
@@ -92,6 +94,8 @@ _FEW_SHOT_USER = """Classify these articles:
 14. "Henkel to acquire BASF's industrial adhesives division for €1.2 billion"
 15. "Johnson Controls completes sale of Global Products business to Bosch"
 16. "Siemens sells logistics unit to DSV in €1.15 billion deal"
+17. "Peak Rock Capital affiliate acquires Hasa, Inc."
+18. "Aurora Capital Partners Acquires GenServe, a Leading Infrastructure Services Provider"
 """
 
 _FEW_SHOT_ASSISTANT = """[
@@ -110,7 +114,9 @@ _FEW_SHOT_ASSISTANT = """[
   {"deal_type": "portco_carveout", "stage": "closing", "target_company": "Marioff", "seller": "Sentinel Capital Partners' portfolio company", "buyer": "Inflexion", "confidence": 85, "reasoning": "Marioff is a division being carved out of a Sentinel Capital Partners portfolio company — not the whole portco. The portco is the corporate parent. Target needs to be separated from the portco's shared infrastructure."},
   {"deal_type": "corporate_divestiture", "stage": "signing", "target_company": "industrial adhesives division", "seller": "BASF", "buyer": "Henkel", "confidence": 93, "reasoning": "Corporate buyer (Henkel) acquiring a division from a corporate parent (BASF). Division embedded in BASF's operations needs separation — corporate divestiture."},
   {"deal_type": "corporate_divestiture", "stage": "closing", "target_company": "Global Products business", "seller": "Johnson Controls", "buyer": "Bosch", "confidence": 91, "reasoning": "Corporate buyer (Bosch) completed acquisition of a business unit from Johnson Controls. Division requires separation from parent's shared infrastructure — corporate divestiture."},
-  {"deal_type": "corporate_divestiture", "stage": "signing", "target_company": "logistics unit", "seller": "Siemens", "buyer": "DSV", "confidence": 90, "reasoning": "Corporate buyer (DSV) acquiring a division from a corporate parent (Siemens). Logistics unit embedded in Siemens infrastructure needs separation — corporate divestiture."}
+  {"deal_type": "corporate_divestiture", "stage": "signing", "target_company": "logistics unit", "seller": "Siemens", "buyer": "DSV", "confidence": 90, "reasoning": "Corporate buyer (DSV) acquiring a division from a corporate parent (Siemens). Logistics unit embedded in Siemens infrastructure needs separation — corporate divestiture."},
+  {"deal_type": "none", "stage": null, "target_company": "", "seller": "", "buyer": "", "confidence": 85, "reasoning": "PE firm acquiring a standalone company. No specific corporate parent identified as divesting — cannot confirm this is a carve-out vs a regular buyout."},
+  {"deal_type": "none", "stage": null, "target_company": "", "seller": "", "buyer": "", "confidence": 82, "reasoning": "PE firm acquiring an infrastructure services company. No named parent company selling a division — this appears to be a standard PE acquisition of a standalone business."}
 ]"""
 
 

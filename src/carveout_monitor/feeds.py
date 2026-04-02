@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timedelta, timezone
 
@@ -298,19 +299,43 @@ def fetch_all_articles(firms: list[Firm]) -> list[Article]:
     return all_articles
 
 
+_GOOGLE_NEWS_RETRIES = 3
+_GOOGLE_NEWS_BACKOFF = 2  # seconds, doubles each retry
+
+
+def _fetch_with_retry(url: str, source: str) -> requests.Response | None:
+    """Fetch a URL with retry + backoff for 429/503 (Google rate limits)."""
+    is_google = "news.google.com" in url
+    max_retries = _GOOGLE_NEWS_RETRIES if is_google else 1
+    backoff = _GOOGLE_NEWS_BACKOFF
+
+    for attempt in range(max_retries):
+        try:
+            resp = requests.get(url, timeout=_TIMEOUT,
+                                headers={"User-Agent": _USER_AGENT})
+            if resp.status_code == 200:
+                return resp
+            if resp.status_code in (429, 503) and attempt < max_retries - 1:
+                wait = backoff * (2 ** attempt)
+                logger.info("  %s returned %d, retrying in %ds (attempt %d/%d)",
+                            source, resp.status_code, wait, attempt + 1, max_retries)
+                time.sleep(wait)
+                continue
+            logger.warning("Core feed fetch failed for %s (status %d)", source, resp.status_code)
+            return None
+        except requests.RequestException as e:
+            logger.warning("Core feed fetch error for %s: %s", source, e)
+            return None
+    return None
+
+
 def _fetch_single_core_feed(feed: dict[str, str], lookback_hours: int | None = None) -> list[Article]:
     """Fetch articles from a single core RSS feed (not firm-specific)."""
     url = feed["url"]
     source = feed["source"]
 
-    try:
-        resp = requests.get(url, timeout=_TIMEOUT,
-                            headers={"User-Agent": _USER_AGENT})
-        if resp.status_code != 200:
-            logger.warning("Core feed fetch failed for %s (status %d)", source, resp.status_code)
-            return []
-    except requests.RequestException as e:
-        logger.warning("Core feed fetch error for %s: %s", source, e)
+    resp = _fetch_with_retry(url, source)
+    if resp is None:
         return []
 
     parsed = feedparser.parse(resp.text)
@@ -353,22 +378,40 @@ def fetch_core_feeds(lookback_hours: int = 168) -> list[Article]:
 
     Uses a longer default lookback (168h = 7 days) since Google News feeds
     already filter to 7 days via the when:7d parameter.
+
+    Non-Google feeds run in parallel. Google News feeds run sequentially
+    with a 1-second gap to avoid 503 rate limits from Google.
     """
-    logger.info("Fetching %d core feeds (lookback=%dh)", len(CORE_FEEDS), lookback_hours)
+    google_feeds = [f for f in CORE_FEEDS if "news.google.com" in f["url"]]
+    other_feeds = [f for f in CORE_FEEDS if "news.google.com" not in f["url"]]
+    logger.info("Fetching %d core feeds (%d Google, %d other, lookback=%dh)",
+                len(CORE_FEEDS), len(google_feeds), len(other_feeds), lookback_hours)
 
     all_articles: list[Article] = []
-    with ThreadPoolExecutor(max_workers=_MAX_WORKERS) as executor:
-        futures = {
-            executor.submit(_fetch_single_core_feed, feed, lookback_hours): feed
-            for feed in CORE_FEEDS
-        }
-        for future in as_completed(futures):
-            feed = futures[future]
-            try:
-                articles = future.result()
-                all_articles.extend(articles)
-            except Exception as e:
-                logger.warning("Error fetching core feed %s: %s", feed["source"], e)
+
+    # Non-Google feeds: fetch in parallel (fast, no rate limits)
+    if other_feeds:
+        with ThreadPoolExecutor(max_workers=_MAX_WORKERS) as executor:
+            futures = {
+                executor.submit(_fetch_single_core_feed, feed, lookback_hours): feed
+                for feed in other_feeds
+            }
+            for future in as_completed(futures):
+                feed = futures[future]
+                try:
+                    all_articles.extend(future.result())
+                except Exception as e:
+                    logger.warning("Error fetching core feed %s: %s", feed["source"], e)
+
+    # Google News feeds: fetch sequentially with 1s gap to avoid 503s
+    for i, feed in enumerate(google_feeds):
+        if i > 0:
+            time.sleep(1)
+        try:
+            articles = _fetch_single_core_feed(feed, lookback_hours)
+            all_articles.extend(articles)
+        except Exception as e:
+            logger.warning("Error fetching core feed %s: %s", feed["source"], e)
 
     logger.info("Fetched %d articles from %d core feeds", len(all_articles), len(CORE_FEEDS))
     return all_articles
@@ -389,19 +432,33 @@ def fetch_core_feeds_lookback(days: int = 30) -> list[Article]:
 
     logger.info("Fetching %d core feeds with %d-day lookback", len(extended_feeds), days)
 
+    google_feeds = [f for f in extended_feeds if "news.google.com" in f["url"]]
+    other_feeds = [f for f in extended_feeds if "news.google.com" not in f["url"]]
+
     all_articles: list[Article] = []
-    with ThreadPoolExecutor(max_workers=_MAX_WORKERS) as executor:
-        futures = {
-            executor.submit(_fetch_single_core_feed, feed, None): feed
-            for feed in extended_feeds
-        }
-        for future in as_completed(futures):
-            feed = futures[future]
-            try:
-                articles = future.result()
-                all_articles.extend(articles)
-            except Exception as e:
-                logger.warning("Error fetching core feed %s: %s", feed["source"], e)
+
+    # Non-Google feeds: parallel
+    if other_feeds:
+        with ThreadPoolExecutor(max_workers=_MAX_WORKERS) as executor:
+            futures = {
+                executor.submit(_fetch_single_core_feed, feed, None): feed
+                for feed in other_feeds
+            }
+            for future in as_completed(futures):
+                feed = futures[future]
+                try:
+                    all_articles.extend(future.result())
+                except Exception as e:
+                    logger.warning("Error fetching core feed %s: %s", feed["source"], e)
+
+    # Google News feeds: sequential with 1s gap
+    for i, feed in enumerate(google_feeds):
+        if i > 0:
+            time.sleep(1)
+        try:
+            all_articles.extend(_fetch_single_core_feed(feed, None))
+        except Exception as e:
+            logger.warning("Error fetching core feed %s: %s", feed["source"], e)
 
     logger.info("Fetched %d articles from %d core feeds (lookback %dd)",
                 len(all_articles), len(extended_feeds), days)

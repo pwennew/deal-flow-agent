@@ -125,14 +125,15 @@ _FEW_SHOT_ASSISTANT = """[
 ]"""
 
 
-def classify_batch(articles: list[Article]) -> list[DealAlert]:
-    """Classify a batch of articles using Claude Haiku."""
+def classify_batch(articles: list[Article], client: anthropic.Anthropic | None = None) -> list[DealAlert]:
+    """Classify a batch of articles using Claude Sonnet."""
     api_key = os.environ.get("ANTHROPIC_API_KEY", "")
-    if not api_key:
+    if not api_key and not client:
         logger.error("ANTHROPIC_API_KEY not set")
         return [DealAlert(article=a) for a in articles]
 
-    client = anthropic.Anthropic(api_key=api_key)
+    if client is None:
+        client = anthropic.Anthropic(api_key=api_key)
 
     numbered = "\n".join(
         f'{i+1}. "{a.title}"' + (f" — {a.summary[:150]}" if a.summary else "")
@@ -145,10 +146,18 @@ def classify_batch(articles: list[Article]) -> list[DealAlert]:
             response = client.messages.create(
                 model=_MODEL,
                 max_tokens=4096,
-                system=_SYSTEM_PROMPT,
+                system=[{
+                    "type": "text",
+                    "text": _SYSTEM_PROMPT,
+                    "cache_control": {"type": "ephemeral"},
+                }],
                 messages=[
                     {"role": "user", "content": _FEW_SHOT_USER},
-                    {"role": "assistant", "content": _FEW_SHOT_ASSISTANT},
+                    {"role": "assistant", "content": [{
+                        "type": "text",
+                        "text": _FEW_SHOT_ASSISTANT,
+                        "cache_control": {"type": "ephemeral"},
+                    }]},
                     {"role": "user", "content": user_msg},
                 ],
             )
@@ -161,9 +170,12 @@ def classify_batch(articles: list[Article]) -> list[DealAlert]:
 
             input_tokens = response.usage.input_tokens
             output_tokens = response.usage.output_tokens
+            cache_read = getattr(response.usage, "cache_read_input_tokens", 0) or 0
+            cache_create = getattr(response.usage, "cache_creation_input_tokens", 0) or 0
             token_usage["input"] += input_tokens
             token_usage["output"] += output_tokens
-            logger.debug("LLM call: %d input tokens, %d output tokens", input_tokens, output_tokens)
+            logger.debug("LLM call: %d input, %d output, %d cache_read, %d cache_create",
+                         input_tokens, output_tokens, cache_read, cache_create)
 
             alerts = []
             for i, article in enumerate(articles):
@@ -216,6 +228,9 @@ def classify_articles(articles: list[Article]) -> list[DealAlert]:
     if not articles:
         return []
 
+    api_key = os.environ.get("ANTHROPIC_API_KEY", "")
+    client = anthropic.Anthropic(api_key=api_key) if api_key else None
+
     logger.info("Classifying %d articles in batches of %d", len(articles), _BATCH_SIZE)
     all_alerts: list[DealAlert] = []
 
@@ -225,7 +240,7 @@ def classify_articles(articles: list[Article]) -> list[DealAlert]:
                      i // _BATCH_SIZE + 1,
                      (len(articles) + _BATCH_SIZE - 1) // _BATCH_SIZE,
                      len(batch))
-        alerts = classify_batch(batch)
+        alerts = classify_batch(batch, client=client)
         all_alerts.extend(alerts)
 
     deals = [a for a in all_alerts if a.deal_type is not None]

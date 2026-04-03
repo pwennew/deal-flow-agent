@@ -13,7 +13,6 @@ from .models import QualifiedAlert
 logger = logging.getLogger(__name__)
 
 _MODEL = "claude-opus-4-6"
-_EXTRACTION_MODEL = "claude-opus-4-6"  # Tier 1 fields — go into PE Partner emails
 _MAX_RETRIES = 2
 
 _SYSTEM_PROMPT = """You are a senior business development analyst at Larkhill & Company, a separation execution firm that runs Separation Management Offices (SMOs) for PE-backed carve-outs.
@@ -57,17 +56,18 @@ For each relevant domain, provide a one-line assessment of likely separation wor
 Keep the brief concise but substantive — roughly 500-800 words total."""
 
 
-def generate_deal_brief(alert: QualifiedAlert) -> str:
+def generate_deal_brief(alert: QualifiedAlert, client: anthropic.Anthropic | None = None) -> str:
     """Generate a deal brief for a qualified carve-out alert.
 
     Returns the brief text, or an empty string on failure.
     """
     api_key = os.environ.get("ANTHROPIC_API_KEY", "")
-    if not api_key:
+    if not api_key and not client:
         logger.error("ANTHROPIC_API_KEY not set — cannot generate deal brief")
         return ""
 
-    client = anthropic.Anthropic(api_key=api_key)
+    if client is None:
+        client = anthropic.Anthropic(api_key=api_key)
 
     a = alert.article
     user_msg = (
@@ -92,7 +92,11 @@ def generate_deal_brief(alert: QualifiedAlert) -> str:
             response = client.messages.create(
                 model=_MODEL,
                 max_tokens=4096,
-                system=_SYSTEM_PROMPT,
+                system=[{
+                    "type": "text",
+                    "text": _SYSTEM_PROMPT,
+                    "cache_control": {"type": "ephemeral"},
+                }],
                 messages=[{"role": "user", "content": user_msg}],
             )
 
@@ -137,7 +141,7 @@ Return ONLY valid JSON with these two keys: pain_line, buyer_track_record"""
 
 
 def extract_hubspot_fields(
-    brief_text: str, alert: QualifiedAlert
+    brief_text: str, alert: QualifiedAlert, client: anthropic.Anthropic | None = None
 ) -> dict[str, str]:
     """Extract HubSpot email sequence fields from a generated deal brief.
 
@@ -145,15 +149,18 @@ def extract_hubspot_fields(
     seller, enterprise_value_m. Returns empty dict on failure.
     """
     api_key = os.environ.get("ANTHROPIC_API_KEY", "")
-    if not api_key or not brief_text:
+    if not api_key and not client:
+        return {}
+    if not brief_text:
         return {}
 
-    client = anthropic.Anthropic(api_key=api_key)
+    if client is None:
+        client = anthropic.Anthropic(api_key=api_key)
 
     # LLM extraction for pain_line and buyer_track_record
     try:
         response = client.messages.create(
-            model=_EXTRACTION_MODEL,
+            model=_MODEL,
             max_tokens=512,
             messages=[{
                 "role": "user",

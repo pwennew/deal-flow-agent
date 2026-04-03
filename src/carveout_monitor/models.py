@@ -22,7 +22,7 @@ class DealType(str, Enum):
 
 
 class Firm(BaseModel):
-    """A target PE firm to monitor."""
+    """A target PE firm or law firm to monitor."""
 
     name: str
     domain: str = ""
@@ -30,6 +30,7 @@ class Firm(BaseModel):
     press_url: str | None = None
     hq: str = ""
     sectors: list[str] = Field(default_factory=list)
+    source_category: str = "pe_firm"  # "pe_firm" or "law_firm"
 
 
 class Article(BaseModel):

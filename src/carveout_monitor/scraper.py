@@ -18,6 +18,12 @@ logger = logging.getLogger(__name__)
 _TIMEOUT = 15
 _MAX_WORKERS = 10
 _USER_AGENT = "CarveOutMonitor/1.0 (+https://github.com/pwennew/Deal-Flow-Agent)"
+# Realistic browser UA for Playwright — avoids bot detection on sites like Ropes & Gray
+_BROWSER_UA = (
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+    "AppleWebKit/537.36 (KHTML, like Gecko) "
+    "Chrome/125.0.0.0 Safari/537.36"
+)
 
 # Common press/news page paths to probe
 _PRESS_PATHS = [
@@ -165,6 +171,7 @@ def _extract_date(element) -> datetime | None:
         r"(\d{1,2})\s+(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{4})",
         r"(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{1,2}),?\s+(\d{4})",
         r"(\d{4})-(\d{2})-(\d{2})",
+        r"(\d{2})\.(\d{2})\.(\d{2,4})",  # MM.DD.YY or MM.DD.YYYY (Simpson Thacher)
     ]
 
     months = {
@@ -189,8 +196,30 @@ def _extract_date(element) -> datetime | None:
                     # "2024-03-15"
                     return datetime(int(groups[0]), int(groups[1]), int(groups[2]),
                                     tzinfo=timezone.utc)
+                elif len(groups) == 3 and groups[2].isdigit() and len(groups[2]) <= 4:
+                    # "04.02.26" or "04.02.2026" (MM.DD.YY)
+                    year = int(groups[2])
+                    if year < 100:
+                        year += 2000
+                    return datetime(year, int(groups[0]), int(groups[1]),
+                                    tzinfo=timezone.utc)
             except (ValueError, KeyError):
                 continue
+
+    # Try to extract date from URL paths (e.g. /news/2026/03/15/ — Debevoise style)
+    link = element.find("a", href=True)
+    if link:
+        href = link.get("href", "")
+        url_date = re.search(r"/(\d{4})/(\d{2})(?:/(\d{2}))?(?:/|$)", href)
+        if url_date:
+            try:
+                year, month = int(url_date.group(1)), int(url_date.group(2))
+                day = int(url_date.group(3)) if url_date.group(3) else 1
+                if 2000 <= year <= 2100 and 1 <= month <= 12:
+                    return datetime(year, month, day, tzinfo=timezone.utc)
+            except ValueError:
+                pass
+
     return None
 
 
@@ -210,8 +239,16 @@ def _scrape_press_page_playwright(firm: Firm) -> list[Article]:
     try:
         with sync_playwright() as p:
             browser = p.chromium.launch(headless=True)
-            page = browser.new_page(user_agent=_USER_AGENT)
+            page = browser.new_page(user_agent=_BROWSER_UA)
             page.goto(url, timeout=30000, wait_until="networkidle")
+
+            # Wait for article content to render (SPAs may need extra time)
+            for selector in ["article a", "h2 a", "h3 a", ".news a", "a[href*='/news/']"]:
+                try:
+                    page.wait_for_selector(selector, timeout=5000)
+                    break
+                except Exception:
+                    continue
 
             # Get rendered HTML
             html = page.content()

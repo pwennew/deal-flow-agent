@@ -13,7 +13,7 @@ import yaml
 from pathlib import Path
 
 from .models import load_firms, DealAlert, DealStage, DealType, QualifiedAlert
-from .feeds import fetch_articles, fetch_all_articles, fetch_core_feeds, fetch_core_feeds_lookback, discover_feeds
+from .feeds import fetch_articles, fetch_all_articles, fetch_core_feeds, fetch_core_feeds_lookback, discover_feeds, get_law_firm_sources
 from .scraper import scrape_articles, discover_press_page
 from .classifier import classify_articles, token_usage as haiku_tokens
 from .qualifier import qualify_alerts, token_usage as opus_tokens
@@ -65,6 +65,14 @@ def cmd_scan(args):
         if new_press:
             logger.info("Persisting %d newly-discovered press URLs to %s", len(new_press), args.targets)
             _update_targets(args.targets, {}, new_press)
+
+        # Step 2b: Scrape law firm press pages
+        t0 = time.time()
+        law_firms = get_law_firm_sources()
+        law_firm_articles = scrape_articles(law_firms, lookback_hours=args.hours)
+        articles.extend(law_firm_articles)
+        logger.info("[%.1fs] Law firm scrape: %d articles from %d firms",
+                    time.time() - t0, len(law_firm_articles), len(law_firms))
 
     if not articles:
         logger.info("No articles found — nothing to do")
@@ -390,6 +398,13 @@ def cmd_lookback(args):
     scraped = scrape_articles(firms, lookback_hours=args.days * 24)
     articles.extend(scraped)
     logger.info("[%.1fs] Scrape: %d additional articles", time.time() - t0, len(scraped))
+
+    # Step 3b: Scrape law firm press pages
+    t0 = time.time()
+    law_firms = get_law_firm_sources()
+    law_firm_articles = scrape_articles(law_firms, lookback_hours=args.days * 24)
+    articles.extend(law_firm_articles)
+    logger.info("[%.1fs] Law firm scrape: %d articles", time.time() - t0, len(law_firm_articles))
 
     if not articles:
         logger.info("No articles found — nothing to classify")

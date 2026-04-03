@@ -79,6 +79,84 @@ CORE_FEEDS: list[dict[str, str]] = [
 ]
 
 
+# =============================================================================
+# LAW FIRM PRESS PAGES — Buy-side M&A counsel for top PE firms
+# Law firm press releases announce signed/closed deals 24–48 hours after signing,
+# naming the PE buyer, target, seller, and often deal value.
+# =============================================================================
+
+LAW_FIRM_SOURCES: list[dict[str, str]] = [
+    {
+        "name": "Kirkland & Ellis",
+        "domain": "kirkland.com",
+        "press_url": "https://www.kirkland.com/insights",
+    },
+    {
+        "name": "Simpson Thacher & Bartlett",
+        "domain": "stblaw.com",
+        "press_url": "https://www.stblaw.com/about-us/news",
+    },
+    {
+        "name": "Latham & Watkins",
+        "domain": "lw.com",
+        "press_url": "https://www.lw.com/en/news",
+    },
+    {
+        "name": "Paul, Weiss",
+        "domain": "paulweiss.com",
+        "press_url": "https://www.paulweiss.com/insights/client-news",
+    },
+    {
+        "name": "Ropes & Gray",
+        "domain": "ropesgray.com",
+        "press_url": "https://www.ropesgray.com/en/newsroom",
+    },
+    {
+        "name": "Debevoise & Plimpton",
+        "domain": "debevoise.com",
+        "press_url": "https://www.debevoise.com/news",
+    },
+    {
+        "name": "Willkie Farr & Gallagher",
+        "domain": "willkie.com",
+        "press_url": "https://www.willkie.com/news",
+    },
+    {
+        "name": "Gibson, Dunn & Crutcher",
+        "domain": "gibsondunn.com",
+        "press_url": "https://www.gibsondunn.com/category/firm-news/",
+    },
+    {
+        "name": "Paul Hastings",
+        "domain": "paulhastings.com",
+        "press_url": "https://www.paulhastings.com/news",
+    },
+    {
+        "name": "Freshfields Bruckhaus Deringer",
+        "domain": "freshfields.com",
+        "press_url": "https://www.freshfields.com/en/our-thinking/news",
+    },
+    {
+        "name": "Clifford Chance",
+        "domain": "cliffordchance.com",
+        "press_url": "https://www.cliffordchance.com/news.html",
+    },
+]
+
+
+def get_law_firm_sources() -> list[Firm]:
+    """Return law firm press page sources as Firm objects."""
+    return [
+        Firm(
+            name=src["name"],
+            domain=src["domain"],
+            press_url=src["press_url"],
+            source_category="law_firm",
+        )
+        for src in LAW_FIRM_SOURCES
+    ]
+
+
 _FEED_PATHS = [
     "/feed", "/rss", "/feed/", "/rss/",
     "/news/feed", "/news/rss", "/press/feed", "/press/rss",

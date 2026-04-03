@@ -12,7 +12,7 @@ from .models import Article, DealAlert, DealStage, DealType
 
 logger = logging.getLogger(__name__)
 
-_MODEL = "claude-haiku-4-5-20251001"
+_MODEL = "claude-sonnet-4-6"
 _BATCH_SIZE = 20
 _MAX_RETRIES = 3
 

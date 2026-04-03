@@ -48,13 +48,14 @@ EXCLUDE (these are NOT separation deals — classify as "none"):
 - Platform acquisition: PE portfolio company acquires another company (bolt-on)
 - Portfolio exit: PE firm SELLS or divests an entire portfolio company (the PE firm is the seller)
 - Minority investment: Any entity takes a minority stake or makes a growth investment
-- Whole-company acquisition: Any entity acquires an entire standalone company (not a division carved out of a parent)
+- Whole-company acquisition: Any entity acquires an entire standalone company (not a division carved out of a parent). This includes companies being sold by their owners/shareholders even if the word "sale" or "divestiture" appears — if the ENTIRE company is being sold, it is NOT a separation deal.
+- Whole-company sale by current owners: A company's shareholders (PE, family, founders) sell the ENTIRE company. The company already operates independently with its own IT, finance, HR, brand. No separation from a parent is required. Example: "Consortium agrees to acquire AA plc" — AA is a standalone company, not a division of a larger parent.
 - Fund news: PE firm raises a new fund, closes a fund, hires staff
 - IPO: portfolio company goes public
 - Asset/claim transfer: Company acquires exploration rights, mineral claims, patent portfolios, or other assets that do not constitute an operating business with employees, systems, and infrastructure
 - Standalone public company acquisition: Any entity acquires an entire company that already operates independently (has its own public listing, management team, IT, finance, HR). The key test: does the target need to be SEPARATED from a parent's shared infrastructure? If it already operates independently, it is not a separation deal.
 - Self-contained subsidiary with no separation complexity: Parent sells a subsidiary that operates entirely independently (e.g., a sports franchise, a standalone brand) with no shared IT, finance, HR, or operational infrastructure to untangle
-- PE firm selling a whole portfolio company: If the target is the entire standalone portco, this is a secondary buyout or PE exit. BUT if the target is a division/unit being carved out FROM the portco (not the whole portco), it IS a separation deal.
+- PE firm selling a whole portfolio company: If the target is the ENTIRE portco (the whole company), this is a secondary buyout or PE exit — NOT a separation deal. The portco already runs independently. BUT if the target is a division/unit being carved out FROM the portco (not the whole portco), it IS a separation deal. Ask: is the target the WHOLE company or just a PART of it?
 
 KEY TEST: Does the target need to be **SEPARATED** from a larger entity's shared infrastructure (IT, finance, HR, legal, operations)? If yes → classify by buyer type. If the target already operates independently → "none".
 
@@ -96,6 +97,8 @@ _FEW_SHOT_USER = """Classify these articles:
 16. "Siemens sells logistics unit to DSV in €1.15 billion deal"
 17. "Peak Rock Capital affiliate acquires Hasa, Inc."
 18. "Aurora Capital Partners Acquires GenServe, a Leading Infrastructure Services Provider"
+19. "Consortium including Fortress and TowerBrook agrees to acquire AA plc for £7 billion"
+20. "Nordic Capital completes sale of Geomatikk to Riksmätningen"
 """
 
 _FEW_SHOT_ASSISTANT = """[
@@ -116,7 +119,9 @@ _FEW_SHOT_ASSISTANT = """[
   {"deal_type": "corporate_divestiture", "stage": "closing", "target_company": "Global Products business", "seller": "Johnson Controls", "buyer": "Bosch", "confidence": 91, "reasoning": "Corporate buyer (Bosch) completed acquisition of a business unit from Johnson Controls. Division requires separation from parent's shared infrastructure — corporate divestiture."},
   {"deal_type": "corporate_divestiture", "stage": "signing", "target_company": "logistics unit", "seller": "Siemens", "buyer": "DSV", "confidence": 90, "reasoning": "Corporate buyer (DSV) acquiring a division from a corporate parent (Siemens). Logistics unit embedded in Siemens infrastructure needs separation — corporate divestiture."},
   {"deal_type": "none", "stage": null, "target_company": "", "seller": "", "buyer": "", "confidence": 85, "reasoning": "PE firm acquiring a standalone company. No specific corporate parent identified as divesting — cannot confirm this is a carve-out vs a regular buyout."},
-  {"deal_type": "none", "stage": null, "target_company": "", "seller": "", "buyer": "", "confidence": 82, "reasoning": "PE firm acquiring an infrastructure services company. No named parent company selling a division — this appears to be a standard PE acquisition of a standalone business."}
+  {"deal_type": "none", "stage": null, "target_company": "", "seller": "", "buyer": "", "confidence": 82, "reasoning": "PE firm acquiring an infrastructure services company. No named parent company selling a division — this appears to be a standard PE acquisition of a standalone business."},
+  {"deal_type": "none", "stage": null, "target_company": "", "seller": "", "buyer": "", "confidence": 95, "reasoning": "AA plc is a standalone public company being acquired in its entirety. It already operates independently with its own IT, finance, HR, and brand. No separation from a parent company's shared infrastructure is needed — this is a take-private, not a carve-out."},
+  {"deal_type": "none", "stage": null, "target_company": "", "seller": "", "buyer": "", "confidence": 92, "reasoning": "Nordic Capital is selling the ENTIRE company Geomatikk (a portfolio company). This is a PE exit / secondary sale, not a carve-out. Geomatikk is the whole portco being sold, not a division being carved out from a larger portco. No separation from a parent's shared infrastructure is required."}
 ]"""
 
 

@@ -85,12 +85,14 @@ def _create_page(api_key: str, database_id: str, alert: DealAlert) -> str | None
     if a.published:
         properties["Date"] = {"date": {"start": a.published.strftime("%Y-%m-%d")}}
 
-    # Queue pursue deals for the Brief Generator
+    # Queue pursue deals for the Brief Generator — only for signing/closing
+    # stage deals. Pre-signing (rumours, exploration) go to Notion for the
+    # record but should not create HubSpot deals.
     if is_qualified:
         action = alert.recommended_action
         if action in ("pursue", "monitor"):
             properties["Action"] = {"select": {"name": action}}
-        if action == "pursue":
+        if action == "pursue" and stage_label in ("Signing", "Closing"):
             properties["Brief Status"] = {"select": {"name": "Queued"}}
 
     payload = {

@@ -226,13 +226,13 @@ def cmd_scan(args):
                 elapsed, len(new_articles), len(qualified), len(pursue), len(monitor))
 
     # Cost reporting
-    # Haiku: $0.80/M input, $4.00/M output
+    # Sonnet: $3.00/M input, $15.00/M output
     # Opus: $15.00/M input, $75.00/M output
-    haiku_cost = (haiku_tokens["input"] * 0.80 + haiku_tokens["output"] * 4.00) / 1_000_000
+    sonnet_cost = (haiku_tokens["input"] * 3.00 + haiku_tokens["output"] * 15.00) / 1_000_000
     opus_cost = (opus_tokens["input"] * 15.00 + opus_tokens["output"] * 75.00) / 1_000_000
-    total_cost = haiku_cost + opus_cost
-    logger.info("API cost estimate: Haiku $%.4f (%dk in, %dk out) + Opus $%.4f (%dk in, %dk out) = $%.4f total",
-                haiku_cost, haiku_tokens["input"] // 1000, haiku_tokens["output"] // 1000,
+    total_cost = sonnet_cost + opus_cost
+    logger.info("API cost estimate: Sonnet $%.4f (%dk in, %dk out) + Opus $%.4f (%dk in, %dk out) = $%.4f total",
+                sonnet_cost, haiku_tokens["input"] // 1000, haiku_tokens["output"] // 1000,
                 opus_cost, opus_tokens["input"] // 1000, opus_tokens["output"] // 1000,
                 total_cost)
 

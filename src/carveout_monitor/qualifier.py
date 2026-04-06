@@ -76,14 +76,15 @@ Respond with a JSON array of objects, one per deal, in the same order as the inp
 "discard" = larkhill_fit < 40 — not relevant to Larkhill"""
 
 
-def _qualify_batch(alerts: list[DealAlert]) -> list[QualifiedAlert]:
-    """Qualify a batch of Haiku-positive alerts using Opus."""
+def _qualify_batch(alerts: list[DealAlert], client: anthropic.Anthropic | None = None) -> list[QualifiedAlert]:
+    """Qualify a batch of classifier-positive alerts using Opus."""
     api_key = os.environ.get("ANTHROPIC_API_KEY", "")
-    if not api_key:
+    if not api_key and not client:
         logger.error("ANTHROPIC_API_KEY not set")
         return [QualifiedAlert(**a.model_dump()) for a in alerts]
 
-    client = anthropic.Anthropic(api_key=api_key)
+    if client is None:
+        client = anthropic.Anthropic(api_key=api_key)
 
     numbered = "\n".join(
         f'{i+1}. "{a.article.title}"'
@@ -103,7 +104,11 @@ def _qualify_batch(alerts: list[DealAlert]) -> list[QualifiedAlert]:
             response = client.messages.create(
                 model=_MODEL,
                 max_tokens=4096,
-                system=_SYSTEM_PROMPT,
+                system=[{
+                    "type": "text",
+                    "text": _SYSTEM_PROMPT,
+                    "cache_control": {"type": "ephemeral"},
+                }],
                 messages=[{"role": "user", "content": user_msg}],
             )
 
@@ -179,9 +184,12 @@ def _qualify_batch(alerts: list[DealAlert]) -> list[QualifiedAlert]:
 
 
 def qualify_alerts(alerts: list[DealAlert]) -> list[QualifiedAlert]:
-    """Qualify all Haiku-positive alerts using Opus. Returns list of QualifiedAlerts."""
+    """Qualify all classifier-positive alerts using Opus. Returns list of QualifiedAlerts."""
     if not alerts:
         return []
+
+    api_key = os.environ.get("ANTHROPIC_API_KEY", "")
+    client = anthropic.Anthropic(api_key=api_key) if api_key else None
 
     logger.info("Qualifying %d alerts with Opus in batches of %d", len(alerts), _BATCH_SIZE)
     all_qualified: list[QualifiedAlert] = []
@@ -192,7 +200,7 @@ def qualify_alerts(alerts: list[DealAlert]) -> list[QualifiedAlert]:
                      i // _BATCH_SIZE + 1,
                      (len(alerts) + _BATCH_SIZE - 1) // _BATCH_SIZE,
                      len(batch))
-        qualified = _qualify_batch(batch)
+        qualified = _qualify_batch(batch, client=client)
         all_qualified.extend(qualified)
 
     pursue = sum(1 for a in all_qualified if a.recommended_action == "pursue")

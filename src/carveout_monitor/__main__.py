@@ -6,11 +6,14 @@ import argparse
 import csv
 import json
 import logging
+import os
 import shutil
 import sys
 import time
 import yaml
 from pathlib import Path
+
+import requests as _requests
 
 from .models import load_firms, DealAlert, DealStage, DealType, QualifiedAlert
 from .feeds import fetch_articles, fetch_all_articles, fetch_core_feeds, fetch_core_feeds_lookback, discover_feeds, get_law_firm_sources
@@ -30,6 +33,17 @@ def _setup_logging():
         format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
         datefmt="%H:%M:%S",
     )
+
+
+def _send_slack_alert(message: str) -> None:
+    """Send alert to Slack webhook. Silently swallows errors — alerting should never crash the pipeline."""
+    url = os.environ.get("SLACK_WEBHOOK_URL", "")
+    if not url:
+        return
+    try:
+        _requests.post(url, json={"text": message}, timeout=10)
+    except Exception:
+        pass
 
 
 def cmd_scan(args):
@@ -210,6 +224,10 @@ def cmd_scan(args):
             notion_page_ids = stats.get("page_ids", {})
             logger.info("[%.1fs] Notion: %d written, %d skipped, %d errors",
                         time.time() - t0, stats["written"], stats["skipped"], stats["errors"])
+            if stats["errors"] > 0 and stats["written"] == 0:
+                _send_slack_alert(
+                    f":warning: Deal Flow Agent: all {stats['errors']} Notion writes failed — 0 alerts written"
+                )
             # Mark written deals as seen
             for alert in actionable:
                 state.mark_deal_seen(
@@ -513,7 +531,11 @@ def main():
     _setup_logging()
 
     if args.command == "scan":
-        cmd_scan(args)
+        try:
+            cmd_scan(args)
+        except Exception as e:
+            _send_slack_alert(f":x: Deal Flow Agent pipeline failed: {e}")
+            raise
     elif args.command == "discover":
         cmd_discover(args)
     elif args.command == "backtest":

@@ -23,6 +23,7 @@ permissions:
 env:
   NOTION_API: ${{ secrets.NOTION_API }}
   NOTION_DB_ID: ${{ secrets.NOTION_DB_ID }}
+  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
 jobs:
   run-rss-monitor:

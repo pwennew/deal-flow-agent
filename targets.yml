@@ -1084,6 +1084,7 @@ firms:
 - name: Trinity Hunt Partners
   domain: trinityhunt.com
   hq: US
+  press_url: https://trinityhunt.com/news
 - name: Rhône Group
   domain: rhonegroup.com
   hq: New York

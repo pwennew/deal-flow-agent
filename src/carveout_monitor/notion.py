@@ -65,6 +65,7 @@ def _create_page(api_key: str, database_id: str, alert: DealAlert) -> str | None
         "Reasoning": {
             "rich_text": [{"text": {"content": (alert.reasoning or "")[:2000]}}],
         },
+        "Verdict": {"select": {"name": "Pending"}},
     }
 
     # Add deal type if available

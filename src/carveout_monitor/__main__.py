@@ -15,9 +15,9 @@ from pathlib import Path
 from .models import load_firms, DealAlert, DealStage, DealType, QualifiedAlert
 from .feeds import fetch_articles, fetch_all_articles, fetch_core_feeds, fetch_core_feeds_lookback, discover_feeds, get_law_firm_sources
 from .scraper import scrape_articles, discover_press_page
-from .classifier import classify_articles, token_usage as haiku_tokens
+from .classifier import classify_articles, token_usage as sonnet_tokens
 from .qualifier import qualify_alerts, token_usage as opus_tokens
-from .notion import NotionClient, _append_page_content
+from .notion import NotionClient
 from .state import StateManager, _deal_key, deals_match
 
 logger = logging.getLogger("carveout_monitor")
@@ -101,17 +101,17 @@ def cmd_scan(args):
         state.save()
         return
 
-    # Step 5: Classify with Haiku
+    # Step 5: Classify with Sonnet
     t0 = time.time()
     all_alerts = classify_articles(new_articles)
     logger.info("[%.1fs] Classification complete", time.time() - t0)
 
     # Step 6: Filter to separation deals (all three deal types)
     carveouts = [a for a in all_alerts if a.deal_type is not None and a.confidence >= 50]
-    logger.info("Haiku positives (raw): %d (confidence >= 50)", len(carveouts))
+    logger.info("Sonnet positives (raw): %d (confidence >= 50)", len(carveouts))
 
     # Step 6a: Reject deals where seller is unknown/unidentifiable — these are almost
-    # always regular PE acquisitions that Haiku misclassified as carve-outs.
+    # always regular PE acquisitions that Sonnet misclassified as carve-outs.
     pre_filter = len(carveouts)
     carveouts = [a for a in carveouts
                  if a.seller.strip()
@@ -120,7 +120,7 @@ def cmd_scan(args):
     unknown_dropped = pre_filter - len(carveouts)
     if unknown_dropped:
         logger.info("Dropped %d alerts with unknown/unidentifiable sellers", unknown_dropped)
-    logger.info("Haiku positives: %d (after seller filter)", len(carveouts))
+    logger.info("Sonnet positives: %d (after seller filter)", len(carveouts))
 
     for alert in carveouts:
         stage = alert.stage.value if alert.stage else "unknown"
@@ -228,11 +228,11 @@ def cmd_scan(args):
     # Cost reporting
     # Sonnet: $3.00/M input, $15.00/M output
     # Opus: $15.00/M input, $75.00/M output
-    sonnet_cost = (haiku_tokens["input"] * 3.00 + haiku_tokens["output"] * 15.00) / 1_000_000
+    sonnet_cost = (sonnet_tokens["input"] * 3.00 + sonnet_tokens["output"] * 15.00) / 1_000_000
     opus_cost = (opus_tokens["input"] * 15.00 + opus_tokens["output"] * 75.00) / 1_000_000
     total_cost = sonnet_cost + opus_cost
     logger.info("API cost estimate: Sonnet $%.4f (%dk in, %dk out) + Opus $%.4f (%dk in, %dk out) = $%.4f total",
-                sonnet_cost, haiku_tokens["input"] // 1000, haiku_tokens["output"] // 1000,
+                sonnet_cost, sonnet_tokens["input"] // 1000, sonnet_tokens["output"] // 1000,
                 opus_cost, opus_tokens["input"] // 1000, opus_tokens["output"] // 1000,
                 total_cost)
 

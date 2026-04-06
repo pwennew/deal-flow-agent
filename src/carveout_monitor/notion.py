@@ -113,52 +113,6 @@ def _create_page(api_key: str, database_id: str, alert: DealAlert) -> str | None
         return None
 
 
-def _append_page_content(api_key: str, page_id: str, text: str) -> bool:
-    """Append text content as paragraph blocks to a Notion page."""
-    url = f"{_BASE_URL}/blocks/{page_id}/children"
-    headers = {
-        "Authorization": f"Bearer {api_key}",
-        "Content-Type": "application/json",
-        "Notion-Version": _NOTION_VERSION,
-    }
-
-    # Split text into paragraphs and create block children
-    # Notion rich_text content limit is 2000 chars per block
-    paragraphs = text.split("\n\n")
-    children = []
-    for para in paragraphs:
-        if not para.strip():
-            continue
-        # Chunk long paragraphs into 2000-char blocks
-        for i in range(0, len(para), 2000):
-            chunk = para[i:i + 2000]
-            children.append({
-                "object": "block",
-                "type": "paragraph",
-                "paragraph": {
-                    "rich_text": [{"type": "text", "text": {"content": chunk}}],
-                },
-            })
-
-    if not children:
-        return True
-
-    # Notion allows max 100 blocks per request
-    for i in range(0, len(children), 100):
-        batch = children[i:i + 100]
-        payload = {"children": batch}
-        try:
-            resp = requests.patch(url, headers=headers, json=payload, timeout=15)
-            if resp.status_code != 200:
-                logger.warning("Notion block append failed (status %d): %s",
-                               resp.status_code, resp.text[:200])
-                return False
-        except requests.RequestException as e:
-            logger.error("Notion block append error: %s", e)
-            return False
-
-    return True
-
 
 class NotionClient:
     """Creates rows in a Notion database for carve-out alerts."""

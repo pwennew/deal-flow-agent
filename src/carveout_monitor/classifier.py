@@ -1,4 +1,4 @@
-"""Haiku-based classification of articles for carve-out deals."""
+"""Sonnet-based classification of articles for carve-out deals."""
 
 from __future__ import annotations
 

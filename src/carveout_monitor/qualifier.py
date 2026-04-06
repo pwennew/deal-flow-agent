@@ -93,7 +93,7 @@ def _qualify_batch(alerts: list[DealAlert], client: anthropic.Anthropic | None =
         + f", Target: {a.target_company}, Seller: {a.seller}"
         + (f", Buyer: {a.buyer}" if a.buyer else "")
         + f", Stage: {a.stage.value if a.stage else 'unknown'}"
-        + f", Haiku confidence: {a.confidence}"
+        + f", Classifier confidence: {a.confidence}"
         + (f"\n   {a.reasoning}" if a.reasoning and "[Also:" in a.reasoning else "")
         for i, a in enumerate(alerts)
     )

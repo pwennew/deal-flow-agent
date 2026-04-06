@@ -9,6 +9,7 @@ import os
 import anthropic
 
 from .models import Article, DealAlert, DealStage, DealType
+from .utils import extract_json_array
 
 logger = logging.getLogger(__name__)
 
@@ -163,10 +164,7 @@ def classify_batch(articles: list[Article], client: anthropic.Anthropic | None =
             )
 
             text = response.content[0].text.strip()
-            # Extract JSON array from response
-            start = text.index("[")
-            end = text.rindex("]") + 1
-            results = json.loads(text[start:end])
+            results = extract_json_array(text)
 
             input_tokens = response.usage.input_tokens
             output_tokens = response.usage.output_tokens

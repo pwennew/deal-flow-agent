@@ -9,6 +9,7 @@ import os
 import anthropic
 
 from .models import DealAlert, DealType, QualifiedAlert
+from .utils import extract_json_array
 
 logger = logging.getLogger(__name__)
 
@@ -113,9 +114,7 @@ def _qualify_batch(alerts: list[DealAlert], client: anthropic.Anthropic | None =
             )
 
             text = response.content[0].text.strip()
-            start = text.index("[")
-            end = text.rindex("]") + 1
-            results = json.loads(text[start:end])
+            results = extract_json_array(text)
 
             input_tokens = response.usage.input_tokens
             output_tokens = response.usage.output_tokens

@@ -136,7 +136,7 @@ def classify_batch(articles: list[Article], client: anthropic.Anthropic | None =
         client = anthropic.Anthropic(api_key=api_key)
 
     numbered = "\n".join(
-        f'{i+1}. "{a.title}"' + (f" — {a.summary[:150]}" if a.summary else "")
+        f'{i+1}. "{a.title}"' + (f"\n   {a.summary[:1000]}" if a.summary else "")
         for i, a in enumerate(articles)
     )
     user_msg = f"Classify these articles:\n\n{numbered}"

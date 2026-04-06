@@ -15,6 +15,7 @@ from pathlib import Path
 from .models import load_firms, DealAlert, DealStage, DealType, QualifiedAlert
 from .feeds import fetch_articles, fetch_all_articles, fetch_core_feeds, fetch_core_feeds_lookback, discover_feeds, get_law_firm_sources
 from .scraper import scrape_articles, discover_press_page
+from .fetcher import fetch_article_bodies
 from .classifier import classify_articles, token_usage as sonnet_tokens
 from .qualifier import qualify_alerts, token_usage as opus_tokens
 from .notion import NotionClient
@@ -100,6 +101,14 @@ def cmd_scan(args):
         logger.info("No new articles — nothing to classify")
         state.save()
         return
+
+    # Step 4b: Fetch full article body text for better classification
+    if getattr(args, "skip_fetch", False):
+        logger.info("Skipping body text fetch (--skip-fetch)")
+    else:
+        t0 = time.time()
+        fetch_article_bodies(new_articles)
+        logger.info("[%.1fs] Body text fetch complete", time.time() - t0)
 
     # Step 5: Classify with Sonnet
     t0 = time.time()
@@ -421,6 +430,14 @@ def cmd_lookback(args):
                 len(unique), len(articles) - len(unique))
     articles = unique
 
+    # Step 4b: Fetch full article body text for better classification
+    if getattr(args, "skip_fetch", False):
+        logger.info("Skipping body text fetch (--skip-fetch)")
+    else:
+        t0 = time.time()
+        fetch_article_bodies(articles)
+        logger.info("[%.1fs] Body text fetch complete", time.time() - t0)
+
     # Step 5: Classify ALL articles
     t0 = time.time()
     all_alerts = classify_articles(articles)
@@ -473,6 +490,7 @@ def main():
     scan_p.add_argument("--skip-notion", action="store_true", help="Skip Notion output")
     # HubSpot deal creation moved to deal-brief-generator scheduled task
     scan_p.add_argument("--skip-scraper", action="store_true", help="Skip press page scraping")
+    scan_p.add_argument("--skip-fetch", action="store_true", help="Skip article body text fetching")
 
     # discover
     disc_p = sub.add_parser("discover", help="Discover RSS feeds and press pages for all firms")
@@ -489,6 +507,7 @@ def main():
     lookback_p = sub.add_parser("lookback", help="Lookback exercise: extended fetch + classify all to CSV")
     lookback_p.add_argument("--days", type=int, default=30, help="Lookback window in days (default: 30)")
     lookback_p.add_argument("--output", default="lookback_results.csv", help="Output CSV path (default: lookback_results.csv)")
+    lookback_p.add_argument("--skip-fetch", action="store_true", help="Skip article body text fetching")
 
     args = parser.parse_args()
     _setup_logging()

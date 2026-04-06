@@ -234,7 +234,7 @@ class StateManager:
             "first_seen": datetime.now().isoformat(),
         }
 
-    def prune(self, max_age_days: int = 30) -> int:
+    def prune(self, max_age_days: int = 14) -> int:
         cutoff = datetime.now() - timedelta(days=max_age_days)
 
         # Prune seen URLs
@@ -272,6 +272,9 @@ class StateManager:
             json.dump(self._data, f, indent=2)
         logger.info("Saved state (%d seen URLs, %d seen deals) to %s",
                     len(self._data["seen"]), len(self._data.get("seen_deals", {})), self._path)
+        size_mb = self._path.stat().st_size / (1024 * 1024)
+        if size_mb > 2:
+            logger.warning("State file is %.1fMB — consider running with shorter prune window or resetting", size_mb)
 
     @property
     def seen_count(self) -> int:

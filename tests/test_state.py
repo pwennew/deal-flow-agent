@@ -117,7 +117,7 @@ def test_deal_seen_persists_across_loads(tmp_path):
     assert not s2.is_deal_seen("Red Lobster", "Darden", "closing")
 
 
-def test_deal_seen_pruned_after_30_days(tmp_path):
+def test_deal_seen_pruned_after_max_age(tmp_path):
     path = tmp_path / "state.json"
     s = StateManager(path)
     s.mark_deal_seen("Old Deal", "Old Seller", "signing")

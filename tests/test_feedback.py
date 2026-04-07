@@ -5,7 +5,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from carveout_monitor.feedback import compute_accuracy, format_report, format_slack_report
+from carveout_monitor.feedback import compute_accuracy, format_report
 
 
 def _row(verdict="Pending", action="pursue", deal_type="corporate_carveout",
@@ -112,14 +112,6 @@ def test_format_report_runs():
     report = format_report(stats)
     assert "Precision:" in report
     assert "50%" in report
-
-
-def test_format_slack_report_runs():
-    rows = [_row(verdict="Confirmed"), _row(verdict="Low EV")]
-    stats = compute_accuracy(rows)
-    msg = format_slack_report(stats)
-    assert "Precision" in msg
-    assert "50%" in msg
 
 
 def test_empty_rows():

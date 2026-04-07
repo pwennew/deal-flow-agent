@@ -210,20 +210,3 @@ def format_report(stats: dict) -> str:
     return "\n".join(lines)
 
 
-def format_slack_report(stats: dict) -> str:
-    """Format a concise Slack message from accuracy stats."""
-    emoji = ":white_check_mark:" if stats["precision"] >= 0.7 else ":warning:"
-    lines = [
-        f"{emoji} *Deal Flow Agent — Accuracy Report*",
-        "",
-        f"Total: {stats['total']} | Reviewed: {stats['reviewed']} | Pending: {stats['pending']}",
-        f"*Precision: {stats['precision']:.0%}* ({stats['confirmed']} confirmed, {stats['false_positives']} false positives)",
-    ]
-
-    if stats["fp_by_reason"]:
-        lines.append("")
-        lines.append("*False positive breakdown:*")
-        for reason, count in stats["fp_by_reason"].most_common():
-            lines.append(f"  {reason}: {count}")
-
-    return "\n".join(lines)

@@ -22,6 +22,7 @@ from .fetcher import fetch_article_bodies
 from .classifier import classify_articles, token_usage as sonnet_tokens
 from .qualifier import qualify_alerts, token_usage as opus_tokens
 from .notion import NotionClient
+from .feedback import fetch_verdicts, compute_accuracy, format_report, format_slack_report
 from .state import StateManager, _deal_key, deals_match
 
 logger = logging.getLogger("carveout_monitor")
@@ -492,6 +493,25 @@ def cmd_lookback(args):
                 elapsed, len(all_alerts), len(carveouts), output_path)
 
 
+def cmd_feedback(args):
+    """Read Verdict labels from Notion and report pipeline accuracy."""
+    logger.info("Fetching verdict data from Notion...")
+    rows = fetch_verdicts()
+    if not rows:
+        logger.info("No rows found in Notion — nothing to report")
+        return
+
+    stats = compute_accuracy(rows)
+    report = format_report(stats)
+    logger.info("\n%s", report)
+
+    # Send to Slack if configured and --slack flag set
+    if getattr(args, "slack", False):
+        slack_msg = format_slack_report(stats)
+        _send_slack_alert(slack_msg)
+        logger.info("Accuracy report sent to Slack")
+
+
 def main():
     parser = argparse.ArgumentParser(
         prog="carveout_monitor",
@@ -527,6 +547,10 @@ def main():
     lookback_p.add_argument("--output", default="lookback_results.csv", help="Output CSV path (default: lookback_results.csv)")
     lookback_p.add_argument("--skip-fetch", action="store_true", help="Skip article body text fetching")
 
+    # feedback
+    feedback_p = sub.add_parser("feedback", help="Read Verdict labels from Notion and report accuracy")
+    feedback_p.add_argument("--slack", action="store_true", help="Also send report to Slack webhook")
+
     args = parser.parse_args()
     _setup_logging()
 
@@ -544,6 +568,8 @@ def main():
         cmd_reset_state(args)
     elif args.command == "lookback":
         cmd_lookback(args)
+    elif args.command == "feedback":
+        cmd_feedback(args)
     else:
         parser.print_help()
         sys.exit(1)

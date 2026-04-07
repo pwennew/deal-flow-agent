@@ -212,7 +212,10 @@ def cmd_scan(args):
             logger.info("[%.1fs] Notion: %d written, %d skipped, %d errors",
                         time.time() - t0, stats["written"], stats["skipped"], stats["errors"])
             if stats["errors"] > 0 and stats["written"] == 0:
-                logger.error("All %d Notion writes failed — 0 alerts written", stats["errors"])
+                raise RuntimeError(
+                    f"All {stats['errors']} Notion writes failed — 0 alerts written. "
+                    "Check NOTION_API and NOTION_DB_ID secrets."
+                )
             # Mark written deals as seen
             for alert in actionable:
                 state.mark_deal_seen(

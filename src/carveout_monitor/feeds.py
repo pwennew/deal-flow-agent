@@ -541,3 +541,58 @@ def fetch_core_feeds_lookback(days: int = 30) -> list[Article]:
     logger.info("Fetched %d articles from %d core feeds (lookback %dd)",
                 len(all_articles), len(extended_feeds), days)
     return all_articles
+
+
+def build_tam_google_news_feeds(
+    firms: list[Firm],
+    priority_firms: list[str] | None = None,
+) -> list[dict[str, str]]:
+    """Build Google News RSS feeds for TAM firm-specific deal monitoring.
+
+    Generates one feed per firm: "[firm name]" acquisition OR divestiture OR "carve-out".
+    If priority_firms is provided, only generates feeds for those firm names.
+    """
+    from urllib.parse import quote
+
+    target_firms = firms
+    if priority_firms:
+        priority_set = {n.lower() for n in priority_firms}
+        target_firms = [f for f in firms if f.name.lower() in priority_set]
+
+    feeds = []
+    for firm in target_firms:
+        query = f'"{firm.name}" acquisition OR divestiture OR "carve-out"'
+        encoded = quote(query)
+        url = f"https://news.google.com/rss/search?q={encoded}+when:7d&hl=en-US&gl=US&ceid=US:en"
+        feeds.append({"url": url, "source": f"Google News: TAM {firm.name}"})
+
+    return feeds
+
+
+def fetch_tam_feeds(
+    firms: list[Firm],
+    priority_firms: list[str] | None = None,
+    lookback_hours: int = 168,
+) -> list[Article]:
+    """Fetch articles from TAM firm-specific Google News feeds.
+
+    Runs sequentially with 1s gaps to avoid Google rate limits.
+    """
+    feeds = build_tam_google_news_feeds(firms, priority_firms)
+    if not feeds:
+        return []
+
+    logger.info("Fetching %d TAM Google News feeds (lookback=%dh)", len(feeds), lookback_hours)
+
+    all_articles: list[Article] = []
+    for i, feed in enumerate(feeds):
+        if i > 0:
+            time.sleep(1)
+        try:
+            articles = _fetch_single_core_feed(feed, lookback_hours)
+            all_articles.extend(articles)
+        except Exception as e:
+            logger.warning("Error fetching TAM feed %s: %s", feed["source"], e)
+
+    logger.info("Fetched %d articles from %d TAM feeds", len(all_articles), len(feeds))
+    return all_articles

@@ -9,7 +9,7 @@ from datetime import datetime
 
 import requests
 
-from .models import DealAlert, QualifiedAlert
+from .models import DealAlert, QualifiedAlert, TamAlert
 
 logger = logging.getLogger(__name__)
 
@@ -157,4 +157,83 @@ class NotionClient:
 
         logger.info("Notion: %d rows created, %d skipped, %d errors",
                     stats["written"], stats["skipped"], stats["errors"])
+        return stats
+
+    def write_tam_alerts(self, alerts: list[TamAlert]) -> dict:
+        """Write TAM mention alerts as Notion database rows.
+
+        These are attention flags — articles that mention a TAM firm but
+        were not caught by the classifier. They have larkhill_fit=0 and
+        Action=tam_mention to distinguish them from classifier results.
+        """
+        stats: dict = {"written": 0, "errors": 0}
+
+        if not self._api_key or not self._database_id:
+            logger.warning("Notion not configured — skipping TAM alert output")
+            return stats
+
+        for alert in alerts:
+            a = alert.article
+            title = (a.title or "").strip()
+            if not title or len(title) <= 2:
+                continue
+
+            firms_str = ", ".join(alert.matched_firms)
+            locations_str = ", ".join(sorted(set(alert.match_locations)))
+            reasoning = f"TAM mention: {firms_str} found in {locations_str}"
+
+            properties: dict = {
+                "Alert": {
+                    "title": [{"text": {"content": title[:2000]}}],
+                },
+                "PE Firm": {
+                    "rich_text": [{"text": {"content": firms_str[:2000]}}],
+                },
+                "%": {
+                    "number": 0,
+                },
+                "URL": {
+                    "url": a.url or None,
+                },
+                "Reasoning": {
+                    "rich_text": [{"text": {"content": reasoning[:2000]}}],
+                },
+                "Verdict": {"select": {"name": "Pending"}},
+                "Action": {"select": {"name": "tam_mention"}},
+            }
+
+            if a.published:
+                properties["Date"] = {"date": {"start": a.published.strftime("%Y-%m-%d")}}
+
+            payload = {
+                "parent": {"database_id": self._database_id},
+                "properties": properties,
+            }
+
+            try:
+                resp = requests.post(
+                    f"{_BASE_URL}/pages",
+                    headers={
+                        "Authorization": f"Bearer {self._api_key}",
+                        "Content-Type": "application/json",
+                        "Notion-Version": _NOTION_VERSION,
+                    },
+                    json=payload,
+                    timeout=10,
+                )
+                time.sleep(0.35)
+
+                if resp.status_code == 200:
+                    stats["written"] += 1
+                    logger.info("Created TAM Notion row: %s — %s", firms_str, title[:60])
+                else:
+                    stats["errors"] += 1
+                    logger.warning("TAM Notion write failed (status %d): %s",
+                                   resp.status_code, resp.text[:200])
+            except requests.RequestException as e:
+                stats["errors"] += 1
+                logger.error("TAM Notion API error: %s", e)
+
+        logger.info("TAM Notion: %d rows created, %d errors",
+                    stats["written"], stats["errors"])
         return stats

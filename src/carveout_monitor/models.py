@@ -70,6 +70,14 @@ class QualifiedAlert(DealAlert):
     recommended_action: str = "discard"  # pursue | monitor | discard
 
 
+class TamAlert(BaseModel):
+    """An article that mentions a firm from the TAM list (targets.yml)."""
+
+    article: Article
+    matched_firms: list[str] = Field(default_factory=list)
+    match_locations: list[str] = Field(default_factory=list)
+
+
 def load_firms(path: str | Path = "targets.yml") -> list[Firm]:
     """Load target firms from YAML file."""
     with open(path) as f:

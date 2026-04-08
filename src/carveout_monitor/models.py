@@ -18,7 +18,6 @@ class DealStage(str, Enum):
 class DealType(str, Enum):
     CORPORATE_CARVEOUT = "corporate_carveout"       # PE buys division from corporate
     PORTCO_CARVEOUT = "portco_carveout"              # PE buys division from PE portco
-    CORPORATE_DIVESTITURE = "corporate_divestiture"  # Non-PE buys division from corporate
 
 
 class Firm(BaseModel):
@@ -68,14 +67,6 @@ class QualifiedAlert(DealAlert):
     timing_score: int = 0
     pe_firm: str = ""
     recommended_action: str = "discard"  # pursue | monitor | discard
-
-
-class TamAlert(BaseModel):
-    """An article that mentions a firm from the TAM list (targets.yml)."""
-
-    article: Article
-    matched_firms: list[str] = Field(default_factory=list)
-    match_locations: list[str] = Field(default_factory=list)
 
 
 def load_firms(path: str | Path = "targets.yml") -> list[Firm]:

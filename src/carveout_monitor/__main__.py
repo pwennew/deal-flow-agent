@@ -13,42 +13,16 @@ import yaml
 from pathlib import Path
 
 from .models import load_firms, DealAlert, DealStage, DealType, QualifiedAlert
-from .feeds import fetch_articles, fetch_all_articles, fetch_core_feeds, fetch_core_feeds_lookback, discover_feeds, get_law_firm_sources, fetch_tam_feeds
+from .feeds import fetch_articles, fetch_all_articles, fetch_core_feeds, fetch_core_feeds_lookback, discover_feeds, get_law_firm_sources
 from .scraper import scrape_articles, discover_press_page
 from .fetcher import fetch_article_bodies
 from .classifier import classify_articles, token_usage as sonnet_tokens
 from .qualifier import qualify_alerts, token_usage as opus_tokens
 from .notion import NotionClient
-from .tam_monitor import scan_for_tam_mentions
 from .feedback import fetch_verdicts, compute_accuracy, format_report
 from .state import StateManager, _deal_key, deals_match
 
 logger = logging.getLogger("carveout_monitor")
-
-# High-engagement TAM firms for firm-specific Google News monitoring.
-# Capped at 20 to stay within Google News rate limits (~20s added wall time).
-TAM_PRIORITY_FIRMS = [
-    "One Rock Capital Partners",
-    "Astorg",
-    "Montagu Private Equity",
-    "Altaris Capital Partners",
-    "ABRY Partners",
-    "TowerBrook Capital Partners",
-    "Francisco Partners",
-    "Insight Partners",
-    "Peak Rock Capital",
-    "Inflexion Private Equity Partners",
-    "Searchlight Capital Partners",
-    "Marlin Equity Partners",
-    "Platinum Equity",
-    "Bain Capital",
-    "Thoma Bravo",
-    "Advent International",
-    "Permira Advisers",
-    "EQT",
-    "CVC Capital Partners",
-    "Hg",
-]
 
 
 def _setup_logging():
@@ -70,18 +44,11 @@ def cmd_scan(args):
     articles = fetch_articles(firms, lookback_hours=args.hours)
     logger.info("[%.1fs] RSS fetch: %d articles", time.time() - t0, len(articles))
 
-    # Step 1b: Fetch articles from core feeds (Google News, press wires)
+    # Step 1b: Fetch articles from core feeds (BusinessWire)
     t0 = time.time()
     core_articles = fetch_core_feeds(lookback_hours=args.hours)
     articles.extend(core_articles)
     logger.info("[%.1fs] Core feeds: %d articles", time.time() - t0, len(core_articles))
-
-    # Step 1c: Fetch TAM-specific Google News feeds for priority firms
-    t0 = time.time()
-    tam_feed_articles = fetch_tam_feeds(firms, priority_firms=TAM_PRIORITY_FIRMS)
-    articles.extend(tam_feed_articles)
-    logger.info("[%.1fs] TAM feeds: %d articles from %d priority firms",
-                time.time() - t0, len(tam_feed_articles), len(TAM_PRIORITY_FIRMS))
 
     # Step 2: Scrape press pages for firms without RSS
     if getattr(args, "skip_scraper", False):
@@ -135,10 +102,6 @@ def cmd_scan(args):
         logger.info("No new articles — nothing to classify")
         state.save()
         return
-
-    # Step 4a: TAM mention scan on article titles (before classification)
-    tam_alerts = scan_for_tam_mentions(new_articles, firms)
-    logger.info("TAM scan: %d articles mention TAM firms", len(tam_alerts))
 
     # Step 4b: Fetch full article body text for better classification
     if getattr(args, "skip_fetch", False):
@@ -263,21 +226,6 @@ def cmd_scan(args):
             logger.warning("Notion not configured — skipping")
     elif args.skip_notion:
         logger.info("Notion output skipped (--skip-notion flag)")
-
-    # Step 8b: Write TAM-only alerts (not also caught by classifier)
-    classifier_urls = {a.article.url for a in qualified}
-    tam_only = [t for t in tam_alerts if t.article.url not in classifier_urls]
-    also_classified = len(tam_alerts) - len(tam_only)
-    logger.info("TAM monitoring: %d articles matched firms. %d also classified as carve-outs. Writing %d TAM-only alerts.",
-                len(tam_alerts), also_classified, len(tam_only))
-
-    if not args.skip_notion and tam_only:
-        tam_notion = NotionClient()
-        if tam_notion.configured:
-            t0 = time.time()
-            tam_stats = tam_notion.write_tam_alerts(tam_only)
-            logger.info("[%.1fs] TAM Notion: %d written, %d errors",
-                        time.time() - t0, tam_stats["written"], tam_stats["errors"])
 
     # HubSpot deal creation is handled by the deal-brief-generator
     # scheduled task (8am local via Claude Code). It reads Queued rows

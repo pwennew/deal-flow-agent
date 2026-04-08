@@ -20,55 +20,53 @@ _MAX_RETRIES = 3
 # Module-level token counters for cost reporting
 token_usage = {"input": 0, "output": 0}
 
-_SYSTEM_PROMPT = """You classify deal announcements. For each article, determine if it describes a deal involving the **separation of a division, subsidiary, or business unit** from a parent company.
+_SYSTEM_PROMPT = """You classify deal announcements. For each article, determine if it describes a **PE-backed carve-out** — a private equity firm acquiring a division, subsidiary, or business unit from a parent company that requires separation.
 
 DEAL TYPES (classify as one of these, or "none"):
 
 1. "corporate_carveout" — A PE firm acquires a division/unit from a CORPORATE parent. The parent continues to exist. The PE firm is the buyer.
    Example: "Apollo acquires Safety Products division from 3M"
 
-2. "portco_carveout" — A PE firm acquires a division/unit from another PE firm's PORTFOLIO COMPANY (not the whole portco). The portco is the corporate parent. Look for "carve-out from [PE]'s portco" or "divesting [unit] from [portfolio company]" language.
+2. "portco_carveout" — A PE firm acquires a division/unit from another PE firm's PORTFOLIO COMPANY (not the whole portco). The portco is the corporate parent.
    Example: "Inflexion acquires Marioff in carve-out from Sentinel Capital Partners' portco"
 
-3. "corporate_divestiture" — A NON-PE buyer (corporate, trade buyer, consortium, sovereign wealth fund) acquires a division/unit from a corporate parent. Same separation complexity as a carve-out, but the buyer is not a PE firm.
-   Example: "Henkel acquires industrial adhesives division from BASF"
+"none" — Not a PE-backed carve-out. See EXCLUDE rules below.
 
-"none" — Not a separation deal. See EXCLUDE rules below.
-
-INCLUDE (these ARE separation deals — classify by buyer type):
-- Any entity acquires a [division/unit/business/subsidiary/segment] from a [parent company]
-- Any entity completes purchase of a [business unit] from a [corporate parent]
-- Any entity buys a [brand/segment] being divested by a [parent]
+INCLUDE (these ARE PE-backed carve-outs):
+- PE firm acquires a [division/unit/business/subsidiary/segment] from a [corporate parent]
+- PE firm completes purchase of a [business unit] from a [corporate parent]
+- PE firm buys a [brand/segment] being divested by a [parent]
 - PE firm acquires a division/unit being carved out of another PE firm's portfolio company (portco_carveout)
-- Corporate/trade buyer acquires a division from another corporate (corporate_divestiture)
-- Division being sold as part of a corporate restructuring or strategic review
+- PE firm building a platform through acquisition of a division/unit from a corporate parent (e.g. acquiring MGA operations, specialty insurance divisions)
+- Division being sold to a PE firm as part of a corporate restructuring or strategic review
 
-EXCLUDE (these are NOT separation deals — classify as "none"):
+EXCLUDE (these are NOT PE-backed carve-outs — classify as "none"):
+- Corporate/trade buyer acquires a division from a corporate — Larkhill focuses on PE-backed carve-outs only
 - Secondary buyout: PE firm buys an entire company from ANOTHER PE firm (PE-to-PE, whole company)
 - Take-private: PE firm acquires an entire publicly-listed company
 - Platform acquisition: PE portfolio company acquires another company (bolt-on)
 - Portfolio exit: PE firm SELLS or divests an entire portfolio company (the PE firm is the seller)
 - Minority investment: Any entity takes a minority stake or makes a growth investment
-- Whole-company acquisition: Any entity acquires an entire standalone company (not a division carved out of a parent). This includes companies being sold by their owners/shareholders even if the word "sale" or "divestiture" appears — if the ENTIRE company is being sold, it is NOT a separation deal.
-- Whole-company sale by current owners: A company's shareholders (PE, family, founders) sell the ENTIRE company. The company already operates independently with its own IT, finance, HR, brand. No separation from a parent is required. Example: "Consortium agrees to acquire AA plc" — AA is a standalone company, not a division of a larger parent.
+- Whole-company acquisition: PE firm acquires an entire standalone company (not a division carved out of a parent). This includes companies being sold by their owners/shareholders even if the word "sale" or "divestiture" appears — if the ENTIRE company is being sold, it is NOT a carve-out.
+- Whole-company sale by current owners: A company's shareholders (PE, family, founders) sell the ENTIRE company. The company already operates independently. No separation from a parent is required.
 - Fund news: PE firm raises a new fund, closes a fund, hires staff
 - IPO: portfolio company goes public
-- Asset/claim transfer: Company acquires exploration rights, mineral claims, patent portfolios, or other assets that do not constitute an operating business with employees, systems, and infrastructure
-- Standalone public company acquisition: Any entity acquires an entire company that already operates independently (has its own public listing, management team, IT, finance, HR). The key test: does the target need to be SEPARATED from a parent's shared infrastructure? If it already operates independently, it is not a separation deal.
-- Self-contained subsidiary with no separation complexity: Parent sells a subsidiary that operates entirely independently (e.g., a sports franchise, a standalone brand) with no shared IT, finance, HR, or operational infrastructure to untangle
-- PE firm selling a whole portfolio company: If the target is the ENTIRE portco (the whole company), this is a secondary buyout or PE exit — NOT a separation deal. The portco already runs independently. BUT if the target is a division/unit being carved out FROM the portco (not the whole portco), it IS a separation deal. Ask: is the target the WHOLE company or just a PART of it?
+- Asset/claim transfer: Company acquires exploration rights, mineral claims, patent portfolios, or other assets that do not constitute an operating business
+- Standalone public company acquisition: PE firm acquires an entire company that already operates independently. The key test: does the target need to be SEPARATED from a parent's shared infrastructure? If it already operates independently, it is not a carve-out.
+- Self-contained subsidiary with no separation complexity: Parent sells a subsidiary that operates entirely independently with no shared IT, finance, HR, or operational infrastructure to untangle
+- PE firm selling a whole portfolio company: If the target is the ENTIRE portco, this is a secondary buyout or PE exit. BUT if the target is a division/unit being carved out FROM the portco, it IS a carve-out.
 
-KEY TEST: Does the target need to be **SEPARATED** from a larger entity's shared infrastructure (IT, finance, HR, legal, operations)? If yes → classify by buyer type. If the target already operates independently → "none".
+KEY TEST: (1) Is a PE firm on the BUY side? (2) Does the target need to be **SEPARATED** from a larger entity's shared infrastructure (IT, finance, HR, legal, operations)? Both must be yes to classify as a carve-out.
 
-CRITICAL: You must be able to identify a SPECIFIC, NAMED seller/parent company from the article text. If you cannot determine who is divesting — if you would need to write "Unknown", "Unknown corporate parent", "Unknown (divesting parent)", or similar — classify as "none". A PE firm acquiring a standalone company where you can't identify the divesting parent is almost certainly a regular buyout, not a carve-out.
+CRITICAL: You must be able to identify a SPECIFIC, NAMED seller/parent company from the article text. If you cannot determine who is divesting — if you would need to write "Unknown" or similar — classify as "none".
 
 For each article, respond with a JSON object:
 {
-  "deal_type": "corporate_carveout" or "portco_carveout" or "corporate_divestiture" or "none",
+  "deal_type": "corporate_carveout" or "portco_carveout" or "none",
   "stage": "signing" or "closing" or null,
   "target_company": "name of the division/unit being acquired" or "",
   "seller": "name of the parent company selling" or "",
-  "buyer": "name of the acquiring entity (PE firm or corporate)" or "",
+  "buyer": "name of the acquiring PE firm" or "",
   "confidence": 0-100,
   "reasoning": "brief explanation"
 }
@@ -100,29 +98,31 @@ _FEW_SHOT_USER = """Classify these articles:
 18. "Aurora Capital Partners Acquires GenServe, a Leading Infrastructure Services Provider"
 19. "Consortium including Fortress and TowerBrook agrees to acquire AA plc for £7 billion"
 20. "Nordic Capital completes sale of Geomatikk to Riksmätningen"
+21. "One Rock Capital Partners to acquire MGA operations from AmTrust Financial Services"
 """
 
 _FEW_SHOT_ASSISTANT = """[
   {"deal_type": "corporate_carveout", "stage": "signing", "target_company": "Safety Products division", "seller": "3M", "buyer": "Blackstone", "confidence": 95, "reasoning": "PE firm acquiring a division from a corporate parent — classic corporate carve-out signing."},
   {"deal_type": "corporate_carveout", "stage": "closing", "target_company": "tea business", "seller": "Unilever", "buyer": "KKR", "confidence": 92, "reasoning": "PE firm completed acquisition of a business unit from a corporate parent — corporate carve-out closing."},
-  {"deal_type": "none", "stage": null, "target_company": "", "seller": "", "buyer": "", "confidence": 90, "reasoning": "Seller is Bain Capital (another PE firm) and Shutterfly is the whole company — this is a secondary buyout, not a separation deal."},
-  {"deal_type": "none", "stage": null, "target_company": "", "seller": "", "buyer": "", "confidence": 95, "reasoning": "Taking a whole public company private — not a separation deal."},
+  {"deal_type": "none", "stage": null, "target_company": "", "seller": "", "buyer": "", "confidence": 90, "reasoning": "Seller is Bain Capital (another PE firm) and Shutterfly is the whole company — this is a secondary buyout, not a carve-out."},
+  {"deal_type": "none", "stage": null, "target_company": "", "seller": "", "buyer": "", "confidence": 95, "reasoning": "Taking a whole public company private — not a carve-out."},
   {"deal_type": "none", "stage": null, "target_company": "", "seller": "", "buyer": "", "confidence": 98, "reasoning": "Fund news / fundraising — not a deal announcement at all."},
-  {"deal_type": "none", "stage": null, "target_company": "", "seller": "", "buyer": "", "confidence": 92, "reasoning": "Nautic Partners is the SELLER (a PE firm exiting a portfolio company) — this is a portfolio exit, not a separation deal."},
-  {"deal_type": "none", "stage": null, "target_company": "", "seller": "", "buyer": "", "confidence": 88, "reasoning": "Eurazeo is making a minority/growth investment, not acquiring a division — not a separation deal."},
+  {"deal_type": "none", "stage": null, "target_company": "", "seller": "", "buyer": "", "confidence": 92, "reasoning": "Nautic Partners is the SELLER (a PE firm exiting a portfolio company) — this is a portfolio exit, not a carve-out."},
+  {"deal_type": "none", "stage": null, "target_company": "", "seller": "", "buyer": "", "confidence": 88, "reasoning": "Eurazeo is making a minority/growth investment, not acquiring a division — not a carve-out."},
   {"deal_type": "none", "stage": null, "target_company": "", "seller": "", "buyer": "", "confidence": 85, "reasoning": "A PE portfolio company (GovCIO) acquiring a standalone company — bolt-on acquisition, not a separation from a parent."},
   {"deal_type": "none", "stage": null, "target_company": "", "seller": "", "buyer": "", "confidence": 90, "reasoning": "Asset/claim transfer — mineral exploration claims, not an operating business. No separation complexity."},
   {"deal_type": "none", "stage": null, "target_company": "", "seller": "", "buyer": "", "confidence": 92, "reasoning": "Olaplex is a standalone Nasdaq-listed company. Already operates independently — no separation from a corporate parent required."},
   {"deal_type": "none", "stage": null, "target_company": "", "seller": "", "buyer": "", "confidence": 88, "reasoning": "Self-contained sports franchise — operates independently with no shared infrastructure requiring separation."},
-  {"deal_type": "corporate_carveout", "stage": "signing", "target_company": "EDF Power Solutions North America", "seller": "EDF", "buyer": "Unknown (bidders circling)", "confidence": 82, "reasoning": "EDF Power Solutions North America is an integrated operating platform within state-owned EDF. Separation from EDF's corporate structure would require IT, finance, HR, legal, commercial, and operational separation."},
-  {"deal_type": "portco_carveout", "stage": "closing", "target_company": "Marioff", "seller": "Sentinel Capital Partners' portfolio company", "buyer": "Inflexion", "confidence": 85, "reasoning": "Marioff is a division being carved out of a Sentinel Capital Partners portfolio company — not the whole portco. The portco is the corporate parent. Target needs to be separated from the portco's shared infrastructure."},
-  {"deal_type": "corporate_divestiture", "stage": "signing", "target_company": "industrial adhesives division", "seller": "BASF", "buyer": "Henkel", "confidence": 93, "reasoning": "Corporate buyer (Henkel) acquiring a division from a corporate parent (BASF). Division embedded in BASF's operations needs separation — corporate divestiture."},
-  {"deal_type": "corporate_divestiture", "stage": "closing", "target_company": "Global Products business", "seller": "Johnson Controls", "buyer": "Bosch", "confidence": 91, "reasoning": "Corporate buyer (Bosch) completed acquisition of a business unit from Johnson Controls. Division requires separation from parent's shared infrastructure — corporate divestiture."},
-  {"deal_type": "corporate_divestiture", "stage": "signing", "target_company": "logistics unit", "seller": "Siemens", "buyer": "DSV", "confidence": 90, "reasoning": "Corporate buyer (DSV) acquiring a division from a corporate parent (Siemens). Logistics unit embedded in Siemens infrastructure needs separation — corporate divestiture."},
+  {"deal_type": "none", "stage": null, "target_company": "", "seller": "", "buyer": "", "confidence": 70, "reasoning": "Division sale from EDF but no PE buyer identified yet — bidders circling is pre-deal. Larkhill focuses on PE-backed carve-outs only. If a PE buyer is confirmed, reclassify."},
+  {"deal_type": "portco_carveout", "stage": "closing", "target_company": "Marioff", "seller": "Sentinel Capital Partners' portfolio company", "buyer": "Inflexion", "confidence": 85, "reasoning": "Marioff is a division being carved out of a Sentinel Capital Partners portfolio company — not the whole portco. PE buyer (Inflexion) on the buy side. Target needs separation from the portco's shared infrastructure."},
+  {"deal_type": "none", "stage": null, "target_company": "", "seller": "", "buyer": "", "confidence": 93, "reasoning": "Buyer is Henkel (corporate/trade buyer), not a PE firm. Larkhill focuses on PE-backed carve-outs only."},
+  {"deal_type": "none", "stage": null, "target_company": "", "seller": "", "buyer": "", "confidence": 91, "reasoning": "Buyer is Bosch (corporate), not a PE firm. Larkhill focuses on PE-backed carve-outs only."},
+  {"deal_type": "none", "stage": null, "target_company": "", "seller": "", "buyer": "", "confidence": 90, "reasoning": "Buyer is DSV (corporate), not a PE firm. Larkhill focuses on PE-backed carve-outs only."},
   {"deal_type": "none", "stage": null, "target_company": "", "seller": "", "buyer": "", "confidence": 85, "reasoning": "PE firm acquiring a standalone company. No specific corporate parent identified as divesting — cannot confirm this is a carve-out vs a regular buyout."},
   {"deal_type": "none", "stage": null, "target_company": "", "seller": "", "buyer": "", "confidence": 82, "reasoning": "PE firm acquiring an infrastructure services company. No named parent company selling a division — this appears to be a standard PE acquisition of a standalone business."},
-  {"deal_type": "none", "stage": null, "target_company": "", "seller": "", "buyer": "", "confidence": 95, "reasoning": "AA plc is a standalone public company being acquired in its entirety. It already operates independently with its own IT, finance, HR, and brand. No separation from a parent company's shared infrastructure is needed — this is a take-private, not a carve-out."},
-  {"deal_type": "none", "stage": null, "target_company": "", "seller": "", "buyer": "", "confidence": 92, "reasoning": "Nordic Capital is selling the ENTIRE company Geomatikk (a portfolio company). This is a PE exit / secondary sale, not a carve-out. Geomatikk is the whole portco being sold, not a division being carved out from a larger portco. No separation from a parent's shared infrastructure is required."}
+  {"deal_type": "none", "stage": null, "target_company": "", "seller": "", "buyer": "", "confidence": 95, "reasoning": "AA plc is a standalone public company being acquired in its entirety. No separation from a parent company's shared infrastructure is needed — this is a take-private, not a carve-out."},
+  {"deal_type": "none", "stage": null, "target_company": "", "seller": "", "buyer": "", "confidence": 92, "reasoning": "Nordic Capital is selling the ENTIRE company Geomatikk. This is a PE exit / secondary sale, not a carve-out. Geomatikk is the whole portco being sold, not a division being carved out."},
+  {"deal_type": "corporate_carveout", "stage": "signing", "target_company": "MGA operations", "seller": "AmTrust Financial Services", "buyer": "One Rock Capital Partners", "confidence": 88, "reasoning": "PE firm (One Rock) acquiring MGA operations — a division/business unit — from AmTrust Financial Services (corporate parent). MGA operations are embedded in AmTrust's corporate infrastructure and require separation. This is a PE-backed corporate carve-out even though the language describes it as a platform build."}
 ]"""
 
 

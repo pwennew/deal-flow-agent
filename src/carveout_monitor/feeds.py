@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import logging
-import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timedelta, timezone
 
@@ -18,64 +17,14 @@ from .models import Article, Firm
 logger = logging.getLogger(__name__)
 
 # =============================================================================
-# CORE RSS FEEDS — Google News, press wire services, PE news sites
-# These are NOT firm-specific — they surface deal announcements from all sources.
-# The classifier determines which are carve-outs.
+# CORE RSS FEEDS — Non-firm-specific deal announcement sources.
+# Kept to BusinessWire only: most PE deal press releases are distributed
+# through BusinessWire first. Firm-specific RSS/press pages provide the rest.
 # =============================================================================
 
 CORE_FEEDS: list[dict[str, str]] = [
-    # --- Direct PE / M&A news ---
-    {"url": "https://www.pehub.com/feed/", "source": "PEHub"},
-    {"url": "https://www.prnewswire.com/rss/financial-services-latest-news/mergers-and-acquisitions-list.rss",
-     "source": "PRNewswire M&A"},
     {"url": "https://feed.businesswire.com/rss/home/?rss=G1QFDERJXkJeEFpRWw==",
      "source": "BusinessWire"},
-    {"url": "https://www.globenewswire.com/RssFeed/subjectcode/27-Mergers%20And%20Acquisitions/feedTitle/GlobeNewswire%20-%20Mergers%20And%20Acquisitions",
-     "source": "GlobeNewswire M&A"},
-
-    # --- Google News: Premium journalism ---
-    {"url": "https://news.google.com/rss/search?q=site:ft.com+private+equity+when:7d&hl=en-US&gl=US&ceid=US:en",
-     "source": "Google News: FT + PE"},
-    {"url": "https://news.google.com/rss/search?q=site:wsj.com+private+equity+when:7d&hl=en-US&gl=US&ceid=US:en",
-     "source": "Google News: WSJ + PE"},
-    {"url": "https://news.google.com/rss/search?q=site:bloomberg.com+private+equity+when:7d&hl=en-US&gl=US&ceid=US:en",
-     "source": "Google News: Bloomberg + PE"},
-    {"url": "https://news.google.com/rss/search?q=site:reuters.com+private+equity+when:7d&hl=en-US&gl=US&ceid=US:en",
-     "source": "Google News: Reuters + PE"},
-
-    # --- Google News: Deal-focused (US) ---
-    {"url": "https://news.google.com/rss/search?q=private+equity+acquisition+when:7d&hl=en-US&gl=US&ceid=US:en",
-     "source": "Google News: PE acquisition (US)"},
-    {"url": "https://news.google.com/rss/search?q=private+equity+buyout+when:7d&hl=en-US&gl=US&ceid=US:en",
-     "source": "Google News: PE buyout (US)"},
-    {"url": "https://news.google.com/rss/search?q=leveraged+buyout+when:7d&hl=en-US&gl=US&ceid=US:en",
-     "source": "Google News: LBO (US)"},
-
-    # --- Google News: Carve-out / divestiture specific ---
-    {"url": "https://news.google.com/rss/search?q=%22carve-out%22+OR+%22carveout%22+private+equity+when:7d&hl=en-US&gl=US&ceid=US:en",
-     "source": "Google News: carve-out (US)"},
-    {"url": "https://news.google.com/rss/search?q=%22divestiture%22+OR+%22divests%22+when:7d&hl=en-US&gl=US&ceid=US:en",
-     "source": "Google News: divestiture (US)"},
-    {"url": "https://news.google.com/rss/search?q=%22sells+division%22+OR+%22sells+business+unit%22+OR+%22sells+subsidiary%22+when:7d&hl=en-US&gl=US&ceid=US:en",
-     "source": "Google News: sells division (US)"},
-    {"url": "https://news.google.com/rss/search?q=%22spin-off%22+OR+%22spinoff%22+private+equity+when:7d&hl=en-US&gl=US&ceid=US:en",
-     "source": "Google News: spin-off (US)"},
-
-    # --- Google News: Broad separation deals (no PE filter — catches corporate divestitures) ---
-    {"url": "https://news.google.com/rss/search?q=%22carve-out%22+OR+%22carveout%22+when:7d&hl=en-US&gl=US&ceid=US:en",
-     "source": "Google News: carve-out broad (US)"},
-    {"url": "https://news.google.com/rss/search?q=%22spin-off%22+OR+%22spinoff%22+when:7d&hl=en-US&gl=US&ceid=US:en",
-     "source": "Google News: spin-off broad (US)"},
-    {"url": "https://news.google.com/rss/search?q=%22business+unit+sale%22+OR+%22corporate+separation%22+when:7d&hl=en-US&gl=US&ceid=US:en",
-     "source": "Google News: business unit sale (US)"},
-
-    # --- Google News: UK / Europe ---
-    {"url": "https://news.google.com/rss/search?q=private+equity+when:7d&hl=en-GB&gl=GB&ceid=GB:en",
-     "source": "Google News: PE (UK)"},
-    {"url": "https://news.google.com/rss/search?q=buyout+acquisition+when:7d&hl=en-GB&gl=GB&ceid=GB:en",
-     "source": "Google News: buyout acquisition (UK)"},
-    {"url": "https://news.google.com/rss/search?q=%22carve-out%22+OR+%22divestiture%22+when:7d&hl=en-GB&gl=GB&ceid=GB:en",
-     "source": "Google News: carve-out / divestiture (UK)"},
 ]
 
 
@@ -377,34 +326,18 @@ def fetch_all_articles(firms: list[Firm]) -> list[Article]:
     return all_articles
 
 
-_GOOGLE_NEWS_RETRIES = 3
-_GOOGLE_NEWS_BACKOFF = 2  # seconds, doubles each retry
-
-
 def _fetch_with_retry(url: str, source: str) -> requests.Response | None:
-    """Fetch a URL with retry + backoff for 429/503 (Google rate limits)."""
-    is_google = "news.google.com" in url
-    max_retries = _GOOGLE_NEWS_RETRIES if is_google else 1
-    backoff = _GOOGLE_NEWS_BACKOFF
-
-    for attempt in range(max_retries):
-        try:
-            resp = requests.get(url, timeout=_TIMEOUT,
-                                headers={"User-Agent": _USER_AGENT})
-            if resp.status_code == 200:
-                return resp
-            if resp.status_code in (429, 503) and attempt < max_retries - 1:
-                wait = backoff * (2 ** attempt)
-                logger.info("  %s returned %d, retrying in %ds (attempt %d/%d)",
-                            source, resp.status_code, wait, attempt + 1, max_retries)
-                time.sleep(wait)
-                continue
-            logger.warning("Core feed fetch failed for %s (status %d)", source, resp.status_code)
-            return None
-        except requests.RequestException as e:
-            logger.warning("Core feed fetch error for %s: %s", source, e)
-            return None
-    return None
+    """Fetch a URL with a single attempt."""
+    try:
+        resp = requests.get(url, timeout=_TIMEOUT,
+                            headers={"User-Agent": _USER_AGENT})
+        if resp.status_code == 200:
+            return resp
+        logger.warning("Core feed fetch failed for %s (status %d)", source, resp.status_code)
+        return None
+    except requests.RequestException as e:
+        logger.warning("Core feed fetch error for %s: %s", source, e)
+        return None
 
 
 def _fetch_single_core_feed(feed: dict[str, str], lookback_hours: int | None = None) -> list[Article]:
@@ -452,39 +385,11 @@ def _fetch_single_core_feed(feed: dict[str, str], lookback_hours: int | None = N
 
 
 def fetch_core_feeds(lookback_hours: int = 168) -> list[Article]:
-    """Fetch articles from all core RSS feeds (Google News, press wires, etc.).
-
-    Uses a longer default lookback (168h = 7 days) since Google News feeds
-    already filter to 7 days via the when:7d parameter.
-
-    Non-Google feeds run in parallel. Google News feeds run sequentially
-    with a 1-second gap to avoid 503 rate limits from Google.
-    """
-    google_feeds = [f for f in CORE_FEEDS if "news.google.com" in f["url"]]
-    other_feeds = [f for f in CORE_FEEDS if "news.google.com" not in f["url"]]
-    logger.info("Fetching %d core feeds (%d Google, %d other, lookback=%dh)",
-                len(CORE_FEEDS), len(google_feeds), len(other_feeds), lookback_hours)
+    """Fetch articles from core RSS feeds (BusinessWire)."""
+    logger.info("Fetching %d core feeds (lookback=%dh)", len(CORE_FEEDS), lookback_hours)
 
     all_articles: list[Article] = []
-
-    # Non-Google feeds: fetch in parallel (fast, no rate limits)
-    if other_feeds:
-        with ThreadPoolExecutor(max_workers=_MAX_WORKERS) as executor:
-            futures = {
-                executor.submit(_fetch_single_core_feed, feed, lookback_hours): feed
-                for feed in other_feeds
-            }
-            for future in as_completed(futures):
-                feed = futures[future]
-                try:
-                    all_articles.extend(future.result())
-                except Exception as e:
-                    logger.warning("Error fetching core feed %s: %s", feed["source"], e)
-
-    # Google News feeds: fetch sequentially with 1s gap to avoid 503s
-    for i, feed in enumerate(google_feeds):
-        if i > 0:
-            time.sleep(1)
+    for feed in CORE_FEEDS:
         try:
             articles = _fetch_single_core_feed(feed, lookback_hours)
             all_articles.extend(articles)
@@ -496,103 +401,16 @@ def fetch_core_feeds(lookback_hours: int = 168) -> list[Article]:
 
 
 def fetch_core_feeds_lookback(days: int = 30) -> list[Article]:
-    """Fetch core feeds with an extended Google News lookback window.
-
-    Replaces 'when:7d' in Google News URLs with 'when:{days}d' and
-    removes the lookback_hours date filter so all articles are returned.
-    """
-    extended_feeds = []
-    for feed in CORE_FEEDS:
-        url = feed["url"]
-        if "when:7d" in url:
-            url = url.replace("when:7d", f"when:{days}d")
-        extended_feeds.append({"url": url, "source": feed["source"]})
-
-    logger.info("Fetching %d core feeds with %d-day lookback", len(extended_feeds), days)
-
-    google_feeds = [f for f in extended_feeds if "news.google.com" in f["url"]]
-    other_feeds = [f for f in extended_feeds if "news.google.com" not in f["url"]]
+    """Fetch core feeds with no date filter (for lookback exercises)."""
+    logger.info("Fetching %d core feeds with %d-day lookback", len(CORE_FEEDS), days)
 
     all_articles: list[Article] = []
-
-    # Non-Google feeds: parallel
-    if other_feeds:
-        with ThreadPoolExecutor(max_workers=_MAX_WORKERS) as executor:
-            futures = {
-                executor.submit(_fetch_single_core_feed, feed, None): feed
-                for feed in other_feeds
-            }
-            for future in as_completed(futures):
-                feed = futures[future]
-                try:
-                    all_articles.extend(future.result())
-                except Exception as e:
-                    logger.warning("Error fetching core feed %s: %s", feed["source"], e)
-
-    # Google News feeds: sequential with 1s gap
-    for i, feed in enumerate(google_feeds):
-        if i > 0:
-            time.sleep(1)
+    for feed in CORE_FEEDS:
         try:
             all_articles.extend(_fetch_single_core_feed(feed, None))
         except Exception as e:
             logger.warning("Error fetching core feed %s: %s", feed["source"], e)
 
     logger.info("Fetched %d articles from %d core feeds (lookback %dd)",
-                len(all_articles), len(extended_feeds), days)
-    return all_articles
-
-
-def build_tam_google_news_feeds(
-    firms: list[Firm],
-    priority_firms: list[str] | None = None,
-) -> list[dict[str, str]]:
-    """Build Google News RSS feeds for TAM firm-specific deal monitoring.
-
-    Generates one feed per firm: "[firm name]" acquisition OR divestiture OR "carve-out".
-    If priority_firms is provided, only generates feeds for those firm names.
-    """
-    from urllib.parse import quote
-
-    target_firms = firms
-    if priority_firms:
-        priority_set = {n.lower() for n in priority_firms}
-        target_firms = [f for f in firms if f.name.lower() in priority_set]
-
-    feeds = []
-    for firm in target_firms:
-        query = f'"{firm.name}" acquisition OR divestiture OR "carve-out"'
-        encoded = quote(query)
-        url = f"https://news.google.com/rss/search?q={encoded}+when:7d&hl=en-US&gl=US&ceid=US:en"
-        feeds.append({"url": url, "source": f"Google News: TAM {firm.name}"})
-
-    return feeds
-
-
-def fetch_tam_feeds(
-    firms: list[Firm],
-    priority_firms: list[str] | None = None,
-    lookback_hours: int = 168,
-) -> list[Article]:
-    """Fetch articles from TAM firm-specific Google News feeds.
-
-    Runs sequentially with 1s gaps to avoid Google rate limits.
-    """
-    feeds = build_tam_google_news_feeds(firms, priority_firms)
-    if not feeds:
-        return []
-
-    logger.info("Fetching %d TAM Google News feeds (lookback=%dh)", len(feeds), lookback_hours)
-
-    all_articles: list[Article] = []
-    for i, feed in enumerate(feeds):
-        if i > 0:
-            time.sleep(1)
-        try:
-            articles = _fetch_single_core_feed(feed, lookback_hours)
-            all_articles.extend(articles)
-        except Exception as e:
-            logger.warning("Error fetching TAM feed %s: %s", feed["source"], e)
-
-    logger.info("Fetched %d articles from %d TAM feeds", len(all_articles), len(feeds))
+                len(all_articles), len(CORE_FEEDS), days)
     return all_articles

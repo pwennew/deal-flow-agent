@@ -1,6 +1,1385 @@
 {
   "version": 1,
-  "last_run": null,
-  "seen": {},
-  "seen_deals": {}
+  "last_run": "2026-04-08T21:51:32.951472",
+  "seen": {
+    "https://warburgpincus.com/2026/03/30/wealth-insurance-and-fintech-drive-thriving-pebacked-financial-services-ma/": {
+      "hash": "61ef81059158927c",
+      "first_seen": "2026-04-08T21:51:32.950424"
+    },
+    "https://warburgpincus.com/2026/03/18/theguarantors-announce-growth-investment-from-warburg-pincus/": {
+      "hash": "8029f2bbfd4dbb3f",
+      "first_seen": "2026-04-08T21:51:32.950430"
+    },
+    "https://warburgpincus.com/2026/03/10/hale-secures-a750-million-for-second-vintage-logistics-series-backed-by-global-institutional-investors/": {
+      "hash": "5f760fb57d1db8b1",
+      "first_seen": "2026-04-08T21:51:32.950436"
+    },
+    "https://www.insightpartners.com/ideas/behind-the-investment-linx/": {
+      "hash": "1d176e29ca2aa3bc",
+      "first_seen": "2026-04-08T21:51:32.950440"
+    },
+    "https://www.insightpartners.com/ideas/why-we-invested-in-rocketlane/": {
+      "hash": "0ee98c22b89144ba",
+      "first_seen": "2026-04-08T21:51:32.950444"
+    },
+    "https://www.insightpartners.com/ideas/agentic-enterprise-ai-workflows/": {
+      "hash": "cc28ca2512a7485c",
+      "first_seen": "2026-04-08T21:51:32.950449"
+    },
+    "https://www.insightpartners.com/ideas/linx-security-raises-50m-series-b-as-identity-becomes-securitys-biggest-failure-point/": {
+      "hash": "2eeba753f9798449",
+      "first_seen": "2026-04-08T21:51:32.950453"
+    },
+    "https://www.insightpartners.com/ideas/scaleops-raises-130m-series-c-at-over-800m-valuation-to-lead-the-future-of-autonomous-cloud-and-ai-infrastructure-resource-management/": {
+      "hash": "897b4e34783082b1",
+      "first_seen": "2026-04-08T21:51:32.950459"
+    },
+    "https://www.insightpartners.com/ideas/rocketlane-raises-60-million-series-c-to-redefine-professional-services-for-the-ai-era/": {
+      "hash": "40bd4199db224a1a",
+      "first_seen": "2026-04-08T21:51:32.950465"
+    },
+    "https://www.insightpartners.com/ideas/ai-wealth-management/": {
+      "hash": "6469d23f6e6332cf",
+      "first_seen": "2026-04-08T21:51:32.950470"
+    },
+    "https://www.insightpartners.com/ideas/pictor-labs-leadership-story/": {
+      "hash": "23854cc03f54002b",
+      "first_seen": "2026-04-08T21:51:32.950474"
+    },
+    "https://www.insightpartners.com/ideas/condor-software-raises-24-million-series-a-funding-to-build-the-first-financial-intelligence-platform-for-life-sciences/": {
+      "hash": "ff97489420e259a6",
+      "first_seen": "2026-04-08T21:51:32.950479"
+    },
+    "https://www.insightpartners.com/ideas/ai-autonomy/": {
+      "hash": "b60ef551accd0626",
+      "first_seen": "2026-04-08T21:51:32.950483"
+    },
+    "https://www.vistaequitypartners.com/insights/agentic-ai-future-of-enterprise-software/": {
+      "hash": "018c5e3e0ae3de3b",
+      "first_seen": "2026-04-08T21:51:32.950487"
+    },
+    "https://hf.com/blackstone-carlyle-and-hellman-friedman-win-pe-hubs-overall-deal-of-the-year-award-for-medlines-7-2bn-ipo/": {
+      "hash": "7637d95da2db2bfc",
+      "first_seen": "2026-04-08T21:51:32.950491"
+    },
+    "https://clearlake.com/news/precisely-appoints-software-industry-veteran-walid-abu-hadba-as-chief-executive-officer": {
+      "hash": "62203c3ae0aac727",
+      "first_seen": "2026-04-08T21:51:32.950496"
+    },
+    "https://clearlake.com/news/clearlake-to-acquire-qualus-a-pure-play-power-electric-grid-services-platform-from-new-mountain-capital": {
+      "hash": "d22893166e4c724b",
+      "first_seen": "2026-04-08T21:51:32.950500"
+    },
+    "https://www.newmountaincapital.com/clearlake-to-acquire-qualus-a-pure-play-power-electric-grid-services-platform-from-new-mountain-capital/": {
+      "hash": "aab595f54aa619cd",
+      "first_seen": "2026-04-08T21:51:32.950504"
+    },
+    "https://stg.com/news/redseal-is-a-finalist-in-the-2026-sc-awards/?utm_source=rss&utm_medium=rss&utm_campaign=redseal-is-a-finalist-in-the-2026-sc-awards": {
+      "hash": "69dea49966917e09",
+      "first_seen": "2026-04-08T21:51:32.950508"
+    },
+    "https://www.platinumequity.com/news/platinum-equity-founder-tom-gores-recognized-for-bringing-wnba-back-to-detroit/": {
+      "hash": "dfc944a4b6109666",
+      "first_seen": "2026-04-08T21:51:32.950512"
+    },
+    "https://www.platinumequity.com/news/platinum-equitys-female-leaders-explain-how-they-drive-the-firms-success/": {
+      "hash": "e9c371159fa3a05e",
+      "first_seen": "2026-04-08T21:51:32.950516"
+    },
+    "https://www.platinumequity.com/news/three-deals-in-two-weeks-months-after-platinum-equitys-successful-2-28m-fundraise-small-cap-continues-momentum-in-2026/": {
+      "hash": "22bfe0209a73d1c3",
+      "first_seen": "2026-04-08T21:51:32.950521"
+    },
+    "https://www.gtcr.com/resonetics-completes-the-acquisition-of-resolution-medical-expanding-end-to-end-integrated-capabilities-for-interventional-and-neuromodulation-markets/": {
+      "hash": "8fa11a01ba9f825b",
+      "first_seen": "2026-04-08T21:51:32.950525"
+    },
+    "https://www.gtcr.com/gtcr-appoints-donnie-phillips-as-chief-administrative-officer-and-managing-director/": {
+      "hash": "1f52a78d75f8d946",
+      "first_seen": "2026-04-08T21:51:32.950529"
+    },
+    "https://www.leonardgreen.com/sysco-to-acquire-jetro-restaurant-depot-to-expand-into-higher-margin-growing-and-resilient-cash-carry-channel/": {
+      "hash": "9f65aaf8f85079db",
+      "first_seen": "2026-04-08T21:51:32.950533"
+    },
+    "https://www.leonardgreen.com/falfurrias-launches-crosslakes-next-growth-phase-through-single-asset-continuation-fund-led-by-leonard-green-partners/": {
+      "hash": "7572766ea4d527a4",
+      "first_seen": "2026-04-08T21:51:32.950538"
+    },
+    "https://www.towerbrook.com/towerbrook-announces-continuation-vehicle-transaction-for-eisneramper/": {
+      "hash": "d5b1c3d8d873af9a",
+      "first_seen": "2026-04-08T21:51:32.950541"
+    },
+    "https://www.towerbrook.com/towerbrook-acquires-majority-stake-in-id-unlimited-from-dentressangle-to-accelerate-global-expansion-in-premium-sports-equipment-personalisation/": {
+      "hash": "5016dfea33c69b3b",
+      "first_seen": "2026-04-08T21:51:32.950545"
+    },
+    "https://nautic.com/news/nautic-partners-announces-sale-of-property-management-company-akam/": {
+      "hash": "0b610c7ba6557c30",
+      "first_seen": "2026-04-08T21:51:32.950550"
+    },
+    "https://gridironcapital.com/gridiron-honored-as-a-2026-top-private-equity-innovator-by-bluwave/": {
+      "hash": "96330dea72c6207f",
+      "first_seen": "2026-04-08T21:51:32.950554"
+    },
+    "https://www.aeainvestors.com/aea-elevate-partners-with-trinamix-to-accelerate-ai-driven-oracle-cloud-transformation/": {
+      "hash": "e51e7ddec2f912c5",
+      "first_seen": "2026-04-08T21:51:32.950558"
+    },
+    "https://www.greenbriar.com/audax-private-equity-and-greenbriar-complete-sale-of-alliance-ground-international/": {
+      "hash": "097a0faba036b153",
+      "first_seen": "2026-04-08T21:51:32.950561"
+    },
+    "https://www.accel-kkr.com/accesspay-accelerates-growth-with-majority-investment-from-leading-software-investor-accel-kkr/": {
+      "hash": "8ff810e13d65c3df",
+      "first_seen": "2026-04-08T21:51:32.950565"
+    },
+    "https://sterling-group.com/the-sterling-group-ranked-number-13-in-2025-hec-dow-jones-middle-market-buyout-private-equity-performance-ranking/": {
+      "hash": "0bd3c4e8057b13ea",
+      "first_seen": "2026-04-08T21:51:32.950570"
+    },
+    "https://suncappart.com/2026/03/26/sun-capital-affiliate-completes-an-investment-in-bh-worldwide-ltd/": {
+      "hash": "8b93aad912c1ff0d",
+      "first_seen": "2026-04-08T21:51:32.950573"
+    },
+    "https://www.sentinelpartners.com/sentinel-capital-partners-to-sell-spectrum-safety-solutions-marioff-division/": {
+      "hash": "0b9cb691b2b2ed38",
+      "first_seen": "2026-04-08T21:51:32.950578"
+    },
+    "https://k1.com/sujit-banerjee-named-a-top-healthcare-investor-by-growthcap/": {
+      "hash": "f69dffb2c4443102",
+      "first_seen": "2026-04-08T21:51:32.950581"
+    },
+    "https://k1.com/k1-invests-in-spin-ai/": {
+      "hash": "e753153095d57b0d",
+      "first_seen": "2026-04-08T21:51:32.950585"
+    },
+    "https://oceansoundpartners.com/oceansound-hires-tpgs-laura-noisten-to-lead-capital-markets/": {
+      "hash": "25dfdb309fb611ea",
+      "first_seen": "2026-04-08T21:51:32.950589"
+    },
+    "https://flexpointford.com/news/sagesure-scales-seawall-re-sidecar-franchise-secures-200-million-in-reinsurance/": {
+      "hash": "14de2419849d462b",
+      "first_seen": "2026-04-08T21:51:32.950593"
+    },
+    "https://www.llrpartners.com/2026-llr-growth-guide-ebook-growth-at-inflection-points/": {
+      "hash": "c2d9a939cb0cfb46",
+      "first_seen": "2026-04-08T21:51:32.950597"
+    },
+    "https://www.llrpartners.com/soltis-investment-advisors-strengthens-in-house-tax-capabilities-with-addition-of-gdm-private-financial-solutions/": {
+      "hash": "0084f817dd259413",
+      "first_seen": "2026-04-08T21:51:32.950601"
+    },
+    "https://www.llrpartners.com/daysmart-acquires-uk-salon-platform-slick-extending-its-global-reach-in-beauty-and-wellness/": {
+      "hash": "991a11c8cfe74bc1",
+      "first_seen": "2026-04-08T21:51:32.950605"
+    },
+    "https://www.llrpartners.com/viventium-expands-hcm-platform-with-acquisition-of-perks4care-to-strengthen-caregiver-retention-solutions-for-post-acute-care-providers/": {
+      "hash": "a6a9db9b0a690cac",
+      "first_seen": "2026-04-08T21:51:32.950623"
+    },
+    "https://www.llrpartners.com/celero-commerce-acquires-petroleum-processing-solutions-strategic-expansion-positions-celero-as-a-leader-in-fuel-grocery-and-convenience-retail-processing/": {
+      "hash": "2aeaa376b946a37b",
+      "first_seen": "2026-04-08T21:51:32.950627"
+    },
+    "https://www.bluewolfcapital.com/news/blue-wolf-capital-names-paul-claro-as-operating-partner/": {
+      "hash": "7068e380ea9e3aa9",
+      "first_seen": "2026-04-08T21:51:32.950631"
+    },
+    "https://site.danestreet.com/2026/03/31/quad-c-management-announces-investment-in-dane-street/#new_tab": {
+      "hash": "3e6d71e113c6d993",
+      "first_seen": "2026-04-08T21:51:32.950634"
+    },
+    "https://www.prnewswire.com/news-releases/4ce-announces-strategic-partnership-with-element-engineering-group-establishing-first-platform-in-its-growing-engineering-network-302730123.html#new_tab": {
+      "hash": "27c12c1a18365467",
+      "first_seen": "2026-04-08T21:51:32.950639"
+    },
+    "https://www.jmi.com/jmi-2026-cfo-roundtable-rewriting-the-role-of-the-cfo-in-an-ai-world/": {
+      "hash": "25a66992feda4a6e",
+      "first_seen": "2026-04-08T21:51:32.950642"
+    },
+    "https://www.jmi.com/jmi-partner-matt-emery-named-to-growthcaps-top-healthcare-investors-of-2026/": {
+      "hash": "802aab3af6757be8",
+      "first_seen": "2026-04-08T21:51:32.950647"
+    },
+    "https://falfurrias.com/falfurrias-launches-crosslakes-next-growth-phase-through-single-asset-continuation-fund-led-by-leonard-green-partners/?utm_source=rss&utm_medium=rss&utm_campaign=falfurrias-launches-crosslakes-next-growth-phase-through-single-asset-continuation-fund-led-by-leonard-green-partners": {
+      "hash": "c8c2adf81062272d",
+      "first_seen": "2026-04-08T21:51:32.950651"
+    },
+    "https://redbirdcap.com/news/buyouts-julia-wittlin-redbird-capital-partners-women-in-private-equity-2026/": {
+      "hash": "3a8552b7b60fbb04",
+      "first_seen": "2026-04-08T21:51:32.950654"
+    },
+    "https://redbirdcap.com/news/redbird-founder-gerry-cardinale-were-putting-our-money-where-our-mouth-is/": {
+      "hash": "9d9cf4f2d416b8f9",
+      "first_seen": "2026-04-08T21:51:32.950658"
+    },
+    "https://www.eagletree.com/opus-agency-acquires-wave-to-scale-global-event-delivery/": {
+      "hash": "c3a78e353a1604b4",
+      "first_seen": "2026-04-08T21:51:32.950662"
+    },
+    "https://www.eagletree.com/eagletree-capital-acquires-the-opus-group-investment-to-accelerate-global-client-centric-growth-across-opus-agency-brands/": {
+      "hash": "17ebf32cbeb5be6b",
+      "first_seen": "2026-04-08T21:51:32.950667"
+    },
+    "https://www.aeroequity.com/atc-group-expands-mro-capabilities-with-acquisition-of-pas-mro/": {
+      "hash": "6cf97142dcc1b8cb",
+      "first_seen": "2026-04-08T21:51:32.950670"
+    },
+    "https://www.aeroequity.com/firefly-aerospace-selected-for-the-2025-robert-j-collier-trophy/": {
+      "hash": "491c1f586b035c9c",
+      "first_seen": "2026-04-08T21:51:32.950674"
+    },
+    "https://www.aeroequity.com/g-s-precision-announces-acquisitions-of-headwater-precision-and-lush-heat-treatment-to-expand-strategic-platform-and-enhance-vertical-integration/": {
+      "hash": "91d9447944aa2a27",
+      "first_seen": "2026-04-08T21:51:32.950678"
+    },
+    "https://www.aeroequity.com/york-space-systems-acquires-orbion-space-technology-further-strengthening-supply-chain-with-flight-proven-spacecraft-capability/": {
+      "hash": "16a3e13231845f74",
+      "first_seen": "2026-04-08T21:51:32.950683"
+    },
+    "https://www.aeroequity.com/aim-mro-acquires-advanced-air-west-palm-beach-inc/": {
+      "hash": "6c58c7497c51d2bf",
+      "first_seen": "2026-04-08T21:51:32.950687"
+    },
+    "https://middleground.com/blog-middleground-capital-2025-year-in-review-john-stewart/": {
+      "hash": "e67e18aa4bee18ea",
+      "first_seen": "2026-04-08T21:51:32.950691"
+    },
+    "https://comvest.com/manulife-comvest-credit-partners-named-specialty-finance-lender-of-the-year-by-private-debt-investor/": {
+      "hash": "739e890cbfe8258d",
+      "first_seen": "2026-04-08T21:51:32.950695"
+    },
+    "https://frontenac.com/frontenac-announces-recapitalization-of-honk-technologies/": {
+      "hash": "aee0035ce8ed3c4a",
+      "first_seen": "2026-04-08T21:51:32.950699"
+    },
+    "https://frontenac.com/frontenac-announces-recapitalization-of-bill-gosling-outsourcing/": {
+      "hash": "3eb66d0cfbd649b6",
+      "first_seen": "2026-04-08T21:51:32.950703"
+    },
+    "https://ghocapital.com/updates/gho-capital-completes-sale-of-visufarma-to-lupin/": {
+      "hash": "c99aa46e1d7c9825",
+      "first_seen": "2026-04-08T21:51:32.950707"
+    },
+    "https://www.vestarcapital.com/tech24-partners-with-pacific-standard-service/": {
+      "hash": "27ab0f0bfa3d71b9",
+      "first_seen": "2026-04-08T21:51:32.950711"
+    },
+    "https://kochig.com/professional-liability-insurance-business-coverage/": {
+      "hash": "c7f724b2e42385eb",
+      "first_seen": "2026-04-08T21:51:32.950715"
+    },
+    "https://kochig.com/inland-marine-insurance-business-property-coverage/": {
+      "hash": "8170d3b8de6fb6aa",
+      "first_seen": "2026-04-08T21:51:32.950719"
+    },
+    "https://kochig.com/pollution-liability-insurance-business-protection/": {
+      "hash": "822a9878414d7094",
+      "first_seen": "2026-04-08T21:51:32.950723"
+    },
+    "https://ikpartners.com/portfolio-company-news/questel-appoints-frederic-beylier-as-new-ceo/": {
+      "hash": "8ef987a610a19132",
+      "first_seen": "2026-04-08T21:51:32.950727"
+    },
+    "https://ikpartners.com/portfolio-company-news/renta-acquires-nordjysk-lift/": {
+      "hash": "75b4b136412f25dc",
+      "first_seen": "2026-04-08T21:51:32.950731"
+    },
+    "https://ikpartners.com/press-releases/ik-partners-invests-in-domek-group/": {
+      "hash": "bbf300fb52774791",
+      "first_seen": "2026-04-08T21:51:32.950736"
+    },
+    "https://ikpartners.com/portfolio-company-news/kestrel-capital-announces-nick-tucker-as-chairman/": {
+      "hash": "00e3eb3f1ffb3d90",
+      "first_seen": "2026-04-08T21:51:32.950741"
+    },
+    "https://ikpartners.com/portfolio-company-news/ascora-announces-the-acquisition-of-health-protection-insurance-broker-assuralib/": {
+      "hash": "3045594c88e4382e",
+      "first_seen": "2026-04-08T21:51:32.950759"
+    },
+    "https://www.orbimed.com/sidewinder-therapeutics-announces-137-million-series-b-financing-to-advance-precision-bispecific-adcs-into-clinical-development-for-cancer/": {
+      "hash": "4ce007ad8544bf5a",
+      "first_seen": "2026-04-08T21:51:32.950761"
+    },
+    "https://www.orbimed.com/insilico-medicine-announces-global-rd-collaboration-with-lilly/": {
+      "hash": "ab0f5dfee9a8bcd9",
+      "first_seen": "2026-04-08T21:51:32.950764"
+    },
+    "https://www.orbimed.com/merck-to-acquire-terns-pharmaceuticals-inc-expanding-its-hematology-pipeline-with-tern-701-a-novel-candidate-for-chronic-myeloid-leukemia-cml/": {
+      "hash": "d3c87fccb47b08e5",
+      "first_seen": "2026-04-08T21:51:32.950766"
+    },
+    "https://www.orbimed.com/insmed-announces-positive-topline-results-from-phase-3b-encore-study-of-arikayce-in-patients-with-mac-lung-disease/": {
+      "hash": "e67046f71afc50e0",
+      "first_seen": "2026-04-08T21:51:32.950769"
+    },
+    "https://www.orbimed.com/myriad-genetics-receives-fda-approval-of-the-mychoice-cdx-test-as-the-companion-diagnostic-for-zejula-niraparib-for-patients-with-ovarian-cancer/": {
+      "hash": "532b5d7ee7a8cfa3",
+      "first_seen": "2026-04-08T21:51:32.950772"
+    },
+    "https://www.orbimed.com/congruence-announces-39-5m-financing-to-advance-portfolio-of-small-molecule-correctors-into-the-clinic/": {
+      "hash": "6dcc6ebea52ca392",
+      "first_seen": "2026-04-08T21:51:32.950775"
+    },
+    "https://www.orbimed.com/gentibio-announces-first-participant-dosed-in-polaris-phase-1-clinical-trial-of-gnti-122-in-recently-diagnosed-type-1-diabetes/": {
+      "hash": "af72a87646169ad0",
+      "first_seen": "2026-04-08T21:51:32.950777"
+    },
+    "https://www.orbimed.com/aspen-neuroscience-announces-positive-12-month-data-from-its-aspiro-clinical-trial-in-a-late-breaking-oral-presentation-at-the-ad-pdtm-2026-international-conference-on-alzheimer/": {
+      "hash": "4043b8b87b3052bd",
+      "first_seen": "2026-04-08T21:51:32.950780"
+    },
+    "https://www.capvest.com/news/curiumrecap-ew7dd": {
+      "hash": "ec2f6ed49de79730",
+      "first_seen": "2026-04-08T21:51:32.950782"
+    },
+    "https://www.capvest.com/news/stada": {
+      "hash": "17c9ab0ef15d577d",
+      "first_seen": "2026-04-08T21:51:32.950785"
+    },
+    "https://www.cinven.com/news-insights/cinven-welcomes-strategic-minority-investment-in-envu-from-gic/": {
+      "hash": "dc6fbe45a87aa541",
+      "first_seen": "2026-04-08T21:51:32.950787"
+    },
+    "https://www.investcorp.com/steve-miller-on-disciplined-investing-across-cycles/": {
+      "hash": "9b17b3747c75e03f",
+      "first_seen": "2026-04-08T21:51:32.950790"
+    },
+    "https://arcline.com/arcline-backed-arxis-announces-launch-of-its-initial-public-offering/": {
+      "hash": "719c36b6972ad7db",
+      "first_seen": "2026-04-08T21:51:32.950794"
+    },
+    "https://en.newsroom.eurazeo.com/news/eurazeo-is-assigned-a-bbb-credit-rating-stable-outlook-by-s-p-and-a-bbb-credit-rating-stable-outlook-by-fitch-75b97-52e2c.html": {
+      "hash": "f218c84d93439dad",
+      "first_seen": "2026-04-08T21:51:32.950797"
+    },
+    "https://en.newsroom.eurazeo.com/news/eurazeo-strengthens-its-international-offering-by-appointing-siu-wai-ng-as-partner-head-of-product-236e1-52e2c.html": {
+      "hash": "fcb30887bb294822",
+      "first_seen": "2026-04-08T21:51:32.950800"
+    },
+    "https://en.newsroom.eurazeo.com/news/eurazeo-invests-in-groupe-pierre-schmidt-through-a-sponsorless-transaction-27977-52e2c.html": {
+      "hash": "eb944f435b404d93",
+      "first_seen": "2026-04-08T21:51:32.950805"
+    },
+    "https://en.newsroom.eurazeo.com/news/new-or-renewed-agreements-between-eurazeo-and-certain-family-shareholders-d9605-52e2c.html": {
+      "hash": "59562a013d59ecd3",
+      "first_seen": "2026-04-08T21:51:32.950808"
+    },
+    "https://en.newsroom.eurazeo.com/news/eurazeo-delivers-on-its-strategic-plan-with-record-fundraising-and-accelerated-asset-rotation-in-2025-a1e96-52e2c.html": {
+      "hash": "02dab0936ffb57e2",
+      "first_seen": "2026-04-08T21:51:32.950811"
+    },
+    "https://www.sagard.com/blog/2026/04/08/sagard-and-unigestion-announce-closing-of-partnership-transaction/": {
+      "hash": "887767889124d07c",
+      "first_seen": "2026-04-08T21:51:32.950813"
+    },
+    "https://www.sagard.com/blog/2026/03/30/philanthropy-at-the-heart-of-family-life/": {
+      "hash": "dee3eafcce8a4c93",
+      "first_seen": "2026-04-08T21:51:32.950816"
+    },
+    "https://www.sagard.com/blog/2026/03/25/sagard-real-estate-expands-industrial-portfolio-with-acquisition-of-mack-street-facility-in-hayward-california/": {
+      "hash": "ff70d0389dfdfb0c",
+      "first_seen": "2026-04-08T21:51:32.950819"
+    },
+    "https://www.sagard.com/blog/2026/03/18/elasticity-and-skew/": {
+      "hash": "aa8c60f4fe4e5354",
+      "first_seen": "2026-04-08T21:51:32.950821"
+    },
+    "https://www.sagard.com/blog/2026/03/16/video-series-5-questions-you-should-be-asking-your-private-credit-manager/": {
+      "hash": "797981447fee31a9",
+      "first_seen": "2026-04-08T21:51:32.950824"
+    },
+    "https://www.sagard.com/blog/2026/03/16/5-questions-you-should-be-asking-your-private-credit-manager/": {
+      "hash": "c258f4cc44262432",
+      "first_seen": "2026-04-08T21:51:32.950826"
+    },
+    "https://www.sagard.com/blog/2026/03/09/sagard-real-estate-and-la-caisse-launch-industrial-outdoor-storage-joint-venture-strategy/": {
+      "hash": "85e3583a04b78ead",
+      "first_seen": "2026-04-08T21:51:32.950829"
+    },
+    "https://keensight.com/dimomaint-announces-the-acquisition-of-camileia-a-cloud-based-integrated-workplace-management-system-vendor/": {
+      "hash": "be3ac474e0cdd9ef",
+      "first_seen": "2026-04-08T21:51:32.950831"
+    },
+    "https://keensight.com/aconso-strengthens-its-hr-document-management-software-leadership-with-the-acquisition-of-centric-germany/": {
+      "hash": "9b6216cf0768b89a",
+      "first_seen": "2026-04-08T21:51:32.950834"
+    },
+    "https://keensight.com/keensight-capital-expands-european-investor-relations-team/": {
+      "hash": "d4db1780a0816e6f",
+      "first_seen": "2026-04-08T21:51:32.950836"
+    },
+    "http://www.businesswire.com/news/home/20260408963109/en/SSR-Mining-to-Announce-First-Quarter-2026-Consolidated-Financial-Results-May-5-2026/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "a2e8b906ac89b550",
+      "first_seen": "2026-04-08T21:51:32.950839"
+    },
+    "http://www.businesswire.com/news/home/20260408161875/en/American-Financial-Group-Inc.-Announces-Its-Conference-Call-and-Webcast-to-Discuss-2026-First-Quarter-Results/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "3830041c4bbc5a62",
+      "first_seen": "2026-04-08T21:51:32.950842"
+    },
+    "http://www.businesswire.com/news/home/20260408740283/en/Western-Alliance-Bancorporation-Announces-First-Quarter-2026-Earnings-Release-Date-Conference-Call-and-Webcast/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "15af74ae7554ea3c",
+      "first_seen": "2026-04-08T21:51:32.950846"
+    },
+    "http://www.businesswire.com/news/home/20260408081935/en/Travel-Leisure-Co.-to-Report-First-Quarter-2026-Financial-Results-on-April-22-2026/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "6bda516067542346",
+      "first_seen": "2026-04-08T21:51:32.950848"
+    },
+    "http://www.businesswire.com/news/home/20260408129693/en/BuzzFeed-Inc.-to-Release-First-Quarter-2026-Financial-Results-on-Thursday-May-7-2026/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "8ec63a29599e9d9e",
+      "first_seen": "2026-04-08T21:51:32.950851"
+    },
+    "http://www.businesswire.com/news/home/20260408898837/en/Invitation-Homes-Announces-Dates-for-First-Quarter-2026-Earnings-Release-and-Conference-Call/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "950b9d644dd25af1",
+      "first_seen": "2026-04-08T21:51:32.950855"
+    },
+    "http://www.businesswire.com/news/home/20260408097296/en/Coeur-Announces-First-Quarter-2026-Earnings-Call/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "db8921a388b86dac",
+      "first_seen": "2026-04-08T21:51:32.950858"
+    },
+    "http://www.businesswire.com/news/home/20260408280647/en/Easterly-Government-Properties-Schedules-First-Quarter-2026-Earnings-Release-and-Conference-Call/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "a56165a9123f29cb",
+      "first_seen": "2026-04-08T21:51:32.950860"
+    },
+    "http://www.businesswire.com/news/home/20260408852107/en/Algonquin-Power-Utilities-Corp.-Announces-Date-for-First-Quarter-2026-Financial-Results-and-Conference-Call/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "cfc2ef2bb805a5b2",
+      "first_seen": "2026-04-08T21:51:32.950863"
+    },
+    "http://www.businesswire.com/news/home/20260408181147/en/UDR-Inc.-Announces-Dates-for-First-Quarter-2026-Earnings-Release-Webcast-and-Conference-Call/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "f45a2a7fefe7474b",
+      "first_seen": "2026-04-08T21:51:32.950866"
+    },
+    "http://www.businesswire.com/news/home/20260408043417/en/MetLife-to-Announce-First-Quarter-2026-Results/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "7ba2778827e2251e",
+      "first_seen": "2026-04-08T21:51:32.950869"
+    },
+    "http://www.businesswire.com/news/home/20260408081366/en/Healthpeak-Properties-Announces-Dates-of-First-Quarter-2026-Earnings-Release-Conference-Call-and-Webcast/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "f78e54897a9b9329",
+      "first_seen": "2026-04-08T21:51:32.950872"
+    },
+    "http://www.businesswire.com/news/home/20260408091441/en/Janus-Living-Announces-Dates-of-First-Quarter-2026-Earnings-Release-Conference-Call-and-Webcast/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "0a75ca3abd381d4f",
+      "first_seen": "2026-04-08T21:51:32.950874"
+    },
+    "http://www.businesswire.com/news/home/20260408098420/en/The-Cheesecake-Factory-to-Webcast-First-Quarter-Fiscal-2026-Earnings-Conference-Call-on-April-29-2026/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "e7cc3ccb6d09c915",
+      "first_seen": "2026-04-08T21:51:32.950877"
+    },
+    "http://www.businesswire.com/news/home/20260408116516/en/Moelis-Company-to-Announce-First-Quarter-2026-Financial-Results-and-Host-a-Conference-Call-on-April-29-2026/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "fc5336c8de3f80b4",
+      "first_seen": "2026-04-08T21:51:32.950880"
+    },
+    "http://www.businesswire.com/news/home/20260408254067/en/Watts-Water-Technologies-Inc.-Announces-First-Quarter-2026-Earnings-Release-and-Earnings-Conference-Call/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "e5f23d6753ef1cd7",
+      "first_seen": "2026-04-08T21:51:32.950882"
+    },
+    "http://www.businesswire.com/news/home/20260408291478/en/Helix-Announces-First-Quarter-2026-Earnings-Release-Date-and-Conference-Call-Information/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "2d2856e23ca53556",
+      "first_seen": "2026-04-08T21:51:32.950885"
+    },
+    "http://www.businesswire.com/news/home/20260408294953/en/Pathward-Financial-Inc.-to-Announce-Second-Quarter-2026-Earnings-and-Host-Conference-Call-on-April-22-2026/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "41bb6d3c441a1b41",
+      "first_seen": "2026-04-08T21:51:32.950888"
+    },
+    "http://www.businesswire.com/news/home/20260408384515/en/KKR-Real-Estate-Finance-Trust-Inc.-to-Announce-First-Quarter-2026-Results/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "298a19ec3374a3d6",
+      "first_seen": "2026-04-08T21:51:32.950890"
+    },
+    "http://www.businesswire.com/news/home/20260408334107/en/First-Business-Bank-Announces-First-Quarter-2026-Earnings-Conference-Call/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "ad5d8c27c71103fb",
+      "first_seen": "2026-04-08T21:51:32.950893"
+    },
+    "http://www.businesswire.com/news/home/20260408452379/en/SiteOne-Landscape-Supply-Inc.-Announces-First-Quarter-2026-Earnings-Release-Date-and-Conference-Call/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "130248052006f4a7",
+      "first_seen": "2026-04-08T21:51:32.950895"
+    },
+    "http://www.businesswire.com/news/home/20260408586236/en/Ingevity-announces-dates-for-first-quarter-2026-earnings-release-and-webcast/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "598793efc8b5fa93",
+      "first_seen": "2026-04-08T21:51:32.950898"
+    },
+    "http://www.businesswire.com/news/home/20260408644364/en/The-RMR-Group-Fiscal-Second-Quarter-2026-Conference-Call-Scheduled-for-Thursday-May-7th/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "9d4816daa25e31cb",
+      "first_seen": "2026-04-08T21:51:32.950901"
+    },
+    "http://www.businesswire.com/news/home/20260408665865/en/Service-Properties-Trust-First-Quarter-2026-Conference-Call-Scheduled-for-Thursday-May-7th/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "a2c02fab261eaafa",
+      "first_seen": "2026-04-08T21:51:32.950903"
+    },
+    "http://www.businesswire.com/news/home/20260408804776/en/Baxter-to-Host-First-Quarter-2026-Financial-Results-Conference-Call-for-Investors/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "8443e386051379ed",
+      "first_seen": "2026-04-08T21:51:32.950905"
+    },
+    "http://www.businesswire.com/news/home/20260408678734/en/RB-Global-to-Release-First-Quarter-2026-Financial-Results-and-Host-Conference-Call-on-May-4-2026/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "fbd16686692689cb",
+      "first_seen": "2026-04-08T21:51:32.950908"
+    },
+    "http://www.businesswire.com/news/home/20260408785276/en/First-American-Financial-Announces-First-Quarter-2026-Earnings-Conference-Call/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "068ce9253a959183",
+      "first_seen": "2026-04-08T21:51:32.950911"
+    },
+    "http://www.businesswire.com/news/home/20260408901241/en/BeFra-Announces-First-Quarter-2026-Earnings-Release-Date-Conference-Call-and-Webcast/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "83a899258046286d",
+      "first_seen": "2026-04-08T21:51:32.950913"
+    },
+    "http://www.businesswire.com/news/home/20260408104662/en/Triumph-Announces-Schedule-for-First-Quarter-2026-Earnings-Release-and-Conference-Call/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "a13a713ab02e12f3",
+      "first_seen": "2026-04-08T21:51:32.950916"
+    },
+    "http://www.businesswire.com/news/home/20260408696604/en/Utz-Brands-Inc.-to-Report-First-Quarter-2026-Financial-Results-on-May-6-2026/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "bad71e46aab8cf57",
+      "first_seen": "2026-04-08T21:51:32.950918"
+    },
+    "http://www.businesswire.com/news/home/20260406766271/en/Zurn-Elkay-Water-Solutions-Schedules-First-Quarter-2026-Earnings-Release-and-Investor-Conference-Call/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "14b0c97b345c1df7",
+      "first_seen": "2026-04-08T21:51:32.950921"
+    },
+    "http://www.businesswire.com/news/home/20260408546311/en/United-Rentals-Inc.-First-Quarter-2026-Conference-Call-and-Audio-Webcast-Thursday-April-23-2026-at-830-a.m.-ET/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "5d7a0e226e44e147",
+      "first_seen": "2026-04-08T21:51:32.950923"
+    },
+    "http://www.businesswire.com/news/home/20260408613339/en/JFrog-Announces-Timing-of-First-Quarter-2026-Financial-Results/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "48b9ce24ad35564a",
+      "first_seen": "2026-04-08T21:51:32.950926"
+    },
+    "http://www.businesswire.com/news/home/20260408903537/en/Enterprise-Financial-Services-Corp-Announces-First-Quarter-2026-Earnings-Release-and-Conference-Call/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "8cf81821731354dd",
+      "first_seen": "2026-04-08T21:51:32.950929"
+    },
+    "http://www.businesswire.com/news/home/20260407957687/en/Tetra-Tech-Announces-Planned-Dates-for-Second-Quarter-2026-Results-and-Conference-Call/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "b71abbad6a8ed007",
+      "first_seen": "2026-04-08T21:51:32.950931"
+    },
+    "http://www.businesswire.com/news/home/20260408546403/en/IDEXX-Laboratories-to-Release-2026-First-Quarter-Financial-Results/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "d6dc64b9a087c787",
+      "first_seen": "2026-04-08T21:51:32.950934"
+    },
+    "http://www.businesswire.com/news/home/20260408813504/en/The-FIFA-World-Cup-2026%E2%84%A2-Trophy-Tour-by-Coca-Cola/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "ac5af6c48e8cb0aa",
+      "first_seen": "2026-04-08T21:51:32.950936"
+    },
+    "http://www.businesswire.com/news/home/20260408607172/en/Martin-Midstream-Partners-Sets-Date-for-Release-of-First-Quarter-2026-Financial-Results/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "d8862377083fa11e",
+      "first_seen": "2026-04-08T21:51:32.950939"
+    },
+    "http://www.businesswire.com/news/home/20260408938041/en/ISG-to-Announce-First-Quarter-Financial-Results/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "3b63f268a5ae2893",
+      "first_seen": "2026-04-08T21:51:32.950941"
+    },
+    "http://www.businesswire.com/news/home/20260408848865/en/SmartCentres-Real-Estate-Investment-Trust-to-Release-2026-First-Quarter-Results-and-Host-Conference-Call/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "81379236fd7002b7",
+      "first_seen": "2026-04-08T21:51:32.950944"
+    },
+    "http://www.businesswire.com/news/home/20260408450499/en/Eastman-Schedules-First-Quarter-2026-Financial-Results-News-Release-and-SEC-Form-8-K-Filing-Teleconference-and-Webcast-and-Release-of-Additional-Information/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "5d2b2b2d3bb4be10",
+      "first_seen": "2026-04-08T21:51:32.950947"
+    },
+    "http://www.businesswire.com/news/home/20260408116913/en/UMB-Announces-Conference-Call-to-Discuss-First-Quarter-2026-Results/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "50015282e1a0a68c",
+      "first_seen": "2026-04-08T21:51:32.950950"
+    },
+    "http://www.businesswire.com/news/home/20260408336730/en/Warrior-Sets-Date-for-First-Quarter-2026-Earnings-Announcement-and-Investor-Conference-Call/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "ae6f356b395582fb",
+      "first_seen": "2026-04-08T21:51:32.950952"
+    },
+    "http://www.businesswire.com/news/home/20260408311417/en/ASGN-Incorporated-to-Change-Corporate-Name-and-NYSE-Ticker-to-Everforth/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "30920bcef574c32e",
+      "first_seen": "2026-04-08T21:51:32.950955"
+    },
+    "http://www.businesswire.com/news/home/20260408378756/en/Sallie-Mae-to-Release-First-Quarter-Financial-Results/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "1ace032e3dac92a8",
+      "first_seen": "2026-04-08T21:51:32.950958"
+    },
+    "http://www.businesswire.com/news/home/20260408760718/en/Pattern-to-Report-First-Quarter-2026-Financial-Results/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "b8d5bcc59e8bf224",
+      "first_seen": "2026-04-08T21:51:32.950960"
+    },
+    "http://www.businesswire.com/news/home/20260408123387/en/Arm-Announces-Earnings-Release-Date-for-Fourth-Quarter-Fiscal-Year-Ended-2026/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "d89c504acf288181",
+      "first_seen": "2026-04-08T21:51:32.950963"
+    },
+    "http://www.businesswire.com/news/home/20260408136769/en/Trex-Company-Announces-Timing-of-First-Quarter-2026-Earnings-Release-and-Conference-Call/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "f52e8439e3524ee0",
+      "first_seen": "2026-04-08T21:51:32.950966"
+    },
+    "http://www.businesswire.com/news/home/20260408223962/en/Kaiser-Aluminum-Corporation-Announces-First-Quarter-2026-Earnings-Release-and-Conference-Call/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "938f9ff77cb5c98f",
+      "first_seen": "2026-04-08T21:51:32.950969"
+    },
+    "http://www.businesswire.com/news/home/20260408190978/en/Wipro-Limited-to-Announce-Results-for-the-Fourth-Quarter-Ended-March-31-2026-on-April-16-2026/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "cbd77fa1110d8c12",
+      "first_seen": "2026-04-08T21:51:32.950971"
+    },
+    "http://www.businesswire.com/news/home/20260408608868/en/Prudential-Financial-Inc.-to-Announce-First-Quarter-2026-Earnings-Schedules-Conference-Call/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "046832dad1fd1a54",
+      "first_seen": "2026-04-08T21:51:32.950974"
+    },
+    "http://www.businesswire.com/news/home/20260408153169/en/TKO-to-Announce-First-Quarter-2026-Results/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "72afd87ca650765a",
+      "first_seen": "2026-04-08T21:51:32.950977"
+    },
+    "http://www.businesswire.com/news/home/20260408571909/en/CACI-Schedules-Fiscal-Year-2026-Third-Quarter-Conference-Call/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "79b5be1a4e42d4df",
+      "first_seen": "2026-04-08T21:51:32.950979"
+    },
+    "http://www.businesswire.com/news/home/20260408584732/en/Evolv-Technology-to-Release-First-Quarter-Financial-Results-on-May-12-2026/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "a234f03cb29701d1",
+      "first_seen": "2026-04-08T21:51:32.950982"
+    },
+    "http://www.businesswire.com/news/home/20260408703199/en/Autobahn-Therapeutics-to-Present-at-the-25th-Annual-Needham-Virtual-Healthcare-Conference/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "8394c2a34cec5ada",
+      "first_seen": "2026-04-08T21:51:32.950985"
+    },
+    "http://www.businesswire.com/news/home/20260408201233/en/Arch-Painting%C2%AE-to-Exhibit-at-ConnexFM-Trade-Show-April-19-22-2026/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "89949751c64b866c",
+      "first_seen": "2026-04-08T21:51:32.950988"
+    },
+    "http://www.businesswire.com/news/home/20260408352498/en/Sylvamo-to-Release-First-Quarter-Earnings-May-8/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "fd93fd2eb2b2180b",
+      "first_seen": "2026-04-08T21:51:32.950991"
+    },
+    "http://www.businesswire.com/news/home/20260408378149/en/Bankwell-Financial-Group-Inc.-Announces-Date-of-First-Quarter-Earnings-Conference-Call/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "dfea85092d7f440c",
+      "first_seen": "2026-04-08T21:51:32.950993"
+    },
+    "http://www.businesswire.com/news/home/20260407377835/en/New-Jersey-Resources-Schedules-Fiscal-2026-Second-Quarter-Earnings-Call/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "977020114e8b311b",
+      "first_seen": "2026-04-08T21:51:32.950996"
+    },
+    "http://www.businesswire.com/news/home/20260408024664/en/Glaukos-to-Release-First-Quarter-2026-Financial-Results-after-Market-Close-on-April-29/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "f1d349cefa4d9c4e",
+      "first_seen": "2026-04-08T21:51:32.950999"
+    },
+    "http://www.businesswire.com/news/home/20260408248667/en/Trinity-Industries-Inc.-Announces-Date-for-Earnings-Release/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "6f4cb156289c1b4b",
+      "first_seen": "2026-04-08T21:51:32.951002"
+    },
+    "http://www.businesswire.com/news/home/20260408208627/en/NuScale-Power-to-Hold-First-Quarter-2026-Earnings-Conference-Call/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "bfe7bd766fb55632",
+      "first_seen": "2026-04-08T21:51:32.951005"
+    },
+    "http://www.businesswire.com/news/home/20260408750386/en/LP-Building-Solutions-to-Announce-First-Quarter-2026-Earnings-on-May-6-2026/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "21bb29331d3a8120",
+      "first_seen": "2026-04-08T21:51:32.951007"
+    },
+    "http://www.businesswire.com/news/home/20260407595531/en/Innate-Pharma-to-Present-at-the-AACR-2026-Oncology-Industry-Partnering-Event/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "e85ff170d78f6b35",
+      "first_seen": "2026-04-08T21:51:32.951010"
+    },
+    "http://www.businesswire.com/news/home/20260407070832/en/Solaris-Energy-Infrastructure-Schedules-First-Quarter-2026-Results-Conference-Call/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "5c221ee0e7ceee17",
+      "first_seen": "2026-04-08T21:51:32.951012"
+    },
+    "https://www.blackstone.com/news/press/blackstone-closes-flagship-opportunistic-credit-fund-at-over-10b-hitting-hard-cap/": {
+      "hash": "205c638d88e91838",
+      "first_seen": "2026-04-08T21:51:32.951015"
+    },
+    "https://www.blackstone.com/news/press/blackstone-announces-top-ranked-professional-golfer-tommy-fleetwood-as-global-brand-ambassador/": {
+      "hash": "cd58646134a01bdf",
+      "first_seen": "2026-04-08T21:51:32.951018"
+    },
+    "https://www.blackstone.com/news/press/blackstone-announces-final-close-of-record-6-3-billion-life-sciences-fund-the-largest-private-fund-dedicated-to-life-sciences/": {
+      "hash": "0cb71ff021615878",
+      "first_seen": "2026-04-08T21:51:32.951020"
+    },
+    "https://www.blackstone.com/news/press/blackstone-announces-first-quarter-2026-investor-call/": {
+      "hash": "ff9a864113f16bf8",
+      "first_seen": "2026-04-08T21:51:32.951023"
+    },
+    "https://www.blackstone.com/news/in-the-news/jon-gray-on-bloomberg-private-credits-resiliency/": {
+      "hash": "037e2b6eb5f29766",
+      "first_seen": "2026-04-08T21:51:32.951028"
+    },
+    "https://www.blackstone.com/news/press/": {
+      "hash": "a0bd06f8df221bb8",
+      "first_seen": "2026-04-08T21:51:32.951031"
+    },
+    "https://www.blackstone.com/news/in-the-news/": {
+      "hash": "05a5b0f3b36ef73e",
+      "first_seen": "2026-04-08T21:51:32.951033"
+    },
+    "https://baincapital.com/news/bain-capital-credit-announces-8-billion-financing-investments-2025": {
+      "hash": "ac1ed0e774db68de",
+      "first_seen": "2026-04-08T21:51:32.951036"
+    },
+    "https://baincapital.com/news/duravent-group-venting-and-air-quality-solutions-leader-secures-strategic-growth-investment": {
+      "hash": "a5eb6b02f8a86bdd",
+      "first_seen": "2026-04-08T21:51:32.951039"
+    },
+    "https://baincapital.com/news/bain-capital-acquire-perpetual-wealth-management": {
+      "hash": "86b7656c79a451f7",
+      "first_seen": "2026-04-08T21:51:32.951041"
+    },
+    "https://thomabravo.com/press-releases/bluematrix-accelerates-transition-into-core-infrastructure-for-ai-driven-research-strengthens-leadership-to-scale-platform": {
+      "hash": "081e65f96c681c36",
+      "first_seen": "2026-04-08T21:51:32.951044"
+    },
+    "https://tpg.com/news-and-insights/partnership-perspectives-from-teresa-mackintosh-ceo-of-aven-hospitality": {
+      "hash": "4a1f4c42cb12daab",
+      "first_seen": "2026-04-08T21:51:32.951047"
+    },
+    "https://tpg.com/news-and-insights/tpg-peppertree-investing-behind-an-increasingly-digital-world": {
+      "hash": "d894bb8e5abfac8d",
+      "first_seen": "2026-04-08T21:51:32.951049"
+    },
+    "https://tpg.com/news-and-insights/investment-insights-inside-tpg-ops-a-playbook-for-value-creation": {
+      "hash": "25fe8dde6cbc3f5c",
+      "first_seen": "2026-04-08T21:51:32.951052"
+    },
+    "https://tpg.com/news-and-insights/blackstone-and-tpg-complete-acquisition-of-hologic": {
+      "hash": "05cf8fc39c7ab1ee",
+      "first_seen": "2026-04-08T21:51:32.951054"
+    },
+    "https://tpg.com/news-and-insights/tpg-and-allianz-lead-usd-350-million-strategic-investment-in-cambridge-mobile-telematics-to-accelerate-ai-driven-road-safety": {
+      "hash": "bb82ba355e293ba7",
+      "first_seen": "2026-04-08T21:51:32.951057"
+    },
+    "https://tpg.com/news-and-insights/velotic-launches-to-shape-future-of-industrial-manufacturing-software": {
+      "hash": "5bbbe13969d2854f",
+      "first_seen": "2026-04-08T21:51:32.951060"
+    },
+    "https://tpg.com/news-and-insights/tpg-establishes-one-aged-care-a-senior-healthcare-services-platform-to-serve-growing-regional-needs": {
+      "hash": "98d7858905da137e",
+      "first_seen": "2026-04-08T21:51:32.951062"
+    },
+    "https://tpg.com/news-and-insights/tpg-announces-completion-of-4-75-billion-sale-of-intersect-to-google-launches-ipx-power-as-independent-power-producer": {
+      "hash": "3af63b1b349c9098",
+      "first_seen": "2026-04-08T21:51:32.951064"
+    },
+    "https://clearlake.com/news/precisely-appoints-software-industry-veteran-walid-abu-hadba-as-chief-executive-officer/": {
+      "hash": "da4e9d4fd73d1961",
+      "first_seen": "2026-04-08T21:51:32.951067"
+    },
+    "https://clearlake.com/news/clearlake-to-acquire-qualus-a-pure-play-power-electric-grid-services-platform-from-new-mountain-capital/": {
+      "hash": "18d1623e85648c13",
+      "first_seen": "2026-04-08T21:51:32.951070"
+    },
+    "https://apollo.com/insights-news/insights/2026/04/john-zito-on-software--ai-disruption--and-putting-capital-to-wor": {
+      "hash": "5e0e29e75e7fac82",
+      "first_seen": "2026-04-08T21:51:32.951072"
+    },
+    "https://www.leonardgreen.com/author/marqdmin/": {
+      "hash": "2f381f87cd28a9bc",
+      "first_seen": "2026-04-08T21:51:32.951075"
+    },
+    "https://higcapital.com/about/": {
+      "hash": "07921575f9f4644a",
+      "first_seen": "2026-04-08T21:51:32.951078"
+    },
+    "https://higcapital.com/news/#all-releases": {
+      "hash": "f0e5f12748e5a1d4",
+      "first_seen": "2026-04-08T21:51:32.951080"
+    },
+    "https://www.adventinternational.com/news/advent-strengthens-its-presence-in-hong-kong-to-serve-clients-in-the-wider-asia-pacific-region/": {
+      "hash": "8047bd8f031c2f2a",
+      "first_seen": "2026-04-08T21:51:32.951083"
+    },
+    "https://www.adventinternational.com/news/advent-advances-up-to-1-billion-defense-technology-commitment-with-investment-in-saronic/": {
+      "hash": "77fee4dc228b7fbc",
+      "first_seen": "2026-04-08T21:51:32.951085"
+    },
+    "https://www.adventinternational.com/news/atwell-partners-with-advent-international-to-accelerate-next-phase-of-growth/": {
+      "hash": "a6c7b69fc0ba2a38",
+      "first_seen": "2026-04-08T21:51:32.951088"
+    },
+    "https://www.adventinternational.com/news/advent-expands-defense-focus-with-commitment-to-invest-up-to-1-billion-in-next-generation-defense-technology/": {
+      "hash": "207ac3752940f638",
+      "first_seen": "2026-04-08T21:51:32.951091"
+    },
+    "https://www.adventinternational.com/news/olaplex-a-leading-science-led-prestige-hair-care-brand-to-be-acquired-by-henkel-for-1-4-billion/": {
+      "hash": "a5d86db7b3988cfa",
+      "first_seen": "2026-04-08T21:51:32.951094"
+    },
+    "https://www.adventinternational.com/news/advent-to-acquire-salt-stone-the-premium-body-care-brand/": {
+      "hash": "07bf1133e7e296df",
+      "first_seen": "2026-04-08T21:51:32.951096"
+    },
+    "https://www.adventinternational.com/news/cobham-ultra-an-advent-portfolio-company-agrees-to-the-sale-of-ultra-cyber-ltd-to-airbus/": {
+      "hash": "01641fe2aa24db36",
+      "first_seen": "2026-04-08T21:51:32.951099"
+    },
+    "https://adventinternational.com#content": {
+      "hash": "d1b16c624aef320f",
+      "first_seen": "2026-04-08T21:51:32.951101"
+    },
+    "https://www.adventinternational.com/news/?sf_paged=2": {
+      "hash": "294b80f22b53e3ad",
+      "first_seen": "2026-04-08T21:51:32.951103"
+    },
+    "https://partnersgroup.com/en/news-and-views/perspective/market-update-march2026": {
+      "hash": "22be61600c4ab980",
+      "first_seen": "2026-04-08T21:51:32.951106"
+    },
+    "https://partnersgroup.com/pdf-viewer.aspx?gid=443092680&src=/~/media/Files/P/Partnersgroup/Universal/perspectives-document/private-markets-chartbook-Q1-2026-investing-in-high-altitude.pdf": {
+      "hash": "32cbc9ae3975eeda",
+      "first_seen": "2026-04-08T21:51:32.951108"
+    },
+    "https://carlyle.com/media-room/news-release-archive/carlyle-acquire-majority-stake-mai-capital-management": {
+      "hash": "938df19d18b77b88",
+      "first_seen": "2026-04-08T21:51:32.951111"
+    },
+    "https://carlyle.com/media-room/news-release-archive/carlyle-announces-strategic-partnership-omron%E2%80%99s-device-module": {
+      "hash": "647416a322dd6169",
+      "first_seen": "2026-04-08T21:51:32.951114"
+    },
+    "https://carlyle.com/media-room/news-release-archive/towerbrook-announces-continuation-vehicle-transaction-eisneramper": {
+      "hash": "fd3b5a2f978cd359",
+      "first_seen": "2026-04-08T21:51:32.951116"
+    },
+    "https://carlyle.com/media-room/news-release-archive/carlyle-sell-kanamel-nippon-television": {
+      "hash": "d88e4bf97cd09c4d",
+      "first_seen": "2026-04-08T21:51:32.951119"
+    },
+    "https://carlyle.com/media-room/news-release-archive/carlyle-sell-sierracol-energy-prime-infrastructure": {
+      "hash": "a1e36e3236fefbc5",
+      "first_seen": "2026-04-08T21:51:32.951121"
+    },
+    "https://carlyle.com/": {
+      "hash": "d41848e613abd62a",
+      "first_seen": "2026-04-08T21:51:32.951124"
+    },
+    "https://www.newmountaincapital.com/2026/": {
+      "hash": "2963871f7bbff2ff",
+      "first_seen": "2026-04-08T21:51:32.951126"
+    },
+    "https://harvestpartners.com/news/carlyle-to-acquire-majority-stake-in-mai-capital-management/": {
+      "hash": "710809979da26a97",
+      "first_seen": "2026-04-08T21:51:32.951129"
+    },
+    "https://www.cerberus.com/media/odc-completes-a-45m-series-a-funding-architecting-the-global-distributed-compute-grid-to-power-the-ai-native-era/": {
+      "hash": "bdc8e77a45b771d4",
+      "first_seen": "2026-04-08T21:51:32.951132"
+    },
+    "https://cerberus.com#content": {
+      "hash": "6cd170bd201f3cd9",
+      "first_seen": "2026-04-08T21:51:32.951135"
+    },
+    "https://cerberus.com/news/": {
+      "hash": "88a3ddc7849eb63d",
+      "first_seen": "2026-04-08T21:51:32.951138"
+    },
+    "https://ardian.com/news-insights/press-releases/ardian-announces-sale-acousti-engineering": {
+      "hash": "4c54d878763df0cf",
+      "first_seen": "2026-04-08T21:51:32.951140"
+    },
+    "https://ardian.com/news-insights/press-releases/ardian-and-adia-launch-new-real-estate-secondaries-platform": {
+      "hash": "e8f1318b8f41f388",
+      "first_seen": "2026-04-08T21:51:32.951142"
+    },
+    "https://ardian.com/news-insights/press-releases/ardian-signs-agreement-acquire-majority-stake-casaforte-italys-leading": {
+      "hash": "aec174dc8a05c29a",
+      "first_seen": "2026-04-08T21:51:32.951145"
+    },
+    "https://charlesbank.com/news/overbay-capital-partners-secures-strategic-investment-from-funds-managed-by-charlesbank-capital-partners/": {
+      "hash": "d37db7e88ef66c00",
+      "first_seen": "2026-04-08T21:51:32.951148"
+    },
+    "https://charlesbank.com/news/rise-growth-partners-backs-cyndeo-wealth-partners-in-fourth-ria-investment/": {
+      "hash": "5a7cb55203ea7383",
+      "first_seen": "2026-04-08T21:51:32.951150"
+    },
+    "mailto:pro-charlesbank@prosek.com": {
+      "hash": "1fb1adfb5aab9b01",
+      "first_seen": "2026-04-08T21:51:32.951152"
+    },
+    "https://www.towerbrook.com": {
+      "hash": "c6da863884fdb4d6",
+      "first_seen": "2026-04-08T21:51:32.951155"
+    },
+    "https://towerbrook.com/news#noteworthy": {
+      "hash": "13b4b50104ab64cb",
+      "first_seen": "2026-04-08T21:51:32.951158"
+    },
+    "https://www.parthenoncapital.com/news/daysmart-acquires-uk-salon-platform-slick-extending-its-global-reach-in-beauty-and-wellness/": {
+      "hash": "91d15d03f454c65a",
+      "first_seen": "2026-04-08T21:51:32.951160"
+    },
+    "https://www.parthenoncapital.com/news/parthenon-2025-year-in-review/": {
+      "hash": "96717009ad03d0e9",
+      "first_seen": "2026-04-08T21:51:32.951163"
+    },
+    "https://blueowl.com/news/blue-owl-capital-announces-29-billion-final-close-asset-special-opportunities-fund": {
+      "hash": "981bfc86529e93e3",
+      "first_seen": "2026-04-08T21:51:32.951165"
+    },
+    "https://www.bcpartners.com/news/cnbc-never-seen-such-a-big-disconnect-between-perception-and-reality-in-private-credit/": {
+      "hash": "3c50568dfa7b446e",
+      "first_seen": "2026-04-08T21:51:32.951168"
+    },
+    "https://www.bcpartners.com/news/petlabco-video-case-study/": {
+      "hash": "677104ff512da550",
+      "first_seen": "2026-04-08T21:51:32.951171"
+    },
+    "https://www.bcpartners.com/news/real-deals-investors-leap-on-fragmented-italy-as-buy-and-builds-soar/": {
+      "hash": "569814fd9d479047",
+      "first_seen": "2026-04-08T21:51:32.951173"
+    },
+    "https://www.bcpartners.com/news/fortidia-video-case-study/": {
+      "hash": "017bc8f0d051021b",
+      "first_seen": "2026-04-08T21:51:32.951176"
+    },
+    "https://kpsfund.com/overview/2026/03/24/private-capital-michael-psaros---the-buy-and-build-machine-at-kps-capital-partners": {
+      "hash": "7718a425c18ffd93",
+      "first_seen": "2026-04-08T21:51:32.951178"
+    },
+    "https://oneequity.com/news/one-equity-partners-acquires-kitwave-group/": {
+      "hash": "82bcb8c0ad5a8c2c",
+      "first_seen": "2026-04-08T21:51:32.951181"
+    },
+    "https://sixthstreet.com/video_gallery/invest-like-the-best-alan-waxman-on-private-credit-and-the-modern-financial-system/": {
+      "hash": "c485ad301b8174ce",
+      "first_seen": "2026-04-08T21:51:32.951183"
+    },
+    "https://sixthstreet.com/investment_announce/bay-collective-agrees-to-acquire-sunderland-afc-women-launching-historic-clubs-next-era/": {
+      "hash": "5c30f428abb2e7f5",
+      "first_seen": "2026-04-08T21:51:32.951186"
+    },
+    "https://sixthstreet.com/podcasts/a-conversation-with-tekedra-mawakana-co-ceo-of-waymo/": {
+      "hash": "6e4fd60cb85bd603",
+      "first_seen": "2026-04-08T21:51:32.951188"
+    },
+    "https://sixthstreet.com/investment_announce/nfl-partners-with-tmrw-sports-and-world-class-investors-and-athletes-to-launch-new-professional-flag-football-league/": {
+      "hash": "97b30d262dc1e532",
+      "first_seen": "2026-04-08T21:51:32.951191"
+    },
+    "https://sixthstreet.com/investment_announce/sixth-street-recapitalizes-bank-of-america-tower-at-parkside/": {
+      "hash": "d39ce7e56981cbfc",
+      "first_seen": "2026-04-08T21:51:32.951193"
+    },
+    "https://sixthstreet.com/video_gallery/how-sixth-street-invests/": {
+      "hash": "211c800e98469bcb",
+      "first_seen": "2026-04-08T21:51:32.951196"
+    },
+    "https://sixthstreet.com/video_gallery/sixth-street-architecture/": {
+      "hash": "418aba37b260726a",
+      "first_seen": "2026-04-08T21:51:32.951199"
+    },
+    "https://sixthstreet.com/investment_announce/paratek-pharmaceuticals-to-combine-with-radius-health-expanding-its-multi-product-specialty-commercial-platform/": {
+      "hash": "4ed388404bc8dc10",
+      "first_seen": "2026-04-08T21:51:32.951201"
+    },
+    "https://olympuspartners.com/news/olympus-partners-decides-the-thyme-is-right-invests-in-vesta-foodservice/": {
+      "hash": "e27c9699140531e9",
+      "first_seen": "2026-04-08T21:51:32.951204"
+    },
+    "https://olympuspartners.com/news/an-eye-for-an-eye-olympus-sells-retina-business-of-eyesouth-partners/": {
+      "hash": "f2a40b5ddb892ae6",
+      "first_seen": "2026-04-08T21:51:32.951206"
+    },
+    "https://olympuspartners.com/news/a-bourse-with-no-name/": {
+      "hash": "83569d69115a8672",
+      "first_seen": "2026-04-08T21:51:32.951209"
+    },
+    "https://hgcapital.com/insights/axcel-agrees-to-acquire-geomatikk-from-hg": {
+      "hash": "416ac6ab07625535",
+      "first_seen": "2026-04-08T21:51:32.951212"
+    },
+    "https://hgcapital.com/insights/orbit-podcast/marjorie-janiewicz-of-mistral-ai-flipping-the-adoption-curve": {
+      "hash": "7ab78738bdd136a9",
+      "first_seen": "2026-04-08T21:51:32.951215"
+    },
+    "https://hgcapital.com#smooth-wrapper": {
+      "hash": "4dce1eea54845f5a",
+      "first_seen": "2026-04-08T21:51:32.951217"
+    },
+    "https://www.summitpartners.com/team/thomas-tarnowski": {
+      "hash": "b28ba4faf640276d",
+      "first_seen": "2026-04-08T21:51:32.951220"
+    },
+    "https://oakhcft.com/news/thesis-care-announces-45-million-series-a-to-scale-ai-powered-clinical-teams-across-healthcare": {
+      "hash": "4e16ddb7fc061260",
+      "first_seen": "2026-04-08T21:51:32.951223"
+    },
+    "https://oakhcft.com/news/spade-announces-40m-series-b-raise-to-build-the-data-and-ai-platform-for-modern-finance": {
+      "hash": "e6073c6fa09b428f",
+      "first_seen": "2026-04-08T21:51:32.951225"
+    },
+    "https://oakhcft.com/news/welcoming-marc-andrusko-to-oak-hc-ft": {
+      "hash": "55575e6093e4fc99",
+      "first_seen": "2026-04-08T21:51:32.951228"
+    },
+    "https://oakhcft.com/news/turquoise-health-announces-40-million-series-c-to-become-the-operating-system-for-healthcare-contracts-and-payments": {
+      "hash": "998531be62581226",
+      "first_seen": "2026-04-08T21:51:32.951231"
+    },
+    "https://aresmgmt.com/news-views": {
+      "hash": "c791a448b9d48a71",
+      "first_seen": "2026-04-08T21:51:32.951233"
+    },
+    "https://ir.aresmgmt.com/news/ares-raises-combined-5-4-billion-for-u-s-and-europe-value-add-real-estate-strategies/bc103f39-515b-456b-8375-21d00d4a20cc": {
+      "hash": "e045214655a03a49",
+      "first_seen": "2026-04-08T21:51:32.951236"
+    },
+    "https://sterling-group.com/news/": {
+      "hash": "a3c59358ad16f0b8",
+      "first_seen": "2026-04-08T21:51:32.951239"
+    },
+    "https://waterstreet.com/news/water-street-partners-with-brundage-group": {
+      "hash": "96c9c1b532c246b3",
+      "first_seen": "2026-04-08T21:51:32.951242"
+    },
+    "https://psgequity.com/news/notraffic-raises-90m-series-c-led-by-psg-equity-to-accelerate-growth-and-help-lead-the-ai-driven-traffic-management-revolution": {
+      "hash": "727bffaf23680011",
+      "first_seen": "2026-04-08T21:51:32.951244"
+    },
+    "https://www.mcpfunds.com/news/printing-at-scale-resource-management-at-japs-olson/": {
+      "hash": "3f41fe34e96f4a86",
+      "first_seen": "2026-04-08T21:51:32.951247"
+    },
+    "https://www.mcpfunds.com/news/leadership-spotlight-helen-ruth-on-impactful-pe-operating-partners/": {
+      "hash": "607182e87bcc83a6",
+      "first_seen": "2026-04-08T21:51:32.951249"
+    },
+    "https://www.mcpfunds.com/news/monomoy-joins-inaugural-arcalis-toesca-day-in-chile/": {
+      "hash": "79bc07e5f764d33f",
+      "first_seen": "2026-04-08T21:51:32.951251"
+    },
+    "https://www.kinderhook.com/press-release/kinderhook-industries-wins-pe-hubs-mid-cap-north-america-deal-of-the-year-award-for-sale-of-vehicle-accessories-to-realtruck/": {
+      "hash": "86989a5998a14cda",
+      "first_seen": "2026-04-08T21:51:32.951254"
+    },
+    "https://www.kinderhook.com/press-releases/page/2": {
+      "hash": "5a219c5a9fa72888",
+      "first_seen": "2026-04-08T21:51:32.951256"
+    },
+    "https://k1im.com#primary": {
+      "hash": "9e90fdf877859a6a",
+      "first_seen": "2026-04-08T21:51:32.951259"
+    },
+    "https://gamutcapital.com/news-content/2026/4/7/gamut-capital-management-to-acquire-acousti-engineering-company": {
+      "hash": "85075950b42f7435",
+      "first_seen": "2026-04-08T21:51:32.951262"
+    },
+    "https://provequity.com/": {
+      "hash": "e0073994df356ab3",
+      "first_seen": "2026-04-08T21:51:32.951264"
+    },
+    "https://provequity.com/news/providence-becomes-signatory-united-nations-supported-principles-responsible-investment": {
+      "hash": "0d6981f11119c454",
+      "first_seen": "2026-04-08T21:51:32.951267"
+    },
+    "https://provequity.com/news/bloomberg-highlights-why-providence-believes-investments-live-events-are-becoming-more": {
+      "hash": "8723daa1d5139e6d",
+      "first_seen": "2026-04-08T21:51:32.951269"
+    },
+    "https://provequity.com/news/ahana-maken-wall-street-journal-pro-private-equity-2025-women-watch-list-0": {
+      "hash": "14de9443f623e502",
+      "first_seen": "2026-04-08T21:51:32.951272"
+    },
+    "https://altamontcapital.com/wp-content/uploads/2026/04/ACP-Firm-Overview.pdf": {
+      "hash": "e9b4935b1983bd53",
+      "first_seen": "2026-04-08T21:51:32.951275"
+    },
+    "https://arlingtoncap.com/news/arlington-capital-partners-to-acquire-eptec-defence/": {
+      "hash": "0e0a3052f8ad7d77",
+      "first_seen": "2026-04-08T21:51:32.951277"
+    },
+    "https://arlingtoncap.com/news/neumo-appoints-matt-coury-as-chief-executive-officer/": {
+      "hash": "5dc674fb2534e3f7",
+      "first_seen": "2026-04-08T21:51:32.951280"
+    },
+    "https://leedsequity.com/news/articles/95-percent-group-agrees-to-acquire-touchmath-to-redefine-foundational-learning-across-reading-and-math": {
+      "hash": "d106462af934f4b2",
+      "first_seen": "2026-04-08T21:51:32.951283"
+    },
+    "https://oceansoundpartners.com/category/uncategorized/": {
+      "hash": "7fb9e2ed86249c78",
+      "first_seen": "2026-04-08T21:51:32.951285"
+    },
+    "https://trinityhunt.com/news/trinity-hunt-partners-announces-the-exit-of-ims-legal-strategies-a-leading-litigation-services-platform": {
+      "hash": "24edfc561cbfbcf6",
+      "first_seen": "2026-04-08T21:51:32.951288"
+    },
+    "https://redbirdcap.com/wp-content/uploads/2026/04/Julia-Wittlin_Buyouts-Women-in-PE.pdf": {
+      "hash": "456d0791b7ad5d75",
+      "first_seen": "2026-04-08T21:51:32.951290"
+    },
+    "https://redbirdcap.com/wp-content/uploads/2026/03/Financial-Times_GC-Profile-3.20.2026.pdf": {
+      "hash": "e269101cfb2a07bf",
+      "first_seen": "2026-04-08T21:51:32.951293"
+    },
+    "https://falfurrias.com/falfurrias-launches-crosslakes-next-growth-phase-through-single-asset-continuation-fund-led-by-leonard-green-partners/": {
+      "hash": "01c9116f0a72d22d",
+      "first_seen": "2026-04-08T21:51:32.951296"
+    },
+    "https://www.bvlp.com/news-resource/bv-investment-partners-announces-sale-of-calltower/": {
+      "hash": "7d5243a28f3ef4c0",
+      "first_seen": "2026-04-08T21:51:32.951298"
+    },
+    "https://www.bvlp.com/news-resource/bv-investment-partners-announces-investment-in-moxe-health/": {
+      "hash": "b8b8c8ea27e3e892",
+      "first_seen": "2026-04-08T21:51:32.951300"
+    },
+    "https://bertramcapital.com/news/cogency-global-acquires-elemental-cosec-to-expand-uk-governance-company-secretarial-and-compliance-capabilities": {
+      "hash": "b13fae4ef95e9cb6",
+      "first_seen": "2026-04-08T21:51:32.951303"
+    },
+    "https://novacap.ca/people": {
+      "hash": "97aafc8c2ea71909",
+      "first_seen": "2026-04-08T21:51:32.951306"
+    },
+    "https://sterlinglp.com/news-article/sterling-investment-partners-acquires-cyber-advisors-a-provider-of-cyber-security-and-it-services": {
+      "hash": "755a174a1a190f8a",
+      "first_seen": "2026-04-08T21:51:32.951308"
+    },
+    "https://www.astorg.com/news/astorg-mid-cap-to-acquire-barkene-a-leading-multi-specialist-b2b-technical-services-platform": {
+      "hash": "29ff0abb34ac1157",
+      "first_seen": "2026-04-08T21:51:32.951311"
+    },
+    "https://astorg.com#content": {
+      "hash": "8fbcb584d2e854ad",
+      "first_seen": "2026-04-08T21:51:32.951313"
+    },
+    "https://montagu.com/harvest-further-strengthens-its-pan-european-footprint-with-the-acquisition-of-firstance/": {
+      "hash": "078a7ce6d8a33285",
+      "first_seen": "2026-04-08T21:51:32.951316"
+    },
+    "https://montagu.com/itrs-acquires-ip-label-to-strengthen-digital-experience-monitoring-capabilities-and-expand-european-presence/": {
+      "hash": "325834da1ab54cfc",
+      "first_seen": "2026-04-08T21:51:32.951318"
+    },
+    "https://capvest.com/news/curiumrecap-ew7dd": {
+      "hash": "e2033c834a529cb3",
+      "first_seen": "2026-04-08T21:51:32.951321"
+    },
+    "https://capvest.com/cart": {
+      "hash": "ced7dcff80e4140c",
+      "first_seen": "2026-04-08T21:51:32.951323"
+    },
+    "https://keensightcapital.com#start": {
+      "hash": "201bc495b4142b2f",
+      "first_seen": "2026-04-08T21:51:32.951325"
+    },
+    "https://paineschwartz.com/news/paine-schwartz-partners-announces-sale-of-agbitech-to-basf-agricultural-solutions/": {
+      "hash": "cb7d2de10f09dcf8",
+      "first_seen": "2026-04-08T21:51:32.951328"
+    },
+    "https://rubicontp.com/news/engine-and-nuqleous-complete-strategic-merger-creating-an-end-to-end-omni-channel-retail-intelligence-platform-for-cpgs/": {
+      "hash": "c57e34631bf30f39",
+      "first_seen": "2026-04-08T21:51:32.951331"
+    },
+    "https://rubicontp.com/": {
+      "hash": "79d5e8f666fbb38e",
+      "first_seen": "2026-04-08T21:51:32.951333"
+    },
+    "https://stblaw.com/home": {
+      "hash": "68814f27148c425e",
+      "first_seen": "2026-04-08T21:51:32.951335"
+    },
+    "https://stblaw.com/": {
+      "hash": "3f8170f3ba59ef92",
+      "first_seen": "2026-04-08T21:51:32.951338"
+    },
+    "https://stblaw.com/about-us/news/view/2026/04/02/simpson-thacher-announces-plans-to-open-singapore-office": {
+      "hash": "739b2557ad21350a",
+      "first_seen": "2026-04-08T21:51:32.951340"
+    },
+    "https://www.gibsondunn.com/contact/": {
+      "hash": "fb85414280e57f1a",
+      "first_seen": "2026-04-08T21:51:32.951343"
+    },
+    "https://www.gibsondunn.com/gibson-dunn-bolsters-energy-and-infrastructure-bench-in-houston-with-return-of-power-and-renewables-dealmaker-omar-samji/": {
+      "hash": "ad3242d7ca28f68e",
+      "first_seen": "2026-04-08T21:51:32.951345"
+    },
+    "https://willkie.com/events/2026/03/the-2nd-annual-eve-wealth-summit": {
+      "hash": "d22696e6324e454b",
+      "first_seen": "2026-04-08T21:51:32.951348"
+    },
+    "https://willkie.com/news/2026/04/willkie-advises-synsus-on-acquisition-of-emerald-bioagriculture": {
+      "hash": "5405a4662096ef7e",
+      "first_seen": "2026-04-08T21:51:32.951351"
+    },
+    "https://willkie.com/recognition-honors-awards/2026/04/7-willkie-partners-named-to-varietys-legal-impact-report-2026": {
+      "hash": "41b7686f50954073",
+      "first_seen": "2026-04-08T21:51:32.951353"
+    },
+    "https://willkie.com/recognition-honors-awards/2026/04/willkie-recognized-in-chambers-germany-2026": {
+      "hash": "c3d78c7654420a10",
+      "first_seen": "2026-04-08T21:51:32.951356"
+    },
+    "https://willkie.com/events/2026/04/law-com-general-counsel-conference-midwest": {
+      "hash": "5a36f3bde9a6a4e0",
+      "first_seen": "2026-04-08T21:51:32.951358"
+    },
+    "https://willkie.com/recognition-honors-awards/2026/04/faustine-viala-recognized-as-2026-merger-control-power-player-by-financier-worldwide": {
+      "hash": "7c96b8fa4b93182b",
+      "first_seen": "2026-04-08T21:51:32.951360"
+    },
+    "https://willkie.com/recognition-honors-awards/2026/04/willkie-recognized-as-leading-firm-in-france-by-legal-500-in-2026": {
+      "hash": "02bcad124c7df6de",
+      "first_seen": "2026-04-08T21:51:32.951363"
+    },
+    "https://willkie.com/events/2026/04/the-2026-fia-law-and-compliance-division-conference": {
+      "hash": "8f7c8e07577f279b",
+      "first_seen": "2026-04-08T21:51:32.951365"
+    },
+    "https://willkie.com/news/2026/04/archie-fallon-and-eric-pogue-quoted-in-law360-article-on-energy-market-deal-outlook": {
+      "hash": "207e2c9c5da05356",
+      "first_seen": "2026-04-08T21:51:32.951368"
+    },
+    "https://willkie.com/news/2026/04/willkie-advises-dossier-on-investment-by-american-pacific-group": {
+      "hash": "205fef661e4280df",
+      "first_seen": "2026-04-08T21:51:32.951370"
+    },
+    "https://kirkland.com/news/press-release/2026/04/kirkland-advises-centernode-group-on-launch-of-its-alternative-energy-investment-platform": {
+      "hash": "6d5a77cc59a6d732",
+      "first_seen": "2026-04-08T21:51:32.951373"
+    },
+    "https://kirkland.com/news/press-release/2026/04/kirkland-advises-eso-on-acquisition-of-d2i": {
+      "hash": "6742503ced7e9abf",
+      "first_seen": "2026-04-08T21:51:32.951376"
+    },
+    "https://kirkland.com/news/press-release/2026/04/kirkland-advises-blue-owl-on-final-close-for-asset-special-opportunities-fund": {
+      "hash": "3f76cd91e4901d3a",
+      "first_seen": "2026-04-08T21:51:32.951378"
+    },
+    "https://kirkland.com/news/award/2026/04/variety-legal-impact-report": {
+      "hash": "78767a0fa7e0559a",
+      "first_seen": "2026-04-08T21:51:32.951381"
+    },
+    "https://kirkland.com/news/press-release/2026/04/kirkland-advises-arclight-capital-partners-on-final-fund-viii-close-of-3-9-b": {
+      "hash": "949aab26020109c4",
+      "first_seen": "2026-04-08T21:51:32.951384"
+    },
+    "https://kirkland.com/content/press-center": {
+      "hash": "b05048035032bf50",
+      "first_seen": "2026-04-08T21:51:32.951386"
+    },
+    "https://www.debevoise.com/news/2026/04/top-10-firm-in-gar-30": {
+      "hash": "cc4086d72f49d412",
+      "first_seen": "2026-04-08T21:51:32.951389"
+    },
+    "https://paulhastings.com/news/paul-hastings-advises-h-i-g-capital-on-its-acquisition-of-global-elite-group-from-securitas-ab": {
+      "hash": "660f1e88f23a3f22",
+      "first_seen": "2026-04-08T21:51:32.951392"
+    },
+    "https://paulhastings.com/news/paul-hastings-secures-rare-complete-dismissal-with-prejudice-of-securities-class-action-claims": {
+      "hash": "5cd2846beef8b91a",
+      "first_seen": "2026-04-08T21:51:32.951395"
+    },
+    "https://paulhastings.com/news/paul-hastings-secures-victory-in-false-claims-act-case-in-central-district-of-california": {
+      "hash": "52c5fc1ccab7f972",
+      "first_seen": "2026-04-08T21:51:32.951398"
+    },
+    "https://paulhastings.com/news/paul-hastings-advises-the-initial-purchasers-and-dealer-managers-on-fondo-miviviendas": {
+      "hash": "b8797b25dae12773",
+      "first_seen": "2026-04-08T21:51:32.951400"
+    },
+    "https://paulhastings.com/news/paul-hastings-advises-2pointzero-group-on-whoops-usd575-million-series-g-funding-round": {
+      "hash": "bc62cb3245300c0b",
+      "first_seen": "2026-04-08T21:51:32.951403"
+    },
+    "https://paulhastings.com/news/paul-hastings-expands-private-equity-practice-with-premier-partner-in-london": {
+      "hash": "2af1cd72f3ca69aa",
+      "first_seen": "2026-04-08T21:51:32.951405"
+    },
+    "https://paulhastings.com/news/paul-hastings-advises-norwegian-cruise-line-holdings-on-its-engagement-with-elliott-management": {
+      "hash": "95839033e8af4709",
+      "first_seen": "2026-04-08T21:51:32.951408"
+    },
+    "https://paulhastings.com/news/paul-hastings-secures-victory-for-kyverna-therapeutics-in-the-northern-district-of-california": {
+      "hash": "6f7818264f6e4d67",
+      "first_seen": "2026-04-08T21:51:32.951411"
+    },
+    "https://paulhastings.com/news/paul-hastings-advises-td-cowen-and-lifesci-capital-on-sol-gel-technologies-underwritten-offering": {
+      "hash": "4dc60595d23a42b3",
+      "first_seen": "2026-04-08T21:51:32.951414"
+    },
+    "https://paulhastings.com/news/paul-hastings-advises-initial-purchasers-in-usd4-billion-notes-offering-by-takeoff-merger-sub": {
+      "hash": "4e1f1530aa51db4e",
+      "first_seen": "2026-04-08T21:51:32.951416"
+    },
+    "https://paulhastings.com/news/paul-hastings-advises-banque-des-territoires-on-sale-of-wind-portfolio": {
+      "hash": "90918bbc60049246",
+      "first_seen": "2026-04-08T21:51:32.951418"
+    },
+    "https://paulhastings.com/news/paul-hastings-advises-underwriters-in-usd3-5-billion-notes-offering-by-waters-corporation-subsidiary-augusta-spinco": {
+      "hash": "a1928a01d23e1c79",
+      "first_seen": "2026-04-08T21:51:32.951421"
+    },
+    "https://www.cliffordchance.com/news/news/2026/04/clifford-chance-advises-tiger-infrastructure-partners-on-their-transformational-growth-capital-investment-in-orbis-protect.html": {
+      "hash": "9e38800a1d030f87",
+      "first_seen": "2026-04-08T21:51:32.951424"
+    },
+    "https://www.cliffordchance.com/news/news/2026/04/clifford-chance-advises-urbz-capital-on-acquisition-of-logistics-asset-in-waalwijk.html": {
+      "hash": "e13c8f6be8623723",
+      "first_seen": "2026-04-08T21:51:32.951427"
+    },
+    "https://www.cliffordchance.com/news/news/2026/04/clifford-chance-advises-delivery-hero-on-us-600-million-sale-of-0.html": {
+      "hash": "171190720dfbe133",
+      "first_seen": "2026-04-08T21:51:32.951429"
+    },
+    "https://www.cliffordchance.com/news/news/2026/04/clifford-chance-advises-instone-on-launch-of-joint-venture-test.html": {
+      "hash": "627650d2b84d746e",
+      "first_seen": "2026-04-08T21:51:32.951432"
+    },
+    "https://www.cliffordchance.com/news/news/2026/04/clifford-chance-boosts-global-offering-in-private-capital--energ.html": {
+      "hash": "bb19175781728155",
+      "first_seen": "2026-04-08T21:51:32.951435"
+    },
+    "https://www.cliffordchance.com/news/awards.html": {
+      "hash": "6efab0b109ad090e",
+      "first_seen": "2026-04-08T21:51:32.951437"
+    },
+    "https://ropesgray.com/en": {
+      "hash": "d72c2bef7d079773",
+      "first_seen": "2026-04-08T21:51:32.951440"
+    },
+    "https://ropesgray.com/en/news-and-events/news/2026/03/market-volatility-and-iran": {
+      "hash": "dc6df27cf54f1d06",
+      "first_seen": "2026-04-08T21:51:32.951442"
+    },
+    "https://ropesgray.com/en/news-and-events/news/2026/03/ropes-gray-advised-olaplex-in-sale-to-henkel": {
+      "hash": "25d58fcf54229cea",
+      "first_seen": "2026-04-08T21:51:32.951445"
+    },
+    "https://ropesgray.com/en/news-and-events/rankings-and-awards/2026/03/ropes-gray-ranked-in-legal-500-emea-2026": {
+      "hash": "a28406a6bd0819ab",
+      "first_seen": "2026-04-08T21:51:32.951447"
+    },
+    "https://ropesgray.com/en/news-and-events/news/2026/04/ed-mcnicholas-discusses-the-iran-conflicts-impact-on-the-cybersecurity-threat-landscape": {
+      "hash": "2ebb26bf82d7aa4e",
+      "first_seen": "2026-04-08T21:51:32.951450"
+    },
+    "https://ropesgray.com/en/news-and-events/rankings-and-awards/2026/04/shannon-capone-kirk-honored-by-massachusetts-lawyers-weekly-legal-innovation-awards": {
+      "hash": "2a8136fbe0cdb9e5",
+      "first_seen": "2026-04-08T21:51:32.951453"
+    },
+    "https://ropesgray.com/en/news-and-events/news/2026/04/ropes-grays-prediction-markets-compliance-guidance-cited-in-competition-policy-international": {
+      "hash": "422d22f217a309b5",
+      "first_seen": "2026-04-08T21:51:32.951455"
+    },
+    "https://ropesgray.com/en/news-and-events/news/2026/04/in-law360-tara-fisher-discussed-rise-in-mega-healthcare-transactions": {
+      "hash": "c466699cf03cdad9",
+      "first_seen": "2026-04-08T21:51:32.951458"
+    },
+    "https://ropesgray.com/en/news-and-events/rankings-and-awards/2026/04/christine-moundas-named-to-notable-leaders-in-health-care-by-crains-new-york-business": {
+      "hash": "34962c4717ea0625",
+      "first_seen": "2026-04-08T21:51:32.951460"
+    },
+    "https://ropesgray.com/en/news-and-events/news/2026/04/ropes-gray-strengthens-cybersecurity-data-and-enforcement-capabilities-with-addition-of-maya-song": {
+      "hash": "66d68968e0b5e370",
+      "first_seen": "2026-04-08T21:51:32.951462"
+    },
+    "https://ropesgray.com/en/news-and-events/events/2026/05/ropes-gray-fourth-annual-rare-disease-forum": {
+      "hash": "245bfef6f954c782",
+      "first_seen": "2026-04-08T21:51:32.951465"
+    },
+    "https://ropesgray.com/en/news-and-events/events/2026/05/amy-jane-longo-to-speak-at-securities-enforcement-forum-west-2026": {
+      "hash": "4bb4ee220e6a905f",
+      "first_seen": "2026-04-08T21:51:32.951467"
+    }
+  },
+  "seen_deals": {
+    "velotic proficy from ge vernova kepware and thingworx from ptc|ge vernova ptc|closing": {
+      "first_seen": "2026-04-08T21:51:32.950356"
+    },
+    "device module solutions business|omron|signing": {
+      "first_seen": "2026-04-08T21:51:32.950380"
+    },
+    "global elite group|securitas ab|closing": {
+      "first_seen": "2026-04-08T21:51:32.950392"
+    }
+  }
 }

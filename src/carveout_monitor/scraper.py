@@ -8,22 +8,14 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timedelta, timezone
 from urllib.parse import urljoin, urlparse
 
-import requests
 from bs4 import BeautifulSoup
 
+from .http_client import _BROWSER_UA, resilient_get
 from .models import Article, Firm
 
 logger = logging.getLogger(__name__)
 
-_TIMEOUT = 15
 _MAX_WORKERS = 10
-_USER_AGENT = "CarveOutMonitor/1.0 (+https://github.com/pwennew/Deal-Flow-Agent)"
-# Realistic browser UA for Playwright — avoids bot detection on sites like Ropes & Gray
-_BROWSER_UA = (
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-    "AppleWebKit/537.36 (KHTML, like Gecko) "
-    "Chrome/125.0.0.0 Safari/537.36"
-)
 
 # Common press/news page paths to probe
 _PRESS_PATHS = [
@@ -48,45 +40,42 @@ def discover_press_page(firm: Firm) -> str | None:
 
     for path in _PRESS_PATHS:
         url = f"https://{firm.domain}{path}"
-        try:
-            resp = requests.get(url, timeout=_TIMEOUT,
-                                headers={"User-Agent": _USER_AGENT},
-                                allow_redirects=True)
-            if resp.status_code == 200 and "text/html" in resp.headers.get("Content-Type", ""):
-                soup = BeautifulSoup(resp.text, "html.parser")
-                # Check if page has article-like links (not just a redirect to homepage)
-                links = soup.find_all("a", href=True)
-                article_links = [
-                    a for a in links
-                    if any(kw in a.get("href", "").lower()
-                           for kw in ["/news/", "/press/", "/media/", "/insight",
-                                      "release", "announce", "article"])
-                ]
-                if len(article_links) >= 3:
-                    logger.info("Discovered press page for %s: %s (%d article links)",
-                                firm.name, url, len(article_links))
-                    return url
-        except requests.RequestException:
+        resp = resilient_get(url, playwright_fallback=False)
+        if not resp.ok:
             continue
+        soup = BeautifulSoup(resp.text, "html.parser")
+        # Check if page has article-like links (not just a redirect to homepage)
+        links = soup.find_all("a", href=True)
+        article_links = [
+            a for a in links
+            if any(kw in a.get("href", "").lower()
+                   for kw in ["/news/", "/press/", "/media/", "/insight",
+                              "release", "announce", "article"])
+        ]
+        if len(article_links) >= 3:
+            logger.info("Discovered press page for %s: %s (%d article links)",
+                        firm.name, url, len(article_links))
+            return url
     return None
 
 
-def _scrape_press_page_html(firm: Firm) -> list[Article]:
-    """Scrape articles from a firm's press page using plain HTML parsing."""
+def _scrape_press_page_html(firm: Firm, state=None) -> tuple[list[Article], str | None]:
+    """Scrape articles from a firm's press page using plain HTML parsing.
+
+    Returns (articles, error_type). error_type is None on success, or one of the
+    ResilientResponse.error_type values. Caller uses error_type to decide whether
+    to escalate to Playwright (403) or skip (dns/404/etc.).
+    """
     url = firm.press_url
     if not url:
-        return []
+        return [], None
 
-    try:
-        resp = requests.get(url, timeout=_TIMEOUT,
-                            headers={"User-Agent": _USER_AGENT},
-                            allow_redirects=True)
-        if resp.status_code != 200:
-            logger.warning("Press page fetch failed for %s (status %d)", firm.name, resp.status_code)
-            return []
-    except requests.RequestException as e:
-        logger.warning("Press page fetch error for %s: %s", firm.name, e)
-        return []
+    resp = resilient_get(url, playwright_fallback=False,
+                         firm_name=firm.name, state=state)
+    if not resp.ok:
+        logger.warning("Press page fetch failed for %s (status=%d, error=%s)",
+                       firm.name, resp.status_code, resp.error_type)
+        return [], resp.error_type
 
     soup = BeautifulSoup(resp.text, "html.parser")
     base_url = f"https://{firm.domain}"
@@ -147,7 +136,7 @@ def _scrape_press_page_html(firm: Firm) -> list[Article]:
             unique.append(a)
 
     logger.debug("Scraped %d articles from %s press page", len(unique), firm.name)
-    return unique
+    return unique, None
 
 
 def _extract_date(element) -> datetime | None:
@@ -309,8 +298,19 @@ def _scrape_press_page_playwright(firm: Firm) -> list[Article]:
     return articles
 
 
-def scrape_firm(firm: Firm) -> list[Article]:
-    """Scrape a firm's press page. Auto-discovers if needed, tries HTML then Playwright."""
+def scrape_firm(firm: Firm, state=None) -> list[Article]:
+    """Scrape a firm's press page. Auto-discovers if needed, tries HTML then Playwright.
+
+    If `state` is provided:
+      - Skip firms flagged `needs_url_update` (3+ consecutive 404s).
+      - Route `prefer_playwright` firms straight to Playwright (persistent 403).
+      - On 403 from HTML, escalate to Playwright immediately and mark prefer_playwright.
+    """
+    # Persistent 404: URL is dead, skip until manually updated
+    if state is not None and state.should_skip_firm(firm.name):
+        logger.debug("Skipping %s (needs_url_update)", firm.name)
+        return []
+
     # If no press_url, try to discover one from domain
     if not firm.press_url and firm.domain:
         discovered = discover_press_page(firm)
@@ -323,17 +323,40 @@ def scrape_firm(firm: Firm) -> list[Article]:
     if not firm.press_url:
         return []
 
+    # Persistent 403: go directly to Playwright
+    if state is not None and state.prefers_playwright(firm.name):
+        logger.debug("Routing %s directly to Playwright (prefer_playwright)", firm.name)
+        articles = _scrape_press_page_playwright(firm)
+        if articles and state is not None:
+            state.record_firm_success(firm.name)
+        return articles
+
     # Try HTML scraping first
-    articles = _scrape_press_page_html(firm)
+    articles, error_type = _scrape_press_page_html(firm, state=state)
     if articles:
         return articles
 
-    # Fallback to Playwright for JS-heavy pages
+    # On 403, escalate to Playwright and mark firm for future Playwright routing
+    if error_type == "403":
+        logger.warning("HTML 403 for %s — falling back to Playwright", firm.name)
+        pw_articles = _scrape_press_page_playwright(firm)
+        if pw_articles:
+            if state is not None:
+                state.mark_prefer_playwright(firm.name)
+                state.record_firm_success(firm.name)
+            return pw_articles
+        return []
+
+    # Hard errors (dns/404/timeout) — don't bother with Playwright
+    if error_type in ("dns", "404", "timeout"):
+        return []
+
+    # HTML returned 0 articles but not an error: might be JS-rendered; try Playwright
     logger.debug("HTML scrape returned 0 articles for %s, trying Playwright", firm.name)
     return _scrape_press_page_playwright(firm)
 
 
-def scrape_articles(firms: list[Firm], lookback_hours: int = 24) -> list[Article]:
+def scrape_articles(firms: list[Firm], lookback_hours: int = 24, state=None) -> list[Article]:
     """Scrape articles from all firms with a press page or domain.
 
     Runs independently of RSS — both sources are always used. Duplicate URLs
@@ -343,6 +366,14 @@ def scrape_articles(firms: list[Firm], lookback_hours: int = 24) -> list[Article
     if not to_scrape:
         return []
 
+    # Filter out firms flagged needs_url_update up-front (don't waste a worker slot)
+    if state is not None:
+        skipped = [f for f in to_scrape if state.should_skip_firm(f.name)]
+        if skipped:
+            logger.info("Skipping %d firms flagged needs_url_update: %s",
+                        len(skipped), ", ".join(f.name for f in skipped))
+            to_scrape = [f for f in to_scrape if not state.should_skip_firm(f.name)]
+
     logger.info("Scraping press pages for %d firms (%d with known press_url, %d to discover)",
                 len(to_scrape),
                 sum(1 for f in to_scrape if f.press_url),
@@ -351,7 +382,7 @@ def scrape_articles(firms: list[Firm], lookback_hours: int = 24) -> list[Article
     all_articles: list[Article] = []
 
     with ThreadPoolExecutor(max_workers=_MAX_WORKERS) as executor:
-        futures = {executor.submit(scrape_firm, firm): firm for firm in to_scrape}
+        futures = {executor.submit(scrape_firm, firm, state): firm for firm in to_scrape}
         try:
             for future in as_completed(futures, timeout=300):
                 firm = futures[future]
@@ -371,13 +402,15 @@ def scrape_articles(firms: list[Firm], lookback_hours: int = 24) -> list[Article
                 except Exception as e:
                     logger.warning("Error scraping %s: %s", firm.name, e)
         except TimeoutError:
-            unfinished = [f for f in futures if not f.done()]
+            unfinished_names = [futures[f].name for f in futures if not f.done()]
             logger.warning(
-                "Global scrape timeout — %d of %d firms unfinished, continuing with %d articles",
-                len(unfinished), len(futures), len(all_articles),
+                "Global scrape timeout — %d of %d firms unfinished: %s (continuing with %d articles)",
+                len(unfinished_names), len(futures),
+                ", ".join(unfinished_names), len(all_articles),
             )
-            for f in unfinished:
-                f.cancel()
+            for f in futures:
+                if not f.done():
+                    f.cancel()
 
     logger.info("Scraped %d articles from press pages", len(all_articles))
     return all_articles

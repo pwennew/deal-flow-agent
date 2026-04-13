@@ -128,3 +128,63 @@ def test_deal_seen_pruned_after_max_age(tmp_path):
     ).isoformat()
     s.prune()
     assert not s.is_deal_seen("Old Deal", "Old Seller", "signing")
+
+
+# --- firm_errors tracking tests ---
+
+def test_record_firm_error_404_increments(tmp_path):
+    state = StateManager(tmp_path / "state.json")
+    state.record_firm_error("Triton", "404")
+    state.record_firm_error("Triton", "404")
+    assert not state.should_skip_firm("Triton")
+    state.record_firm_error("Triton", "404")
+    # Third 404 triggers needs_url_update
+    assert state.should_skip_firm("Triton")
+    assert "Triton" in state.get_flagged_firms()
+
+
+def test_record_firm_success_resets_404_counter(tmp_path):
+    state = StateManager(tmp_path / "state.json")
+    state.record_firm_error("Firm", "404")
+    state.record_firm_error("Firm", "404")
+    state.record_firm_success("Firm")
+    # After success, a new 404 is counted as #1 not #3
+    state.record_firm_error("Firm", "404")
+    assert not state.should_skip_firm("Firm")
+
+
+def test_mark_prefer_playwright(tmp_path):
+    state = StateManager(tmp_path / "state.json")
+    assert not state.prefers_playwright("Carlyle")
+    state.mark_prefer_playwright("Carlyle")
+    assert state.prefers_playwright("Carlyle")
+
+
+def test_backward_compat_v1_state_loads(tmp_path):
+    import json
+    path = tmp_path / "state.json"
+    # v1 state file — no firm_errors key
+    path.write_text(json.dumps({
+        "version": 1,
+        "last_run": None,
+        "seen": {},
+        "seen_deals": {},
+    }))
+    state = StateManager(path)
+    # Should load cleanly and allow new firm_errors methods to work
+    state.record_firm_error("NewFirm", "403")
+    assert state._data["firm_errors"]["NewFirm"]["last_error"] == "403"
+
+
+def test_firm_errors_persist_across_save_reload(tmp_path):
+    path = tmp_path / "state.json"
+    state1 = StateManager(path)
+    state1.record_firm_error("Triton", "404")
+    state1.record_firm_error("Triton", "404")
+    state1.record_firm_error("Triton", "404")
+    state1.mark_prefer_playwright("Carlyle")
+    state1.save()
+
+    state2 = StateManager(path)
+    assert state2.should_skip_firm("Triton")
+    assert state2.prefers_playwright("Carlyle")

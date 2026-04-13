@@ -77,15 +77,23 @@ def test_extract_body_caps_at_max_chars():
 
 # --- fetch_article_bodies tests ---
 
+def _mock_ok_response(text: str):
+    from carveout_monitor.http_client import ResilientResponse
+    return ResilientResponse(status_code=200, text=text, url="https://example.com/1")
+
+
+def _mock_error_response(error_type: str):
+    from carveout_monitor.http_client import ResilientResponse
+    return ResilientResponse(status_code=0, text="", url="https://example.com/1",
+                             error_type=error_type)
+
+
 def test_fetch_bodies_success():
     articles = [_make_article(url="https://example.com/1")]
     body_html = "<html><body><article><p>" + " ".join(["content"] * 60) + "</p></article></body></html>"
 
-    mock_resp = MagicMock()
-    mock_resp.text = body_html
-    mock_resp.raise_for_status = MagicMock()
-
-    with patch("carveout_monitor.fetcher.requests.get", return_value=mock_resp):
+    with patch("carveout_monitor.fetcher.resilient_get",
+               return_value=_mock_ok_response(body_html)):
         result = fetch_article_bodies(articles)
 
     assert len(result) == 1
@@ -95,7 +103,8 @@ def test_fetch_bodies_success():
 def test_fetch_bodies_failure_keeps_original_summary():
     articles = [_make_article(url="https://example.com/1", summary="Original summary")]
 
-    with patch("carveout_monitor.fetcher.requests.get", side_effect=Exception("Connection error")):
+    with patch("carveout_monitor.fetcher.resilient_get",
+               side_effect=Exception("Connection error")):
         result = fetch_article_bodies(articles)
 
     assert len(result) == 1
@@ -103,10 +112,10 @@ def test_fetch_bodies_failure_keeps_original_summary():
 
 
 def test_fetch_bodies_timeout_keeps_original():
-    import requests as req
     articles = [_make_article(url="https://example.com/1", summary="Existing")]
 
-    with patch("carveout_monitor.fetcher.requests.get", side_effect=req.Timeout("timed out")):
+    with patch("carveout_monitor.fetcher.resilient_get",
+               return_value=_mock_error_response("timeout")):
         result = fetch_article_bodies(articles)
 
     assert result[0].summary == "Existing"

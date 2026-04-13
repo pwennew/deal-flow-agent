@@ -28,15 +28,15 @@ _SAMPLE_RSS = """<?xml version="1.0" encoding="UTF-8"?>
 </rss>"""
 
 
+def _ok(text: str, url: str = "https://example.com"):
+    from carveout_monitor.http_client import ResilientResponse
+    return ResilientResponse(status_code=200, text=text, url=url)
+
+
 def test_discover_feed_found():
     firm = Firm(name="TestFirm", domain="testfirm.com")
 
-    mock_resp = MagicMock()
-    mock_resp.status_code = 200
-    mock_resp.text = _SAMPLE_RSS
-    mock_resp.headers = {"Content-Type": "application/rss+xml"}
-
-    with patch("carveout_monitor.feeds.requests.get", return_value=mock_resp):
+    with patch("carveout_monitor.feeds.resilient_get", return_value=_ok(_SAMPLE_RSS)):
         with patch("carveout_monitor.feeds.feedparser") as mock_fp:
             mock_fp.parse.return_value = MagicMock(entries=[{"title": "test"}])
             url = discover_feed(firm)
@@ -55,11 +55,7 @@ def test_fetch_single_feed():
     firm = Firm(name="TestFirm", domain="testfirm.com",
                 feed_url="https://testfirm.com/feed")
 
-    mock_resp = MagicMock()
-    mock_resp.status_code = 200
-    mock_resp.text = _SAMPLE_RSS
-
-    with patch("carveout_monitor.feeds.requests.get", return_value=mock_resp):
+    with patch("carveout_monitor.feeds.resilient_get", return_value=_ok(_SAMPLE_RSS)):
         articles = _fetch_single_feed(firm)
 
     assert len(articles) == 2

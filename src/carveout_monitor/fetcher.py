@@ -5,15 +5,14 @@ from __future__ import annotations
 import logging
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-import requests
 from bs4 import BeautifulSoup
 
+from .http_client import resilient_get
 from .models import Article
 
 logger = logging.getLogger(__name__)
 
 _MAX_WORKERS = 10
-_TIMEOUT = 15
 _MAX_CHARS = 6000
 _MAX_WORDS = 1500
 
@@ -85,13 +84,11 @@ def _cap_text(text: str) -> str:
 def _fetch_one(article: Article) -> Article:
     """Fetch body text for a single article. Returns article with updated summary on success."""
     try:
-        resp = requests.get(article.url, timeout=_TIMEOUT, headers={
-            "User-Agent": "Mozilla/5.0 (compatible; CarveoutMonitor/1.0)",
-        })
-        resp.raise_for_status()
-        body = _extract_body(resp.text)
-        if body:
-            article.summary = body
+        resp = resilient_get(article.url, playwright_fallback=False)
+        if resp.ok:
+            body = _extract_body(resp.text)
+            if body:
+                article.summary = body
     except Exception as e:
         logger.debug("Failed to fetch %s: %s", article.url, e)
     return article

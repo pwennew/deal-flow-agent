@@ -175,7 +175,13 @@ class StateManager:
 
     def __init__(self, path: str | Path = "state.json"):
         self._path = Path(path)
-        self._data: dict = {"version": 1, "last_run": None, "seen": {}, "seen_deals": {}}
+        self._data: dict = {
+            "version": 2,
+            "last_run": None,
+            "seen": {},
+            "seen_deals": {},
+            "firm_errors": {},
+        }
         self._load()
 
     def _load(self) -> None:
@@ -189,6 +195,9 @@ class StateManager:
             if not isinstance(raw, dict) or "seen" not in raw:
                 logger.warning("State file has unexpected format, starting fresh")
                 return
+            # Backward-compat: older state files (v1) lack firm_errors
+            raw.setdefault("firm_errors", {})
+            raw.setdefault("seen_deals", {})
             self._data = raw
             logger.info("Loaded state with %d seen URLs", len(self._data["seen"]))
         except (json.JSONDecodeError, OSError) as e:
@@ -233,6 +242,54 @@ class StateManager:
         self._data.setdefault("seen_deals", {})[key] = {
             "first_seen": datetime.now().isoformat(),
         }
+
+    # --- Per-firm error tracking (for scraper resilience) ---
+
+    def _firm_entry(self, firm_name: str) -> dict:
+        errors = self._data.setdefault("firm_errors", {})
+        return errors.setdefault(firm_name, {
+            "last_error": None,
+            "last_error_date": None,
+            "consecutive_404s": 0,
+            "needs_url_update": False,
+            "prefer_playwright": False,
+        })
+
+    def record_firm_error(self, firm_name: str, error_type: str) -> None:
+        """Record an error for a firm. error_type is one of ssl/dns/timeout/403/404/http_error."""
+        entry = self._firm_entry(firm_name)
+        entry["last_error"] = error_type
+        entry["last_error_date"] = datetime.now().isoformat()
+        if error_type == "404":
+            entry["consecutive_404s"] = entry.get("consecutive_404s", 0) + 1
+            if entry["consecutive_404s"] >= 3:
+                entry["needs_url_update"] = True
+
+    def record_firm_success(self, firm_name: str) -> None:
+        """Reset error tracking for a firm after a successful fetch."""
+        entry = self._firm_entry(firm_name)
+        entry["last_error"] = None
+        entry["consecutive_404s"] = 0
+        # needs_url_update stays sticky — clearing requires manual intervention
+
+    def mark_prefer_playwright(self, firm_name: str) -> None:
+        """Flag a firm so future runs route directly to Playwright (persistent 403)."""
+        self._firm_entry(firm_name)["prefer_playwright"] = True
+
+    def should_skip_firm(self, firm_name: str) -> bool:
+        entry = self._data.get("firm_errors", {}).get(firm_name)
+        return bool(entry and entry.get("needs_url_update"))
+
+    def prefers_playwright(self, firm_name: str) -> bool:
+        entry = self._data.get("firm_errors", {}).get(firm_name)
+        return bool(entry and entry.get("prefer_playwright"))
+
+    def get_flagged_firms(self) -> list[str]:
+        """Firms with needs_url_update=True — surfaced in run summary for manual review."""
+        return [
+            name for name, entry in self._data.get("firm_errors", {}).items()
+            if entry.get("needs_url_update")
+        ]
 
     def prune(self, max_age_days: int = 14) -> int:
         cutoff = datetime.now() - timedelta(days=max_age_days)

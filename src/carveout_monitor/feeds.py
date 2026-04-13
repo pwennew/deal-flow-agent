@@ -10,8 +10,8 @@ import re
 from urllib.parse import urljoin, urlparse
 
 import feedparser
-import requests
 
+from .http_client import resilient_get
 from .models import Article, Firm
 
 logger = logging.getLogger(__name__)
@@ -116,9 +116,7 @@ _FEED_PATHS = [
     "/blog/feed",
 ]
 
-_TIMEOUT = 15
 _MAX_WORKERS = 10
-_USER_AGENT = "CarveOutMonitor/1.0 (+https://github.com/pwennew/Deal-Flow-Agent)"
 
 # Regex to find <link rel="alternate" type="application/rss+xml" href="..."> in HTML
 _LINK_RE = re.compile(
@@ -129,36 +127,27 @@ _LINK_RE = re.compile(
 
 def _try_feed_url(url: str) -> tuple[str, int] | None:
     """Try a URL as an RSS feed. Returns (url, entry_count) or None."""
-    try:
-        resp = requests.get(url, timeout=_TIMEOUT, headers={"User-Agent": _USER_AGENT},
-                            allow_redirects=True)
-        if resp.status_code != 200:
-            return None
-        ct = resp.headers.get("Content-Type", "").lower()
-        if any(t in ct for t in ["xml", "rss", "atom"]):
-            parsed = feedparser.parse(resp.text)
-            if parsed.entries:
-                return (url, len(parsed.entries))
-    except requests.RequestException:
-        pass
+    resp = resilient_get(url, playwright_fallback=False)
+    if not resp.ok:
+        return None
+    # feedparser handles content-type detection itself; try to parse regardless.
+    parsed = feedparser.parse(resp.text)
+    if parsed.entries:
+        return (url, len(parsed.entries))
     return None
 
 
 def _discover_from_html(page_url: str) -> str | None:
     """Fetch a page and look for RSS <link> tags in the HTML."""
-    try:
-        resp = requests.get(page_url, timeout=_TIMEOUT,
-                            headers={"User-Agent": _USER_AGENT}, allow_redirects=True)
-        if resp.status_code != 200:
-            return None
-        for match in _LINK_RE.finditer(resp.text[:50_000]):  # Only scan head area
-            href = match.group(2)
-            feed_url = urljoin(page_url, href)
-            result = _try_feed_url(feed_url)
-            if result:
-                return result[0]
-    except requests.RequestException:
-        pass
+    resp = resilient_get(page_url, playwright_fallback=False)
+    if not resp.ok:
+        return None
+    for match in _LINK_RE.finditer(resp.text[:50_000]):  # Only scan head area
+        href = match.group(2)
+        feed_url = urljoin(page_url, href)
+        result = _try_feed_url(feed_url)
+        if result:
+            return result[0]
     return None
 
 
@@ -230,19 +219,17 @@ def discover_feeds(firms: list[Firm]) -> dict[str, str | None]:
     return results
 
 
-def _fetch_single_feed(firm: Firm, lookback_hours: int | None = None) -> list[Article]:
+def _fetch_single_feed(firm: Firm, lookback_hours: int | None = None,
+                       state=None) -> list[Article]:
     """Fetch articles from a single firm's RSS feed."""
     if not firm.feed_url:
         return []
 
-    try:
-        resp = requests.get(firm.feed_url, timeout=_TIMEOUT,
-                            headers={"User-Agent": _USER_AGENT})
-        if resp.status_code != 200:
-            logger.warning("Feed fetch failed for %s (status %d)", firm.name, resp.status_code)
-            return []
-    except requests.RequestException as e:
-        logger.warning("Feed fetch error for %s: %s", firm.name, e)
+    resp = resilient_get(firm.feed_url, playwright_fallback=False,
+                         firm_name=firm.name, state=state)
+    if not resp.ok:
+        logger.warning("Feed fetch failed for %s (status=%d, error=%s)",
+                       firm.name, resp.status_code, resp.error_type)
         return []
 
     parsed = feedparser.parse(resp.text)
@@ -280,15 +267,22 @@ def _fetch_single_feed(firm: Firm, lookback_hours: int | None = None) -> list[Ar
     return articles
 
 
-def fetch_articles(firms: list[Firm], lookback_hours: int = 24) -> list[Article]:
+def fetch_articles(firms: list[Firm], lookback_hours: int = 24, state=None) -> list[Article]:
     """Fetch articles from all firms with RSS feeds, filtered by lookback window."""
     firms_with_feeds = [f for f in firms if f.feed_url]
+    # Skip firms flagged needs_url_update
+    if state is not None:
+        skipped = [f for f in firms_with_feeds if state.should_skip_firm(f.name)]
+        if skipped:
+            logger.info("Skipping %d firms flagged needs_url_update: %s",
+                        len(skipped), ", ".join(f.name for f in skipped))
+            firms_with_feeds = [f for f in firms_with_feeds if not state.should_skip_firm(f.name)]
     logger.info("Fetching RSS feeds from %d firms (lookback=%dh)", len(firms_with_feeds), lookback_hours)
 
     all_articles: list[Article] = []
     with ThreadPoolExecutor(max_workers=_MAX_WORKERS) as executor:
         futures = {
-            executor.submit(_fetch_single_feed, firm, lookback_hours): firm
+            executor.submit(_fetch_single_feed, firm, lookback_hours, state): firm
             for firm in firms_with_feeds
         }
         for future in as_completed(futures):
@@ -326,27 +320,15 @@ def fetch_all_articles(firms: list[Firm]) -> list[Article]:
     return all_articles
 
 
-def _fetch_with_retry(url: str, source: str) -> requests.Response | None:
-    """Fetch a URL with a single attempt."""
-    try:
-        resp = requests.get(url, timeout=_TIMEOUT,
-                            headers={"User-Agent": _USER_AGENT})
-        if resp.status_code == 200:
-            return resp
-        logger.warning("Core feed fetch failed for %s (status %d)", source, resp.status_code)
-        return None
-    except requests.RequestException as e:
-        logger.warning("Core feed fetch error for %s: %s", source, e)
-        return None
-
-
 def _fetch_single_core_feed(feed: dict[str, str], lookback_hours: int | None = None) -> list[Article]:
     """Fetch articles from a single core RSS feed (not firm-specific)."""
     url = feed["url"]
     source = feed["source"]
 
-    resp = _fetch_with_retry(url, source)
-    if resp is None:
+    resp = resilient_get(url, playwright_fallback=False)
+    if not resp.ok:
+        logger.warning("Core feed fetch failed for %s (status=%d, error=%s)",
+                       source, resp.status_code, resp.error_type)
         return []
 
     parsed = feedparser.parse(resp.text)

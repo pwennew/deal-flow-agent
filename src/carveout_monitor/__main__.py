@@ -39,9 +39,14 @@ def cmd_scan(args):
     firms = load_firms(args.targets)
     logger.info("Loaded %d target firms", len(firms))
 
+    # Load state early so feed/scrape phases can use per-firm error tracking
+    # (skip needs_url_update firms, route prefer_playwright firms to Playwright)
+    state = StateManager(args.state)
+    state.prune()
+
     # Step 1a: Fetch articles from firm-specific RSS feeds
     t0 = time.time()
-    articles = fetch_articles(firms, lookback_hours=args.hours)
+    articles = fetch_articles(firms, lookback_hours=args.hours, state=state)
     logger.info("[%.1fs] RSS fetch: %d articles", time.time() - t0, len(articles))
 
     # Step 1b: Fetch articles from core feeds (BusinessWire)
@@ -57,7 +62,7 @@ def cmd_scan(args):
         t0 = time.time()
         # Snapshot which firms had no press_url before scraping (scrape_firm auto-discovers)
         firms_before = {f.name: f.press_url for f in firms}
-        scraped = scrape_articles(firms, lookback_hours=args.hours)
+        scraped = scrape_articles(firms, lookback_hours=args.hours, state=state)
         articles.extend(scraped)
         logger.info("[%.1fs] Scrape: %d additional articles", time.time() - t0, len(scraped))
 
@@ -71,10 +76,16 @@ def cmd_scan(args):
         # Step 2b: Scrape law firm press pages
         t0 = time.time()
         law_firms = get_law_firm_sources()
-        law_firm_articles = scrape_articles(law_firms, lookback_hours=args.hours)
+        law_firm_articles = scrape_articles(law_firms, lookback_hours=args.hours, state=state)
         articles.extend(law_firm_articles)
         logger.info("[%.1fs] Law firm scrape: %d articles from %d firms",
                     time.time() - t0, len(law_firm_articles), len(law_firms))
+
+    # Surface firms flagged for manual URL review (3+ consecutive 404s)
+    flagged = state.get_flagged_firms()
+    if flagged:
+        logger.warning("Firms needing URL update (3+ consecutive 404s): %s",
+                       ", ".join(flagged))
 
     if not articles:
         logger.info("No articles found — nothing to do")
@@ -91,9 +102,7 @@ def cmd_scan(args):
                 len(unique), len(articles) - len(unique))
     articles = unique
 
-    # Step 4: Cross-run dedup via state
-    state = StateManager(args.state)
-    state.prune()
+    # Step 4: Cross-run dedup via state (loaded earlier, before feed/scrape)
     new_articles = [a for a in articles if not state.is_seen(a.url)]
     logger.info("After state dedup: %d new articles (skipped %d seen)",
                 len(new_articles), len(articles) - len(new_articles))

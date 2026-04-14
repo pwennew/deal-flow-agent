@@ -2,7 +2,7 @@ name: Deal Flow Agent
 
 on:
   schedule:
-    - cron: '0 6 * * *'   # Daily at 06:00 UTC
+    - cron: '0 13 * * *'  # Daily at 09:00 ET (13:00 UTC)
   workflow_dispatch:
     inputs:
       hours:

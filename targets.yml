@@ -673,6 +673,7 @@ firms:
   hq: Chicago
   sectors:
   - Science & Health
+  press_url: https://linden.com/news
 - name: Aquiline Capital Partners
   domain: aquiline.com
   hq: New York

@@ -42,6 +42,14 @@ def discover_press_page(firm: Firm) -> str | None:
         url = f"https://{firm.domain}{path}"
         resp = resilient_get(url, playwright_fallback=False)
         if not resp.ok:
+            # Domain-level errors mean the host itself is unreachable —
+            # no point trying the remaining paths.
+            if resp.error_type in ("dns", "timeout"):
+                logger.warning(
+                    "Domain unreachable for %s (%s on %s) — skipping remaining paths",
+                    firm.name, resp.error_type, firm.domain,
+                )
+                return None
             continue
         soup = BeautifulSoup(resp.text, "html.parser")
         # Check if page has article-like links (not just a redirect to homepage)
@@ -384,7 +392,7 @@ def scrape_articles(firms: list[Firm], lookback_hours: int = 24, state=None) -> 
     with ThreadPoolExecutor(max_workers=_MAX_WORKERS) as executor:
         futures = {executor.submit(scrape_firm, firm, state): firm for firm in to_scrape}
         try:
-            for future in as_completed(futures, timeout=300):
+            for future in as_completed(futures, timeout=600):
                 firm = futures[future]
                 try:
                     articles = future.result(timeout=60)

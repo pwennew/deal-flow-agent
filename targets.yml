@@ -317,7 +317,7 @@ firms:
   press_url: https://www.audaxprivateequity.com/news
 - name: GTCR
   domain: gtcr.com
-  feed_url: https://gtcr.com/feed
+  feed_url: https://www.gtcr.com/feed
   hq: Chicago
   sectors:
   - TMT
@@ -499,7 +499,7 @@ firms:
   - Industrials
   press_url: https://www.onex.com/news-releases
 - name: Webster Equity Partners
-  domain: websterequity.com
+  domain: websterequitypartners.com
   hq: US
   sectors:
   - Science & Health
@@ -537,8 +537,7 @@ firms:
   - Industrials
   press_url: https://kpsfund.com/news
 - name: Lindsay Goldberg
-  domain: lindsaygoldberg.com
-  feed_url: https://lindsaygoldberg.com/feed
+  domain: lindsaygoldbergllc.com
   hq: New York
   sectors:
   - Consumer
@@ -586,14 +585,15 @@ firms:
   sectors:
   - Services
 - name: Vistria Group
-  domain: thevistria.com
+  domain: vistria.com
   hq: Chicago
   sectors:
   - Services
   - Science & Health
+  press_url: https://vistria.com/perspectives/
 - name: Wind Point Partners
-  domain: windpointpartners.com
-  feed_url: https://windpointpartners.com/feed
+  domain: wppartners.com
+  press_url: https://www.wppartners.com/news/
   hq: Chicago
   sectors:
   - Industrials
@@ -669,7 +669,7 @@ firms:
   - Consumer
   press_url: https://www.lcatterton.com/Press.html
 - name: Linden Capital Partners
-  domain: lindencapital.com
+  domain: linden.com
   hq: Chicago
   sectors:
   - Science & Health
@@ -694,8 +694,7 @@ firms:
   - Science & Health
   press_url: https://summitpartners.com/news
 - name: Oak Hill Capital
-  domain: oakhillcapital.com
-  feed_url: https://oakhillcapital.com/feed
+  domain: oakhill.com
   hq: New York
 - name: Oak HC/FT
   domain: oakhcft.com
@@ -742,7 +741,7 @@ firms:
   hq: San Francisco
   press_url: https://alpineinvestors.com/news
 - name: Alvarez & Marsal Capital Partners
-  domain: amcapitalpartners.com
+  domain: a-mcapital.com
   hq: Greenwich
   sectors:
   - Science & Health
@@ -915,8 +914,9 @@ firms:
   - Consumer
   press_url: https://butterflyequity.com/press
 - name: Brightstar Capital Partners
-  domain: brightstarcapitalpartners.com
+  domain: brightstarcp.com
   hq: New York
+  press_url: https://brightstarcp.com/news/
 - name: Corsair Capital
   domain: corsair-capital.com
   hq: US
@@ -1008,7 +1008,7 @@ firms:
   hq: Chicago
   press_url: https://flexpointford.com/news
 - name: Nexus Capital Management
-  domain: nexuscapmgmt.com
+  domain: nexuslp.com
   hq: US
   sectors:
   - Consumer
@@ -1049,10 +1049,10 @@ firms:
   feed_url: https://garnettstation.com/feed
   press_url: https://garnettstation.com/news
 - name: Sverica Capital Management
-  domain: svericacapital.com
+  domain: sverica.com
   hq: US
 - name: NexPhase Capital
-  domain: nexphasecapital.com
+  domain: nexphase.com
   hq: US
 - name: Tailwind Capital
   domain: tailwindcapital.com

@@ -30,6 +30,16 @@ token_usage = {"input": 0, "output": 0}
 
 _SYSTEM_PROMPT = """You classify deal announcements. For each article, determine if it describes a **PE-backed carve-out** — a private equity firm acquiring a division, subsidiary, or business unit from a parent company that requires separation.
 
+BEFORE classifying, answer these questions from the ARTICLE TEXT ONLY. Do not use your parametric knowledge about the target company's origin story:
+
+1. WHO IS THE SELLER in this specific transaction? Use only what the article states. If the article says "acquired from [PE firm]" or "acquired from [financial sponsor]", the seller is that PE firm — not a historical corporate parent you may know about.
+
+2. IS THE SELLER A PE/FINANCIAL SPONSOR? (Advent, KKR, Blackstone, Carlyle, Apollo, Bain Capital, GTCR, CVC, Cinven, EQT, Permira, TPG, Warburg Pincus, Hellman & Friedman, etc.) If yes → this is a secondary buyout or PE exit, NOT a carve-out, regardless of the target's corporate history.
+
+3. DOES THE TARGET CURRENTLY OPERATE AS A STANDALONE COMPANY? If it has its own CEO, management team, manufacturing, and operations independent of any corporate parent → no separation work exists → not a carve-out.
+
+If the seller is a PE firm and the target is standalone, classify as NOT a carve-out. Do not override this based on the target's historical origin. A company that was carved out years ago and has been operating independently is just a company now.
+
 DEAL TYPES (classify as one of these, or "none"):
 
 1. "corporate_carveout" — A PE firm acquires a division/unit from a CORPORATE parent. The parent continues to exist. The PE firm is the buyer.
@@ -63,6 +73,7 @@ EXCLUDE (these are NOT PE-backed carve-outs — classify as "none"):
 - Standalone public company acquisition: PE firm acquires an entire company that already operates independently. The key test: does the target need to be SEPARATED from a parent's shared infrastructure? If it already operates independently, it is not a carve-out.
 - Self-contained subsidiary with no separation complexity: Parent sells a subsidiary that operates entirely independently with no shared IT, finance, HR, or operational infrastructure to untangle
 - PE firm selling a whole portfolio company: If the target is the ENTIRE portco, this is a secondary buyout or PE exit. BUT if the target is a division/unit being carved out FROM the portco, it IS a carve-out.
+- HISTORICAL CARVE-OUT, NOW STANDALONE: If the target was carved out from a corporate parent in a PRIOR transaction (months or years ago) and is now being sold by the PE firm that acquired it, this is a secondary buyout. The original separation is complete. Do not classify based on the target's corporate history — classify based on the CURRENT transaction. Key signal: the article names a PE firm as the seller, not a corporate parent. Example: Zentiva was carved out of Sanofi in 2018; in 2026 when Advent sells Zentiva to GTCR, this is a PE-to-PE secondary buyout, NOT a corporate carve-out from Sanofi.
 
 KEY TEST: (1) Is a PE firm on the BUY side? (2) Does the target need to be **SEPARATED** from a larger entity's shared infrastructure (IT, finance, HR, legal, operations)? Both must be yes to classify as a carve-out.
 
@@ -107,6 +118,8 @@ _FEW_SHOT_USER = """Classify these articles:
 19. "Consortium including Fortress and TowerBrook agrees to acquire AA plc for £7 billion"
 20. "Nordic Capital completes sale of Geomatikk to Riksmätningen"
 21. "One Rock Capital Partners to acquire MGA operations from AmTrust Financial Services"
+22. "GTCR Completes Acquisition of Zentiva, a Leading European Generics Pharmaceutical Company"
+    GTCR acquired Zentiva from Advent. Zentiva develops, manufactures and supplies generic and OTC medicines across 40+ countries. 5,400 employees. Management team staying.
 """
 
 _FEW_SHOT_ASSISTANT = """[
@@ -130,7 +143,8 @@ _FEW_SHOT_ASSISTANT = """[
   {"deal_type": "none", "stage": null, "target_company": "", "seller": "", "buyer": "", "confidence": 82, "reasoning": "PE firm acquiring an infrastructure services company. No named parent company selling a division — this appears to be a standard PE acquisition of a standalone business."},
   {"deal_type": "none", "stage": null, "target_company": "", "seller": "", "buyer": "", "confidence": 95, "reasoning": "AA plc is a standalone public company being acquired in its entirety. No separation from a parent company's shared infrastructure is needed — this is a take-private, not a carve-out."},
   {"deal_type": "none", "stage": null, "target_company": "", "seller": "", "buyer": "", "confidence": 92, "reasoning": "Nordic Capital is selling the ENTIRE company Geomatikk. This is a PE exit / secondary sale, not a carve-out. Geomatikk is the whole portco being sold, not a division being carved out."},
-  {"deal_type": "corporate_carveout", "stage": "signing", "target_company": "MGA operations", "seller": "AmTrust Financial Services", "buyer": "One Rock Capital Partners", "confidence": 88, "reasoning": "PE firm (One Rock) acquiring MGA operations — a division/business unit — from AmTrust Financial Services (corporate parent). MGA operations are embedded in AmTrust's corporate infrastructure and require separation. This is a PE-backed corporate carve-out even though the language describes it as a platform build."}
+  {"deal_type": "corporate_carveout", "stage": "signing", "target_company": "MGA operations", "seller": "AmTrust Financial Services", "buyer": "One Rock Capital Partners", "confidence": 88, "reasoning": "PE firm (One Rock) acquiring MGA operations — a division/business unit — from AmTrust Financial Services (corporate parent). MGA operations are embedded in AmTrust's corporate infrastructure and require separation. This is a PE-backed corporate carve-out even though the language describes it as a platform build."},
+  {"deal_type": "none", "stage": null, "target_company": "", "seller": "", "buyer": "", "confidence": 92, "reasoning": "Seller is Advent International (PE firm), not Sanofi. Although Zentiva was originally carved out of Sanofi in 2018, that separation completed years ago. Zentiva now operates as a fully standalone company with its own CEO, manufacturing sites, R&D, and distribution across 40+ countries. This is a PE-to-PE secondary buyout with no separation work — classify based on the CURRENT transaction, not the target's historical origin."}
 ]"""
 
 

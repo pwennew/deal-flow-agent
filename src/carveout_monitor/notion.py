@@ -40,6 +40,28 @@ def _create_page(api_key: str, database_id: str, alert: DealAlert) -> str | None
 
     # Use QualifiedAlert fields when available
     is_qualified = isinstance(alert, QualifiedAlert)
+
+    # Field-consistency check: guard against internally contradictory
+    # classifications (e.g. deal_type=corporate_carveout paired with a
+    # qualifier verdict of discard / no-separation-work). These produced
+    # records like the Zentiva case where Deal Type said corporate_carveout
+    # but Verdict said Not a Carve-Out. Override deal_type/action rather
+    # than write the contradiction to Notion.
+    if alert.deal_type is not None and not alert.is_carveout:
+        logger.warning(
+            "Inconsistent classification for %s: deal_type=%s but is_carveout=False. "
+            "Overriding deal_type to None.",
+            alert.target_company, alert.deal_type.value,
+        )
+        alert.deal_type = None
+    if is_qualified and alert.deal_type is not None and alert.recommended_action == "discard":
+        logger.warning(
+            "Inconsistent classification for %s: deal_type=%s but recommended_action=discard. "
+            "Overriding deal_type to None and action to discard.",
+            alert.target_company, alert.deal_type.value,
+        )
+        alert.deal_type = None
+
     pe_firm_value = alert.pe_firm if is_qualified and alert.pe_firm else ""
     score_value = alert.larkhill_fit if is_qualified else alert.confidence
 

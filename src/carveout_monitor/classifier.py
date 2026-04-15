@@ -1,4 +1,12 @@
-"""Sonnet-based classification of articles for carve-out deals."""
+"""Opus-based first-pass classification of articles for carve-out deals.
+
+Previously used Sonnet to keep cost down, but observed recall issues:
+legitimate carve-outs were scoring below the 50-confidence threshold or had
+unknown sellers extracted, which then fell out at the seller-filter step.
+Opus is substantially better at both identifying the seller from context
+and assigning calibrated confidence, so qualification-level reasoning now
+runs in both passes. Expect ~5x higher classification cost.
+"""
 
 from __future__ import annotations
 
@@ -13,7 +21,7 @@ from .utils import extract_json_array
 
 logger = logging.getLogger(__name__)
 
-_MODEL = "claude-sonnet-4-6"
+_MODEL = "claude-opus-4-6"
 _BATCH_SIZE = 20
 _MAX_RETRIES = 3
 
@@ -127,7 +135,7 @@ _FEW_SHOT_ASSISTANT = """[
 
 
 def classify_batch(articles: list[Article], client: anthropic.Anthropic | None = None) -> list[DealAlert]:
-    """Classify a batch of articles using Claude Sonnet."""
+    """Classify a batch of articles using Claude Opus."""
     api_key = os.environ.get("ANTHROPIC_API_KEY", "")
     if not api_key and not client:
         logger.error("ANTHROPIC_API_KEY not set")

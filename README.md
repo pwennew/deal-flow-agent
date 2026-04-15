@@ -12,7 +12,7 @@ The agent runs daily, reads ~250 PE and law firm websites, classifies new deal a
 
 **Output:**
 - Notion database rows for every qualified deal (`pursue` or `monitor`)
-- Cost-tracked daily run log (Sonnet + Opus API spend)
+- Cost-tracked daily run log (Opus classifier + Opus qualifier API spend)
 - A flagged-firm list for manual URL review (firms returning 404s consistently)
 - State that persists between runs so a deal is never surfaced twice
 
@@ -63,11 +63,11 @@ Drop articles whose URL is in `state.seen` from a prior run.
 ### 4. Fetch full article body text
 `fetcher.py::fetch_article_bodies` — for each surviving article, fetch the full page HTML, strip boilerplate (nav/footer/ads), and extract article body (capped at 6000 chars / 1500 words). This replaces the short RSS summary with the full article text to dramatically improve classification accuracy.
 
-### 5. Classify (Claude Sonnet)
+### 5. Classify (Claude Opus)
 `classifier.py::classify_articles`
 
 Two-pass classification:
-- First pass: Sonnet reads each article's title + body and decides:
+- First pass: Opus reads each article's title + body and decides:
   - `is_carveout` (boolean)
   - `deal_type` — `corporate_carveout` (PE buys division from corporate) or `portco_carveout` (PE buys division from PE portco)
   - `stage` — `signing` or `closing`
@@ -98,7 +98,7 @@ Opus 4.6 reads the full article body + reasoning and scores each deal against La
 - **`buyer_track_record`** — prior carve-outs this PE firm has executed
 - Extracted fields for the deal brief (rationale, next-step questions, etc.)
 
-Larkhill focuses on deals ≥$300M EV; below that is noise and gets discarded (memory: `feedback_deal_size_threshold`). Opus (not Sonnet) is used for qualification because it's a critical business decision (memory: `feedback_opus_for_critical`).
+Larkhill focuses on deals ≥$300M EV; below that is noise and gets discarded (memory: `feedback_deal_size_threshold`). Opus is used for both classifier and qualifier passes — the classifier was upgraded from Sonnet after observing recall issues where legitimate carve-outs were scored below the 50-confidence threshold or had the seller extracted as "Unknown" (memory: `feedback_opus_for_critical`).
 
 ### 9. Write to Notion
 `notion.py::NotionClient.write_alerts`
@@ -109,7 +109,7 @@ All `pursue` + `monitor` alerts are written to the Notion database as `Queued` r
 Mark all processed article URLs and written deals as seen, then `state.save()`. The GitHub Actions workflow commits `state.json` back to the repo so the next run remembers what it saw.
 
 ### 11. Cost report
-Log total Sonnet + Opus spend for the run (Sonnet: $3/$15 per M tokens; Opus: $15/$75 per M tokens).
+Log total Opus spend for the run, split by classifier vs qualifier pass (Opus: $15/$75 per M input/output tokens).
 
 ---
 
@@ -170,7 +170,7 @@ src/carveout_monitor/
 ├── scraper.py        # HTML press page scraping + Playwright fallback
 ├── fetcher.py        # Full article body fetch for classifier context
 ├── http_client.py    # Shared resilient_get (SSL/headers/retry/403→Playwright)
-├── classifier.py     # First-pass Sonnet classification
+├── classifier.py     # First-pass Opus classification
 ├── qualifier.py      # Second-pass Opus qualification against Larkhill profile
 ├── notion.py         # Notion DB write client
 ├── state.py          # StateManager: seen URLs, seen deals, firm_errors (fuzzy dedup)

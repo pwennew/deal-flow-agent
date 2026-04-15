@@ -16,8 +16,8 @@ from .models import load_firms, DealAlert, DealStage, DealType, QualifiedAlert
 from .feeds import fetch_articles, fetch_all_articles, fetch_core_feeds, fetch_core_feeds_lookback, discover_feeds, get_law_firm_sources
 from .scraper import scrape_articles, discover_press_page
 from .fetcher import fetch_article_bodies
-from .classifier import classify_articles, token_usage as sonnet_tokens
-from .qualifier import qualify_alerts, token_usage as opus_tokens
+from .classifier import classify_articles, token_usage as classifier_tokens
+from .qualifier import qualify_alerts, token_usage as qualifier_tokens
 from .notion import NotionClient
 from .feedback import fetch_verdicts, compute_accuracy, format_report
 from .state import StateManager, _deal_key, deals_match
@@ -249,15 +249,16 @@ def cmd_scan(args):
     logger.info("Pipeline complete in %.1fs: %d articles processed, %d qualified (%d pursue, %d monitor)",
                 elapsed, len(new_articles), len(qualified), len(pursue), len(monitor))
 
-    # Cost reporting
-    # Sonnet: $3.00/M input, $15.00/M output
+    # Cost reporting — both classifier and qualifier now use Opus 4.6
+    # (classifier switched from Sonnet to Opus to improve recall on seller
+    # extraction and confidence calibration).
     # Opus: $15.00/M input, $75.00/M output
-    sonnet_cost = (sonnet_tokens["input"] * 3.00 + sonnet_tokens["output"] * 15.00) / 1_000_000
-    opus_cost = (opus_tokens["input"] * 15.00 + opus_tokens["output"] * 75.00) / 1_000_000
-    total_cost = sonnet_cost + opus_cost
-    logger.info("API cost estimate: Sonnet $%.4f (%dk in, %dk out) + Opus $%.4f (%dk in, %dk out) = $%.4f total",
-                sonnet_cost, sonnet_tokens["input"] // 1000, sonnet_tokens["output"] // 1000,
-                opus_cost, opus_tokens["input"] // 1000, opus_tokens["output"] // 1000,
+    classifier_cost = (classifier_tokens["input"] * 15.00 + classifier_tokens["output"] * 75.00) / 1_000_000
+    qualifier_cost = (qualifier_tokens["input"] * 15.00 + qualifier_tokens["output"] * 75.00) / 1_000_000
+    total_cost = classifier_cost + qualifier_cost
+    logger.info("API cost estimate: Opus classifier $%.4f (%dk in, %dk out) + Opus qualifier $%.4f (%dk in, %dk out) = $%.4f total",
+                classifier_cost, classifier_tokens["input"] // 1000, classifier_tokens["output"] // 1000,
+                qualifier_cost, qualifier_tokens["input"] // 1000, qualifier_tokens["output"] // 1000,
                 total_cost)
 
 

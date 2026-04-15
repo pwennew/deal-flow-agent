@@ -84,6 +84,42 @@ def test_scrape_firm_dns_error_does_not_escalate():
     pw_mock.assert_not_called()
 
 
+def test_scrape_articles_keeps_undated():
+    """Undated articles must be kept so state dedup can handle re-processing.
+
+    Previously we dropped all undated articles on the assumption they came
+    from multi-year press archives. This silently lost legitimate recent
+    articles whenever the press page date format wasn't understood. The new
+    behaviour admits undated articles; the state.seen URL dedup downstream
+    ensures each archive article is classified at most once.
+    """
+    from datetime import datetime, timedelta, timezone
+    from carveout_monitor.models import Article
+
+    firms = [Firm(name="F1", domain="f1.com", press_url="https://f1.com/news")]
+    now = datetime.now(timezone.utc)
+
+    fake_articles = [
+        # Dated, within window — kept
+        Article(title="Recent deal", url="https://f1.com/a",
+                summary="", published=now - timedelta(hours=2), firm_name="F1"),
+        # Dated, outside window — dropped
+        Article(title="Old deal", url="https://f1.com/b",
+                summary="", published=now - timedelta(days=30), firm_name="F1"),
+        # Undated — kept (was previously dropped)
+        Article(title="Undated deal", url="https://f1.com/c",
+                summary="", published=None, firm_name="F1"),
+    ]
+
+    with patch("carveout_monitor.scraper.scrape_firm", return_value=fake_articles):
+        result = scrape_articles(firms, lookback_hours=24)
+
+    urls = {a.url for a in result}
+    assert "https://f1.com/a" in urls      # dated, in window
+    assert "https://f1.com/b" not in urls  # dated, outside window
+    assert "https://f1.com/c" in urls      # undated → kept now
+
+
 def test_global_timeout_logs_firm_names(caplog):
     """On global scrape timeout, log firm names, not just counts."""
     import threading

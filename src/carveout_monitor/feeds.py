@@ -13,18 +13,30 @@ import feedparser
 
 from .http_client import resilient_get
 from .models import Article, Firm
+from .utils import scale_workers
 
 logger = logging.getLogger(__name__)
 
 # =============================================================================
 # CORE RSS FEEDS — Non-firm-specific deal announcement sources.
-# Kept to BusinessWire only: most PE deal press releases are distributed
-# through BusinessWire first. Firm-specific RSS/press pages provide the rest.
+# BusinessWire catches most PE deal press releases (wire distribution).
+# Reuters M&A is fetched via Google News RSS — Reuters retired most of their
+# direct feeds, and Google News scoped to site:reuters.com with M&A keywords
+# gives reporter-written coverage (deal value, background, context) that
+# complements BusinessWire's press-release style. The link fields resolve to
+# reuters.com via redirect, so the body fetcher can still extract full text.
 # =============================================================================
 
 CORE_FEEDS: list[dict[str, str]] = [
     {"url": "https://feed.businesswire.com/rss/home/?rss=G1QFDERJXkJeEFpRWw==",
      "source": "BusinessWire"},
+    {"url": (
+        "https://news.google.com/rss/search"
+        "?q=site%3Areuters.com+%28%22private+equity%22+OR+buyout+OR+carve-out"
+        "+OR+carveout+OR+divestiture+OR+divests+OR+%22agrees+to+acquire%22%29"
+        "&hl=en-US&gl=US&ceid=US%3Aen"
+     ),
+     "source": "Reuters M&A"},
 ]
 
 
@@ -116,7 +128,10 @@ _FEED_PATHS = [
     "/blog/feed",
 ]
 
-_MAX_WORKERS = 10
+# Upper cap on parallel workers. RSS fetch is I/O-bound; actual worker count is
+# scaled to firm count via `scale_workers()` so the scan still finishes within
+# the pipeline's timeout budget as the firm list grows.
+_MAX_WORKERS = 32
 
 # Regex to find <link rel="alternate" type="application/rss+xml" href="..."> in HTML
 _LINK_RE = re.compile(
@@ -198,10 +213,11 @@ def discover_feeds(firms: list[Firm]) -> dict[str, str | None]:
     results: dict[str, str | None] = {}
     to_discover = [f for f in firms if not f.feed_url and f.domain]
 
-    logger.info("Discovering feeds for %d firms (skipping %d with known feeds)",
-                len(to_discover), len(firms) - len(to_discover))
+    workers = scale_workers(len(to_discover), cap=_MAX_WORKERS)
+    logger.info("Discovering feeds for %d firms (skipping %d with known feeds) — %d workers",
+                len(to_discover), len(firms) - len(to_discover), workers)
 
-    with ThreadPoolExecutor(max_workers=_MAX_WORKERS) as executor:
+    with ThreadPoolExecutor(max_workers=workers) as executor:
         futures = {executor.submit(discover_feed, firm): firm for firm in to_discover}
         for future in as_completed(futures):
             firm = futures[future]
@@ -277,10 +293,12 @@ def fetch_articles(firms: list[Firm], lookback_hours: int = 24, state=None) -> l
             logger.info("Skipping %d firms flagged needs_url_update: %s",
                         len(skipped), ", ".join(f.name for f in skipped))
             firms_with_feeds = [f for f in firms_with_feeds if not state.should_skip_firm(f.name)]
-    logger.info("Fetching RSS feeds from %d firms (lookback=%dh)", len(firms_with_feeds), lookback_hours)
+    workers = scale_workers(len(firms_with_feeds), cap=_MAX_WORKERS)
+    logger.info("Fetching RSS feeds from %d firms (lookback=%dh) — %d workers",
+                len(firms_with_feeds), lookback_hours, workers)
 
     all_articles: list[Article] = []
-    with ThreadPoolExecutor(max_workers=_MAX_WORKERS) as executor:
+    with ThreadPoolExecutor(max_workers=workers) as executor:
         futures = {
             executor.submit(_fetch_single_feed, firm, lookback_hours, state): firm
             for firm in firms_with_feeds
@@ -300,10 +318,12 @@ def fetch_articles(firms: list[Firm], lookback_hours: int = 24, state=None) -> l
 def fetch_all_articles(firms: list[Firm]) -> list[Article]:
     """Fetch ALL available articles from feeds (no date filter). For backtest."""
     firms_with_feeds = [f for f in firms if f.feed_url]
-    logger.info("Backtest: fetching ALL articles from %d feeds", len(firms_with_feeds))
+    workers = scale_workers(len(firms_with_feeds), cap=_MAX_WORKERS)
+    logger.info("Backtest: fetching ALL articles from %d feeds (%d workers)",
+                len(firms_with_feeds), workers)
 
     all_articles: list[Article] = []
-    with ThreadPoolExecutor(max_workers=_MAX_WORKERS) as executor:
+    with ThreadPoolExecutor(max_workers=workers) as executor:
         futures = {
             executor.submit(_fetch_single_feed, firm, None): firm
             for firm in firms_with_feeds

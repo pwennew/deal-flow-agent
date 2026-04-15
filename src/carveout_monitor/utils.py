@@ -6,6 +6,21 @@ import json
 import re
 
 
+def scale_workers(num_items: int, *, floor: int = 10, cap: int = 32,
+                  items_per_worker: int = 10) -> int:
+    """Scale ThreadPoolExecutor worker count to item count.
+
+    Fetching RSS feeds / scraping press pages is I/O-bound, so we can safely
+    run many more workers than CPU cores. With ~10 items per worker at a few
+    seconds each, even 250+ firms complete within the 600s global timeout.
+
+    Returns a value clamped to [floor, cap].
+    """
+    if num_items <= 0:
+        return floor
+    return min(cap, max(floor, (num_items + items_per_worker - 1) // items_per_worker))
+
+
 def extract_json_array(text: str) -> list:
     """Extract a JSON array from LLM response text, handling markdown fences and preamble."""
     # Strip markdown code fences if present

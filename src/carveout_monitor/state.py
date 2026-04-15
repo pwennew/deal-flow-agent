@@ -276,6 +276,20 @@ class StateManager:
         """Flag a firm so future runs route directly to Playwright (persistent 403)."""
         self._firm_entry(firm_name)["prefer_playwright"] = True
 
+    def clear_needs_url_update(self, firm_name: str) -> bool:
+        """Clear the needs_url_update flag after a firm's URL has been fixed.
+
+        Also resets consecutive_404s and last_error so the next run starts clean.
+        Returns True if the flag was set, False otherwise.
+        """
+        entry = self._data.get("firm_errors", {}).get(firm_name)
+        if not entry or not entry.get("needs_url_update"):
+            return False
+        entry["needs_url_update"] = False
+        entry["consecutive_404s"] = 0
+        entry["last_error"] = None
+        return True
+
     def should_skip_firm(self, firm_name: str) -> bool:
         entry = self._data.get("firm_errors", {}).get(firm_name)
         return bool(entry and entry.get("needs_url_update"))

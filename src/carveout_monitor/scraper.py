@@ -12,10 +12,14 @@ from bs4 import BeautifulSoup
 
 from .http_client import _BROWSER_UA, resilient_get
 from .models import Article, Firm
+from .utils import scale_workers
 
 logger = logging.getLogger(__name__)
 
-_MAX_WORKERS = 10
+# Upper cap on parallel workers. Scrape is I/O-bound; actual worker count is
+# scaled to firm list size via `scale_workers()` so growing targets.yml doesn't
+# push us past the 600s global timeout.
+_MAX_WORKERS = 32
 
 # Common press/news page paths to probe
 _PRESS_PATHS = [
@@ -382,14 +386,16 @@ def scrape_articles(firms: list[Firm], lookback_hours: int = 24, state=None) -> 
                         len(skipped), ", ".join(f.name for f in skipped))
             to_scrape = [f for f in to_scrape if not state.should_skip_firm(f.name)]
 
-    logger.info("Scraping press pages for %d firms (%d with known press_url, %d to discover)",
+    workers = scale_workers(len(to_scrape), cap=_MAX_WORKERS)
+    logger.info("Scraping press pages for %d firms (%d with known press_url, %d to discover) — %d workers",
                 len(to_scrape),
                 sum(1 for f in to_scrape if f.press_url),
-                sum(1 for f in to_scrape if not f.press_url))
+                sum(1 for f in to_scrape if not f.press_url),
+                workers)
     cutoff = datetime.now(timezone.utc) - timedelta(hours=lookback_hours)
     all_articles: list[Article] = []
 
-    with ThreadPoolExecutor(max_workers=_MAX_WORKERS) as executor:
+    with ThreadPoolExecutor(max_workers=workers) as executor:
         futures = {executor.submit(scrape_firm, firm, state): firm for firm in to_scrape}
         try:
             for future in as_completed(futures, timeout=600):

@@ -262,9 +262,39 @@ def cmd_scan(args):
 
 
 def cmd_discover(args):
-    """Discover RSS feeds and press pages for all firms."""
-    firms = load_firms(args.targets)
-    logger.info("Loaded %d target firms", len(firms))
+    """Discover RSS feeds and press pages for firms (all, or a single --firm).
+
+    When `--firm <name>` is given we re-probe a single firm — typically one
+    flagged `needs_url_update` after 3 consecutive 404s. On successful discovery
+    the flag is cleared in state.json so the next scan picks the firm back up.
+    """
+    all_firms = load_firms(args.targets)
+    logger.info("Loaded %d target firms", len(all_firms))
+
+    # Single-firm mode — filter to the one firm and force re-probe ignoring
+    # existing feed_url/press_url so we can replace broken URLs.
+    single_firm_mode = bool(getattr(args, "firm", None))
+    if single_firm_mode:
+        needle = args.firm.strip().lower()
+        matches = [f for f in all_firms if f.name.lower() == needle]
+        if not matches:
+            # Fall back to substring match on firm name
+            matches = [f for f in all_firms if needle in f.name.lower()]
+        if not matches:
+            logger.error("No firm matching '%s' in %s", args.firm, args.targets)
+            sys.exit(1)
+        if len(matches) > 1:
+            logger.error("Ambiguous --firm '%s' matches %d firms: %s",
+                         args.firm, len(matches), ", ".join(f.name for f in matches))
+            sys.exit(1)
+        firm = matches[0]
+        logger.info("Re-probing single firm: %s (%s)", firm.name, firm.domain or "no domain")
+        # Force re-discovery: clear existing URLs so discovery doesn't short-circuit
+        firm.feed_url = None
+        firm.press_url = None
+        firms = [firm]
+    else:
+        firms = all_firms
 
     # Discover RSS feeds
     logger.info("=== Discovering RSS feeds ===")
@@ -309,6 +339,28 @@ def cmd_discover(args):
         if args.update:
             _update_targets(args.targets, new_feeds, press_pages)
             logger.info("Updated %s with discovered URLs", args.targets)
+
+            # In single-firm mode, clear the needs_url_update flag so the next
+            # scan stops skipping this firm. Only clear if we actually found
+            # something new — otherwise the URL is still broken.
+            if single_firm_mode:
+                found_something = bool(discovered_feeds or discovered_press)
+                if found_something:
+                    state = StateManager(args.state)
+                    cleared = state.clear_needs_url_update(firms[0].name)
+                    if cleared:
+                        state.save()
+                        logger.info("Cleared needs_url_update flag for %s — "
+                                    "will be re-included in the next scan",
+                                    firms[0].name)
+                else:
+                    logger.warning("No new feed/press URL found for %s — "
+                                   "needs_url_update flag remains set",
+                                   firms[0].name)
+    elif single_firm_mode:
+        logger.warning("No feed or press page found for %s — "
+                       "the domain may be dead or require manual intervention",
+                       firms[0].name)
 
 
 def _update_targets(path: str, feeds: dict[str, str | None], press_pages: dict[str, str | None]):
@@ -521,9 +573,13 @@ def main():
     scan_p.add_argument("--skip-fetch", action="store_true", help="Skip article body text fetching")
 
     # discover
-    disc_p = sub.add_parser("discover", help="Discover RSS feeds and press pages for all firms")
+    disc_p = sub.add_parser("discover", help="Discover RSS feeds and press pages for firms")
     disc_p.add_argument("--update", action="store_true",
                         help="Update targets.yml with discovered URLs")
+    disc_p.add_argument("--firm", metavar="NAME",
+                        help="Re-probe a single firm (exact or substring match on name). "
+                             "Used to recover firms flagged needs_url_update after 3× 404s. "
+                             "With --update, also clears the needs_url_update flag on success.")
 
     # backtest
     sub.add_parser("backtest", help="Backtest: classify all available articles (no Notion)")

@@ -40,6 +40,7 @@ Entry point: `python -m carveout_monitor scan` (see `src/carveout_monitor/__main
 
 **2b. Core feeds** (`feeds.py::fetch_core_feeds`)
 - BusinessWire RSS — catches deal press releases not on any specific firm's feed.
+- Reuters M&A (via Google News RSS, scoped to `site:reuters.com` with M&A keywords) — catches reporter-written deal coverage with deal value / context that press releases often omit.
 - 7-day lookback by default.
 
 **2c. Press page scraping** (`scraper.py::scrape_articles`)
@@ -146,15 +147,16 @@ On global scrape timeout, the run logs the **names** of unfinished firms so it's
 ## Other commands
 
 ```bash
-python -m carveout_monitor scan          # daily pipeline (default)
-python -m carveout_monitor discover      # probe firms for RSS feeds + press pages, optionally update targets.yml
-python -m carveout_monitor backtest      # classify all articles (no date filter, no Notion write)
-python -m carveout_monitor lookback      # extended window fetch + classify → CSV (for tuning)
-python -m carveout_monitor feedback      # read Verdict labels from Notion, report precision/recall
-python -m carveout_monitor reset-state   # back up and wipe state.json
+python -m carveout_monitor scan                            # daily pipeline (default)
+python -m carveout_monitor discover                        # probe all firms for RSS feeds + press pages
+python -m carveout_monitor discover --firm "<name>"        # re-probe a single firm (e.g. one flagged needs_url_update)
+python -m carveout_monitor backtest                        # classify all articles (no date filter, no Notion write)
+python -m carveout_monitor lookback                        # extended window fetch + classify → CSV (for tuning)
+python -m carveout_monitor feedback                        # read Verdict labels from Notion, report precision/recall
+python -m carveout_monitor reset-state                     # back up and wipe state.json
 ```
 
-All commands accept `--targets <path>` and `--state <path>`. `scan` accepts `--hours`, `--skip-notion`, `--skip-scraper`, `--skip-fetch`.
+All commands accept `--targets <path>` and `--state <path>`. `scan` accepts `--hours`, `--skip-notion`, `--skip-scraper`, `--skip-fetch`. `discover` accepts `--update` (persist to `targets.yml`) and `--firm <name>` (single-firm re-probe; with `--update`, also clears `needs_url_update` in state on success so the firm is picked back up on the next scan).
 
 ---
 
@@ -230,9 +232,6 @@ HTTP is fully mocked — no live network calls. Covers: feed discovery/fetch, bo
 
 ## Known areas for improvement
 
-1. **Concurrency vs timeout tension**: 10 workers × 300s global timeout is tight for 250+ firms. Increase workers or split the scrape into batches if the firm list keeps growing.
-2. **Press page auto-discovery** is best-effort and sometimes picks the wrong page (portfolio news vs press releases). `discover` command + manual `targets.yml` review is currently the safety net.
-3. **Fuzzy deal matching** (`state.py::deals_match`) is tuned for English PE deal names. Cross-language targets (e.g. European firms) may need additional stop words or transliteration.
-4. **Opus qualification is the cost driver** — if volume grows, consider a lightweight pre-filter (Haiku) to cut Opus calls to ~top-N by Sonnet confidence.
-5. **No automatic URL repair** — when `needs_url_update` fires, URLs must be fixed manually in `targets.yml`. A `discover --firm <name>` command to re-probe a single flagged firm would close the loop.
-6. **BusinessWire is the only core feed** — adding PR Newswire, Reuters M&A, and Law360 would materially improve recall.
+1. **Press page auto-discovery** is best-effort and sometimes picks the wrong page (portfolio news vs press releases). `discover` command + manual `targets.yml` review is currently the safety net.
+2. **Fuzzy deal matching** (`state.py::deals_match`) is tuned for English PE deal names. Cross-language targets (e.g. European firms) may need additional stop words or transliteration.
+3. **Additional core feeds** — BusinessWire + Reuters M&A cover most deal announcements; adding PR Newswire and Law360 would further improve recall.

@@ -9,10 +9,14 @@ from bs4 import BeautifulSoup
 
 from .http_client import resilient_get
 from .models import Article
+from .utils import scale_workers
 
 logger = logging.getLogger(__name__)
 
-_MAX_WORKERS = 10
+# Upper cap on parallel body-text fetches. Actual worker count scales with
+# article count via `scale_workers()` — a run with 150 candidates uses more
+# workers than one with 20.
+_MAX_WORKERS = 32
 _MAX_CHARS = 6000
 _MAX_WORDS = 1500
 
@@ -102,10 +106,11 @@ def fetch_article_bodies(articles: list[Article]) -> list[Article]:
     if not articles:
         return articles
 
-    logger.info("Fetching body text for %d articles (max %d workers)", len(articles), _MAX_WORKERS)
+    workers = scale_workers(len(articles), cap=_MAX_WORKERS)
+    logger.info("Fetching body text for %d articles (%d workers)", len(articles), workers)
     fetched = 0
 
-    with ThreadPoolExecutor(max_workers=_MAX_WORKERS) as pool:
+    with ThreadPoolExecutor(max_workers=workers) as pool:
         futures = {pool.submit(_fetch_one, a): a for a in articles}
         for future in as_completed(futures):
             try:

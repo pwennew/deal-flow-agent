@@ -188,3 +188,29 @@ def test_firm_errors_persist_across_save_reload(tmp_path):
     state2 = StateManager(path)
     assert state2.should_skip_firm("Triton")
     assert state2.prefers_playwright("Carlyle")
+
+
+def test_clear_needs_url_update_unflags_firm(tmp_path):
+    """After manual URL fix (or successful re-discovery), clearing the flag
+    lets the firm be re-included in future scans."""
+    state = StateManager(tmp_path / "state.json")
+    state.record_firm_error("Triton", "404")
+    state.record_firm_error("Triton", "404")
+    state.record_firm_error("Triton", "404")
+    assert state.should_skip_firm("Triton")
+
+    assert state.clear_needs_url_update("Triton") is True
+    assert not state.should_skip_firm("Triton")
+    # Counter reset too — next 404 starts from 1, not 3
+    state.record_firm_error("Triton", "404")
+    assert not state.should_skip_firm("Triton")
+
+
+def test_clear_needs_url_update_noop_on_unflagged_firm(tmp_path):
+    """Clearing a firm that wasn't flagged returns False and doesn't raise."""
+    state = StateManager(tmp_path / "state.json")
+    # Unknown firm
+    assert state.clear_needs_url_update("NotTracked") is False
+    # Known firm with errors but not yet flagged
+    state.record_firm_error("OneError", "404")
+    assert state.clear_needs_url_update("OneError") is False

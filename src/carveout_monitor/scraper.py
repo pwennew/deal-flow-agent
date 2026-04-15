@@ -395,6 +395,12 @@ def scrape_articles(firms: list[Firm], lookback_hours: int = 24, state=None) -> 
     cutoff = datetime.now(timezone.utc) - timedelta(hours=lookback_hours)
     all_articles: list[Article] = []
 
+    # Counters for the summary log — exposes how many undated articles we're
+    # admitting, which was previously lost to DEBUG-level logging.
+    kept_dated = 0
+    kept_undated = 0
+    dropped_too_old = 0
+
     with ThreadPoolExecutor(max_workers=workers) as executor:
         futures = {executor.submit(scrape_firm, firm, state): firm for firm in to_scrape}
         try:
@@ -402,15 +408,26 @@ def scrape_articles(firms: list[Firm], lookback_hours: int = 24, state=None) -> 
                 firm = futures[future]
                 try:
                     articles = future.result(timeout=60)
-                    # Date filter — require a parseable date within the lookback window.
-                    # Articles without dates are dropped because press page archives
-                    # go back years/decades and we can't tell if they're recent.
-                    dated = [a for a in articles if a.published]
-                    undated = len(articles) - len(dated)
-                    if undated:
-                        logger.debug("Dropped %d undated articles from %s", undated, firm.name)
-                    filtered = [a for a in dated if a.published >= cutoff]
-                    all_articles.extend(filtered)
+                    # Date filter strategy:
+                    # - Dated, within cutoff → keep (normal case)
+                    # - Dated, outside cutoff → drop (definitely old)
+                    # - Undated → KEEP and let state.seen_urls dedup downstream
+                    #   handle re-processing. Previously we dropped all undated
+                    #   articles on the assumption they came from multi-year press
+                    #   archives, but that silently lost legitimate recent articles
+                    #   whenever the press page's date format wasn't one of the
+                    #   few _extract_date() understood. First scan of a firm may
+                    #   admit archive articles, but they'll be in state.seen after
+                    #   one classification pass and filtered on subsequent runs.
+                    for a in articles:
+                        if a.published is None:
+                            kept_undated += 1
+                            all_articles.append(a)
+                        elif a.published >= cutoff:
+                            kept_dated += 1
+                            all_articles.append(a)
+                        else:
+                            dropped_too_old += 1
                 except TimeoutError:
                     logger.warning("Scrape timed out for %s — skipping", firm.name)
                 except Exception as e:
@@ -426,5 +443,7 @@ def scrape_articles(firms: list[Firm], lookback_hours: int = 24, state=None) -> 
                 if not f.done():
                     f.cancel()
 
-    logger.info("Scraped %d articles from press pages", len(all_articles))
+    logger.info("Scraped %d articles from press pages (%d dated-in-window, "
+                "%d undated kept for state dedup, %d dropped as too old)",
+                len(all_articles), kept_dated, kept_undated, dropped_too_old)
     return all_articles

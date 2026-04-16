@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "last_run": "2026-04-15T17:59:38.525006",
+  "last_run": "2026-04-16T14:58:32.659208",
   "seen": {
     "https://warburgpincus.com/2026/03/30/wealth-insurance-and-fintech-drive-thriving-pebacked-financial-services-ma/": {
       "hash": "61ef81059158927c",
@@ -20037,6 +20037,682 @@
     "https://www.ropesgray.com/en/footer/Legal-Notices/Privacy-Notice#Cookie": {
       "hash": "55fbf5b6b920708b",
       "first_seen": "2026-04-15T17:59:38.525004"
+    },
+    "https://en.newsroom.eurazeo.com/news/eurazeo-opens-new-office-in-munich-expanding-its-german-footprint-63d40-52e2c.html": {
+      "hash": "c5a746bd9ae309de",
+      "first_seen": "2026-04-16T14:58:32.658459"
+    },
+    "https://www.sagard.com/blog/2026/04/16/defining-private-credit/": {
+      "hash": "d5cdb70b860b8dd0",
+      "first_seen": "2026-04-16T14:58:32.658475"
+    },
+    "https://www.sagard.com/wp-content/uploads/2026/04/Key-AI-Trends-within-Fintech.pdf": {
+      "hash": "3b99268247b6a3c9",
+      "first_seen": "2026-04-16T14:58:32.658479"
+    },
+    "http://www.businesswire.com/news/home/20260415386882/en/Altria-to-Host-Webcast-of-2026-First-Quarter-Results/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "a4dbf7eb4c7a61cf",
+      "first_seen": "2026-04-16T14:58:32.658483"
+    },
+    "http://www.businesswire.com/news/home/20260416279873/en/SmartRent-to-Report-First-Quarter-2026-Financial-Results-on-May-6-2026/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "f8aa702be8eec14b",
+      "first_seen": "2026-04-16T14:58:32.658486"
+    },
+    "http://www.businesswire.com/news/home/20260416900895/en/ExxonMobil-to-Release-First-Quarter-2026-Financial-Results/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "86df0ee1f540a154",
+      "first_seen": "2026-04-16T14:58:32.658491"
+    },
+    "http://www.businesswire.com/news/home/20260416698254/en/LTC-Announces-Date-of-First-Quarter-2026-Earnings-Release-Conference-Call-and-Webcast/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "b204c68cb9087ae7",
+      "first_seen": "2026-04-16T14:58:32.658495"
+    },
+    "http://www.businesswire.com/news/home/20260416830946/en/Offerpad-to-Release-First-Quarter-Results-on-April-30th/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "72d954cc2302e6a4",
+      "first_seen": "2026-04-16T14:58:32.658499"
+    },
+    "http://www.businesswire.com/news/home/20260416973928/en/First-Solar-Inc.-to-Announce-First-Quarter-2026-Financial-Results-on-April-30-2026/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "d65a95eb0efac7fd",
+      "first_seen": "2026-04-16T14:58:32.658503"
+    },
+    "http://www.businesswire.com/news/home/20260416860175/en/IGI-to-Release-First-Quarter-2026-Financial-Results-on-May-5-2026/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "d2fe4e175e0bd8ba",
+      "first_seen": "2026-04-16T14:58:32.658511"
+    },
+    "http://www.businesswire.com/news/home/20260416337854/en/Evergy-Schedules-Conference-Call-to-Discuss-1st-Quarter-Results/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "8db85c9aeb4392a6",
+      "first_seen": "2026-04-16T14:58:32.658517"
+    },
+    "http://www.businesswire.com/news/home/20260415998889/en/ZipRecruiter-to-Report-First-Quarter-2026-Financial-Results-on-May-7-2026/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "216ec5180e3748ee",
+      "first_seen": "2026-04-16T14:58:32.658522"
+    },
+    "http://www.businesswire.com/news/home/20260416544477/en/Fubo-to-Announce-Q2-FY26-Financial-Results-on-May-6-2026/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "ad15fbe24d4ffb9a",
+      "first_seen": "2026-04-16T14:58:32.658526"
+    },
+    "http://www.businesswire.com/news/home/20260416621611/en/Porch-Group-to-Release-First-Quarter-2026-Earnings-on-April-28-2026/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "5978b6fc8027990d",
+      "first_seen": "2026-04-16T14:58:32.658530"
+    },
+    "http://www.businesswire.com/news/home/20260415437251/en/Ladder-Capital-Corp-to-Report-First-Quarter-2026-Results/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "e9e222e8d76e1320",
+      "first_seen": "2026-04-16T14:58:32.658535"
+    },
+    "http://www.businesswire.com/news/home/20260416289634/en/Moog-Inc.-to-Announce-Second-Quarter-Fiscal-2026-Earnings-on-April-24-2026/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "dfc77da0cf1ace36",
+      "first_seen": "2026-04-16T14:58:32.658540"
+    },
+    "http://www.businesswire.com/news/home/20260416311163/en/Belden-to-Announce-First-Quarter-2026-Results/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "488fd8fca57a3b42",
+      "first_seen": "2026-04-16T14:58:32.658544"
+    },
+    "http://www.businesswire.com/news/home/20260416638254/en/Quantum-Si-to-Report-First-Quarter-2026-Financial-Results-on-May-7-2026/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "3ffe549292a8b3f7",
+      "first_seen": "2026-04-16T14:58:32.658548"
+    },
+    "http://www.businesswire.com/news/home/20260416848309/en/CVR-Energy-to-Release-First-Quarter-2026-Earnings-Results/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "78362d251041afa9",
+      "first_seen": "2026-04-16T14:58:32.658553"
+    },
+    "http://www.businesswire.com/news/home/20260416309421/en/Mirion-Announces-Earnings-Release-and-Conference-Call-Date-for-First-Quarter-2026/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "ad42d7a5d38cd3ae",
+      "first_seen": "2026-04-16T14:58:32.658557"
+    },
+    "http://www.businesswire.com/news/home/20260416285759/en/Butterfly-Network-to-Report-First-Quarter-2026-Financial-Results-on-April-30-2026/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "40abc63d91932bb7",
+      "first_seen": "2026-04-16T14:58:32.658561"
+    },
+    "http://www.businesswire.com/news/home/20260416588081/en/BlackRock-TCP-Capital-Corp.-to-Report-First-Quarter-ended-March-31-2026-Financial-Results-on-May-7-2026/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "6a4f8b35a7cf8503",
+      "first_seen": "2026-04-16T14:58:32.658566"
+    },
+    "http://www.businesswire.com/news/home/20260416050687/en/CRH-Confirms-Date-for-Q1-2026-Results/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "20d9e63a9144ba5f",
+      "first_seen": "2026-04-16T14:58:32.658571"
+    },
+    "http://www.businesswire.com/news/home/20260416208113/en/Cimpress-to-Host-Public-QA-Call-Following-Q3-FY2026-Earnings-Announcement/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "b9322d60b1121537",
+      "first_seen": "2026-04-16T14:58:32.658575"
+    },
+    "http://www.businesswire.com/news/home/20260416452580/en/Charles-River-Laboratories-Schedules-First-Quarter-2026-Earnings-Release-and-Conference-Call/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "da67232f04d2d550",
+      "first_seen": "2026-04-16T14:58:32.658580"
+    },
+    "http://www.businesswire.com/news/home/20260416458365/en/Xerox-Holdings-Corporation-Plans-Webcast-to-Discuss-2026-First-Quarter-Results/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "59b2dd7cd4c2f171",
+      "first_seen": "2026-04-16T14:58:32.658584"
+    },
+    "http://www.businesswire.com/news/home/20260414078237/en/MarineMax-to-Report-Second-Quarter-Fiscal-2026-Financial-Results-on-Thursday-April-23-2026/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "38cc8cc46c27af43",
+      "first_seen": "2026-04-16T14:58:32.658588"
+    },
+    "http://www.businesswire.com/news/home/20260415930445/en/Chiron-Real-Estate-Inc.-Announces-Dates-for-2026-First-Quarter-Earnings-Release-and-Webcast/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "0e0f3eac9ff7f5e4",
+      "first_seen": "2026-04-16T14:58:32.658593"
+    },
+    "http://www.businesswire.com/news/home/20260416014873/en/KORU-Medical-Systems-to-Report-First-Quarter-2026-Financial-Results-on-May-6-2026/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "7201667a4cdb5887",
+      "first_seen": "2026-04-16T14:58:32.658599"
+    },
+    "http://www.businesswire.com/news/home/20260416644338/en/Alnylam-to-Webcast-Conference-Call-Discussing-First-Quarter-2026-Financial-Results/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "59d7136d0038e3c3",
+      "first_seen": "2026-04-16T14:58:32.658604"
+    },
+    "http://www.businesswire.com/news/home/20260416746634/en/Scholar-Rock-to-Report-First-Quarter-2026-Financial-Results-on-May-7-2026/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "90ad67eb2e059ff5",
+      "first_seen": "2026-04-16T14:58:32.658609"
+    },
+    "http://www.businesswire.com/news/home/20260416553821/en/WisdomTree-Schedules-Earnings-Conference-Call-for-Q1-on-May-1-2026-at-1100-a.m.-ET/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "adca97e4b2eb16fe",
+      "first_seen": "2026-04-16T14:58:32.658613"
+    },
+    "http://www.businesswire.com/news/home/20260416300061/en/Fulgent-to-Announce-First-Quarter-2026-Financial-Results%C2%A0on-Friday-May-1-2026/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "dcead66a2b59526f",
+      "first_seen": "2026-04-16T14:58:32.658616"
+    },
+    "http://www.businesswire.com/news/home/20260416677549/en/USA-TODAY-Co.-Schedules-First-Quarter-2026-Results/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "9b0edaf85038a90d",
+      "first_seen": "2026-04-16T14:58:32.658619"
+    },
+    "http://www.businesswire.com/news/home/20260416782535/en/VSE-Corporation-Announces-First-Quarter-2026-Results-Conference-Call-Date/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "38263ba5e668e182",
+      "first_seen": "2026-04-16T14:58:32.658623"
+    },
+    "http://www.businesswire.com/news/home/20260416918808/en/Organon-To-Report-First-Quarter-2026-Results-and-Host-Conference-Call-on-May-7-2026/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "82d13a0f1408a545",
+      "first_seen": "2026-04-16T14:58:32.658631"
+    },
+    "http://www.businesswire.com/news/home/20260416308185/en/Edwards-Lifesciences-to-Host-Earnings-Conference-Call-on-April-23-2026/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "8bba5140e94fb3a9",
+      "first_seen": "2026-04-16T14:58:32.658635"
+    },
+    "http://www.businesswire.com/news/home/20260415514677/en/BKV-Corporation-Announces-Timing-of-First-Quarter-2026-Earnings-Release-and-Conference-Call-Details/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "c356a6ceee795744",
+      "first_seen": "2026-04-16T14:58:32.658640"
+    },
+    "http://www.businesswire.com/news/home/20260416189293/en/Essential-Utilities-to-Report-Financial-Results-for-Q1-2026/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "62daaa0c3246e5ec",
+      "first_seen": "2026-04-16T14:58:32.658645"
+    },
+    "http://www.businesswire.com/news/home/20260416385521/en/OneWater-Marine-Inc.-Announces-Fiscal-Second-Quarter-2026-Earnings-Release-Date-and-Conference-Call-Information/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "5f229e7c8713f3ad",
+      "first_seen": "2026-04-16T14:58:32.658650"
+    },
+    "http://www.businesswire.com/news/home/20260416013608/en/ACI-Worldwide-to-Report-First-Quarter-2026-Financial-Results/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "cc56edbf1b368343",
+      "first_seen": "2026-04-16T14:58:32.658654"
+    },
+    "http://www.businesswire.com/news/home/20260416711586/en/Kontoor-Brands-Announces-First-Quarter-2026-Earnings-and-Conference-Call-Date/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "e8abd6e539d533d8",
+      "first_seen": "2026-04-16T14:58:32.658659"
+    },
+    "http://www.businesswire.com/news/home/20260416684731/en/U.S.-Bancorp-Reports-First-Quarter-2026-Results/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "b1b6a36d37fa6971",
+      "first_seen": "2026-04-16T14:58:32.658665"
+    },
+    "http://www.businesswire.com/news/home/20260416956614/en/US-Foods-to-Host-First-Quarter-2026-Financial-Results-Conference-Call-and-Webcast/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "5e4b354e31ac9728",
+      "first_seen": "2026-04-16T14:58:32.658669"
+    },
+    "http://www.businesswire.com/news/home/20260416556523/en/Atmus-Filtration-Technologies-to-Announce-First-Quarter-2026-Results-on-May-1-2026/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "97410196327357e3",
+      "first_seen": "2026-04-16T14:58:32.658673"
+    },
+    "http://www.businesswire.com/news/home/20260416179705/en/ITT-to-Release-2026-First-Quarter-Results-and-2026-Outlook-on-Wednesday-May-6/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "748db04bdc49edba",
+      "first_seen": "2026-04-16T14:58:32.658679"
+    },
+    "http://www.businesswire.com/news/home/20260416312537/en/Ingram-Micro-to-Report-First-Quarter-2026-Financial-Results-on-April-30th-2026/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "a5d0dada253b731b",
+      "first_seen": "2026-04-16T14:58:32.658683"
+    },
+    "http://www.businesswire.com/news/home/20260415672010/en/Permian-Resources-Announces-First-Quarter-2026-Earnings-Conference-Call/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "b48b1f1455c584ce",
+      "first_seen": "2026-04-16T14:58:32.658688"
+    },
+    "http://www.businesswire.com/news/home/20260415375474/en/Cactus-Announces-Timing-of-First-Quarter-2026-Earnings-Release-and-Conference-Call/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "2050b369f2c85a2a",
+      "first_seen": "2026-04-16T14:58:32.658693"
+    },
+    "http://www.businesswire.com/news/home/20260415684163/en/Yum%21-Brands-Announces-Q1-2026-Earnings-and-Conference-Call-Details/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "cefa5494207d0be2",
+      "first_seen": "2026-04-16T14:58:32.658697"
+    },
+    "http://www.businesswire.com/news/home/20260415884003/en/NerdWallet-Announces-Conference-Call-to-Review-2026-First-Quarter-Financial-Results/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "a2a6145db7700f94",
+      "first_seen": "2026-04-16T14:58:32.658702"
+    },
+    "http://www.businesswire.com/news/home/20260415745873/en/Franklin-BSP-Realty-Trust-Inc.-Schedules-First-Quarter-2026-Earnings-Release-and-Conference-Call/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "55aae2bffa9ac099",
+      "first_seen": "2026-04-16T14:58:32.658706"
+    },
+    "http://www.businesswire.com/news/home/20260415576731/en/Amplitude-to-Host-First-Quarter-2026-Earnings-Webcast-on-May-6-2026/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "5ef1818f1018ccd6",
+      "first_seen": "2026-04-16T14:58:32.658711"
+    },
+    "http://www.businesswire.com/news/home/20260415385706/en/Flowco-Holdings-Inc.-to-Announce-First-Quarter-2026-Results-on-May-6-2026/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "8404dc7e425169b7",
+      "first_seen": "2026-04-16T14:58:32.658715"
+    },
+    "http://www.businesswire.com/news/home/20260415098007/en/Luxfer-Announces-Date-of-First-Quarter-2026-Earnings-Conference-Call/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "ff6620a440d575ea",
+      "first_seen": "2026-04-16T14:58:32.658720"
+    },
+    "http://www.businesswire.com/news/home/20260415683177/en/Compass-Minerals-Sets-Date-for-Conference-Call-to-Discuss-Second-Quarter-Fiscal-2026-Results/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "012fa8cb46f559b4",
+      "first_seen": "2026-04-16T14:58:32.658724"
+    },
+    "http://www.businesswire.com/news/home/20260415138826/en/Paysign-to-Host-First-Quarter-2026-Earnings-Call/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "8e1dc787effdb562",
+      "first_seen": "2026-04-16T14:58:32.658729"
+    },
+    "http://www.businesswire.com/news/home/20260415218416/en/Imperial-to-hold-2026-First-Quarter-Earnings-Call/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "46b59464dbe3cb6f",
+      "first_seen": "2026-04-16T14:58:32.658734"
+    },
+    "http://www.businesswire.com/news/home/20260415807817/en/Millrose-Properties-Announces-Date-of-First-Quarter-2026-Earnings-Release-and-Conference-Call/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "c7160b17396d71de",
+      "first_seen": "2026-04-16T14:58:32.658739"
+    },
+    "http://www.businesswire.com/news/home/20260415984010/en/Orion-S.A.-Announces-First-Quarter-2026-Earnings-Release-Date-and-Conference-Call-Information/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "ab6827c0d02f4abf",
+      "first_seen": "2026-04-16T14:58:32.658744"
+    },
+    "http://www.businesswire.com/news/home/20260415038808/en/Materion-Corporation-to-Announce-First-Quarter-2026-Financial-Results-on-April-29/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "7a2fb1eb0d6decbf",
+      "first_seen": "2026-04-16T14:58:32.658748"
+    },
+    "http://www.businesswire.com/news/home/20260415210292/en/Butterfield-to-Announce-First-Quarter-2026-Financial-Results-on-April-28-2026-and-Host-Earnings-Conference-Call-on-April-29-2026/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "92f271bb58a06dcb",
+      "first_seen": "2026-04-16T14:58:32.658753"
+    },
+    "http://www.businesswire.com/news/home/20260415522649/en/Nuveen-Churchill-Direct-Lending-Corp.-Schedules-First-Quarter-2026-Earnings-Release-and-Conference-Call/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "7b67315300610cf2",
+      "first_seen": "2026-04-16T14:58:32.658757"
+    },
+    "http://www.businesswire.com/news/home/20260415914488/en/Q2-Holdings-Inc.-Announces-Investor-Conference-Call-to-Review-First-Quarter-2026-Financial-Results/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "4d51e34bcae42227",
+      "first_seen": "2026-04-16T14:58:32.658762"
+    },
+    "http://www.businesswire.com/news/home/20260415961554/en/Chemtrade-Logistics-Income-Fund-to-Announce-First-Quarter-2026-Results-on-May-11-2026/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "c78ca40860b6aa0c",
+      "first_seen": "2026-04-16T14:58:32.658767"
+    },
+    "http://www.businesswire.com/news/home/20260415237583/en/IQVIA-to-Announce-First-Quarter-2026-Results-on-May-5-2026/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "b902b50675afb399",
+      "first_seen": "2026-04-16T14:58:32.658772"
+    },
+    "http://www.businesswire.com/news/home/20260415236441/en/TPG-RE-Finance-Trust-Inc.-Announces-First-Quarter-2026-Earnings-Release-and-Conference-Call-Dates/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "ec29348fee0b0f1f",
+      "first_seen": "2026-04-16T14:58:32.658777"
+    },
+    "http://www.businesswire.com/news/home/20260415256454/en/Houlihan-Lokey-Announces-Release-Date-for-Fourth-Quarter-and-Full-Year-Results-for-Fiscal-Year-2026/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "5078d2fe93284c89",
+      "first_seen": "2026-04-16T14:58:32.658781"
+    },
+    "http://www.businesswire.com/news/home/20260415262251/en/Texas-Pacific-Land-Corporation-Sets-Dates-for-First-Quarter-2026-Earnings-Release-and-Conference-Call/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "3cb0a076ed82af3a",
+      "first_seen": "2026-04-16T14:58:32.658786"
+    },
+    "http://www.businesswire.com/news/home/20260415808440/en/Primerica-Schedules-First-Quarter-2026-Financial-Results-Webcast/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "650020d7a2d547ef",
+      "first_seen": "2026-04-16T14:58:32.658790"
+    },
+    "http://www.businesswire.com/news/home/20260415613185/en/TWO-Announces-Earnings-Release-and-Conference-Call-for-First-Quarter-2026-Financial-Results/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "2d2d593e7495f755",
+      "first_seen": "2026-04-16T14:58:32.658795"
+    },
+    "http://www.businesswire.com/news/home/20260415843501/en/DISCO-to-Announce-First-Quarter-2026-Financial-Results-On-May-6-2026/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "5c111cbea465eff5",
+      "first_seen": "2026-04-16T14:58:32.658799"
+    },
+    "http://www.businesswire.com/news/home/20260415856476/en/Redwood-Trust-Announces-Date-of-First-Quarter-2026-Financial-Results-Webcast-and-Conference-Call/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "b382da035d84348c",
+      "first_seen": "2026-04-16T14:58:32.658803"
+    },
+    "http://www.businesswire.com/news/home/20260415896895/en/Buenaventura-Cordially-Invites-You-to-Its-First-Quarter-2026-Earnings-Conference-Call/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "49f77cfb58a37db9",
+      "first_seen": "2026-04-16T14:58:32.658808"
+    },
+    "http://www.businesswire.com/news/home/20260415922704/en/BrightView-Holdings-Inc.-Announces-Second-Quarter-Fiscal-Year-2026-Earnings-Release-Date-Conference-Call-and-Webcast/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "14b99c86500692e7",
+      "first_seen": "2026-04-16T14:58:32.658812"
+    },
+    "http://www.businesswire.com/news/home/20260415966650/en/StubHub-to-Report-First-Quarter-2026-Financial-Results-on-May-13-2026/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "c8b12347dfa4c0bb",
+      "first_seen": "2026-04-16T14:58:32.658817"
+    },
+    "http://www.businesswire.com/news/home/20260415000235/en/Rayonier-Scheduled-to-Release-First-Quarter-Earnings-on-May-6/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "10598ee429025a14",
+      "first_seen": "2026-04-16T14:58:32.658821"
+    },
+    "http://www.businesswire.com/news/home/20260415369923/en/Custom-Truck-One-Source-Announces-First-Quarter-2026-Earnings-Release-and-Conference-Call/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "4b76e6967f8eb2d9",
+      "first_seen": "2026-04-16T14:58:32.658825"
+    },
+    "http://www.businesswire.com/news/home/20260415070016/en/PPG-expects-first-quarter-2026-financial-results-to-exceed-previous-guidance-detailed-financial-update-to-be-provided-April-28/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "41547ec9e97c0325",
+      "first_seen": "2026-04-16T14:58:32.658830"
+    },
+    "http://www.businesswire.com/news/home/20260415889056/en/Benchmark-to-Report-First-Quarter-2026-Results/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "3352daefe7ad436a",
+      "first_seen": "2026-04-16T14:58:32.658835"
+    },
+    "http://www.businesswire.com/news/home/20260415008039/en/Bumble-Inc.-to-Announce-First-Quarter-2026-Financial-Results-on-May-5-2026/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "f8ca0833c7bbca79",
+      "first_seen": "2026-04-16T14:58:32.658839"
+    },
+    "http://www.businesswire.com/news/home/20260415167075/en/Clearwater-Paper-Announces-Availability-and-Timing-of-First-Quarter-2026-Earnings-Conference-Call-and-Webcast/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "1261e6cac64e63fc",
+      "first_seen": "2026-04-16T14:58:32.658844"
+    },
+    "http://www.businesswire.com/news/home/20260415336410/en/Acadia-Pharmaceuticals-to-Announce-First-Quarter-2026-Financial-Results-on-May-6-2026/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "f03aada0d3aeef4a",
+      "first_seen": "2026-04-16T14:58:32.658848"
+    },
+    "http://www.businesswire.com/news/home/20260415346369/en/Sabra-Health-Care-REIT-Inc.-Announces-First-Quarter-2026-Earnings-Release-Date-and-Conference-Call/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "ae5953c6325a1166",
+      "first_seen": "2026-04-16T14:58:32.658852"
+    },
+    "http://www.businesswire.com/news/home/20260415393007/en/Sonos-Announces-Date-for-Second-Quarter-Fiscal-2026-Financial-Results-and-Conference-Call/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "700adb21d101e472",
+      "first_seen": "2026-04-16T14:58:32.658855"
+    },
+    "http://www.businesswire.com/news/home/20260415435828/en/Digi-International-to-Release-Second-Fiscal-Quarter-2026-Earnings-Results-for-the-First-Time-via-Video-Conference-Call-on-May-6-2026/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "82699daa90cad48e",
+      "first_seen": "2026-04-16T14:58:32.658859"
+    },
+    "http://www.businesswire.com/news/home/20260415659709/en/Smith-Douglas-Homes-Schedules-First-Quarter-of-2026-Earnings-Call-and-Webcast/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "5e022abafa7323c6",
+      "first_seen": "2026-04-16T14:58:32.658863"
+    },
+    "http://www.businesswire.com/news/home/20260415962930/en/Chime-to-Announce-First-Quarter-2026-Financial-Results-on-May-6-2026/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "0c5e5d1f4e981840",
+      "first_seen": "2026-04-16T14:58:32.658868"
+    },
+    "http://www.businesswire.com/news/home/20260415845983/en/PC-Connection-Inc.-CNXN-to-Release-First-Quarter-Results-for-2026/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "9c3d540a65749834",
+      "first_seen": "2026-04-16T14:58:32.658873"
+    },
+    "http://www.businesswire.com/news/home/20260414638729/en/Backblaze-to-Announce-First-Quarter-2026-Results-on-May-4-2026/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "673e059f0e5ce11e",
+      "first_seen": "2026-04-16T14:58:32.658878"
+    },
+    "http://www.businesswire.com/news/home/20260415758081/en/Amazon.com-to-Webcast-First-Quarter-2026-Financial-Results-Conference-Call/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "b0c54bc6f37c084c",
+      "first_seen": "2026-04-16T14:58:32.658882"
+    },
+    "http://www.businesswire.com/news/home/20260414727728/en/Polestar-Sets-the-Date-for-Reporting-the-Fourth-Quarter-Select-and-Full-Year-2025-Results/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "7a207d01ddc7014c",
+      "first_seen": "2026-04-16T14:58:32.658887"
+    },
+    "http://www.businesswire.com/news/home/20260415868959/en/Everspin-Announces-Date-of-First-Quarter-2026-Financial-Results-Conference-Call/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "5c5b7891fa7ede1b",
+      "first_seen": "2026-04-16T14:58:32.658890"
+    },
+    "http://www.businesswire.com/news/home/20260415686991/en/Cirrus-Logic-to-Report-Fourth-Quarter-and-Full-Fiscal-Year-2026-Results/?feedref=JjAwJuNHiystnCoBq_hl-SPFJfID-pbHRL5rJiXBiVXA5iVZRovl-KiT8JIL-Zuae3KWq9s9jif-UkBjBsFRyYAbRTSLTc1mgvhPlnaBA55M-oupQnbXnhKsYk8RmHF_OvEIYE_LbbQPYbHnujfSSg==": {
+      "hash": "967b6753635d0f15",
+      "first_seen": "2026-04-16T14:58:32.658894"
+    },
+    "https://news.google.com/rss/articles/CBMi0AFBVV95cUxQZnJvbTlXUUdacTdrZEJFNlM1bXdhU0RYS0k3RnFnMlZIcndCU3FUNTdzRTRFSUdGNVdKdVJOQmNENmRHUUhFN2lkeUNaRWRKWHNXREdSMW5oSnVUc3NwVnh4eHJmTFNzd0FPSVNhWjZaRmdfb3ZyWlR0LWdnSkRIeHItUG1UdVhrSGpRNURSbkZkdzBhQUFxWVlHNnRhZFdXYVRTdnAyZWpOU2tzb3RVMTBqU3RweXQ1T0VSSWU2bzdIOXJGcFlMTDRhZkowSmZk?oc=5": {
+      "hash": "53553ab80ed86741",
+      "first_seen": "2026-04-16T14:58:32.658899"
+    },
+    "https://news.google.com/rss/articles/CBMitwFBVV95cUxNMWJQV29OY0RqaWZLQ3NsUWZmTTlBYlkwWFJYYWhjbVZSbGhvLWdMejZOX1hlNVhiVDlHUlBmc3NDQXBzN1FIdmkxZmR4SzJPcHNKRHhKa0tiWmt4eHZwV1lrS1FETG1KTFZILTZ3YlNzZjRyQmtCQ3VMZEM4bWU2c0FCYWt6TkM1eVh4cDNPclZFV0lfTERxb09ya1V4SGM5d2RBdGRKd2VnWFFGemZ4RkVLRlM0QkU?oc=5": {
+      "hash": "18898b0e058d5de8",
+      "first_seen": "2026-04-16T14:58:32.658904"
+    },
+    "https://news.google.com/rss/articles/CBMiqgFBVV95cUxPamY5QW1DenRSM2pqdGN6NXRlalJhRE5aaTY2YXBaNHhvLXNVMkFtWERjc3dvZHBTSW9UbWF6NEtfcnBScUN2VkpEUmhIYjREVkRFdnJmY055VXg4NmpFYkdBRjFaMzB0bXJ3NjJ6Sy1XU1NqVk1PUGtraUNUTk91ZTdVQXdESllqUktVSE80Q3FaOXpuWDdFdDBVc1p6aE9FXzhSWENRNnlTUQ?oc=5": {
+      "hash": "67bd090b2029e01b",
+      "first_seen": "2026-04-16T14:58:32.658908"
+    },
+    "https://news.google.com/rss/articles/CBMiwwFBVV95cUxPdm9kLXY3SjRmUmQxS05zZWEtV0Q0RnFOUGtnZWNZLVJmUE5UMWs1MmdFQzJfWk1RVzVXdVpBc1JvQ1VFaTRJRkl0MkVodzJhMjQ4UXIxTmZGTTNmdDgweFJMeXIzN2t1NkZ4R1JWd3hXYV9sN0ZHNHRtTnRjakpXWm11SVNyQWhpZDdsQ3lxZlRBbVJ2d2E3ZUI5NnhBZHRkSkpURmN3YTZEWlRUTmxGR0YxenlpTExOeG1tQ0xIcjhhYlU?oc=5": {
+      "hash": "ec3f848faa68492a",
+      "first_seen": "2026-04-16T14:58:32.658912"
+    },
+    "https://news.google.com/rss/articles/CBMiwwFBVV95cUxObEFvSkkyTHhwcFNwbTkyQW41S0hJRDFlZko1VTVEY09SNU1MYnFQYVczUXVHWk4zMnExT08yb0hYRi1GanB1azdIQ284NkpOLWlnLXpqa0NheWpILUxibzhCLXdWWW9RTlZTY2czdnotaUYwS3J5QjNJYWVQWF9aZzhrNU1YUTBjWU85SzB3TnAybDJhQzZnaGxzXzlnRmlMYnJLRFZUU3JDX3hWcDRNSlFxc3I1SEVXN2xXS0VwM0lxUGc?oc=5": {
+      "hash": "f095f34346ed71e0",
+      "first_seen": "2026-04-16T14:58:32.658916"
+    },
+    "https://news.google.com/rss/articles/CBMiyAFBVV95cUxPakgzb3BaczhnZ3dmUkZLNFZlaWREZjUwVU1vcTlvbjFTZDNiUWtmMEpvREpEeWRBcl94VHdScUlDcUNSQ3V6dGUzbUloYVltaTdEYzR2TXNvWEdHWEpWRmNDMnZoOWF5QXNQbzVUVmhZTHphem9OVUxOVkRmcUlLaW5VMFFnb1ZuWFBhN1hKU0RrSXRMNmNob1otMkN2NUhkZkVZdC1sbjBUTnVZenRpeTgwZzJFa0tZaWtIZlEyaEhDemhSWW04Xw?oc=5": {
+      "hash": "013fbee1d4cd8369",
+      "first_seen": "2026-04-16T14:58:32.658920"
+    },
+    "https://news.google.com/rss/articles/CBMirgFBVV95cUxNVENMc0hadlZwYkJUeXpjUGUtLVcxVG05RkFDTHdXdV9SQlNsLWdlS3JpOUJxcTNzRFZDYzczMmRvb3pPdmRWZ1RqMmM5b0VySEg3MTJPWHpyOS1PUE1lbGVHcWNhbzdxUUEyYUx2YzhvQjNQd3hxWm0zcjgwM3ZSa21CZHRhX1pUbHZvaFZhTmkzamZHd1RjV0JRZFh2bklnamw2WlVHc3FZbmVyWFE?oc=5": {
+      "hash": "f642f4d510feffe5",
+      "first_seen": "2026-04-16T14:58:32.658925"
+    },
+    "https://news.google.com/rss/articles/CBMiqAFBVV95cUxOS0stSWw0QXdBZnZwWnRMREJHdzlqQnNWMk8tWDE0T0VDNjZaUERSUlJfaF9vblByTTJsMGxEQWpWaFp4WHpqR1R2VnlHMHBpQm51S1ZlaExGcjdubHRhNVlIbTFJZnhGOVpiaUVZZy1FOWcwWm56S1hlcWhlN1ZIQzBreEpjTjhsRzFKdW9FZmF5RUVhNDZhZEEwdjI0d1E3MXRwQUk0VjM?oc=5": {
+      "hash": "41bfd942d7b31d72",
+      "first_seen": "2026-04-16T14:58:32.658930"
+    },
+    "https://news.google.com/rss/articles/CBMisgFBVV95cUxPeUhfX3VaSllQc3lRS0ppd3ZEYWRLRjhBeXdsTVBPQ2p5ckFYYTdkeUd0TWFTR1hnY2xRY0FjWXVDYjJkSFdEcjh2Z0hMUFpwSzhpeXo0X2FiLWpoQ3BNcVVmYXlHUTYwYTZCTmIyWkdUWkhXU2Y0d0Z4blN3dGt1bTJXUkVMNUZXbXJwZHJnRFh5YmJZWWI2SzhtRjVyX080bkJhUkVtWmdEWVM5SVA0SFRR?oc=5": {
+      "hash": "ed38bc66503c145a",
+      "first_seen": "2026-04-16T14:58:32.658935"
+    },
+    "https://news.google.com/rss/articles/CBMixwFBVV95cUxPYU01NThsN1QycnNjRGZWRFJmdDJEVEZoTmZTRnJ5enF0ZVNtOTEwMHdGMFdCbXkyZmNfZzVYT0xSc1BodW1kMy1xellGNVNrNmJQWkFqMXd4azNvQk9fX3VyalYtaXBLbjRSaVdseDRvM19fc0hnSE8yYzVZbnVCNWs2NWw1dmhyVzFiM3c0X05UYWw5bjFmM190b1JGbGU1LVJhcVVWbGRCSzdOUVJtZ29pX0dqQ1lQSjhuNEJONXNneXFsV3lB?oc=5": {
+      "hash": "bb61f152ffb3d1b0",
+      "first_seen": "2026-04-16T14:58:32.658962"
+    },
+    "https://news.google.com/rss/articles/CBMiiAFBVV95cUxNVFp6RzhUc3cwZ0ViMGxzZVI5V2JpaGVpYTNyenVST1p5Yk5nc1RmdUkzaTZxSHE1SzFual9tRjJzTE9GN0lVYjZmcEwtd0hjNVJLUFlSVXJVTUhub2Y2QjNkNnJDX2x4LVExLWJYNWIxQklDU3EtSThCTEQ0bTl1OWtWTDE4RkZy?oc=5": {
+      "hash": "c27e2422dedf4bbd",
+      "first_seen": "2026-04-16T14:58:32.658976"
+    },
+    "https://news.google.com/rss/articles/CBMirAFBVV95cUxOXzN2UjRpYzY3SndHSGZrLUpTckNwdXd2VVJaaFdRakF6bU80amszOWRObWpCa0ppQ1V3dXNZcU1jRVdsSmNkVVhDWW9USU5ySHhlU0JjYXBWTFY2aVBMbW1rbXBBSnNfNFB1VkdfOGMwTWhYRGc2eUNnOUE2UTFMLVR1UjV1cnNKd21Da0psSllwU0NZd2VFay1nMWdJay1zRTJGcTRjRVRzQ1RU?oc=5": {
+      "hash": "7c336c3204e61a87",
+      "first_seen": "2026-04-16T14:58:32.658982"
+    },
+    "https://news.google.com/rss/articles/CBMingFBVV95cUxOaTA2QjJFbFVZSjhrRTlTS1NCaFNSNldmRmFpckE2bF9PdzEyRFJ5bUVFbld0YU4zQkRlMUhVV0tFTzBLWVg0X1dkcWN6SWczTldYOFJXOFdDNGpXb2U2a2FJeEVwcHdPZFZ2VkhveUlnQjNvSHRSQWJBMTl2TFYwVjhDeE9sMVB5b0JtZVRZOFcyRHFRa0dQT3pyX2d1dw?oc=5": {
+      "hash": "d9e7321ec872a19e",
+      "first_seen": "2026-04-16T14:58:32.658988"
+    },
+    "https://news.google.com/rss/articles/CBMif0FVX3lxTFBaZFNCdmN0dzRmWUNtaTVNdEFYVXY3SGhBaDgzdUVqZV95elR4Ml9LQUc0R2FFaUJBWTJqa0NtQ2tmTE5wMTV6QWlvOFZtSFd4QXloVGdxb2RIeG95ODV1WHJEOGlvd0lXV0VzOFlVTWdMUWVBaUxNV05ZdzVNejA?oc=5": {
+      "hash": "31f062d3ae09427e",
+      "first_seen": "2026-04-16T14:58:32.658993"
+    },
+    "https://news.google.com/rss/articles/CBMixwFBVV95cUxNRE5ibnhJU3VOWjQ3VWtaa2tER2dPSFVrQVZlOG51b0g2VFl4YUZuRjAxVVpDUXRDNnVtY1VpVTVFSVZhVDFka0lGRVFaZlI3dE9kbWNMcXYxeWxvTmVoZEkxbnlscER4cTUxUjNmTjJ6eG9fSmZfYTlILURrNjFPclIzRmkzWmVoaGZNV1hIR0o4ZjYzSWhkOXFWQTR5VGF0LXdGT3k2cVFjT3YwcFc3T0N3ZUxma2YyTllKaXg4dWVZR1pJaUtj?oc=5": {
+      "hash": "1882c973f4ee09eb",
+      "first_seen": "2026-04-16T14:58:32.658998"
+    },
+    "https://news.google.com/rss/articles/CBMiugFBVV95cUxPZlV3RER5TWJKVDUydWtUbk9IWUozVlZacG1VMlNndWEzWWlaWFBsbkYzemF1Q1BTV1Z2Z1dfdEZ6dmowUUlzTkRfNURQU0dlMFRiSUhDOE05akd5NHpJZWdQaDdqY2lNOTNVTmVMdWxsVWtCQjlEVFV1eGFFNHR0VUl1d2Rwa3hib0w2b1ZEYk9HWldNR2xqd3I1ZlAyMmZKdjk3Q1dqdTl6LXBqSkVNWldmY3RJd2lHQmc?oc=5": {
+      "hash": "16cfdc2e32a5f645",
+      "first_seen": "2026-04-16T14:58:32.659001"
+    },
+    "https://news.google.com/rss/articles/CBMitgFBVV95cUxPTEZuVHdSb05BbUJPUXFscU9yQzBuMVdvdEJDYTFIcFBzRGdvci1PcFFPVHIzc2w4VnBaQ1RyazV1bk1YTlo3NmJpSjItOGF0NC1NZmVmSUxURlNkeTc2OEIyckR5SnBzaGUzX1VoT2tVcmdTejBrMnJwa29VMV9mRm5scG1oTE1SM3BqX3IzQ0RNeGhxdXMtWFBvVFllMG5ISzdrNGttYUswZE0yVHhHMWdaOTNZUQ?oc=5": {
+      "hash": "837b2a4f16d9f0f4",
+      "first_seen": "2026-04-16T14:58:32.659004"
+    },
+    "https://news.google.com/rss/articles/CBMiwwFBVV95cUxOd2pZNG0zUy1janMtVUpmV2E2ejVIbE1Fel9ta3l5RThwRVVqdkoteTdGeS1OZjh2dVZNZUVMeEZsNlI0aU51N1lEbWY4ZzhoaFB4VEhyMEZVTGdFYS16TzRJWWNsN2VjODRPbTR6NTY2ZG15LVdxZm5EY0VUSDFHUF9jNkFZMk56aFBxdFZXWkpTeUJhZ0N1c3l1d3oxTXZEM3RTOWhXeW0zZEM4WUtWSi05S2lqanc3OFhYRVlyRXFIMzA?oc=5": {
+      "hash": "804074cc78f51d01",
+      "first_seen": "2026-04-16T14:58:32.659007"
+    },
+    "https://news.google.com/rss/articles/CBMivwFBVV95cUxNcWl6QXV4SmRTZGpyU3ViX3dueFAwck5HNDJ4bU4tWjR6WV9ab1pwaFk2ZGFKWGtCWGhybjlrWWFyOVZSZVl1WFFreU1XeDFKY2h2Ymp2ekd5X1RFOEplNjhBRkxVSU8wajktZVFrbUFNdHoxOGpyZmc4WjZHNmMwSWhkbXVTMHdCaU9FaUxwbTFvc2t2b0Zad0RLd3lNZmk2ZVlnU0cyWWIxQmFDSFd1RWtjZFNCRUVnZ3h6dG1Jbw?oc=5": {
+      "hash": "25f70a4993cf4660",
+      "first_seen": "2026-04-16T14:58:32.659010"
+    },
+    "https://news.google.com/rss/articles/CBMiqgFBVV95cUxOM3BuS05vOGdyR0JodUFPYnU3eGNxZ0pGUHJaVmhkMWF2NWgyMGc1VnFCOENZY0lZQ3c3OEhLLTh3SUw4dG85NVB5SmpGR29ZMmlha3l5Y1F2bGNRRFdNSThEekpNWWcwZUVXRE5FdXFrVVVoaDNveXdneW9SWDBidmg2SlNxcVN1cEJScmJSZEY2d05RVUpudFlZb1UtQUtmb2tEUGlXcHQ2dw?oc=5": {
+      "hash": "bf2b280cd2645889",
+      "first_seen": "2026-04-16T14:58:32.659013"
+    },
+    "https://news.google.com/rss/articles/CBMiowFBVV95cUxNYWJJaXgzQ1N4dUhWTVk5bjU5Y1E5Si1NSEpNS0Q0TG93cktUUWs2Q0VHaVQwdkdHcC1KNmdIeVpZa2ZPOGRla3FXbUM5ZGh2bjcydjhfOUs5d2R5d3BQZXE3ZWcwcVpxM01nMGxlYmhvRzlkSmJRa1VKOVBqa00teEJJSkd3NFFwUlUzSEMwS2ZVMmw4SVJwSmhiX3FpUFpKeWlz?oc=5": {
+      "hash": "c17ae4eb99b9e4e7",
+      "first_seen": "2026-04-16T14:58:32.659017"
+    },
+    "https://news.google.com/rss/articles/CBMinwFBVV95cUxOcGVLc2kwYkJnQ3dwNnhmcjZ4SUxQZTFKTHRNbFhYMnBsbERzWjF2V2FTWjhWdUw5dzljRGJNbGVGSDVTVXExRUx2cW8xOTlJYWw4X2JuYWxoa0JQWnI2QWw1Z1ZtbS1xeGozQThJWjhOczBZUnFtX29wdlpQS0tuUnRSblJFV1pZVFdfODQyNFk5Ukh4UnJYSWpDR1ZpTmc?oc=5": {
+      "hash": "8b17064649b4cda5",
+      "first_seen": "2026-04-16T14:58:32.659021"
+    },
+    "https://eqtgroup.com/cdn-cgi/l/email-protection#0f7f7d6a7c7c4f6a7e7b7f6e7d7b616a7d7c216c6062": {
+      "hash": "afaa3eb221134f3c",
+      "first_seen": "2026-04-16T14:58:32.659024"
+    },
+    "https://tpg.com/news-and-insights/zum-raises-100-million-from-tpg-to-accelerate-zums-connected-mobility-experience-cmx-and-for-continued-growth-and-expansion": {
+      "hash": "09ce548a25eb5676",
+      "first_seen": "2026-04-16T14:58:32.659028"
+    },
+    "https://franciscopartners.com/cdn-cgi/l/email-protection#cbb9aea8b9bea2bfa2a5ac8badb9aaa5a8a2b8a8a4bbaab9bfa5aeb9b8e5a8a4a6": {
+      "hash": "04108aee5ec3f074",
+      "first_seen": "2026-04-16T14:58:32.659031"
+    },
+    "https://carlyle.com/media-room/news-release-archive/carlyle-asia-partners-strengthens-korea-private-equity-team": {
+      "hash": "fdaa2d8d2f520603",
+      "first_seen": "2026-04-16T14:58:32.659034"
+    },
+    "http://ir.carlyle.com/": {
+      "hash": "8704fdf4a882434b",
+      "first_seen": "2026-04-16T14:58:32.659038"
+    },
+    "https://carlyle.com/our-people#leadership": {
+      "hash": "196372805b6eb06d",
+      "first_seen": "2026-04-16T14:58:32.659041"
+    },
+    "https://carlyle.com/our-people": {
+      "hash": "35996c2b6b3f5ac1",
+      "first_seen": "2026-04-16T14:58:32.659044"
+    },
+    "https://carlyle.com/diversity": {
+      "hash": "1c91e4e0bc9d1f31",
+      "first_seen": "2026-04-16T14:58:32.659047"
+    },
+    "https://carlyle.com/sustainability": {
+      "hash": "445bdf96d63fb64c",
+      "first_seen": "2026-04-16T14:58:32.659050"
+    },
+    "https://carlyle.com/news-media": {
+      "hash": "150893950c2c18fb",
+      "first_seen": "2026-04-16T14:58:32.659054"
+    },
+    "https://carlyle.com/sponsorships": {
+      "hash": "f48f25287c00c32b",
+      "first_seen": "2026-04-16T14:58:32.659057"
+    },
+    "https://carlyle.com/connect-us": {
+      "hash": "ae9e4be77fbf704a",
+      "first_seen": "2026-04-16T14:58:32.659060"
+    },
+    "https://carlyle.com/institutional-investors": {
+      "hash": "9d6d06b22d805b49",
+      "first_seen": "2026-04-16T14:58:32.659063"
+    },
+    "https://carlyle.com/financial-advisors": {
+      "hash": "45573a6e7bc4d852",
+      "first_seen": "2026-04-16T14:58:32.659067"
+    },
+    "https://carlyle.com/portfolio-companies": {
+      "hash": "58785129623e9510",
+      "first_seen": "2026-04-16T14:58:32.659070"
+    },
+    "https://carlyle.com/our-firm/global-private-equity": {
+      "hash": "f9fe27ecf634430b",
+      "first_seen": "2026-04-16T14:58:32.659072"
+    },
+    "https://carlyle.com/our-firm/global-private-equity/global-portfolio-solutions": {
+      "hash": "f204c213c8627be5",
+      "first_seen": "2026-04-16T14:58:32.659075"
+    },
+    "https://carlyle.com/portfolio": {
+      "hash": "61df58da6ff3ff89",
+      "first_seen": "2026-04-16T14:58:32.659078"
+    },
+    "https://carlyle.com/our-firm/global-credit": {
+      "hash": "b1ff456bc651071c",
+      "first_seen": "2026-04-16T14:58:32.659081"
+    },
+    "https://carlyle.com/our-firm/carlyle-alpinvest": {
+      "hash": "c2661042f7dd5e0c",
+      "first_seen": "2026-04-16T14:58:32.659084"
+    },
+    "https://carlyle.com/cpep-sicav": {
+      "hash": "23a4649b6df545cf",
+      "first_seen": "2026-04-16T14:58:32.659087"
+    },
+    "https://carlyle.com/capm-sicav": {
+      "hash": "1960e0f18c9027cd",
+      "first_seen": "2026-04-16T14:58:32.659090"
+    },
+    "https://carlyle.com/caps-sicav": {
+      "hash": "f194d5280bda9da2",
+      "first_seen": "2026-04-16T14:58:32.659093"
+    },
+    "https://carlyle.com/from-davids-desk": {
+      "hash": "640b6820f3530cad",
+      "first_seen": "2026-04-16T14:58:32.659096"
+    },
+    "https://carlyle.com/insights-and-indicators": {
+      "hash": "8e861af92ed1c78f",
+      "first_seen": "2026-04-16T14:58:32.659099"
+    },
+    "https://carlyle.com/insights-from-the-pms-desk": {
+      "hash": "ddf58be89b170195",
+      "first_seen": "2026-04-16T14:58:32.659101"
+    },
+    "https://carlyle.com/navigating-leadership": {
+      "hash": "7f524ace6a2dbb51",
+      "first_seen": "2026-04-16T14:58:32.659104"
+    },
+    "https://carlyle.com/the-carlyle-compass": {
+      "hash": "5d217488f51a67e0",
+      "first_seen": "2026-04-16T14:58:32.659108"
+    },
+    "https://carlyle.com/up-close-with-carlyle": {
+      "hash": "b16418e5b3b1636f",
+      "first_seen": "2026-04-16T14:58:32.659111"
+    },
+    "https://carlyle.com/advisor-education/why-private-markets": {
+      "hash": "e27b616906f92590",
+      "first_seen": "2026-04-16T14:58:32.659115"
+    },
+    "https://carlyle.com/advisor-education/private-equity": {
+      "hash": "db1fffc9e6ff2a46",
+      "first_seen": "2026-04-16T14:58:32.659118"
+    },
+    "https://carlyle.com/advisor-education/private-credit": {
+      "hash": "07dc0b16f3a0ddee",
+      "first_seen": "2026-04-16T14:58:32.659121"
+    },
+    "https://carlyle.com/global-insights": {
+      "hash": "4c99d4dfd371af37",
+      "first_seen": "2026-04-16T14:58:32.659124"
+    },
+    "https://carlyle.com/global-offices": {
+      "hash": "296f5d47b09d477f",
+      "first_seen": "2026-04-16T14:58:32.659127"
+    },
+    "https://lpconnect.carlyle.com/": {
+      "hash": "966b3af6cbde83cd",
+      "first_seen": "2026-04-16T14:58:32.659130"
+    },
+    "https://carlyle.com/notices-and-disclaimers": {
+      "hash": "448c92711c15e9f1",
+      "first_seen": "2026-04-16T14:58:32.659133"
+    },
+    "https://carlyle.com/notices-and-disclaimers#notice-regarding-fake-news-and-fraudulent-activity": {
+      "hash": "f6ea1b9702bcfd15",
+      "first_seen": "2026-04-16T14:58:32.659135"
+    },
+    "https://carlyle.com/notices-and-disclaimers#transparency--reporting": {
+      "hash": "d0028875d0cf8c0d",
+      "first_seen": "2026-04-16T14:58:32.659138"
+    },
+    "https://carlyle.com/notices-and-disclaimers#cookies-policy": {
+      "hash": "2ce3dbe616ab050f",
+      "first_seen": "2026-04-16T14:58:32.659141"
+    },
+    "https://carlyle.com/notices-and-disclaimers#privacy-notice": {
+      "hash": "ef77e70283a986d5",
+      "first_seen": "2026-04-16T14:58:32.659145"
+    },
+    "https://carlyle.com/notices-and-disclaimers#terms-of-use-policy": {
+      "hash": "fdf812afb8234a93",
+      "first_seen": "2026-04-16T14:58:32.659147"
+    },
+    "https://carlyle.com/carlyle-compass/resilient-growth-rising-costs-growing-divergence": {
+      "hash": "4324936c7222dede",
+      "first_seen": "2026-04-16T14:58:32.659150"
+    },
+    "https://carlyle.com/subscribe-carlyles-newsletters": {
+      "hash": "fb59bd140c9a435a",
+      "first_seen": "2026-04-16T14:58:32.659153"
+    },
+    "https://www.carlyle.com/notices-and-disclaimers#cookies-policy": {
+      "hash": "206ae9529e64a0e4",
+      "first_seen": "2026-04-16T14:58:32.659156"
+    },
+    "https://www.adventinternational.com/portfolio-stories/a-dream-come-true-establishing-ai-dream-in-china/": {
+      "hash": "b90633e80f2f6a41",
+      "first_seen": "2026-04-16T14:58:32.659159"
+    },
+    "https://www.bcpartners.com/news/synthon-benelux-deal-of-the-year-real-deals/": {
+      "hash": "f95dd3ad9a7bf1f7",
+      "first_seen": "2026-04-16T14:58:32.659162"
+    },
+    "https://www.atlasholdingsllc.com/news/union-pacific-railroad-and-rocky-mountain-steel-mills-announce-new-long-term-contract-for-domestic-rail-production/": {
+      "hash": "d59001c80b63c750",
+      "first_seen": "2026-04-16T14:58:32.659165"
+    },
+    "https://www.mcpfunds.com/news/monomoy-ranked-9-in-2025-hec-paris-dow-jones-performance-ranking/": {
+      "hash": "4ade604fd1dc1570",
+      "first_seen": "2026-04-16T14:58:32.659168"
+    },
+    "https://willkie.com/publications/2026/04/cftc-chairs-speech-hints-at-innovation-friendly-policies": {
+      "hash": "fe28150f21169196",
+      "first_seen": "2026-04-16T14:58:32.659171"
+    },
+    "https://www.cliffordchance.com/insights/thought_leadership/insolvency-and-restructuring-law-reform-in-south-and-southeast-a.html": {
+      "hash": "075a214bc6e0f7b1",
+      "first_seen": "2026-04-16T14:58:32.659173"
+    },
+    "https://stblaw.com/about-us/news/view/2026/04/16/capvest-raises-4.5-billion-for-capvest-fund-vi": {
+      "hash": "ee74c48dce86f429",
+      "first_seen": "2026-04-16T14:58:32.659176"
+    },
+    "https://ropesgray.com/en/news-and-events/news/2026/04/alessandro-capogrosso-featured-in-fundspeople-discussing-global-sponsors-looking": {
+      "hash": "5c430d08e1ced7c5",
+      "first_seen": "2026-04-16T14:58:32.659198"
+    },
+    "https://ropesgray.com/en/news-and-events/rankings-and-awards/2026/04/ropes-gray-honored-at-the-2026-women-influence-power-in-law-awards": {
+      "hash": "45a7525fd347cc25",
+      "first_seen": "2026-04-16T14:58:32.659203"
     }
   },
   "seen_deals": {
@@ -20673,7 +21349,7 @@
     },
     "Incline Equity Partners": {
       "last_error": "403",
-      "last_error_date": "2026-04-15T16:49:06.070706",
+      "last_error_date": "2026-04-16T14:53:22.858304",
       "consecutive_404s": 0,
       "needs_url_update": false,
       "prefer_playwright": false
@@ -21555,7 +22231,7 @@
     },
     "Debevoise & Plimpton": {
       "last_error": "403",
-      "last_error_date": "2026-04-15T16:50:45.504603",
+      "last_error_date": "2026-04-16T14:55:35.849674",
       "consecutive_404s": 0,
       "needs_url_update": false,
       "prefer_playwright": false
@@ -21569,7 +22245,7 @@
     },
     "Kirkland & Ellis": {
       "last_error": "403",
-      "last_error_date": "2026-04-15T16:50:45.484549",
+      "last_error_date": "2026-04-16T14:55:36.049417",
       "consecutive_404s": 0,
       "needs_url_update": false,
       "prefer_playwright": false

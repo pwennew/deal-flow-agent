@@ -1007,3 +1007,35 @@ firms:
   hq: Toronto
   feed_url: https://sagard.com/feed
   press_url: https://sagard.com/news
+- name: GIC
+  domain: gic.com.sg
+  hq: Singapore
+  press_url: https://www.gic.com.sg/newsroom/all/
+  feed_url: https://www.gic.com.sg/newsroom/all/feed/
+- name: Stonepeak
+  domain: stonepeak.com
+  hq: New York
+  press_url: https://stonepeak.com/category/press-releases
+  feed_url: https://stonepeak.com/feed/
+- name: CPP Investments
+  domain: cppinvestments.com
+  hq: Toronto
+  press_url: https://www.cppinvestments.com/newsroom/
+- name: OMERS
+  domain: omersprivateequity.com
+  hq: Toronto
+  press_url: https://www.omersprivateequity.com/news
+- name: I Squared Capital
+  domain: isquaredcapital.com
+  hq: Miami
+  press_url: https://isquaredcapital.com/news/
+  feed_url: https://isquaredcapital.com/cpt_news/feed/
+- name: ICG
+  domain: icgam.com
+  hq: London
+  press_url: https://www.icgam.com/category/news/
+  feed_url: https://www.icgam.com/feed/
+- name: Aurelius
+  domain: aurelius-group.com
+  hq: Munich
+  press_url: https://www.aurelius-group.com/all-news

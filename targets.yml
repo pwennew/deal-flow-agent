@@ -188,12 +188,6 @@ firms:
   - TMT
   - Services
   press_url: https://www.veritascapital.com/news
-- name: BDT & MSD Partners
-  domain: bdtmsd.com
-  hq: Chicago
-  sectors:
-  - Industrials
-  - Consumer
 - name: Sycamore Partners
   domain: sycamorepartners.com
   hq: US
@@ -257,14 +251,6 @@ firms:
   - Energy & Materials
   - Consumer
   press_url: https://blackrock.com/news-and-insights
-- name: Goldman Sachs Asset Management
-  domain: gsam.com
-  hq: New York
-  sectors:
-  - TMT
-  - Science & Health
-  - Industrials
-  - Consumer
 - name: Permira Advisers
   domain: permira.com
   hq: London
@@ -562,10 +548,11 @@ firms:
   press_url: https://tsgconsumer.com/news
   feed_url: https://www.tsgconsumer.com/news?format=rss
 - name: Altas Partners
-  domain: atlaspartners.com
+  domain: altas.com
   hq: Toronto
   sectors:
   - Services
+  press_url: https://www.altas.com/news
 - name: Vistria Group
   domain: vistria.com
   hq: Chicago
@@ -577,12 +564,6 @@ firms:
   domain: wppartners.com
   press_url: https://www.wppartners.com/news/
   hq: Chicago
-  sectors:
-  - Industrials
-  - Consumer
-- name: Pritzker Group
-  domain: pritzkergroup.com
-  hq: US
   sectors:
   - Industrials
   - Consumer
@@ -704,11 +685,6 @@ firms:
   feed_url: https://alpineinvestors.com/feed
   hq: San Francisco
   press_url: https://alpineinvestors.com/news
-- name: Alvarez & Marsal Capital Partners
-  domain: a-mcapital.com
-  hq: Greenwich
-  sectors:
-  - Science & Health
 - name: Littlejohn & Co
   domain: littlejohnllc.com
   hq: US
@@ -784,11 +760,6 @@ firms:
   sectors:
   - Industrials
   press_url: https://www.mcpfunds.com/media-center/
-- name: Stellex Capital Management
-  domain: stellexcapital.com
-  hq: US
-  sectors:
-  - Consumer
 - name: Sentinel Capital Partners
   domain: sentinelpartners.com
   hq: New York
@@ -817,6 +788,7 @@ firms:
 - name: Trive Capital
   domain: trivecapital.com
   hq: US
+  press_url: https://www.trivecapital.com/news/
 - name: Providence Equity Partners
   domain: provequity.com
   hq: Providence
@@ -836,10 +808,11 @@ firms:
   hq: Chevy Chase
   press_url: https://arlingtoncap.com/news
 - name: Trilantic Capital Partners North America
-  domain: trilantic.com
+  domain: trilanticnorthamerica.com
   hq: New York
   sectors:
   - Consumer
+  press_url: https://www.trilanticnorthamerica.com/news
 - name: Brightstar Capital Partners
   domain: brightstarcp.com
   hq: New York
@@ -895,11 +868,6 @@ firms:
   feed_url: https://flexpointford.com/feed
   hq: Chicago
   press_url: https://flexpointford.com/news
-- name: Nexus Capital Management
-  domain: nexuslp.com
-  hq: US
-  sectors:
-  - Consumer
 - name: DFW Capital Partners
   domain: dfwcapital.com
   hq: US
@@ -929,12 +897,15 @@ firms:
 - name: Sverica Capital Management
   domain: sverica.com
   hq: US
+  press_url: https://sverica.com/news/
 - name: NexPhase Capital
   domain: nexphase.com
   hq: US
+  press_url: https://www.nexphase.com/news/
 - name: Tailwind Capital
-  domain: tailwindcapital.com
+  domain: tailwind.com
   hq: US
+  press_url: https://www.tailwind.com/news/
 - name: EagleTree Capital
   domain: eagletreecapital.com
   hq: US
@@ -952,9 +923,6 @@ firms:
   domain: astorg.com
   hq: Luxembourg
   press_url: https://astorg.com/news
-- name: Vitruvian Partners
-  domain: vitruvianpartners.com
-  hq: London
 - name: Eurazeo
   domain: eurazeo.com
   hq: Paris
@@ -971,20 +939,20 @@ firms:
 - name: Patria Investments
   domain: patria.com
   hq: Sao Paulo
+  press_url: https://ir.patria.com/news-events/news-releases
 - name: Waterland Private Equity Investments
-  domain: waterland.nl
+  domain: waterlandpe.com
   hq: Bussum
+  press_url: https://www.waterlandpe.com/news/
 - name: Investindustrial
   domain: investindustrial.com
   hq: London
+  press_url: https://www.investindustrial.com/publications/news.html
 - name: Triton Partners
   domain: triton-partners.com
   hq: Luxembourg
   press_url: https://triton-partners.com/media
   feed_url: https://www.triton-partners.com/news/rss
-- name: Five Arrows
-  domain: fivearrows.com
-  hq: Paris
 - name: IK Partners
   domain: ikpartners.com
   feed_url: https://ikpartners.com/feed
@@ -997,6 +965,7 @@ firms:
 - name: Oakley Capital Private Equity
   domain: oakleycapital.com
   hq: London
+  press_url: https://www.oakleycapital.com/news-and-insights/
 - name: TDR Capital
   domain: tdrcapital.com
   feed_url: https://tdrcapital.com/feed/
@@ -1026,8 +995,9 @@ firms:
   feed_url: https://montefiore.eu/feed
   press_url: https://montefiore.eu/media
 - name: Avista Capital Partners
-  domain: avistacap.com
+  domain: avistahealthcare.com
   hq: New York
+  press_url: https://www.avistahealthcare.com/news-category/news/
 - name: Paine Schwartz Partners
   domain: paineschwartz.com
   hq: New York

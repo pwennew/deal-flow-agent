@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "last_run": "2026-04-18T14:08:28.143296",
+  "last_run": "2026-04-19T14:01:12.373281",
   "seen": {
     "https://warburgpincus.com/2026/03/30/wealth-insurance-and-fintech-drive-thriving-pebacked-financial-services-ma/": {
       "hash": "61ef81059158927c",
@@ -23197,6 +23197,50 @@
     "https://icgam.com/people-and-careers": {
       "hash": "3d52b663c65fc1a5",
       "first_seen": "2026-04-18T14:08:28.143294"
+    },
+    "https://eqtgroup.com/cdn-cgi/l/email-protection#c6b6b4a3b5b586a3b7b2b6a7b4b2a8a3b4b5e8a5a9ab": {
+      "hash": "ba6ce6bcb1463a91",
+      "first_seen": "2026-04-19T14:01:12.373220"
+    },
+    "https://franciscopartners.com/cdn-cgi/l/email-protection#acdec9cfded9c5d8c5c2cbeccadecdc2cfc5dfcfc3dccdded8c2c9dedf82cfc3c1": {
+      "hash": "053802c6de916497",
+      "first_seen": "2026-04-19T14:01:12.373232"
+    },
+    "https://www.adventinternational.com/portfolio-stories/making-investing-simpler-with-easynvest/": {
+      "hash": "557494c12f8dd80a",
+      "first_seen": "2026-04-19T14:01:12.373237"
+    },
+    "https://www.trivecapital.com/lilas-light/": {
+      "hash": "791799aeb56fae74",
+      "first_seen": "2026-04-19T14:01:12.373248"
+    },
+    "https://trivecapital.com/wp-content/uploads/Trive-Capital-Overview_032426.pdf": {
+      "hash": "bb14bfd81fde0209",
+      "first_seen": "2026-04-19T14:01:12.373252"
+    },
+    "https://www.trivecapital.com/wp-content/uploads/Trive-Structured-Capital-Overview_040224.pdf": {
+      "hash": "0256f909e3bc7738",
+      "first_seen": "2026-04-19T14:01:12.373256"
+    },
+    "https://www.trivecapital.com/wp-content/uploads/Trive-Capital-Add-On-Sheet_012226.pdf": {
+      "hash": "d3783fb083b3e3a8",
+      "first_seen": "2026-04-19T14:01:12.373260"
+    },
+    "https://www.trivecapital.com/": {
+      "hash": "ec3f7ef62c452edf",
+      "first_seen": "2026-04-19T14:01:12.373265"
+    },
+    "https://www.trivecapital.com/terms/": {
+      "hash": "8450ae87130bb3f9",
+      "first_seen": "2026-04-19T14:01:12.373270"
+    },
+    "https://trivecapital.com/website-privacy-policy/": {
+      "hash": "beebff3ed0e3e30d",
+      "first_seen": "2026-04-19T14:01:12.373274"
+    },
+    "https://www.cppinvestments.com/privacy-policy": {
+      "hash": "c8f0058c307cea4f",
+      "first_seen": "2026-04-19T14:01:12.373278"
     }
   },
   "seen_deals": {
@@ -23833,7 +23877,7 @@
     },
     "Incline Equity Partners": {
       "last_error": "403",
-      "last_error_date": "2026-04-18T14:00:17.004815",
+      "last_error_date": "2026-04-19T13:58:51.173139",
       "consecutive_404s": 0,
       "needs_url_update": false,
       "prefer_playwright": false
@@ -24715,7 +24759,7 @@
     },
     "Debevoise & Plimpton": {
       "last_error": "403",
-      "last_error_date": "2026-04-18T14:01:57.198575",
+      "last_error_date": "2026-04-19T14:00:31.704913",
       "consecutive_404s": 0,
       "needs_url_update": false,
       "prefer_playwright": false
@@ -24729,7 +24773,7 @@
     },
     "Kirkland & Ellis": {
       "last_error": "403",
-      "last_error_date": "2026-04-18T14:01:57.037422",
+      "last_error_date": "2026-04-19T14:00:31.745097",
       "consecutive_404s": 0,
       "needs_url_update": false,
       "prefer_playwright": false
@@ -24784,7 +24828,7 @@
       "prefer_playwright": false
     },
     "Brightstar Capital Partners": {
-      "last_error": "dns",
+      "last_error": null,
       "last_error_date": "2026-04-18T14:01:35.134253",
       "consecutive_404s": 0,
       "needs_url_update": false,
@@ -24981,7 +25025,7 @@
     },
     "GIC": {
       "last_error": null,
-      "last_error_date": "2026-04-18T13:58:29.383436",
+      "last_error_date": "2026-04-19T13:56:54.100438",
       "consecutive_404s": 0,
       "needs_url_update": false,
       "prefer_playwright": false
@@ -25065,14 +25109,14 @@
     },
     "Patria Investments": {
       "last_error": "timeout",
-      "last_error_date": "2026-04-18T14:00:51.585834",
+      "last_error_date": "2026-04-19T13:59:27.104358",
       "consecutive_404s": 0,
       "needs_url_update": false,
       "prefer_playwright": false
     },
     "Waterland Private Equity Investments": {
       "last_error": "dns",
-      "last_error_date": "2026-04-18T14:01:56.752847",
+      "last_error_date": "2026-04-19T14:00:31.460341",
       "consecutive_404s": 0,
       "needs_url_update": false,
       "prefer_playwright": false
